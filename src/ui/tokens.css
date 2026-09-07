@@ -1,0 +1,84 @@
+/*
+ * Design tokens transcribed from aoc-prototype/UI_DESIGN_SYSTEM.md §2.
+ * The Unity system puts corner radius, borders and bevels in the sprite art; with no
+ * sprites here those become the small set of CSS primitives below. Five hues only —
+ * do not introduce a sixth.
+ */
+
+:root {
+    /* §2.1 Colour */
+    --cyan: #AFFFF8;
+    --cyan-dim: rgba(175, 255, 248, 0.26);
+    --cyan-faint: rgba(175, 255, 248, 0.10);
+    --steel: #A6B7BF;
+    --text: #FFFFFF;
+    --muted: rgba(255, 255, 255, 0.75);
+    --inverse: #000000;
+    --money: #00FF73;
+    --hatch: rgba(226, 255, 160, 0.25);
+
+    /* Ground. Not in the Unity doc — there the background is the 3D scene. */
+    --bg: #070b0d;
+    --surface: #0e1518;
+    --surface-2: #141d21;
+    --line: rgba(166, 183, 191, 0.28);
+    --danger: #FF6B5A;
+
+    /* §2.2 Type. Iosevka Charon Bold is not shipped here (art excluded from the
+       public repo), so a monospace stack carries the same voice. */
+    --font: ui-monospace, "SF Mono", "Cascadia Mono", "Roboto Mono", Menlo, Consolas, monospace;
+    --fs-display: 40px;
+    --fs-money: 28px;
+    --fs-title: 20px;
+    --fs-item: 18px;
+    --fs-detail: 16px;
+    --fs-chip: 14px;
+    --fs-meta: 12px;
+    --fs-micro: 10px;
+
+    /* §2.3 Geometry */
+    --inset: 10px;
+    --hairline: 1px;
+    --radius: 2px;
+}
+
+/* §4.3 The diagonal-hatch overlay, as a gradient instead of a tiled sprite.
+   Applied to panel-scale surfaces only, never to chip-scale elements. */
+.hatch::after {
+    content: "";
+    position: absolute;
+    inset: 2px;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        -45deg,
+        var(--hatch) 0 1px,
+        transparent 1px 7px
+    );
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: var(--fs-detail);
+    font-weight: 700;
+    line-height: 1.35;
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior: none;
+}
+
+button {
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+}
+
+/* Screens are pannable surfaces, never horizontally scrolling documents. */
+#root { overflow-x: hidden; }

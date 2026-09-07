@@ -1,0 +1,9 @@
+node_modules/
+dist/
+*.local
+.DS_Store
+.env
+.env.*
+service-account*.json
+gcp-key*.json
+*.tsbuildinfo
