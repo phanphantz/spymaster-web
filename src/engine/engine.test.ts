@@ -782,6 +782,21 @@ describe('deploying a mission', () => {
         expect(inventory.get('toolPicklockSet')).toBe(1);
     });
 
+    it('counts an item as lost only when something actually destroyed it', async () => {
+        const { tables, rng, inventory, session } = await heist(5);
+        session.assignAgent('slot_stealth', 'agentNoire');
+        session.assignAgent('slot_hacker', 'agentAngel');
+        session.shop.purchase('toolPicklockSet', 1);
+        session.assignItem('agentNoire', 'toolPicklockSet', 1);
+
+        const result = deploy({ session, tables, inventory, rng })!;
+
+        // It went out and came back. Measuring the difference after the items were handed home
+        // would report every survivor as a casualty.
+        expect(result.itemsLost).toEqual([]);
+        expect(inventory.get('toolPicklockSet')).toBe(1);
+    });
+
     it('frees the agents immediately — v1 has no rest', async () => {
         const { tables, rng, inventory, session } = await heist(5);
         session.assignAgent('slot_stealth', 'agentNoire');

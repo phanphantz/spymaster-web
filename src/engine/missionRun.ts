@@ -80,6 +80,10 @@ export function deploy({ session, tables, inventory, rng }: DeployOptions): Depl
     const outcome = resolver.resolve(session.mission.data, context);
     if (outcome) reports.push(...runIncidents(outcome.incidents, tables, target, rng));
 
+    // What is missing now, compared with what went out, is what the Mission destroyed. This has to
+    // be measured before the survivors are handed back, or everything reads as lost.
+    const itemsLost = diff(carriedBefore, snapshot(carried));
+
     // Items return to the pool unless an Incident destroyed them.
     for (const inventoryOfAgent of carried.values()) inventoryOfAgent.transferAllTo(inventory);
 
@@ -95,7 +99,7 @@ export function deploy({ session, tables, inventory, rng }: DeployOptions): Depl
         isSuccess: Boolean(outcome) && outcome!.type !== 'criticalFailure',
         reports,
         agents,
-        itemsLost: diff(carriedBefore, snapshot(carried)),
+        itemsLost,
         ...totals(reports),
     };
 }
