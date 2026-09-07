@@ -58,9 +58,16 @@ export function deploy({ session, tables, inventory, rng }: DeployOptions): Depl
     // always satisfied by the slots being filled, since that is the same Gate that named them.
     if (!resolver.canStart(session.mission.data, context)) return undefined;
 
-    const agents = session.slots
-        .map((slot) => session.agentIn(slot.slotId))
-        .filter((agent): agent is RuntimeAgent => agent !== undefined);
+    // Deduped by identity: if a Gate ever names the same slot twice, both entries resolve to the
+    // same agent and every health effect would land on them once per slot. The validator reports
+    // that as a data error; this keeps it from doing damage in the meantime.
+    const agents = [
+        ...new Set(
+            session.slots
+                .map((slot) => session.agentIn(slot.slotId))
+                .filter((agent): agent is RuntimeAgent => agent !== undefined),
+        ),
+    ];
 
     const carried = new Map<string, Inventory>();
     for (const agent of agents) carried.set(agent.characterId, session.carriedBy(agent.characterId));

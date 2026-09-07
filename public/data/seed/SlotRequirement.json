@@ -5,6 +5,12 @@
     "minLevel": 1
   },
   {
+    "slotId": "slot_diver",
+    "isMandatory": true,
+    "minLevel": 1,
+    "end": 8
+  },
+  {
     "slotId": "slot_lead",
     "isMandatory": true,
     "minLevel": 1,

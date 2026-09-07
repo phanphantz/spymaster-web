@@ -687,14 +687,17 @@ describe('Loadout', () => {
         const session = new LoadoutSession(mission, tables, roster, inventory, 1);
         session.shop.purchase('toolOxygenTank', 2);
 
-        session.assignAgent('slot_any', 'agentNoire');
-        session.assignItem('agentNoire', 'toolOxygenTank', 1);
+        // Patch clears both of this mission's slots, so he can actually be moved between them.
+        session.assignAgent('slot_any', 'agentPatch');
+        session.assignItem('agentPatch', 'toolOxygenTank', 1);
 
-        // Noire moves to the second slot and keeps the tank.
         const slots = session.slots.map((slot) => slot.slotId);
-        session.assignAgent(slots[1], 'agentNoire');
-        expect(session.carriedBy('agentNoire').get('toolOxygenTank')).toBe(1);
-        expect(session.slotOf('agentNoire')).toBe(slots[1]);
+        expect(new Set(slots).size, 'a Gate must not name one slot twice').toBe(slots.length);
+
+        // He moves to the second slot and keeps the tank.
+        expect(session.assignAgent(slots[1], 'agentPatch')).toBe(true);
+        expect(session.carriedBy('agentPatch').get('toolOxygenTank')).toBe(1);
+        expect(session.slotOf('agentPatch')).toBe(slots[1]);
     });
 
     it('will not overfill an agent past their item capacity', async () => {

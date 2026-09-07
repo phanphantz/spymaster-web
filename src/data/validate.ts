@@ -143,13 +143,51 @@ function parsePath(path: string): string[] {
 }
 
 /**
+ * A Gate naming the same slot twice.
+ *
+ * Assignments are keyed by `slotId`, so two slots sharing an id collapse onto one agent: the
+ * Loadout shows two openings, one of them silently overwrites the other, and that single agent then
+ * absorbs the Mission's effects once per slot. Nothing about it looks wrong on screen, which is
+ * exactly why it needs catching here.
+ */
+function checkDuplicateSlots(rows: MergedRows): ValidationIssue[] {
+    const issues: ValidationIssue[] = [];
+
+    for (const gate of rows[SHEETS.Gate]) {
+        const slotIds = gate.slotReqIds;
+        if (!Array.isArray(slotIds)) continue;
+
+        const seen = new Set<string>();
+        for (const slotId of slotIds) {
+            const id = String(slotId);
+            if (seen.has(id)) {
+                issues.push({
+                    severity: 'error',
+                    sheet: SHEETS.Gate,
+                    rowId: String(gate.gateId ?? '(no id)'),
+                    path: 'slotReqIds[]',
+                    value: id,
+                    target: SHEETS.SlotRequirement,
+                    message:
+                        `Gate.${String(gate.gateId)} names slot "${id}" more than once. ` +
+                        'Assignments are keyed by slotId, so the duplicate collapses onto one agent.',
+                });
+            }
+            seen.add(id);
+        }
+    }
+
+    return issues;
+}
+
+/**
  * Checks every declared reference against the merged tables.
  *
  * A tab with no rows at all is skipped rather than reported: an empty `Habit` tab means habits are
  * not authored yet, not that every `habits` entry is broken.
  */
 export function validate(rows: MergedRows): ValidationIssue[] {
-    const issues: ValidationIssue[] = [];
+    const issues: ValidationIssue[] = checkDuplicateSlots(rows);
 
     const idsOf = new Map<SheetName, Set<string>>();
     const idsFor = (sheet: SheetName): Set<string> => {

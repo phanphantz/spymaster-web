@@ -221,7 +221,7 @@
     "gateId": "gate_deepwater_recovery_start",
     "slotReqIds": [
       "slot_any",
-      "slot_any"
+      "slot_diver"
     ]
   },
   {

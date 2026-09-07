@@ -151,6 +151,34 @@ describe('validator', () => {
         expect(values).toContain('skill_that_does_not_exist');
     });
 
+    it('catches a Gate that names the same slot twice', () => {
+        // Assignments are keyed by slotId, so a duplicate silently collapses two openings onto one
+        // agent — invisible on screen, and it doubles every effect that agent takes.
+        const issues = validate(
+            mergeLayers([
+                {
+                    SlotRequirement: [{ slotId: 'slot_any', isMandatory: true }],
+                    Gate: [{ gateId: 'g', slotReqIds: ['slot_any', 'slot_any'] }],
+                },
+            ]),
+        );
+
+        expect(issues.filter((issue) => issue.path === 'slotReqIds[]')).toHaveLength(1);
+    });
+
+    it('accepts a Gate whose slots are distinct', () => {
+        const issues = validate(
+            mergeLayers([
+                {
+                    SlotRequirement: [{ slotId: 'slot_any' }, { slotId: 'slot_diver' }],
+                    Gate: [{ gateId: 'g', slotReqIds: ['slot_any', 'slot_diver'] }],
+                },
+            ]),
+        );
+
+        expect(issues).toEqual([]);
+    });
+
     it('stays quiet about a tab nobody has authored yet', () => {
         // Habit has no rows, so an agent's habits cannot be checked against it.
         const issues = validate(
