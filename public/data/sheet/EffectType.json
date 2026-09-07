@@ -1,0 +1,35 @@
+[
+  {
+    "effectTypeId": "injury"
+  },
+  {
+    "effectTypeId": "sickness"
+  },
+  {
+    "effectTypeId": "debuff"
+  },
+  {
+    "effectTypeId": "death"
+  },
+  {
+    "effectTypeId": "healthChange"
+  },
+  {
+    "effectTypeId": "statModifier"
+  },
+  {
+    "effectTypeId": "itemGain"
+  },
+  {
+    "effectTypeId": "itemLoss"
+  },
+  {
+    "effectTypeId": "recovery"
+  },
+  {
+    "effectTypeId": "triggerEvent"
+  },
+  {
+    "effectTypeId": "triggerConversation"
+  }
+]

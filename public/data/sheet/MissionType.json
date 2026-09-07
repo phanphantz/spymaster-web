@@ -1,0 +1,50 @@
+[
+  {
+    "missionTypeId": "assassination"
+  },
+  {
+    "missionTypeId": "sabotage"
+  },
+  {
+    "missionTypeId": "combat"
+  },
+  {
+    "missionTypeId": "extraction"
+  },
+  {
+    "missionTypeId": "rescue"
+  },
+  {
+    "missionTypeId": "searchAndRescue"
+  },
+  {
+    "missionTypeId": "infiltration"
+  },
+  {
+    "missionTypeId": "surveillance"
+  },
+  {
+    "missionTypeId": "deception"
+  },
+  {
+    "missionTypeId": "security"
+  },
+  {
+    "missionTypeId": "agencyProgram"
+  },
+  {
+    "missionTypeId": "negotiation"
+  },
+  {
+    "missionTypeId": "delivery"
+  },
+  {
+    "missionTypeId": "investigation"
+  },
+  {
+    "missionTypeId": "heist"
+  },
+  {
+    "missionTypeId": "favor"
+  }
+]

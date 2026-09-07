@@ -1,0 +1,18 @@
+[
+  {
+    "configKey": "maxAgentSkillSlot",
+    "description": "How many Skills an agent can hold at once. On level-up, if every slot is full the player must forget one Skill or decline the new one."
+  },
+  {
+    "configKey": "timeScale",
+    "description": "Base multiplier from real-world seconds to in-game time at normal speed."
+  },
+  {
+    "configKey": "fastTimeScale",
+    "description": "Multiplier from real-world seconds to in-game time at the fast speed setting."
+  },
+  {
+    "configKey": "superFastTimeScale",
+    "description": "Multiplier from real-world seconds to in-game time at the super-fast speed setting."
+  }
+]

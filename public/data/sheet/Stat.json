@@ -1,0 +1,38 @@
+[
+  {
+    "statId": "ast",
+    "displayName": "Assault",
+    "icon": "Sword"
+  },
+  {
+    "statId": "end",
+    "displayName": "Endurance",
+    "icon": "Shield"
+  },
+  {
+    "statId": "sth",
+    "displayName": "Stealth",
+    "icon": "Thunder"
+  },
+  {
+    "statId": "pre",
+    "displayName": "Precision",
+    "icon": "Crosshair"
+  },
+  {
+    "statId": "int",
+    "displayName": "Intellect",
+    "icon": "LightBulb"
+  },
+  {
+    "statId": "cha",
+    "displayName": "Charisma",
+    "icon": "Sparkle"
+  },
+  {
+    "statId": "health",
+    "displayName": "Health",
+    "icon": "Heart",
+    "minValue": "0"
+  }
+]

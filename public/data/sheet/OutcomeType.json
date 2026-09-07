@@ -1,0 +1,14 @@
+[
+  {
+    "outcomeTypeId": "best"
+  },
+  {
+    "outcomeTypeId": "acceptable"
+  },
+  {
+    "outcomeTypeId": "bad"
+  },
+  {
+    "outcomeTypeId": "criticalFailure"
+  }
+]

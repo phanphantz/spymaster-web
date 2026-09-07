@@ -1,0 +1,89 @@
+[
+  {
+    "itemTypeId": "handgun"
+  },
+  {
+    "itemTypeId": "machineGun"
+  },
+  {
+    "itemTypeId": "assaultRifle"
+  },
+  {
+    "itemTypeId": "sniperRifle"
+  },
+  {
+    "itemTypeId": "shotgun"
+  },
+  {
+    "itemTypeId": "throwable"
+  },
+  {
+    "itemTypeId": "explosive"
+  },
+  {
+    "itemTypeId": "flamable"
+  },
+  {
+    "itemTypeId": "attachment"
+  },
+  {
+    "itemTypeId": "sharpWeapon"
+  },
+  {
+    "itemTypeId": "fist"
+  },
+  {
+    "itemTypeId": "substance"
+  },
+  {
+    "itemTypeId": "currency"
+  },
+  {
+    "itemTypeId": "revolver"
+  },
+  {
+    "itemTypeId": "submachineGun"
+  },
+  {
+    "itemTypeId": "ammoMagazine"
+  },
+  {
+    "itemTypeId": "launcher"
+  },
+  {
+    "itemTypeId": "mine"
+  },
+  {
+    "itemTypeId": "rangedOther"
+  },
+  {
+    "itemTypeId": "nonLethal"
+  },
+  {
+    "itemTypeId": "gadget"
+  },
+  {
+    "itemTypeId": "tool"
+  },
+  {
+    "itemTypeId": "concealedWeapon"
+  },
+  {
+    "itemTypeId": "disguise"
+  },
+  {
+    "itemTypeId": "container"
+  },
+  {
+    "itemTypeId": "gear"
+  },
+  {
+    "itemTypeId": "defense"
+  },
+  {
+    "itemTypeId": "light"
+  },
+  {
+    "itemTypeId": "bluntWeapon"
+  }
+]

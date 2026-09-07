@@ -1,0 +1,326 @@
+[
+  {
+    "taskId": "highspeed_chase"
+  },
+  {
+    "taskId": "poker_game"
+  },
+  {
+    "taskId": "auction"
+  },
+  {
+    "taskId": "deepwater_dive"
+  },
+  {
+    "taskId": "skydriving"
+  },
+  {
+    "taskId": "train_driving"
+  },
+  {
+    "taskId": "hiking"
+  },
+  {
+    "taskId": "wild_survival"
+  },
+  {
+    "taskId": "dessert_survival"
+  },
+  {
+    "taskId": "plane_crash"
+  },
+  {
+    "taskId": "arrive_at_hotel_room"
+  },
+  {
+    "taskId": "arrive_at_bar"
+  },
+  {
+    "taskId": "going_pass_restricted_area"
+  },
+  {
+    "taskId": "breach_restricted_area"
+  },
+  {
+    "taskId": "alarm_go_off"
+  },
+  {
+    "taskId": "target_lockdown"
+  },
+  {
+    "taskId": "destroy_virus"
+  },
+  {
+    "taskId": "conteminated_area"
+  },
+  {
+    "taskId": "date_night"
+  },
+  {
+    "taskId": "dance_floor"
+  },
+  {
+    "taskId": "meeting_with_npc"
+  },
+  {
+    "taskId": "submarine_infiltration"
+  },
+  {
+    "taskId": "staged_defection"
+  },
+  {
+    "taskId": "getting_interregated"
+  },
+  {
+    "taskId": "convoy_protect"
+  },
+  {
+    "taskId": "being_decoy_to_lure"
+  },
+  {
+    "taskId": "findOutWho_crowd"
+  },
+  {
+    "taskId": "findOutWho_party"
+  },
+  {
+    "taskId": "findOutWho_companyEvent"
+  },
+  {
+    "taskId": "arrtiveAt_location"
+  },
+  {
+    "taskId": "goThrough_securityCheck"
+  },
+  {
+    "taskId": "goThrough_patting"
+  },
+  {
+    "taskId": "goThrough_customer"
+  },
+  {
+    "taskId": "getOn_boat"
+  },
+  {
+    "taskId": "getOn_ship"
+  },
+  {
+    "taskId": "getOn_plane"
+  },
+  {
+    "taskId": "getOn_submarine"
+  },
+  {
+    "taskId": "getHoldOf_car"
+  },
+  {
+    "taskId": "getHoldOf_ship"
+  },
+  {
+    "taskId": "getHoldOf_plane"
+  },
+  {
+    "taskId": "getHoldOf_submarine"
+  },
+  {
+    "taskId": "suppressFire"
+  },
+  {
+    "taskId": "breakOut_shooting"
+  },
+  {
+    "taskId": "driveInto_river"
+  },
+  {
+    "taskId": "driveInto_ocean"
+  },
+  {
+    "taskId": "driveInto_cliff"
+  },
+  {
+    "taskId": "carCrash"
+  },
+  {
+    "taskId": "driveInto_gunFire"
+  },
+  {
+    "taskId": "carSwap"
+  },
+  {
+    "taskId": "driveAsDecoy"
+  },
+  {
+    "taskId": "driveReverseTraffic"
+  },
+  {
+    "taskId": "driveInto_alleyWay"
+  },
+  {
+    "taskId": "prisionBreak_gatherTool"
+  },
+  {
+    "taskId": "prisonBreak_diging"
+  },
+  {
+    "taskId": "prison_fight"
+  },
+  {
+    "taskId": "prison_dealItems"
+  },
+  {
+    "taskId": "prison_ambush"
+  },
+  {
+    "taskId": "firstAid"
+  },
+  {
+    "taskId": "undercover_royaltyTest"
+  },
+  {
+    "taskId": "undercover_getUniform"
+  },
+  {
+    "taskId": "undercover_codeQuestion"
+  },
+  {
+    "taskId": "undercover_sharpQuestion"
+  },
+  {
+    "taskId": "undercover_installWire"
+  },
+  {
+    "taskId": "undercover_stealKey"
+  },
+  {
+    "taskId": "sneak_InOffice"
+  },
+  {
+    "taskId": "sneak_laserWire"
+  },
+  {
+    "taskId": "undercover_gettingStopped"
+  },
+  {
+    "taskId": "lieDetection"
+  },
+  {
+    "taskId": "torture"
+  },
+  {
+    "taskId": "driveAsStalker"
+  },
+  {
+    "taskId": "sleepInCar"
+  },
+  {
+    "taskId": "stalkAtHome"
+  },
+  {
+    "taskId": "stalkAsMarksman"
+  },
+  {
+    "taskId": "stalkInCrowd"
+  },
+  {
+    "taskId": "stalkAssistNavigate"
+  },
+  {
+    "taskId": "stalk_plantSignalEmitter"
+  },
+  {
+    "taskId": "stalk_eavesdropping"
+  },
+  {
+    "taskId": "stlakAssistHacking"
+  },
+  {
+    "taskId": "stalkCloseInElevator"
+  },
+  {
+    "taskId": "stalkCloseInTrain"
+  },
+  {
+    "taskId": "stalkCloseOnPlane"
+  },
+  {
+    "taskId": "stalkCloseDarkAlley"
+  },
+  {
+    "taskId": "stalkDisguiseInPark"
+  },
+  {
+    "taskId": "stalkAssistStatusReport"
+  },
+  {
+    "taskId": "impersonate_gettingFisked"
+  },
+  {
+    "taskId": "impersonate_gettingInventoryChecked"
+  },
+  {
+    "taskId": "impersonate_gettingValidateQuestions"
+  },
+  {
+    "taskId": "impersonate_stealOutfit"
+  },
+  {
+    "taskId": "impersonate_knockOutRealPerson"
+  },
+  {
+    "taskId": "protect_takeABullet"
+  },
+  {
+    "taskId": "protect_evacuvateCar"
+  },
+  {
+    "taskId": "protect_evacuvateBoat"
+  },
+  {
+    "taskId": "protect_evacuvatePlane"
+  },
+  {
+    "taskId": "protect_evacuvateHelicopter"
+  },
+  {
+    "taskId": "protect_coverFromExplosion"
+  },
+  {
+    "taskId": "protect_KickOutPeople"
+  },
+  {
+    "taskId": "cookFor_target"
+  },
+  {
+    "taskId": "gettingCheckedIn"
+  },
+  {
+    "taskId": "shower"
+  },
+  {
+    "taskId": "gettingDressed"
+  },
+  {
+    "taskId": "escape_building"
+  },
+  {
+    "taskId": "escape_city"
+  },
+  {
+    "taskId": "escape_country"
+  },
+  {
+    "taskId": "escape_prison"
+  },
+  {
+    "taskId": "escape_island"
+  },
+  {
+    "taskId": "clearingTheParimeater"
+  },
+  {
+    "taskId": "clearingTheRoom"
+  },
+  {
+    "taskId": "breaching"
+  }
+]

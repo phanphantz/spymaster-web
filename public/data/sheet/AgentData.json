@@ -1,0 +1,189 @@
+[
+  {
+    "characterId": "agentBlade",
+    "rarity": "superRare",
+    "baseSkillIds": [
+      "swordMaster",
+      "Iaijutsu",
+      "zantetsu"
+    ]
+  },
+  {
+    "characterId": "agentHangman",
+    "rarity": "superRare",
+    "baseSkillIds": [
+      "gunFu",
+      "dualWield",
+      "deathSentence",
+      "berserkMode"
+    ]
+  },
+  {
+    "characterId": "agentDagger",
+    "rarity": "superRare",
+    "baseSkillIds": [
+      "utsusemi",
+      "flickerStep",
+      "genjutsu"
+    ]
+  },
+  {
+    "characterId": "agentIvy",
+    "rarity": "superRare",
+    "baseSkillIds": [
+      "poisonTouch",
+      "poisonResistance",
+      "hallucinogen"
+    ]
+  },
+  {
+    "characterId": "agentStorm",
+    "rarity": "superRare",
+    "baseSkillIds": [
+      "bullseye",
+      "kungFuMaster",
+      "webOfDeath"
+    ]
+  },
+  {
+    "characterId": "agentNoire",
+    "rarity": "superRare",
+    "baseSkillIds": [
+      "shadowCloak",
+      "nightTerror",
+      "twlightZone"
+    ]
+  },
+  {
+    "characterId": "agentPercival",
+    "rarity": "superRare",
+    "baseSkillIds": [
+      "silverTongue",
+      "hollywoodChop",
+      "protagonist"
+    ]
+  },
+  {
+    "characterId": "agentRook",
+    "rarity": "superRare",
+    "baseSkillIds": [
+      "cameleon",
+      "parkourMaster",
+      "escapeArtist"
+    ]
+  },
+  {
+    "characterId": "agentScarlet",
+    "rarity": "superRare",
+    "baseSkillIds": [
+      "pyrokinesis",
+      "honeyTrap",
+      "ironSkin",
+      "infernoBurst"
+    ]
+  },
+  {
+    "characterId": "agentSnow",
+    "rarity": "superRare",
+    "baseSkillIds": [
+      "permafrost",
+      "iceSpike",
+      "iceMirror"
+    ]
+  },
+  {
+    "characterId": "agentWolf",
+    "rarity": "superRare",
+    "baseSkillIds": [
+      "blockbuster",
+      "stuntDriver",
+      "fakeDealth"
+    ]
+  },
+  {
+    "characterId": "agentOldman",
+    "rarity": "superRare",
+    "baseSkillIds": [
+      "surgeon",
+      "heal",
+      "bloodPact",
+      "lifeDrain"
+    ]
+  },
+  {
+    "characterId": "agentJoker",
+    "rarity": "superRare",
+    "baseSkillIds": [
+      "pokerFace",
+      "cardCounting",
+      "magician"
+    ]
+  },
+  {
+    "characterId": "agentPatch",
+    "rarity": "superRare",
+    "baseSkillIds": [
+      "superSoldier",
+      "firstAid",
+      "tacticalForesight",
+      "overclock"
+    ]
+  },
+  {
+    "characterId": "agentLucky",
+    "rarity": "superRare",
+    "baseSkillIds": [
+      "luckyGirl",
+      "supressingFire",
+      "jackpot",
+      "maliceTransfer"
+    ]
+  },
+  {
+    "characterId": "agentMonday",
+    "rarity": "superRare",
+    "baseSkillIds": [
+      "genius",
+      "gambit",
+      "foresee"
+    ]
+  },
+  {
+    "characterId": "agentAngel",
+    "rarity": "superRare",
+    "baseSkillIds": [
+      "ghostProtocol",
+      "hacking",
+      "blackOut",
+      "zeroDay"
+    ]
+  },
+  {
+    "characterId": "agentButter",
+    "rarity": "superRare",
+    "baseSkillIds": [
+      "improvisedInventor",
+      "pocketUniverse",
+      "teleport"
+    ]
+  },
+  {
+    "characterId": "agentThirteen",
+    "rarity": "superRare",
+    "baseSkillIds": [
+      "telekinesis",
+      "mindReading",
+      "astralProjection"
+    ]
+  },
+  {
+    "characterId": "agentJohnDoe",
+    "rarity": "superRare",
+    "baseSkillIds": [
+      "photogenicMemory",
+      "forgery",
+      "lieDetector",
+      "smoothCriminal"
+    ]
+  }
+]

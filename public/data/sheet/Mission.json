@@ -1,0 +1,882 @@
+[
+  {
+    "missionId": "accidentKill",
+    "type": "assassination",
+    "_rarity": "medium",
+    "priorityType": "high",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "accidentKill_double",
+    "type": "assassination",
+    "_rarity": "rare",
+    "priorityType": "high",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "accidentKill_triple",
+    "type": "assassination",
+    "_rarity": "superRare",
+    "priorityType": "high",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "kill",
+    "type": "assassination",
+    "_rarity": "common",
+    "priorityType": "high",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "kill_double",
+    "type": "assassination",
+    "_rarity": "medium",
+    "priorityType": "high",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "kill_triple",
+    "type": "assassination",
+    "_rarity": "rare",
+    "priorityType": "high",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "silentKill",
+    "type": "assassination",
+    "_rarity": "medium",
+    "priorityType": "high",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "silentKill_double",
+    "type": "assassination",
+    "_rarity": "rare",
+    "priorityType": "high",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "silentKill_triple",
+    "type": "assassination",
+    "_rarity": "superRare",
+    "priorityType": "high",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "sabotage_terrorism",
+    "type": "sabotage",
+    "_rarity": "common",
+    "priorityType": "veryHigh",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "sabotage_deal",
+    "type": "sabotage",
+    "_rarity": "common",
+    "priorityType": "high",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "sabotage_publicEvent",
+    "type": "sabotage",
+    "_rarity": "common",
+    "priorityType": "high",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "sabotage_privateOperation",
+    "type": "sabotage",
+    "_rarity": "common",
+    "priorityType": "high",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "sabotage_virus",
+    "type": "sabotage",
+    "_rarity": "superRare",
+    "priorityType": "veryHigh",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "assault_building",
+    "type": "combat",
+    "_rarity": "common",
+    "priorityType": "high",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "assault_hideout",
+    "type": "combat",
+    "_rarity": "common",
+    "priorityType": "high",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "assault_militaryBase",
+    "type": "combat",
+    "_rarity": "rare",
+    "priorityType": "high",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "assault_party",
+    "type": "combat",
+    "_rarity": "common",
+    "priorityType": "high",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "assault_convoy",
+    "type": "combat",
+    "_rarity": "common",
+    "priorityType": "high",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "extract_vip",
+    "type": "extraction",
+    "_rarity": "common",
+    "priorityType": "veryHigh",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "extract_witness",
+    "type": "extraction",
+    "_rarity": "common",
+    "priorityType": "veryHigh",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "extract_item",
+    "type": "extraction",
+    "_rarity": "common",
+    "priorityType": "veryHigh",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "extract_animal",
+    "type": "extraction",
+    "_rarity": "superRare",
+    "priorityType": "medium",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "extract_prisonBreak",
+    "type": "extraction",
+    "_rarity": "superRare",
+    "priorityType": "veryHigh",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "rescue_agent",
+    "type": "rescue",
+    "_rarity": "rare",
+    "priorityType": "veryHigh",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "rescue_vip",
+    "type": "rescue",
+    "_rarity": "common",
+    "priorityType": "veryHigh",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "rescue_witness",
+    "type": "rescue",
+    "_rarity": "common",
+    "priorityType": "veryHigh",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "rescue_animal",
+    "type": "rescue",
+    "_rarity": "superRare",
+    "priorityType": "high",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "rescueToDoc_agent",
+    "type": "rescue",
+    "_rarity": "rare",
+    "priorityType": "veryHigh",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "rescueToDoc_vip",
+    "type": "rescue",
+    "_rarity": "medium",
+    "priorityType": "veryHigh",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "rescueToDoc_witness",
+    "type": "rescue",
+    "_rarity": "medium",
+    "priorityType": "veryHigh",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "rescueToDoc_animal",
+    "type": "rescue",
+    "_rarity": "superRare",
+    "priorityType": "high",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "searchRescue_vip",
+    "type": "searchAndRescue",
+    "_rarity": "common",
+    "priorityType": "veryHigh",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "searchRescue_animal",
+    "type": "searchAndRescue",
+    "_rarity": "superRare",
+    "priorityType": "high",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "searchRescue_witness",
+    "type": "searchAndRescue",
+    "_rarity": "common",
+    "priorityType": "veryHigh",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "searchRescue_tressureHunt",
+    "type": "searchAndRescue",
+    "_rarity": "rare",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "undercover_gang",
+    "type": "infiltration",
+    "_rarity": "common",
+    "priorityType": "medium",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "undercover_company",
+    "type": "infiltration",
+    "_rarity": "common",
+    "priorityType": "medium",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "undercover_militaryBase",
+    "type": "infiltration",
+    "_rarity": "rare",
+    "priorityType": "medium",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "undercover_cia",
+    "type": "infiltration",
+    "_rarity": "superRare",
+    "priorityType": "medium",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "undercover_mi6",
+    "type": "infiltration",
+    "_rarity": "superRare",
+    "priorityType": "medium",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "stalk_neighbor",
+    "type": "surveillance",
+    "_rarity": "common",
+    "priorityType": "medium",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "stalk_vip",
+    "type": "surveillance",
+    "_rarity": "common",
+    "priorityType": "medium",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "stalk_suspect",
+    "type": "surveillance",
+    "_rarity": "common",
+    "priorityType": "medium",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "impersonate_figure",
+    "type": "deception",
+    "_rarity": "medium",
+    "priorityType": "high",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "impersonate_occupation",
+    "type": "deception",
+    "_rarity": "medium",
+    "priorityType": "high",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "protect_witness",
+    "type": "security",
+    "_rarity": "common",
+    "priorityType": "veryHigh",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "protect_vip",
+    "type": "security",
+    "_rarity": "common",
+    "priorityType": "veryHigh",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "protect_president",
+    "type": "security",
+    "_rarity": "medium",
+    "priorityType": "veryHigh",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "counter_terrorism",
+    "type": "security",
+    "_rarity": "common",
+    "priorityType": "veryHigh",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "counter_mayhem",
+    "type": "security",
+    "_rarity": "common",
+    "priorityType": "high",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "counter_evilPolice",
+    "type": "security",
+    "_rarity": "rare",
+    "priorityType": "high",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "escort_vip",
+    "type": "security",
+    "_rarity": "common",
+    "priorityType": "veryHigh",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "escort_witness",
+    "type": "security",
+    "_rarity": "common",
+    "priorityType": "veryHigh",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "escort_item",
+    "type": "security",
+    "_rarity": "common",
+    "priorityType": "high",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "escort_animal",
+    "type": "security",
+    "_rarity": "superRare",
+    "priorityType": "medium",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "training_melee",
+    "type": "agencyProgram",
+    "_rarity": "rare",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "training_driving",
+    "type": "agencyProgram",
+    "_rarity": "rare",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "training_shooting",
+    "type": "agencyProgram",
+    "_rarity": "rare",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "training_body",
+    "type": "agencyProgram",
+    "_rarity": "rare",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "training_social",
+    "type": "agencyProgram",
+    "_rarity": "rare",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "training_stealth",
+    "type": "agencyProgram",
+    "_rarity": "rare",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "training_tech",
+    "type": "agencyProgram",
+    "_rarity": "rare",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "checkUp_mental",
+    "type": "agencyProgram",
+    "_rarity": "superRare",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "checkUp_physical",
+    "type": "agencyProgram",
+    "_rarity": "superRare",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "vacation_island",
+    "type": "agencyProgram",
+    "_rarity": "rare",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "vacation_europe",
+    "type": "agencyProgram",
+    "_rarity": "rare",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "vacation_japan",
+    "type": "agencyProgram",
+    "_rarity": "rare",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "vacation_nordic",
+    "type": "agencyProgram",
+    "_rarity": "rare",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "vacation_cruiseShip",
+    "type": "agencyProgram",
+    "_rarity": "rare",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "vacation_mountain",
+    "type": "agencyProgram",
+    "_rarity": "rare",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "vacation_forest",
+    "type": "agencyProgram",
+    "_rarity": "rare",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "rehab_physical",
+    "type": "agencyProgram",
+    "_rarity": "rare",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "rehab_mental",
+    "type": "agencyProgram",
+    "_rarity": "rare",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "rehab_addiction",
+    "type": "agencyProgram",
+    "_rarity": "rare",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "deal_business",
+    "type": "negotiation",
+    "_rarity": "common",
+    "priorityType": "medium",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "deal_weapon",
+    "type": "negotiation",
+    "_rarity": "common",
+    "priorityType": "medium",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "deal_vaccine",
+    "type": "negotiation",
+    "_rarity": "superRare",
+    "priorityType": "high",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "deal_software",
+    "type": "negotiation",
+    "_rarity": "common",
+    "priorityType": "medium",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "deal_tech",
+    "type": "negotiation",
+    "_rarity": "common",
+    "priorityType": "high",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "deliver_weapon",
+    "type": "delivery",
+    "_rarity": "common",
+    "priorityType": "high",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "deliver_animal",
+    "type": "delivery",
+    "_rarity": "rare",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "deliver_tech",
+    "type": "delivery",
+    "_rarity": "medium",
+    "priorityType": "high",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "deliver_document",
+    "type": "delivery",
+    "_rarity": "common",
+    "priorityType": "medium",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "investigate_crimeScene",
+    "type": "investigation",
+    "_rarity": "medium",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "investigate_heistScene",
+    "type": "investigation",
+    "_rarity": "rare",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "investigate_signal",
+    "type": "investigation",
+    "_rarity": "rare",
+    "priorityType": "medium",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "investigate_party",
+    "type": "investigation",
+    "_rarity": "common",
+    "priorityType": "medium",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "explore_hauntedHouse",
+    "type": "investigation",
+    "_rarity": "superRare",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "explore_forest",
+    "type": "investigation",
+    "_rarity": "medium",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "explore_northPole",
+    "type": "investigation",
+    "_rarity": "superRare",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "explore_deepSea",
+    "type": "investigation",
+    "_rarity": "superRare",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "explore_sewer",
+    "type": "investigation",
+    "_rarity": "superRare",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "explore_dessert",
+    "type": "investigation",
+    "_rarity": "superRare",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "explore_city",
+    "type": "investigation",
+    "_rarity": "common",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "heist_museum",
+    "type": "heist",
+    "_rarity": "medium",
+    "priorityType": "medium",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "heist_auction",
+    "type": "heist",
+    "_rarity": "medium",
+    "priorityType": "medium",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "heist_skyscraper",
+    "type": "heist",
+    "_rarity": "medium",
+    "priorityType": "medium",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "TRUE"
+  },
+  {
+    "missionId": "swap_item",
+    "type": "heist",
+    "_rarity": "common",
+    "priorityType": "high",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "swap_software",
+    "type": "heist",
+    "_rarity": "common",
+    "priorityType": "high",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "swap_document",
+    "type": "heist",
+    "_rarity": "common",
+    "priorityType": "high",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "swap_weapon",
+    "type": "heist",
+    "_rarity": "common",
+    "priorityType": "high",
+    "_hasNoItemsVariants": "TRUE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "babysit_newRecruit",
+    "type": "favor",
+    "_rarity": "medium",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "babysit_witnessProtection",
+    "type": "favor",
+    "_rarity": "medium",
+    "priorityType": "high",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "babysit_kids",
+    "type": "favor",
+    "_rarity": "superRare",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "speech_school",
+    "type": "favor",
+    "_rarity": "superRare",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "speech_newRecruit",
+    "type": "favor",
+    "_rarity": "superRare",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "speech_companyEvent",
+    "type": "favor",
+    "_rarity": "superRare",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "speech_military",
+    "type": "favor",
+    "_rarity": "superRare",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "FALSE"
+  },
+  {
+    "missionId": "deliver_food",
+    "type": "favor",
+    "_rarity": "superRare",
+    "priorityType": "low",
+    "_hasNoItemsVariants": "FALSE",
+    "_hasSilentVariant": "TRUE"
+  }
+]

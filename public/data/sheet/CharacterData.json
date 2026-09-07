@@ -1,0 +1,291 @@
+[
+  {
+    "id": "agentBlade",
+    "firstName": "Ryōsuke",
+    "lastName": "Kurogane",
+    "_nickName": "Ryō",
+    "codeNames": "Blade",
+    "_type": "assassin",
+    "gender": "male",
+    "_background": "Trained by legandary swordman since was a kid",
+    "_drive": "finding the lost sister, soft spot for kids",
+    "_moral": "Try to not kill if not neccessary, need reason to kill",
+    "_references": "long hair, eye bandage across the eyes, scar, looks really unique and standout (weakness)",
+    "_uniqueness": "blindness, sword fight, quiet, revenge-filled, soft spot for kids",
+    "nationality": "japanese",
+    "age": "42"
+  },
+  {
+    "id": "agentHangman",
+    "firstName": "Ethan",
+    "lastName": "Briggs",
+    "_nickName": "Briggs",
+    "codeNames": "Hangman",
+    "_type": "assassin",
+    "gender": "male",
+    "_background": "Retired assassin who family get murdered",
+    "_drive": "revenge",
+    "_moral": "Cold blooded, Don't kill innocent people",
+    "_references": "john wick, protagonist from David Fincher's The Killer, The Jackal",
+    "_uniqueness": "skilled gunman, most skilled with gun ( handgun, rifle, smg )",
+    "nationality": "american",
+    "age": "37"
+  },
+  {
+    "id": "agentDagger",
+    "firstName": "Yoruhime",
+    "lastName": "Shinju",
+    "_nickName": "Yoru",
+    "codeNames": "Dagger",
+    "_type": "assassin",
+    "gender": "female",
+    "_references": "Shinobi",
+    "nationality": "japanese",
+    "age": "28"
+  },
+  {
+    "id": "agentIvy",
+    "firstName": "Victoria",
+    "lastName": "Grim",
+    "_nickName": "Vicky",
+    "codeNames": "Ivy",
+    "_type": "assassin",
+    "gender": "female",
+    "_references": "Goth Girl",
+    "_uniqueness": "Everything she touch turn to poison",
+    "nationality": "british",
+    "age": "21"
+  },
+  {
+    "id": "agentStorm",
+    "firstName": "Mei",
+    "lastName": "Lin",
+    "_nickName": "Mei",
+    "codeNames": "Storm",
+    "_type": "assassin",
+    "gender": "female",
+    "_references": "Wolfcut girl",
+    "_uniqueness": "Knife throwing, never miss when using throwing weapons",
+    "nationality": "chinese",
+    "age": "22"
+  },
+  {
+    "id": "agentNoire",
+    "firstName": "Naomi",
+    "lastName": "Voss",
+    "_nickName": "Naomi",
+    "codeNames": "Noire",
+    "_type": "spy",
+    "gender": "female",
+    "_references": "Misora Naomi, Blackhair female agent in brown coat",
+    "_uniqueness": "shadow user, silenced gun, steathy, smart, cold on the outside, dark past, tsundere",
+    "nationality": "british",
+    "age": "25"
+  },
+  {
+    "id": "agentPercival",
+    "firstName": "Julian",
+    "lastName": "Hart",
+    "_nickName": "Jules",
+    "codeNames": "Percival",
+    "_type": "spy",
+    "gender": "male",
+    "_references": "MI6 / James Bond / Charming Handsome agent",
+    "nationality": "british",
+    "age": "27"
+  },
+  {
+    "id": "agentRook",
+    "firstName": "Blake",
+    "lastName": "Coleman",
+    "_nickName": "Blake",
+    "codeNames": "Rook",
+    "_type": "spy",
+    "gender": "male",
+    "_references": "matt damon, CIA, Jason Bourne. Field Agent, grounded, handsome",
+    "nationality": "american",
+    "age": "32"
+  },
+  {
+    "id": "agentScarlet",
+    "firstName": "Irina",
+    "lastName": "Volkova",
+    "_nickName": "Irina",
+    "codeNames": "Scarlet",
+    "_type": "spy",
+    "gender": "female",
+    "_references": "KGB, Sexy Milf, Red Hair Spy",
+    "nationality": "russian",
+    "age": "30"
+  },
+  {
+    "id": "agentSnow",
+    "firstName": "Sophie",
+    "lastName": "Moreau",
+    "_nickName": "Sophie",
+    "codeNames": "Snow",
+    "_type": "spy",
+    "gender": "female",
+    "_references": "Bond Girl",
+    "nationality": "french",
+    "age": "24"
+  },
+  {
+    "id": "agentWolf",
+    "firstName": "Hiroshi",
+    "lastName": "Yamada",
+    "_nickName": "Hiro",
+    "codeNames": "Wolf",
+    "_type": "fighter",
+    "gender": "male",
+    "_references": "yakuza type",
+    "nationality": "japanese",
+    "age": "32"
+  },
+  {
+    "id": "agentOldman",
+    "firstName": "Bernard",
+    "lastName": "Chevalier",
+    "_nickName": "Chev",
+    "codeNames": "Oldman",
+    "_type": "fighter",
+    "gender": "male",
+    "_references": "butler type, Alfred, Old Man silver hair",
+    "nationality": "french",
+    "age": "54"
+  },
+  {
+    "id": "agentJoker",
+    "firstName": "Jack",
+    "lastName": "Whitfield",
+    "_nickName": "Jack",
+    "codeNames": "Joker",
+    "_type": "fighter",
+    "gender": "male",
+    "_references": "Ray from MrInbetween, The Comedian, bald, wear hat",
+    "nationality": "australian",
+    "age": "40"
+  },
+  {
+    "id": "agentPatch",
+    "firstName": "Devon",
+    "lastName": "Carter",
+    "_nickName": "Dev",
+    "codeNames": "Patch",
+    "_type": "military",
+    "gender": "male",
+    "_background": "Ex-Military, expelled from resisting evil order",
+    "_references": "Fixer from the Oldman series, radio wire in ear, dirty shirt, bald, Navy Seal, African American, Fixer",
+    "nationality": "african american",
+    "age": "29"
+  },
+  {
+    "id": "agentLucky",
+    "firstName": "Valentina",
+    "lastName": "Cruz",
+    "_nickName": "Val",
+    "codeNames": "Lucky",
+    "_type": "military",
+    "gender": "female",
+    "_references": "Cute Girl with AR-15",
+    "nationality": "spanish",
+    "age": "24"
+  },
+  {
+    "id": "agentMonday",
+    "firstName": "Brittney",
+    "lastName": "Brooks",
+    "_nickName": "BB",
+    "codeNames": "Monday",
+    "_type": "support",
+    "gender": "female",
+    "_references": "Female version of Q, african girl",
+    "_uniqueness": "Genius",
+    "nationality": "african american",
+    "age": "26"
+  },
+  {
+    "id": "agentAngel",
+    "firstName": "Ji-an",
+    "lastName": "Kwon",
+    "_nickName": "Ji-an",
+    "codeNames": "Angel",
+    "_type": "support",
+    "gender": "female",
+    "_references": "Genius Hacker",
+    "nationality": "korean",
+    "age": "19"
+  },
+  {
+    "id": "agentButter",
+    "firstName": "Benjamin",
+    "lastName": "Fraser",
+    "_nickName": "Benny",
+    "codeNames": "Butter",
+    "_type": "support",
+    "gender": "male",
+    "_references": "Water boy from Dispatch, Shy and Anxious type",
+    "nationality": "canadian",
+    "age": "22"
+  },
+  {
+    "id": "agentThirteen",
+    "firstName": "Maya",
+    "lastName": "Zhou",
+    "_nickName": "Maya",
+    "codeNames": "Thirteen",
+    "_type": "support",
+    "gender": "female",
+    "_references": "Esper Girl",
+    "nationality": "chinese",
+    "age": "25"
+  },
+  {
+    "id": "agentJohnDoe",
+    "firstName": "Max",
+    "lastName": "Fletcher",
+    "_nickName": "Fletch",
+    "codeNames": "JohnDoe",
+    "_type": "support",
+    "gender": "male",
+    "_references": "Max from Homeland",
+    "nationality": "american",
+    "age": "29"
+  },
+  {
+    "codeNames": "Giant Guy Type",
+    "_type": "fighter",
+    "gender": "male"
+  },
+  {
+    "codeNames": "Tom Cruise / Triple X type",
+    "_type": "spy",
+    "gender": "male"
+  },
+  {
+    "codeNames": "Egsy / Kingsman",
+    "_type": "spy",
+    "gender": "male"
+  },
+  {
+    "codeNames": "Cyborg Girl",
+    "_type": "military",
+    "gender": "female"
+  },
+  {
+    "codeNames": "Young Girl Type",
+    "gender": "female"
+  },
+  {
+    "codeNames": "Boxer Type",
+    "gender": "male"
+  },
+  {
+    "codeNames": "Gal JK",
+    "gender": "female"
+  },
+  {
+    "codeNames": "The Cameleon",
+    "gender": "male"
+  }
+]

@@ -1,0 +1,1226 @@
+[
+  {
+    "skillId": "kungFu",
+    "type": "combat",
+    "_subType": "cqb",
+    "_rarity": "common",
+    "_stepToBreakdown": "3",
+    "_effect": "weak CQB damage. Low chance of hitting multiple enermies at once."
+  },
+  {
+    "skillId": "boxing",
+    "type": "combat",
+    "_subType": "cqb",
+    "_rarity": "common",
+    "_stepToBreakdown": "3",
+    "_effect": "weak CQB damage. Low chance of multiple hits."
+  },
+  {
+    "skillId": "silat",
+    "type": "combat",
+    "_subType": "cqb",
+    "_rarity": "common",
+    "_stepToBreakdown": "3",
+    "_effect": "weak CQB damage. Low chance of lowering an enemy's accuracy.",
+    "description": "Southeast Asian martial art utilizing rapid, brutal strikes to joints and vital areas."
+  },
+  {
+    "skillId": "judo",
+    "type": "combat",
+    "_subType": "cqb",
+    "_rarity": "common",
+    "_stepToBreakdown": "3",
+    "_effect": "weak CQB damage. Low chance of stun to enermy."
+  },
+  {
+    "skillId": "flashKick",
+    "type": "combat",
+    "_subType": "cqb",
+    "_rarity": "common",
+    "_stepToBreakdown": "3",
+    "_effect": "weak CQB damage. x2 damage while in a hurry."
+  },
+  {
+    "skillId": "disarm_i",
+    "type": "combat",
+    "_subType": "cqb",
+    "_rarity": "common",
+    "_stepToBreakdown": "0",
+    "_effect": "Low chance to disarm a weapon from enermy hand",
+    "description": "High chance of disarming 1-3 enemy in close quarter combat"
+  },
+  {
+    "skillId": "disarm_ii",
+    "type": "combat",
+    "_subType": "cqb",
+    "_rarity": "common",
+    "_stepToBreakdown": "0",
+    "_effect": "Medium chance to disarm a weapon from enermy hand"
+  },
+  {
+    "skillId": "disarm_iii",
+    "type": "combat",
+    "_subType": "cqb",
+    "_rarity": "common",
+    "_stepToBreakdown": "0",
+    "_effect": "High chance of disarm a weapon from enermy hand"
+  },
+  {
+    "skillId": "disarmSpecialist",
+    "_rarity": "common",
+    "_effect": "Disarm and steal a weapon from enermy hand"
+  },
+  {
+    "skillId": "doorBreach",
+    "type": "combat",
+    "_subType": "cqb",
+    "_rarity": "common",
+    "_stepToBreakdown": "3",
+    "_effect": "Low chance to stun to some enermies when attacking unaware enemies."
+  },
+  {
+    "skillId": "doorBreachSpecialist",
+    "type": "combat",
+    "_subType": "cqb",
+    "_rarity": "common",
+    "_stepToBreakdown": "0",
+    "_effect": "Stun all enemies when attacking unaware enemies"
+  },
+  {
+    "skillId": "parry",
+    "type": "combat",
+    "_subType": "cqb",
+    "_rarity": "common",
+    "_stepToBreakdown": "3",
+    "_effect": "low chance of avoiding CQB attack."
+  },
+  {
+    "skillId": "perfectParry",
+    "type": "combat",
+    "_subType": "cqb",
+    "_rarity": "common",
+    "_stepToBreakdown": "0",
+    "_effect": "avoid a CQB attack and deal counter attack damage"
+  },
+  {
+    "skillId": "tacticalForesight",
+    "type": "combat",
+    "_subType": "cqb",
+    "_rarity": "superRare",
+    "supernaturalType": "mindPower",
+    "_stepToBreakdown": "0",
+    "_effect": "Takedown all enemies  when attacking unaware ememies",
+    "description": "The Equalizer mode"
+  },
+  {
+    "skillId": "utsusemi",
+    "type": "combat",
+    "_subType": "cqb",
+    "_rarity": "superRare",
+    "supernaturalType": "jutsu",
+    "_stepToBreakdown": "0",
+    "_effect": "avoid one enemy attack and offer high chance of escaping a battle",
+    "description": "Dodge A sudden swap with a decoy right before taking damage."
+  },
+  {
+    "skillId": "kungFuMaster",
+    "type": "combat",
+    "_subType": "cqb",
+    "_rarity": "superRare",
+    "_stepToBreakdown": "0",
+    "_effect": "Deal heavy CQB damage to multiple enemies at once"
+  },
+  {
+    "skillId": "boxingChampion",
+    "type": "combat",
+    "_subType": "cqb",
+    "_rarity": "superRare",
+    "_stepToBreakdown": "0",
+    "_effect": "Deal multiple heavy CQB damage."
+  },
+  {
+    "skillId": "silatMaster",
+    "type": "combat",
+    "_subType": "cqb",
+    "_rarity": "superRare",
+    "_stepToBreakdown": "0",
+    "_effect": "Deal heavy CQB damage and lower an enemy's accuracy."
+  },
+  {
+    "skillId": "judoMaster",
+    "type": "combat",
+    "_subType": "cqb",
+    "_rarity": "superRare",
+    "_stepToBreakdown": "0",
+    "_effect": "Deal heavy CQB damage and stun an enemy"
+  },
+  {
+    "skillId": "improvisedWeaponry",
+    "type": "combat",
+    "_subType": "weaponHandling",
+    "_rarity": "common",
+    "_stepToBreakdown": "3",
+    "_effect": "low chance of grabbing a weapon during battle when empty handed"
+  },
+  {
+    "skillId": "boommerang",
+    "type": "combat",
+    "_subType": "weaponHandling",
+    "_rarity": "rare",
+    "_stepToBreakdown": "3",
+    "_effect": "low chance of getting a weapon back after throwing them"
+  },
+  {
+    "skillId": "ricochet",
+    "type": "combat",
+    "_subType": "weaponHandling",
+    "_rarity": "rare",
+    "_stepToBreakdown": "3",
+    "_effect": "low chance of thrown weapon damaging multiple enemies"
+  },
+  {
+    "skillId": "gunFu",
+    "type": "combat",
+    "_subType": "weaponHandling",
+    "_rarity": "superRare",
+    "_stepToBreakdown": "0",
+    "_effect": "to all enemies"
+  },
+  {
+    "skillId": "swordMaster",
+    "type": "combat",
+    "_subType": "weaponHandling",
+    "_rarity": "superRare",
+    "_stepToBreakdown": "0",
+    "_effect": "x2 CQB damage when using sharp weapon"
+  },
+  {
+    "skillId": "bullseye",
+    "type": "combat",
+    "_subType": "weaponHandling",
+    "_rarity": "superRare",
+    "_stepToBreakdown": "0",
+    "_effect": "Always hit targets when throwing weapon",
+    "description": "throwing skills"
+  },
+  {
+    "skillId": "zantetsu",
+    "type": "combat",
+    "_subType": "weaponHandling",
+    "_rarity": "superRare",
+    "_stepToBreakdown": "0",
+    "_effect": "deflect all incoming bullets"
+  },
+  {
+    "skillId": "Iaijutsu",
+    "type": "combat",
+    "_subType": "weaponHandling",
+    "_rarity": "superRare",
+    "_stepToBreakdown": "0",
+    "_effect": "Instant kill one close enemy at the start of the battle",
+    "description": "Quick draw, sword version"
+  },
+  {
+    "skillId": "driveAndShoot",
+    "type": "combat",
+    "_subType": "gunHandling",
+    "_rarity": "common",
+    "_stepToBreakdown": "3",
+    "_effect": "low chance of eliminating 1 trailing enemy vehicle during car chase"
+  },
+  {
+    "skillId": "driveAndDemolish",
+    "type": "combat",
+    "_subType": "gunHandling",
+    "_rarity": "common",
+    "_stepToBreakdown": "0",
+    "_effect": "eliminating 1 trailing enemy vehicle. High chance of explosion that will damage other enemy's vechicle"
+  },
+  {
+    "skillId": "quickDraw",
+    "type": "combat",
+    "_subType": "gunHandling",
+    "_rarity": "common",
+    "_stepToBreakdown": "3",
+    "_effect": "low chance of attacking first when firearm is equipped"
+  },
+  {
+    "skillId": "deadEye",
+    "type": "combat",
+    "_subType": "gunHandling",
+    "_rarity": "common",
+    "_stepToBreakdown": "0",
+    "_effect": "attack multiple enemy first when firearm is equipped"
+  },
+  {
+    "skillId": "supressingFire",
+    "type": "combat",
+    "_subType": "gunHandling",
+    "_rarity": "common",
+    "_stepToBreakdown": "3",
+    "_effect": "Provide covering fire to 1 ally at a cost of one magazine"
+  },
+  {
+    "skillId": "bulletHell",
+    "type": "combat",
+    "_subType": "gunHandling",
+    "_rarity": "common",
+    "_stepToBreakdown": "0",
+    "_effect": "Provide covering fire to all ally and deal separated damages to all enemies"
+  },
+  {
+    "skillId": "fastReload",
+    "type": "combat",
+    "_subType": "gunHandling",
+    "_rarity": "common",
+    "_stepToBreakdown": "3",
+    "_effect": "low chance of instant firearm reload"
+  },
+  {
+    "skillId": "dualWield",
+    "type": "combat",
+    "_subType": "gunHandling",
+    "_rarity": "rare",
+    "_stepToBreakdown": "0",
+    "_effect": "Allow equipping 2 firearm at once, and deal damage from both firearm"
+  },
+  {
+    "skillId": "sharpShooter",
+    "type": "combat",
+    "_subType": "gunHandling",
+    "_rarity": "medium",
+    "_stepToBreakdown": "3",
+    "_effect": "x2 accuracy when shoot. ignoring distance"
+  },
+  {
+    "skillId": "blockbuster",
+    "type": "combat",
+    "_subType": "gunHandling",
+    "_rarity": "superRare",
+    "_stepToBreakdown": "0",
+    "_effect": "x2 damage and accuracy when using heavy machine gun",
+    "description": "handle heavy weaponry"
+  },
+  {
+    "skillId": "deathSentence",
+    "type": "combat",
+    "_subType": "gunHandling",
+    "_rarity": "superRare",
+    "_stepToBreakdown": "0",
+    "_effect": "insta-kill all enemy after surviving for 3 turns"
+  },
+  {
+    "skillId": "iceSpike",
+    "type": "combat",
+    "_subType": "magical",
+    "_rarity": "superRare",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "iceMirror",
+    "type": "combat",
+    "_subType": "magical",
+    "_rarity": "superRare",
+    "supernaturalType": "magical",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "toxinBloom",
+    "type": "combat",
+    "_subType": "magical",
+    "_rarity": "superRare",
+    "supernaturalType": "magical",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "permafrost",
+    "type": "combat",
+    "_subType": "magical",
+    "_rarity": "superRare",
+    "supernaturalType": "magical",
+    "_stepToBreakdown": "0",
+    "description": "used in combat or other situation"
+  },
+  {
+    "skillId": "pyrokinesis",
+    "type": "combat",
+    "_subType": "magical",
+    "_rarity": "superRare",
+    "supernaturalType": "magical",
+    "_stepToBreakdown": "0",
+    "description": "control existing fire/explosives remotely, used in combat or other situation"
+  },
+  {
+    "skillId": "infernoBurst",
+    "type": "combat",
+    "_subType": "magical",
+    "_rarity": "superRare",
+    "supernaturalType": "magical",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "lifeDrain",
+    "type": "combat",
+    "_subType": "magical",
+    "_rarity": "superRare",
+    "supernaturalType": "magical",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "maliceTransfer",
+    "type": "combat",
+    "_subType": "magical",
+    "_rarity": "superRare",
+    "supernaturalType": "magical",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "webOfDeath",
+    "type": "combat",
+    "_subType": "magical",
+    "_rarity": "superRare",
+    "supernaturalType": "magical",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "painResistance",
+    "type": "physical",
+    "_subType": "resistance",
+    "_rarity": "common",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "poisonResistance",
+    "type": "physical",
+    "_subType": "resistance",
+    "_rarity": "common",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "coldResistance",
+    "type": "physical",
+    "_subType": "resistance",
+    "_rarity": "common",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "heatResistance",
+    "type": "physical",
+    "_subType": "resistance",
+    "_rarity": "common",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "sleepless",
+    "type": "physical",
+    "_subType": "resistance",
+    "_rarity": "common",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "ironSkin",
+    "type": "physical",
+    "_subType": "resistance",
+    "_rarity": "superRare",
+    "supernaturalType": "magical",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "marathon",
+    "type": "physical",
+    "_subType": "health",
+    "_rarity": "common",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "ultramarathon",
+    "type": "physical",
+    "_subType": "health",
+    "_rarity": "common",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "fastRecovery",
+    "type": "physical",
+    "_subType": "health",
+    "_rarity": "common",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "heal",
+    "type": "physical",
+    "_subType": "health",
+    "_rarity": "medium",
+    "supernaturalType": "magical",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "muscular",
+    "type": "physical",
+    "_subType": "health",
+    "_rarity": "medium",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "berserkMode",
+    "type": "physical",
+    "_subType": "health",
+    "_rarity": "superRare",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "lastStand",
+    "type": "physical",
+    "_subType": "health",
+    "_rarity": "superRare",
+    "supernaturalType": "magical",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "bloodPact",
+    "type": "physical",
+    "_subType": "health",
+    "_rarity": "superRare",
+    "supernaturalType": "magical",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "superSoldier",
+    "type": "physical",
+    "_subType": "health",
+    "_rarity": "superRare",
+    "supernaturalType": "sciFi",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "overclock",
+    "type": "physical",
+    "_subType": "health",
+    "_rarity": "superRare",
+    "supernaturalType": "sciFi",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "gymnastic",
+    "type": "physical",
+    "_subType": "movement",
+    "_rarity": "common",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "climbing",
+    "type": "physical",
+    "_subType": "movement",
+    "_rarity": "common",
+    "_stepToBreakdown": "3",
+    "_effect": "low chance of falling"
+  },
+  {
+    "skillId": "stuntPerformer",
+    "type": "physical",
+    "_subType": "movement",
+    "_rarity": "medium",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "freediving",
+    "type": "physical",
+    "_subType": "movement",
+    "_rarity": "medium",
+    "_stepToBreakdown": "3",
+    "description": "Breathe long under water"
+  },
+  {
+    "skillId": "parkour",
+    "type": "physical",
+    "_subType": "movement",
+    "_rarity": "medium",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "flickerStep",
+    "type": "physical",
+    "_subType": "movement",
+    "_rarity": "superRare",
+    "_stepToBreakdown": "0",
+    "description": "Blurring across the battlefield in a sequence of fast dashes."
+  },
+  {
+    "skillId": "parkourMaster",
+    "type": "physical",
+    "_subType": "movement",
+    "_rarity": "superRare",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "pickpocket",
+    "type": "stealth",
+    "_subType": "trick",
+    "_rarity": "common",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "lockpicking",
+    "type": "stealth",
+    "_subType": "trick",
+    "_rarity": "common",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "suffocate.",
+    "type": "stealth",
+    "_subType": "trick",
+    "_rarity": "common",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "snapNeck",
+    "type": "stealth",
+    "_subType": "trick",
+    "_rarity": "medium",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "escapeArtist",
+    "type": "stealth",
+    "_subType": "trick",
+    "_rarity": "medium",
+    "_stepToBreakdown": "3",
+    "description": "Slip out of rope and handcuff"
+  },
+  {
+    "skillId": "bodyPacking",
+    "type": "stealth",
+    "_subType": "trick",
+    "_rarity": "rare",
+    "_stepToBreakdown": "3",
+    "description": "Hide objects inside body"
+  },
+  {
+    "skillId": "laserEscape",
+    "type": "stealth",
+    "_subType": "trick",
+    "_rarity": "rare",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "telekinesis",
+    "type": "stealth",
+    "_subType": "trick",
+    "_rarity": "superRare",
+    "supernaturalType": "psychic",
+    "_stepToBreakdown": "0",
+    "description": "the supposed ability to move objects at a distance by mental power or other"
+  },
+  {
+    "skillId": "magician",
+    "type": "stealth",
+    "_subType": "trick",
+    "_rarity": "superRare",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "hollywoodChop",
+    "type": "stealth",
+    "_subType": "trick",
+    "_rarity": "superRare",
+    "_stepToBreakdown": "0",
+    "description": "Non lethal attack to make an enermy unconcious"
+  },
+  {
+    "skillId": "poisonTouch",
+    "type": "stealth",
+    "_subType": "trick",
+    "_rarity": "superRare",
+    "supernaturalType": "magical",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "forgery",
+    "type": "stealth",
+    "_subType": "deception",
+    "_rarity": "common",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "disguise",
+    "type": "stealth",
+    "_subType": "deception",
+    "_rarity": "common",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "crowdBlending",
+    "type": "stealth",
+    "_subType": "deception",
+    "_rarity": "common",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "silentFootstep",
+    "type": "stealth",
+    "_subType": "deception",
+    "_rarity": "medium",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "ghostWalk",
+    "type": "stealth",
+    "_subType": "deception",
+    "_rarity": "medium",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "fakeDealth",
+    "type": "stealth",
+    "_subType": "deception",
+    "_rarity": "superRare",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "smoothCriminal",
+    "type": "stealth",
+    "_subType": "deception",
+    "_rarity": "superRare",
+    "_stepToBreakdown": "0",
+    "description": "clean crime scene"
+  },
+  {
+    "skillId": "shapeShifter",
+    "type": "stealth",
+    "_subType": "deception",
+    "_rarity": "superRare",
+    "supernaturalType": "magical",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "shadowCloak",
+    "type": "stealth",
+    "_subType": "deception",
+    "_rarity": "superRare",
+    "supernaturalType": "magical",
+    "_stepToBreakdown": "0",
+    "description": "control shadow"
+  },
+  {
+    "skillId": "nightTerror",
+    "type": "stealth",
+    "_subType": "deception",
+    "_rarity": "superRare",
+    "supernaturalType": "magical",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "iceMirror",
+    "type": "stealth",
+    "_subType": "deception",
+    "_rarity": "superRare",
+    "supernaturalType": "magical",
+    "_stepToBreakdown": "0",
+    "description": "Ice Deception"
+  },
+  {
+    "skillId": "ghostProtocol",
+    "type": "stealth",
+    "_subType": "deception",
+    "_rarity": "superRare",
+    "supernaturalType": "sciFi",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "genjutsu",
+    "type": "stealth",
+    "_subType": "deception",
+    "_rarity": "superRare",
+    "supernaturalType": "magical",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "twlightZone",
+    "type": "stealth",
+    "_subType": "deception",
+    "_rarity": "superRare",
+    "supernaturalType": "magical",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "gutFeeling",
+    "type": "mental",
+    "_subType": "sensing",
+    "_rarity": "common",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "sharpEyes",
+    "type": "mental",
+    "_subType": "sensing",
+    "_rarity": "common",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "eagleEye",
+    "type": "mental",
+    "_subType": "sensing",
+    "_rarity": "common",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "sharpEars",
+    "type": "mental",
+    "_subType": "sensing",
+    "_rarity": "common",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "lipReading",
+    "type": "mental",
+    "_subType": "sensing",
+    "_rarity": "common",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "behaviorProfiling",
+    "type": "mental",
+    "_subType": "sensing",
+    "_rarity": "common",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "nocturnal",
+    "type": "mental",
+    "_subType": "sensing",
+    "_rarity": "medium",
+    "supernaturalType": "superhuman",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "lieDetector",
+    "type": "mental",
+    "_subType": "sensing",
+    "_rarity": "superRare",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "mindReading",
+    "type": "mental",
+    "_subType": "sensing",
+    "_rarity": "superRare",
+    "supernaturalType": "psychic",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "foresee",
+    "type": "mental",
+    "_subType": "sensing",
+    "_rarity": "superRare",
+    "supernaturalType": "psychic",
+    "_stepToBreakdown": "0",
+    "description": "future foresee"
+  },
+  {
+    "skillId": "psychometry",
+    "type": "mental",
+    "_subType": "sensing",
+    "_rarity": "superRare",
+    "supernaturalType": "psychic",
+    "_stepToBreakdown": "0",
+    "description": "Touch an object or corpse to experience a memory flash of its history or owner."
+  },
+  {
+    "skillId": "photogenicMemory",
+    "type": "mental",
+    "_subType": "sensing",
+    "_rarity": "superRare",
+    "supernaturalType": "superhuman",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "sixthSense",
+    "type": "mental",
+    "_subType": "sensing",
+    "_rarity": "superRare",
+    "supernaturalType": "psychic",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "astralProjection",
+    "type": "mental",
+    "_subType": "sensing",
+    "_rarity": "superRare",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "acting",
+    "type": "mental",
+    "_subType": "social",
+    "_rarity": "common",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "morseCode",
+    "type": "mental",
+    "_subType": "social",
+    "_rarity": "common",
+    "_stepToBreakdown": "3",
+    "_effect": "communicate with other agents that also has same skill"
+  },
+  {
+    "skillId": "handSigning",
+    "type": "mental",
+    "_subType": "social",
+    "_rarity": "common",
+    "_stepToBreakdown": "3",
+    "_effect": "communicate with other agents that also has same skill"
+  },
+  {
+    "skillId": "voiceActing",
+    "type": "mental",
+    "_subType": "social",
+    "_rarity": "medium",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "seduce",
+    "type": "mental",
+    "_subType": "social",
+    "_rarity": "medium",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "honeyTrap",
+    "type": "mental",
+    "_subType": "social",
+    "_rarity": "medium",
+    "_stepToBreakdown": "0",
+    "description": "Romance scam"
+  },
+  {
+    "skillId": "manipulate",
+    "type": "mental",
+    "_subType": "social",
+    "_rarity": "medium",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "intimidate",
+    "type": "mental",
+    "_subType": "social",
+    "_rarity": "medium",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "interrogate",
+    "type": "mental",
+    "_subType": "social",
+    "_rarity": "medium",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "battleRoar",
+    "type": "mental",
+    "_subType": "social",
+    "_rarity": "medium",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "wordOfWarning",
+    "type": "mental",
+    "_subType": "social",
+    "_rarity": "medium",
+    "_stepToBreakdown": "3",
+    "_effect": "Increase party evasion"
+  },
+  {
+    "skillId": "standupComedy",
+    "type": "mental",
+    "_subType": "social",
+    "_rarity": "rare",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "polyglot",
+    "type": "mental",
+    "_subType": "social",
+    "_rarity": "rare",
+    "_stepToBreakdown": "0",
+    "description": "Speak, read, and write fluently in dozens of languages and regional dialects."
+  },
+  {
+    "skillId": "cameleon",
+    "type": "mental",
+    "_subType": "social",
+    "_rarity": "superRare",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "pokerFace",
+    "type": "mental",
+    "_subType": "social",
+    "_rarity": "superRare",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "silverTongue",
+    "type": "mental",
+    "_subType": "social",
+    "_rarity": "superRare",
+    "_stepToBreakdown": "0",
+    "description": "very persuasive"
+  },
+  {
+    "skillId": "sirenVoice",
+    "type": "mental",
+    "_subType": "social",
+    "_rarity": "superRare",
+    "supernaturalType": "psychic",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "hallucinogen",
+    "type": "mental",
+    "_subType": "social",
+    "_rarity": "superRare",
+    "supernaturalType": "magical",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "metalOverload",
+    "type": "mental",
+    "_subType": "social",
+    "_rarity": "superRare",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "makingFire",
+    "type": "technical",
+    "_subType": "survival",
+    "_rarity": "common",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "firstAid",
+    "type": "technical",
+    "_subType": "survival",
+    "_rarity": "common",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "survivalist",
+    "type": "technical",
+    "_subType": "survival",
+    "_rarity": "medium",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "chef",
+    "type": "technical",
+    "_subType": "survival",
+    "_rarity": "medium",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "hunter",
+    "type": "technical",
+    "_subType": "survival",
+    "_rarity": "medium",
+    "_stepToBreakdown": "3",
+    "description": "แกะรอย"
+  },
+  {
+    "skillId": "luckyGirl",
+    "type": "technical",
+    "_subType": "survival",
+    "_rarity": "superRare",
+    "supernaturalType": "magical",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "surgeon",
+    "type": "technical",
+    "_subType": "survival",
+    "_rarity": "superRare",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "jackpot",
+    "type": "technical",
+    "_subType": "survival",
+    "_rarity": "superRare",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "protagonist",
+    "type": "technical",
+    "_subType": "survival",
+    "_rarity": "superRare",
+    "supernaturalType": "magical",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "carHijack",
+    "type": "technical",
+    "_subType": "practical",
+    "_rarity": "common",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "wiretapping",
+    "type": "technical",
+    "_subType": "practical",
+    "_rarity": "common",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "pilot",
+    "type": "technical",
+    "_subType": "practical",
+    "_rarity": "medium",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "hacking",
+    "type": "technical",
+    "_subType": "practical",
+    "_rarity": "medium",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "gunsmith",
+    "type": "technical",
+    "_subType": "practical",
+    "_rarity": "rare",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "bombDefusing",
+    "type": "technical",
+    "_subType": "practical",
+    "_rarity": "rare",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "improvisedInventor",
+    "type": "technical",
+    "_subType": "practical",
+    "_rarity": "superRare",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "stuntDriver",
+    "type": "technical",
+    "_subType": "practical",
+    "_rarity": "superRare",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "highspeedDrive",
+    "type": "technical",
+    "_subType": "practical",
+    "_rarity": "superRare",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "blackOut",
+    "type": "technical",
+    "_subType": "practical",
+    "_rarity": "superRare",
+    "supernaturalType": "sciFi",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "zeroDay",
+    "type": "technical",
+    "_subType": "practical",
+    "_rarity": "superRare",
+    "supernaturalType": "sciFi",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "pocketUniverse",
+    "type": "technical",
+    "_subType": "practical",
+    "_rarity": "superRare",
+    "supernaturalType": "sciFi",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "teleport",
+    "type": "technical",
+    "_subType": "practical",
+    "_rarity": "superRare",
+    "supernaturalType": "sciFi",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "phishing",
+    "type": "technical",
+    "_subType": "practical",
+    "_rarity": "medium",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "cameraHack",
+    "type": "technical",
+    "_subType": "practical",
+    "_rarity": "rare",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "weaponHack",
+    "type": "technical",
+    "_subType": "practical",
+    "_rarity": "rare",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "polymath",
+    "type": "technical",
+    "_subType": "thinking",
+    "_rarity": "common",
+    "_stepToBreakdown": "3",
+    "description": "A polymath is a person whose knowledge and expertise span multiple different subject areas"
+  },
+  {
+    "skillId": "forensic",
+    "type": "technical",
+    "_subType": "thinking",
+    "_rarity": "medium",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "strategist",
+    "type": "technical",
+    "_subType": "thinking",
+    "_rarity": "medium",
+    "_stepToBreakdown": "3"
+  },
+  {
+    "skillId": "codeBreaker",
+    "type": "technical",
+    "_subType": "thinking",
+    "_rarity": "rare",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "cardCounting",
+    "type": "technical",
+    "_subType": "thinking",
+    "_rarity": "superRare",
+    "_stepToBreakdown": "0",
+    "description": "Pro gambler"
+  },
+  {
+    "skillId": "genius",
+    "type": "technical",
+    "_subType": "thinking",
+    "_rarity": "superRare",
+    "_stepToBreakdown": "0"
+  },
+  {
+    "skillId": "gambit",
+    "type": "technical",
+    "_subType": "thinking",
+    "_rarity": "superRare",
+    "_stepToBreakdown": "0"
+  }
+]
