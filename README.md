@@ -71,11 +71,10 @@ GOOGLE_APPLICATION_CREDENTIALS=/path/to/key.json npm run sync -- --dry-run
 The output is the same JSON shape the Unity importer produces, so a file synced here is
 interchangeable with one downloaded through Tools/Game Data in the editor.
 
-**The sync is currently blocked on one column.** The workbook prices every Item in `usd`, while the
-code constant is `dollar` (`ItemIds.Dollar`), so a pull leaves 303 dangling price references and a
-shop where nothing is affordable. `src/data/sheet-guard.test.ts` fails on that, and the workflow only
-commits when the tests pass — so the site keeps serving the last good data instead. Settle
-`Item.priceItemId` on `dollar` in the sheet and the sync goes green.
+`src/data/sheet-guard.test.ts` is what makes this safe to run unattended: it merges the pull over the
+seed and fails if a reference dangles, if a shop item is priced in something that does not exist, or
+if the Feed has been left with nothing to draw. The workflow only commits when the tests pass, so a
+bad pull leaves the site serving the last good data.
 
 ## Licence
 
