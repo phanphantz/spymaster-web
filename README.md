@@ -5,7 +5,9 @@ management sim where you run a freelance spy agency: missions arrive, you pick a
 you live with the result.
 
 It exists to iterate on game feel and balance faster than the Unity build can, and to be playable on
-a phone from a URL. The engine is deliberately written as plain TypeScript mirroring the Unity C#
+a phone from a URL.
+
+**Play it: https://phanphantz.github.io/spymaster-web/** The engine is deliberately written as plain TypeScript mirroring the Unity C#
 classes one-to-one, so rules and tuning port back.
 
 ## Running it
