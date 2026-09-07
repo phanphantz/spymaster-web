@@ -359,62 +359,217 @@
 }
 
 /* --- Mission Summary ------------------------------------------------------ */
+/*
+ * Follows UIMissionSummary in UI_DESIGN_SYSTEM.md 5.3: a 1000x680 two-column modal, left 370 and
+ * right 560, split by a 2px steel rule carrying a notification dot. The photo mount and the
+ * difficulty art do not exist yet (9, Known gaps), so the mount is a labelled placeholder and
+ * difficulty reads as bare diamonds.
+ */
 
-.summary { display: grid; grid-template-columns: 340px 1fr; }
-
-.summary__left {
-    padding: 24px;
-    border-right: 1px solid var(--line);
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
+.summary {
+    display: grid;
+    /* The divider is its own column so the dot can sit centred on it. */
+    grid-template-columns: 370px 2px 1fr;
+    min-height: 520px;
 }
 
+.summary__left {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+/* Fills the column and takes whatever height the right side does not claim. */
 .summary__photo {
-    aspect-ratio: 4 / 3;
-    border: 1px solid var(--line);
+    position: relative;
+    flex: 1;
+    min-height: 200px;
     display: grid;
     place-items: center;
+    background: var(--surface-2);
     color: var(--cyan-dim);
     font-size: var(--fs-micro);
     letter-spacing: 0.2em;
 }
 
-.summary__right { padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+/* The black fade the sketch marks "gradient": art bleeds down into the location block. */
+.summary__photo::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 45%;
+    background: linear-gradient(to bottom, transparent, var(--surface));
+    pointer-events: none;
+}
+
+.summary__dashrule {
+    height: 0;
+    margin: 0 24px;
+    border: 0;
+    border-top: 1px dashed var(--line);
+}
+
+.summary__location {
+    padding: 16px 24px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.summary__location-name {
+    font-size: var(--fs-title);
+    color: var(--steel);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.summary__location-detail {
+    font-size: var(--fs-detail);
+    color: var(--cyan-dim);
+    letter-spacing: 0.04em;
+}
+
+/* UIMissionLink: a thin light chip, black text, sitting inline under the address. */
+.mission-link {
+    align-self: flex-start;
+    margin-top: 10px;
+    padding: 3px 10px;
+    background: var(--cyan);
+    color: var(--inverse);
+    border: 0;
+    font-size: var(--fs-micro);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    border-radius: var(--radius);
+}
+
+.summary__divider {
+    position: relative;
+    background: var(--line);
+}
+
+/* UINotificationDot, pinned to the rule where the location block starts. */
+.summary__dot {
+    position: absolute;
+    left: 50%;
+    bottom: 128px;
+    width: 13px;
+    height: 13px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: var(--cyan);
+}
+
+.summary__right {
+    padding: 26px 28px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-width: 0;
+}
 
 .summary__name {
     font-size: var(--fs-display);
     color: var(--text);
     margin: 0;
-    line-height: 1.1;
+    line-height: 1.05;
+    /* Clears the close button. */
+    padding-right: 44px;
 }
 
 .summary__row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
+.summary__label {
+    font-size: var(--fs-detail);
+    color: var(--steel);
+    letter-spacing: 0.06em;
+}
+
 .summary__body { color: var(--muted); line-height: 1.6; margin: 0; }
 
 .hint {
-    padding: 12px 14px;
+    padding: 10px 14px;
     border-left: 2px solid var(--cyan);
     background: var(--cyan-faint);
     color: var(--cyan);
     font-style: italic;
 }
 
+/* Details | Assignment, sitting on the rule that separates them from the body above. */
+.tabrow {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 8px;
+}
+
+.tabrow__tab {
+    padding: 3px 10px;
+    background: transparent;
+    border: 0;
+    color: var(--steel);
+    font-size: var(--fs-chip);
+    letter-spacing: 0.06em;
+    border-radius: var(--radius);
+}
+
+.tabrow__tab[aria-selected='true'] { background: var(--cyan); color: var(--inverse); }
+
+/* A floor, so switching tab does not resize the modal and shift everything under the cursor. */
+.tabpanel { display: flex; flex-direction: column; gap: 14px; min-height: 190px; }
+
+.marker-list { display: flex; flex-direction: column; gap: 8px; }
+
+.marker-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 10px;
+    font-size: var(--fs-meta);
+    color: var(--muted);
+}
+
+/* UIBuffItem stands in as the row marker, exactly as it does for the difficulty pips. */
+.marker {
+    width: 9px;
+    height: 9px;
+    transform: rotate(45deg);
+    border: 1px solid var(--cyan);
+}
+
+.marker-row__note { color: var(--cyan-dim); font-size: var(--fs-micro); letter-spacing: 0.08em; }
+
+/* Two UISharpInfoBox read-outs: a value and its unit. */
+.reward-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.reward-box {
+    position: relative;
+    padding: 10px 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.reward-box__value {
+    display: block;
+    font-size: var(--fs-money);
+    color: var(--money);
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+}
+
+.reward-box__unit {
+    font-size: var(--fs-micro);
+    color: var(--money);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
 .kv { display: flex; justify-content: space-between; gap: 12px; font-size: var(--fs-meta); }
 .kv dt { color: var(--steel); letter-spacing: 0.06em; }
 .kv dd { margin: 0; color: var(--text); }
-
-.slot-preview { display: flex; flex-direction: column; gap: 6px; }
-
-.slot-preview__row {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    font-size: var(--fs-meta);
-    padding: 6px 0;
-    border-bottom: 1px solid var(--line);
-}
 
 /* --- Loadout -------------------------------------------------------------- */
 
@@ -602,10 +757,15 @@
     .summary,
     .loadout { grid-template-columns: 1fr; }
 
-    .summary__left { border-right: 0; border-bottom: 1px solid var(--line); }
+    .summary { min-height: 0; }
+    .summary__left { border-bottom: 1px solid var(--line); }
+    /* The rule and its dot are the seam between two columns; stacked, there is no seam. */
+    .summary__divider { display: none; }
+    .summary__photo { min-height: 140px; }
     .loadout__market { border-left: 0; border-top: 1px solid var(--line); }
 
     .summary__name { font-size: var(--fs-money); }
+    .reward-row { grid-template-columns: 1fr; }
     .result__verdict { font-size: var(--fs-money); }
 
     .topbar { gap: 12px; padding: 10px 14px; }

@@ -49,10 +49,12 @@
     position: absolute;
     inset: 2px;
     pointer-events: none;
+    /* Wide spacing keeps this a texture rather than a stripe pattern. The Unity version is a
+       tiled sprite at 25% alpha; at close spacing the CSS equivalent reads far louder. */
     background: repeating-linear-gradient(
         -45deg,
         var(--hatch) 0 1px,
-        transparent 1px 7px
+        transparent 1px 12px
     );
 }
 

@@ -1,15 +1,19 @@
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { useGame } from '../../store/gameStore';
 import { DifficultyPips, Modal } from '../components/bits';
 import { STAT_IDS } from '../../engine/types';
-import type { SlotRequirementData } from '../../engine/types';
+import type { GameTables, SlotRequirementData } from '../../engine/types';
+import type { LiveMission } from '../../engine/missionFeed';
 
 /**
  * The Mission Summary UI: read the contract, then accept or decline.
  *
- * It shows the hint, which is authored and may be deliberately oblique, and the shape of the slots
- * the job needs. It does **not** show a success chance, because none is computed — the result is
- * whichever authored Outcome tier the loadout clears.
+ * Follows `UIMissionSummary` in `UI_DESIGN_SYSTEM.md` §5.3 — a two-column modal, photo and location
+ * on the left, the briefing on the right, split by a steel rule carrying a notification dot.
+ *
+ * It shows the hint, which is authored and may be deliberately oblique, and what the job demands of
+ * a team. It does **not** show a success chance, because none is computed — the result is whichever
+ * authored Outcome tier the loadout clears.
  */
 export function MissionSummary(): ReactNode {
     useGame((state) => state.version);
@@ -21,11 +25,11 @@ export function MissionSummary(): ReactNode {
     const decline = useGame((state) => state.declineMission);
     const accept = useGame((state) => state.acceptMission);
 
+    const [tab, setTab] = useState<'details' | 'assignment'>('details');
+
     const mission = pending.find((candidate) => candidate.instanceId === selectedInstanceId);
     if (!mission || !tables) return null;
 
-    const startGate = tables.Gate.get(mission.data.gateId);
-    const slots = (startGate?.slotReqIds ?? []).map((slotId) => tables.SlotRequirement.get(slotId));
     const canDecline = mission.data.isDeclinable !== false;
 
     return (
@@ -34,39 +38,12 @@ export function MissionSummary(): ReactNode {
                 <div className="summary">
                     <div className="summary__left">
                         <div className="summary__photo">NO IMAGE</div>
+                        <hr className="summary__dashrule" />
+                        <LocationBlock mission={mission} />
+                    </div>
 
-                        <div>
-                            <div className="title">{mission.location?.displayName ?? 'Unknown'}</div>
-                            <div className="micro dim">
-                                {formatCoordinate(mission.location?.latitude, 'N', 'S')}{' '}
-                                {formatCoordinate(mission.location?.longitude, 'E', 'W')}
-                            </div>
-                        </div>
-
-                        <hr className="rule" />
-
-                        <dl style={{ margin: 0, display: 'grid', gap: 8 }}>
-                            <div className="kv">
-                                <dt>Contract</dt>
-                                <dd>{mission.data.missionId}</dd>
-                            </div>
-                            <div className="kv">
-                                <dt>Priority</dt>
-                                <dd>{mission.data.priorityType ?? '—'}</dd>
-                            </div>
-                            <div className="kv">
-                                <dt>Difficulty</dt>
-                                <dd>
-                                    <DifficultyPips level={mission.data.difficultyLevel} />
-                                </dd>
-                            </div>
-                            <div className="kv">
-                                <dt>Declinable</dt>
-                                <dd className={canDecline ? undefined : 'danger'}>
-                                    {canDecline ? 'Yes' : 'No'}
-                                </dd>
-                            </div>
-                        </dl>
+                    <div className="summary__divider">
+                        <span className="summary__dot" aria-hidden="true" />
                     </div>
 
                     <div className="summary__right">
@@ -74,33 +51,42 @@ export function MissionSummary(): ReactNode {
 
                         <div className="summary__row">
                             <span className="chip">{mission.data.type ?? 'contract'}</span>
-                            <span className="meta">{slots.length} slots</span>
+                            <DifficultyPips level={mission.data.difficultyLevel} />
                         </div>
 
-                        <p className="summary__body">{mission.data.description}</p>
+                        <div>
+                            <div className="summary__label">Description</div>
+                            <p className="summary__body">{mission.data.description}</p>
+                        </div>
 
                         {mission.data.hint ? <p className="hint">“{mission.data.hint}”</p> : null}
 
-                        <div>
-                            <div className="micro" style={{ marginBottom: 8 }}>
-                                Required team
-                            </div>
-                            <div className="slot-preview">
-                                {slots.map((slot, index) => (
-                                    <div className="slot-preview__row" key={slot?.slotId ?? index}>
-                                        <span>{slotLabel(slot)}</span>
-                                        <span className="dim">{describeRequirement(slot)}</span>
-                                    </div>
-                                ))}
-                            </div>
+                        <div className="tabrow" role="tablist">
+                            <button
+                                type="button"
+                                role="tab"
+                                className="tabrow__tab"
+                                aria-selected={tab === 'details'}
+                                onClick={() => setTab('details')}
+                            >
+                                Details
+                            </button>
+                            <button
+                                type="button"
+                                role="tab"
+                                className="tabrow__tab"
+                                aria-selected={tab === 'assignment'}
+                                onClick={() => setTab('assignment')}
+                            >
+                                Assignment
+                            </button>
                         </div>
 
-                        <div>
-                            <div className="micro" style={{ marginBottom: 8 }}>
-                                On success
-                            </div>
-                            <p className="meta">{describeReward(tables, mission.data.outcomes?.[0])}</p>
-                        </div>
+                        {tab === 'details' ? (
+                            <DetailsTab mission={mission} tables={tables} />
+                        ) : (
+                            <AssignmentTab mission={mission} tables={tables} />
+                        )}
                     </div>
                 </div>
             </div>
@@ -120,10 +106,147 @@ export function MissionSummary(): ReactNode {
                     className="btn btn--primary"
                     onClick={() => accept(mission.instanceId)}
                 >
-                    Accept
+                    Assign
                 </button>
             </div>
         </Modal>
+    );
+}
+
+/** Location name, address and coordinates, sitting under the photo's fade. */
+function LocationBlock({ mission }: { mission: LiveMission }): ReactNode {
+    const [expanded, setExpanded] = useState(false);
+    const location = mission.location;
+
+    return (
+        <div className="summary__location">
+            <span className="summary__location-name">{location?.displayName ?? 'Unknown'}</span>
+            <span className="summary__location-detail">
+                {location?.address ?? titleCase(location?.country) ?? 'Location withheld'}
+            </span>
+            <span className="summary__location-detail">
+                {formatCoordinate(location?.latitude, 'N', 'S')}{' '}
+                {formatCoordinate(location?.longitude, 'E', 'W')}
+            </span>
+
+            {expanded ? (
+                <span className="summary__location-detail dim">
+                    {[location?.type, location?.locationSize, location?.state]
+                        .filter(Boolean)
+                        .join(' · ') || 'No further detail on file'}
+                </span>
+            ) : null}
+
+            {/* UIMissionLink. There is no deeper location view in v1, so it discloses the rest of
+                what the Location row actually carries rather than pretending to navigate. */}
+            <button type="button" className="mission-link" onClick={() => setExpanded(!expanded)}>
+                {expanded ? '‹ Less' : 'More ›'}
+            </button>
+        </div>
+    );
+}
+
+/**
+ * Tasks and rewards.
+ *
+ * The sketch puts a Task list here. v1 cuts Tasks, so the list renders whatever `starterTasks`
+ * resolves to and says plainly when there is nothing — which is honest now and fills itself in
+ * once Tasks are authored, rather than needing this rewritten.
+ */
+function DetailsTab({ mission, tables }: { mission: LiveMission; tables: GameTables }): ReactNode {
+    const tasks = tables.Task.getMany(mission.data.starterTasks);
+    const reward = rewardOf(tables, mission.data.outcomes?.[0]);
+
+    return (
+        <div className="tabpanel" role="tabpanel">
+            <div>
+                <div className="summary__label">Tasks</div>
+                <div className="marker-list">
+                    {tasks.length ? (
+                        tasks.map((task) => (
+                            <div className="marker-row" key={task.taskId}>
+                                <span className="marker" />
+                                <span>{task.displayName ?? task.taskId}</span>
+                                <span className="marker-row__note">
+                                    {task.minDurationInHours ? `${task.minDurationInHours}h` : ''}
+                                </span>
+                            </div>
+                        ))
+                    ) : (
+                        <div className="marker-row">
+                            <span className="marker" />
+                            <span className="dim">
+                                Single operation. Tasks are not modelled in this prototype.
+                            </span>
+                            <span />
+                        </div>
+                    )}
+                </div>
+            </div>
+
+            <div>
+                <div className="summary__label">Rewards</div>
+                <div className="reward-row">
+                    <div className="reward-box hatch">
+                        <span className="reward-box__value">
+                            {reward.money ? `$${reward.money.toLocaleString('en-US')}` : '—'}
+                        </span>
+                        <span className="reward-box__unit">payment</span>
+                    </div>
+                    <div className="reward-box hatch">
+                        <span className="reward-box__value">{reward.exp || '—'}</span>
+                        <span className="reward-box__unit">exp</span>
+                    </div>
+                </div>
+            </div>
+
+            <dl style={{ margin: 0, display: 'grid', gap: 6 }}>
+                <div className="kv">
+                    <dt>Contract</dt>
+                    <dd>{mission.data.missionId}</dd>
+                </div>
+                <div className="kv">
+                    <dt>Priority</dt>
+                    <dd>{mission.data.priorityType ?? '—'}</dd>
+                </div>
+                <div className="kv">
+                    <dt>Declinable</dt>
+                    <dd className={mission.data.isDeclinable === false ? 'danger' : undefined}>
+                        {mission.data.isDeclinable === false ? 'No' : 'Yes'}
+                    </dd>
+                </div>
+            </dl>
+        </div>
+    );
+}
+
+/**
+ * Who the job needs.
+ *
+ * A Mission has no slot list of its own — the slots are whatever its start Gate names, in authored
+ * order. This is the same list the Loadout page will present.
+ */
+function AssignmentTab({ mission, tables }: { mission: LiveMission; tables: GameTables }): ReactNode {
+    const startGate = tables.Gate.get(mission.data.gateId);
+    const slots = (startGate?.slotReqIds ?? []).map((slotId) => tables.SlotRequirement.get(slotId));
+
+    return (
+        <div className="tabpanel" role="tabpanel">
+            <div className="summary__label">Required team</div>
+            <div className="marker-list">
+                {slots.map((slot, index) => (
+                    <div className="marker-row" key={slot?.slotId ?? index}>
+                        <span className="marker" />
+                        <span>{slotLabel(slot)}</span>
+                        <span className="marker-row__note">{describeRequirement(slot)}</span>
+                    </div>
+                ))}
+            </div>
+            <p className="summary__body meta">
+                Requirements are per agent. What the job as a whole demands is not published — the
+                hint is the only signal.
+            </p>
+        </div>
     );
 }
 
@@ -138,6 +261,7 @@ function describeRequirement(slot: SlotRequirementData | undefined): string {
     if (!slot) return 'anyone';
 
     const parts: string[] = [];
+    if (slot.minLevel && slot.minLevel > 1) parts.push(`LV ${slot.minLevel}+`);
     for (const stat of STAT_IDS) {
         const value = slot[stat];
         if (value) parts.push(`${stat.toUpperCase()} ${value}+`);
@@ -148,10 +272,10 @@ function describeRequirement(slot: SlotRequirementData | undefined): string {
     return parts.length ? parts.join(' · ') : 'anyone';
 }
 
-function describeReward(
-    tables: NonNullable<ReturnType<typeof useGame.getState>['tables']>,
+function rewardOf(
+    tables: GameTables,
     bestOutcomeId: string | undefined,
-): string {
+): { money: number; exp: number } {
     const outcome = tables.Outcome.get(bestOutcomeId);
     const incidents = tables.Incident.getMany(outcome?.incidents);
 
@@ -164,8 +288,13 @@ function describeReward(
         }
     }
 
-    if (!money && !exp) return 'Terms not stated.';
-    return `$${money.toLocaleString('en-US')} and ${exp} EXP, if it goes well.`;
+    return { money, exp };
+}
+
+/** Country and state ids are authored lowercase; they read as an address, so present them as one. */
+function titleCase(value: string | undefined): string | undefined {
+    if (!value) return undefined;
+    return value.replace(/\b[a-z]/g, (letter) => letter.toUpperCase());
 }
 
 function formatCoordinate(value: number | undefined, positive: string, negative: string): string {
