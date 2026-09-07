@@ -52,6 +52,31 @@ Pick a layer stack with a query string:
 `npm run snapshot -- --name my-experiment` freezes the current stack into a snapshot you can edit by
 hand — the "copy the sheet and make up a mission" workflow, with no Google round-trip.
 
+### Syncing the sheet
+
+`.github/workflows/sync-gamedata.yml` pulls all 48 tabs into `public/data/sheet/` and commits any
+change, which triggers the Pages deploy — roughly 60-90 seconds from a sheet edit to the live page.
+Run it by hand from the Actions tab, or let the daily schedule pick it up.
+
+The spreadsheet stays private. The job reads it with a Google service account whose key lives in the
+repository secret `GCP_SA_KEY`, never in the repository itself, and the sheet has to be shared with
+that service account's email address for the job to see anything.
+
+Locally:
+
+```bash
+GOOGLE_APPLICATION_CREDENTIALS=/path/to/key.json npm run sync -- --dry-run
+```
+
+The output is the same JSON shape the Unity importer produces, so a file synced here is
+interchangeable with one downloaded through Tools/Game Data in the editor.
+
+**The sync is currently blocked on one column.** The workbook prices every Item in `usd`, while the
+code constant is `dollar` (`ItemIds.Dollar`), so a pull leaves 303 dangling price references and a
+shop where nothing is affordable. `src/data/sheet-guard.test.ts` fails on that, and the workflow only
+commits when the tests pass — so the site keeps serving the last good data instead. Settle
+`Item.priceItemId` on `dollar` in the sheet and the sync goes green.
+
 ## Licence
 
 Unpublished game design. Code here is a prototype and carries no warranty.

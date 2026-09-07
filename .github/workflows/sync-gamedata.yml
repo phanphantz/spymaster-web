@@ -1,0 +1,61 @@
+name: Sync game data
+
+# Pulls the [SPY] Game Data spreadsheet into public/data/sheet/ and commits any change,
+# which in turn triggers the Pages deploy. Roughly 60-90 seconds from a sheet edit to the
+# live page.
+#
+# The spreadsheet stays private: this reads it with a service account whose key lives in
+# the repository's encrypted secrets and is never checked in. The sheet has to be shared
+# with that service account's email for the job to see anything.
+#
+# Nothing else in the build depends on this. The game is playable on the committed seed
+# data alone, so a failed sync degrades to "the balance is one pull behind" rather than to
+# a broken site.
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Daily, so a sheet edit lands even if nobody remembers to press the button.
+    - cron: '0 6 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-gamedata
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Pull the workbook
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+        run: npm run sync
+
+      - name: Check the merged data still holds together
+        # The sheet is authored by hand, so a rename can dangle a reference. Catching it here
+        # means the site keeps serving the last good pull instead of shipping broken data.
+        run: npm test
+
+      - name: Commit if anything changed
+        run: |
+          if [ -z "$(git status --porcelain public/data/sheet)" ]; then
+            echo "No change."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/data/sheet
+          git commit -m "EDIT: Sync game data from the sheet"
+          git push
