@@ -1,0 +1,18 @@
+[
+  {
+    "taskTypeId": "travel",
+    "displayName": "Travel"
+  },
+  {
+    "taskTypeId": "infiltrate",
+    "displayName": "Infiltrate"
+  },
+  {
+    "taskTypeId": "confront",
+    "displayName": "Confront"
+  },
+  {
+    "taskTypeId": "escape",
+    "displayName": "Escape"
+  }
+]

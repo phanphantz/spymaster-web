@@ -1,0 +1,7 @@
+[
+  {
+    "conditionId": "luckRoll",
+    "displayName": "Luck Roll",
+    "description": "A flat authored probability (0-1, in conditionValue), rolled fresh each time the Gate is checked. Combines with the Gate’s other conditions via AND logic."
+  }
+]

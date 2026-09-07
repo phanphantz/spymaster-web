@@ -1,0 +1,407 @@
+[
+  {
+    "characterId": "agentBlade",
+    "rarity": "legendary",
+    "baseHealth": 105,
+    "baseInventorySize": 4,
+    "ast": 14,
+    "end": 7,
+    "sth": 10,
+    "pre": 14,
+    "int": 5,
+    "cha": 2,
+    "baseSkillIds": [
+      "swordMaster",
+      "iaijutsu"
+    ],
+    "tags": [
+      "nonLethal",
+      "veteran"
+    ]
+  },
+  {
+    "characterId": "agentHangman",
+    "rarity": "legendary",
+    "baseHealth": 100,
+    "baseInventorySize": 5,
+    "ast": 12,
+    "end": 7,
+    "sth": 10,
+    "pre": 15,
+    "int": 6,
+    "cha": 4,
+    "baseSkillIds": [
+      "gunFu",
+      "dualWield"
+    ],
+    "tags": [
+      "lethal",
+      "veteran"
+    ]
+  },
+  {
+    "characterId": "agentDagger",
+    "rarity": "rare",
+    "baseHealth": 85,
+    "baseInventorySize": 4,
+    "ast": 11,
+    "end": 7,
+    "sth": 14,
+    "pre": 12,
+    "int": 5,
+    "cha": 3,
+    "baseSkillIds": [
+      "utsusemi",
+      "flickerStep"
+    ],
+    "tags": [
+      "lethal",
+      "stealthy"
+    ]
+  },
+  {
+    "characterId": "agentIvy",
+    "rarity": "rare",
+    "baseHealth": 80,
+    "baseInventorySize": 5,
+    "ast": 11,
+    "end": 5,
+    "sth": 10,
+    "pre": 12,
+    "int": 9,
+    "cha": 6,
+    "baseSkillIds": [
+      "poisonTouch",
+      "poisonResistance"
+    ],
+    "tags": [
+      "lethal",
+      "supernatural"
+    ]
+  },
+  {
+    "characterId": "agentStorm",
+    "rarity": "rare",
+    "baseHealth": 88,
+    "baseInventorySize": 4,
+    "ast": 11,
+    "end": 6,
+    "sth": 11,
+    "pre": 16,
+    "int": 5,
+    "cha": 4,
+    "baseSkillIds": [
+      "bullseye",
+      "kungFuMaster"
+    ],
+    "tags": [
+      "lethal"
+    ]
+  },
+  {
+    "characterId": "agentNoire",
+    "rarity": "legendary",
+    "baseHealth": 90,
+    "baseInventorySize": 4,
+    "ast": 6,
+    "end": 6,
+    "sth": 16,
+    "pre": 8,
+    "int": 10,
+    "cha": 10,
+    "baseSkillIds": [
+      "shadowCloak",
+      "nightTerror"
+    ],
+    "tags": [
+      "stealthy",
+      "social",
+      "supernatural"
+    ]
+  },
+  {
+    "characterId": "agentPercival",
+    "rarity": "rare",
+    "baseHealth": 92,
+    "baseInventorySize": 4,
+    "ast": 7,
+    "end": 6,
+    "sth": 10,
+    "pre": 8,
+    "int": 9,
+    "cha": 17,
+    "baseSkillIds": [
+      "silverTongue",
+      "hollywoodChop"
+    ],
+    "tags": [
+      "stealthy",
+      "social"
+    ]
+  },
+  {
+    "characterId": "agentRook",
+    "rarity": "common",
+    "baseHealth": 100,
+    "baseInventorySize": 5,
+    "ast": 8,
+    "end": 9,
+    "sth": 13,
+    "pre": 8,
+    "int": 9,
+    "cha": 12,
+    "baseSkillIds": [
+      "chameleon",
+      "parkourMaster"
+    ],
+    "tags": [
+      "stealthy",
+      "social",
+      "veteran"
+    ]
+  },
+  {
+    "characterId": "agentScarlet",
+    "rarity": "legendary",
+    "baseHealth": 95,
+    "baseInventorySize": 4,
+    "ast": 9,
+    "end": 6,
+    "sth": 12,
+    "pre": 8,
+    "int": 8,
+    "cha": 15,
+    "baseSkillIds": [
+      "pyrokinesis",
+      "honeyTrap"
+    ],
+    "tags": [
+      "stealthy",
+      "social",
+      "lethal",
+      "supernatural"
+    ]
+  },
+  {
+    "characterId": "agentSnow",
+    "rarity": "rare",
+    "baseHealth": 86,
+    "baseInventorySize": 4,
+    "ast": 6,
+    "end": 6,
+    "sth": 14,
+    "pre": 9,
+    "int": 9,
+    "cha": 15,
+    "baseSkillIds": [
+      "permafrost",
+      "iceSpike"
+    ],
+    "tags": [
+      "stealthy",
+      "social",
+      "supernatural"
+    ]
+  },
+  {
+    "characterId": "agentWolf",
+    "rarity": "common",
+    "baseHealth": 112,
+    "baseInventorySize": 5,
+    "ast": 15,
+    "end": 14,
+    "sth": 4,
+    "pre": 8,
+    "int": 5,
+    "cha": 6,
+    "baseSkillIds": [
+      "blockbuster",
+      "stuntDriver"
+    ],
+    "tags": [
+      "loud",
+      "driver",
+      "lethal"
+    ]
+  },
+  {
+    "characterId": "agentOldman",
+    "rarity": "rare",
+    "baseHealth": 96,
+    "baseInventorySize": 6,
+    "ast": 9,
+    "end": 12,
+    "sth": 4,
+    "pre": 7,
+    "int": 10,
+    "cha": 9,
+    "baseSkillIds": [
+      "surgeon",
+      "heal"
+    ],
+    "tags": [
+      "loud",
+      "medical",
+      "veteran"
+    ]
+  },
+  {
+    "characterId": "agentJoker",
+    "rarity": "common",
+    "baseHealth": 104,
+    "baseInventorySize": 5,
+    "ast": 12,
+    "end": 12,
+    "sth": 4,
+    "pre": 7,
+    "int": 7,
+    "cha": 10,
+    "baseSkillIds": [
+      "pokerFace",
+      "cardCounting"
+    ],
+    "tags": [
+      "loud"
+    ]
+  },
+  {
+    "characterId": "agentPatch",
+    "rarity": "rare",
+    "baseHealth": 120,
+    "baseInventorySize": 6,
+    "ast": 13,
+    "end": 15,
+    "sth": 6,
+    "pre": 11,
+    "int": 8,
+    "cha": 4,
+    "baseSkillIds": [
+      "superSoldier",
+      "firstAid"
+    ],
+    "tags": [
+      "veteran",
+      "medical",
+      "highMoral"
+    ]
+  },
+  {
+    "characterId": "agentLucky",
+    "rarity": "common",
+    "baseHealth": 98,
+    "baseInventorySize": 5,
+    "ast": 14,
+    "end": 12,
+    "sth": 6,
+    "pre": 13,
+    "int": 6,
+    "cha": 6,
+    "baseSkillIds": [
+      "luckyGirl",
+      "suppressingFire"
+    ],
+    "tags": [
+      "rookie"
+    ]
+  },
+  {
+    "characterId": "agentMonday",
+    "rarity": "rare",
+    "baseHealth": 78,
+    "baseInventorySize": 6,
+    "ast": 3,
+    "end": 5,
+    "sth": 7,
+    "pre": 6,
+    "int": 18,
+    "cha": 11,
+    "baseSkillIds": [
+      "genius",
+      "gambit"
+    ],
+    "tags": [
+      "technical"
+    ]
+  },
+  {
+    "characterId": "agentAngel",
+    "rarity": "legendary",
+    "baseHealth": 72,
+    "baseInventorySize": 5,
+    "ast": 3,
+    "end": 3,
+    "sth": 9,
+    "pre": 6,
+    "int": 19,
+    "cha": 10,
+    "baseSkillIds": [
+      "ghostProtocol",
+      "hacking"
+    ],
+    "tags": [
+      "technical",
+      "rookie"
+    ]
+  },
+  {
+    "characterId": "agentButter",
+    "rarity": "common",
+    "baseHealth": 80,
+    "baseInventorySize": 6,
+    "ast": 3,
+    "end": 6,
+    "sth": 7,
+    "pre": 6,
+    "int": 17,
+    "cha": 8,
+    "baseSkillIds": [
+      "improvisedInventor",
+      "pocketUniverse"
+    ],
+    "tags": [
+      "technical",
+      "rookie",
+      "highMoral"
+    ]
+  },
+  {
+    "characterId": "agentThirteen",
+    "rarity": "legendary",
+    "baseHealth": 76,
+    "baseInventorySize": 5,
+    "ast": 3,
+    "end": 5,
+    "sth": 10,
+    "pre": 6,
+    "int": 17,
+    "cha": 9,
+    "baseSkillIds": [
+      "telekinesis",
+      "mindReading"
+    ],
+    "tags": [
+      "technical",
+      "supernatural"
+    ]
+  },
+  {
+    "characterId": "agentJohnDoe",
+    "rarity": "rare",
+    "baseHealth": 84,
+    "baseInventorySize": 5,
+    "ast": 3,
+    "end": 5,
+    "sth": 10,
+    "pre": 6,
+    "int": 17,
+    "cha": 11,
+    "baseSkillIds": [
+      "photographicMemory",
+      "forgery"
+    ],
+    "tags": [
+      "technical",
+      "stealthy"
+    ]
+  }
+]

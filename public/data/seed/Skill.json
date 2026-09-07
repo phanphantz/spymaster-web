@@ -1,0 +1,242 @@
+[
+  {
+    "skillId": "swordMaster",
+    "type": "combat",
+    "displayName": "Sword Master",
+    "description": "Blade work at a level that ends fights before they start."
+  },
+  {
+    "skillId": "iaijutsu",
+    "type": "combat",
+    "displayName": "Iaijutsu",
+    "description": "Draw and cut as one motion. The first strike is usually the only one."
+  },
+  {
+    "skillId": "gunFu",
+    "type": "combat",
+    "displayName": "Gun Fu",
+    "description": "Close-quarters shooting that moves like a martial art."
+  },
+  {
+    "skillId": "dualWield",
+    "type": "combat",
+    "displayName": "Dual Wield",
+    "description": "Two weapons, two targets, no pause between them."
+  },
+  {
+    "skillId": "utsusemi",
+    "type": "stealth",
+    "displayName": "Utsusemi",
+    "description": "Leaves an afterimage where the body was. Pursuers commit to the wrong one."
+  },
+  {
+    "skillId": "flickerStep",
+    "type": "stealth",
+    "displayName": "Flicker Step",
+    "description": "Crosses open ground in the gap between glances."
+  },
+  {
+    "skillId": "poisonTouch",
+    "type": "supernatural",
+    "displayName": "Poison Touch",
+    "description": "Contact alone is a dose."
+  },
+  {
+    "skillId": "poisonResistance",
+    "type": "physical",
+    "displayName": "Poison Resistance",
+    "description": "Survives what she administers."
+  },
+  {
+    "skillId": "bullseye",
+    "type": "combat",
+    "displayName": "Bullseye",
+    "description": "Thrown weapons land where she looked."
+  },
+  {
+    "skillId": "kungFuMaster",
+    "type": "combat",
+    "displayName": "Kung Fu Master",
+    "description": "Unarmed, and still the most dangerous thing in the room."
+  },
+  {
+    "skillId": "shadowCloak",
+    "type": "supernatural",
+    "displayName": "Shadow Cloak",
+    "description": "Steps into shadow and is not there any more."
+  },
+  {
+    "skillId": "nightTerror",
+    "type": "supernatural",
+    "displayName": "Night Terror",
+    "description": "Turns a dark room into the enemy of whoever is standing in it."
+  },
+  {
+    "skillId": "silverTongue",
+    "type": "social",
+    "displayName": "Silver Tongue",
+    "description": "Talks past a checkpoint that has been told not to let anyone past."
+  },
+  {
+    "skillId": "hollywoodChop",
+    "type": "combat",
+    "displayName": "Hollywood Chop",
+    "description": "A knockout that looks better than it has any right to."
+  },
+  {
+    "skillId": "chameleon",
+    "type": "stealth",
+    "displayName": "Chameleon",
+    "description": "Belongs to whichever crowd he is currently standing in."
+  },
+  {
+    "skillId": "parkourMaster",
+    "type": "physical",
+    "displayName": "Parkour Master",
+    "description": "Treats a city as a route rather than a set of walls."
+  },
+  {
+    "skillId": "pyrokinesis",
+    "type": "supernatural",
+    "displayName": "Pyrokinesis",
+    "description": "Starts fires without a source. Ending them is somebody else’s job."
+  },
+  {
+    "skillId": "honeyTrap",
+    "type": "social",
+    "displayName": "Honey Trap",
+    "description": "The mark hands it over and thinks it was their idea."
+  },
+  {
+    "skillId": "permafrost",
+    "type": "supernatural",
+    "displayName": "Permafrost",
+    "description": "Drops the temperature of a room until it stops working."
+  },
+  {
+    "skillId": "iceSpike",
+    "type": "supernatural",
+    "displayName": "Ice Spike",
+    "description": "A weapon that melts before anyone can log it into evidence."
+  },
+  {
+    "skillId": "blockbuster",
+    "type": "combat",
+    "displayName": "Blockbuster",
+    "description": "Solves the problem loudly and takes the building with it."
+  },
+  {
+    "skillId": "stuntDriver",
+    "type": "physical",
+    "displayName": "Stunt Driver",
+    "description": "Gets the vehicle out, in whatever condition."
+  },
+  {
+    "skillId": "surgeon",
+    "type": "medical",
+    "displayName": "Surgeon",
+    "description": "Field surgery under conditions no hospital would accept."
+  },
+  {
+    "skillId": "heal",
+    "type": "medical",
+    "displayName": "Heal",
+    "description": "Stabilises the worst of it long enough to move."
+  },
+  {
+    "skillId": "pokerFace",
+    "type": "social",
+    "displayName": "Poker Face",
+    "description": "Gives away nothing, including whether there is anything to give away."
+  },
+  {
+    "skillId": "cardCounting",
+    "type": "technical",
+    "displayName": "Card Counting",
+    "description": "Tracks odds nobody else is tracking."
+  },
+  {
+    "skillId": "superSoldier",
+    "type": "physical",
+    "displayName": "Super Soldier",
+    "description": "Conditioning that outlasts the mission."
+  },
+  {
+    "skillId": "firstAid",
+    "type": "medical",
+    "displayName": "First Aid",
+    "description": "Keeps a wounded agent on their feet until extraction."
+  },
+  {
+    "skillId": "luckyGirl",
+    "type": "physical",
+    "displayName": "Lucky Girl",
+    "description": "Statistically implausible. Repeatedly."
+  },
+  {
+    "skillId": "suppressingFire",
+    "type": "combat",
+    "displayName": "Suppressing Fire",
+    "description": "Buys the rest of the team the seconds they need."
+  },
+  {
+    "skillId": "genius",
+    "type": "technical",
+    "displayName": "Genius",
+    "description": "Sees the answer while everyone else is still reading the question."
+  },
+  {
+    "skillId": "gambit",
+    "type": "technical",
+    "displayName": "Gambit",
+    "description": "Trades a known loss for a better position."
+  },
+  {
+    "skillId": "ghostProtocol",
+    "type": "technical",
+    "displayName": "Ghost Protocol",
+    "description": "Leaves no trace in any system she has touched."
+  },
+  {
+    "skillId": "hacking",
+    "type": "technical",
+    "displayName": "Hacking",
+    "description": "Opens what is locked electronically."
+  },
+  {
+    "skillId": "improvisedInventor",
+    "type": "technical",
+    "displayName": "Improvised Inventor",
+    "description": "Builds the needed device out of whatever is on the table."
+  },
+  {
+    "skillId": "pocketUniverse",
+    "type": "supernatural",
+    "displayName": "Pocket Universe",
+    "description": "Carries more than should fit."
+  },
+  {
+    "skillId": "telekinesis",
+    "type": "supernatural",
+    "displayName": "Telekinesis",
+    "description": "Moves what she cannot reach."
+  },
+  {
+    "skillId": "mindReading",
+    "type": "supernatural",
+    "displayName": "Mind Reading",
+    "description": "Knows the answer before the lie is finished."
+  },
+  {
+    "skillId": "photographicMemory",
+    "type": "technical",
+    "displayName": "Photographic Memory",
+    "description": "Reads a document once and can reproduce it."
+  },
+  {
+    "skillId": "forgery",
+    "type": "technical",
+    "displayName": "Forgery",
+    "description": "Produces papers that survive inspection."
+  }
+]

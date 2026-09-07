@@ -1,0 +1,67 @@
+[
+  {
+    "poolId": "pool_prototype",
+    "entries": [
+      {
+        "entryId": "heist_vault",
+        "weight": 10
+      },
+      {
+        "entryId": "undercover_gang",
+        "weight": 10
+      },
+      {
+        "entryId": "extract_vip",
+        "weight": 7
+      },
+      {
+        "entryId": "rescue_witness",
+        "weight": 7
+      },
+      {
+        "entryId": "silent_kill",
+        "weight": 7
+      },
+      {
+        "entryId": "assault_hideout",
+        "weight": 7
+      },
+      {
+        "entryId": "surveillance_neighbour",
+        "weight": 10
+      },
+      {
+        "entryId": "sabotage_deal",
+        "weight": 7
+      },
+      {
+        "entryId": "escort_principal",
+        "weight": 10
+      },
+      {
+        "entryId": "prison_break",
+        "weight": 3
+      },
+      {
+        "entryId": "find_the_mole",
+        "weight": 7
+      },
+      {
+        "entryId": "courier_run",
+        "weight": 14
+      },
+      {
+        "entryId": "casino_night",
+        "weight": 7
+      },
+      {
+        "entryId": "deepwater_recovery",
+        "weight": 7
+      },
+      {
+        "entryId": "protect_activist",
+        "weight": 10
+      }
+    ]
+  }
+]

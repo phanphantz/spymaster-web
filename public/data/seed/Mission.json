@@ -1,0 +1,257 @@
+[
+  {
+    "missionId": "heist_vault",
+    "type": "sabotage",
+    "priorityType": "high",
+    "displayName": "Vault Job",
+    "description": "A private vault in {location} holds a ledger our client would rather nobody read. Take the ledger. Leave the money — taking it turns a quiet job into a manhunt.",
+    "hint": "Nobody should hear the door open.",
+    "difficultyLevel": 2,
+    "penaltyLevel": 2,
+    "gateId": "gate_heist_vault_start",
+    "outcomes": [
+      "outcome_heist_vault_win",
+      "outcome_heist_vault_lose"
+    ],
+    "restTimeInHour": 8,
+    "isDeclinable": true
+  },
+  {
+    "missionId": "undercover_gang",
+    "type": "infiltration",
+    "priorityType": "medium",
+    "displayName": "Family Business",
+    "description": "A crew running counterfeit papers out of {location} has a new supplier, and our client wants a name. Get inside, stay inside long enough to hear it.",
+    "hint": "They will check who you say you are.",
+    "difficultyLevel": 2,
+    "penaltyLevel": 2,
+    "gateId": "gate_undercover_gang_start",
+    "outcomes": [
+      "outcome_undercover_gang_win",
+      "outcome_undercover_gang_lose"
+    ],
+    "restTimeInHour": 8,
+    "isDeclinable": true
+  },
+  {
+    "missionId": "extract_vip",
+    "type": "extraction",
+    "priorityType": "veryHigh",
+    "displayName": "The Defector",
+    "description": "A mid-level official in {location} wants out, and has about a day before the people he works for notice. Get him across a border. Any border.",
+    "hint": "He will not be able to keep up.",
+    "difficultyLevel": 3,
+    "penaltyLevel": 3,
+    "gateId": "gate_extract_vip_start",
+    "outcomes": [
+      "outcome_extract_vip_win",
+      "outcome_extract_vip_lose"
+    ],
+    "restTimeInHour": 10,
+    "isDeclinable": true
+  },
+  {
+    "missionId": "rescue_witness",
+    "type": "rescue",
+    "priorityType": "veryHigh",
+    "displayName": "Material Witness",
+    "description": "The only person willing to testify against a cartel accountant is being held in a clinic outside {location}. She is alive. That is expected to change.",
+    "hint": "She will not be walking out on her own.",
+    "difficultyLevel": 3,
+    "penaltyLevel": 3,
+    "gateId": "gate_rescue_witness_start",
+    "outcomes": [
+      "outcome_rescue_witness_win",
+      "outcome_rescue_witness_lose"
+    ],
+    "restTimeInHour": 10,
+    "isDeclinable": true
+  },
+  {
+    "missionId": "silent_kill",
+    "type": "assassination",
+    "priorityType": "high",
+    "displayName": "Quiet Arrangement",
+    "description": "A broker in {location} has been selling the same intelligence to four governments. Two of them have now paid us. It should read as a medical event.",
+    "hint": "A body found is a job half done.",
+    "difficultyLevel": 3,
+    "penaltyLevel": 3,
+    "gateId": "gate_silent_kill_start",
+    "outcomes": [
+      "outcome_silent_kill_win",
+      "outcome_silent_kill_lose"
+    ],
+    "restTimeInHour": 10,
+    "isDeclinable": true
+  },
+  {
+    "missionId": "assault_hideout",
+    "type": "combat",
+    "priorityType": "high",
+    "displayName": "Clear the House",
+    "description": "A safehouse on the edge of {location} is holding equipment that belongs to our client. The people holding it are not negotiating.",
+    "hint": "There is no quiet version of this.",
+    "difficultyLevel": 3,
+    "penaltyLevel": 3,
+    "gateId": "gate_assault_hideout_start",
+    "outcomes": [
+      "outcome_assault_hideout_win",
+      "outcome_assault_hideout_lose"
+    ],
+    "restTimeInHour": 10,
+    "isDeclinable": true
+  },
+  {
+    "missionId": "surveillance_neighbour",
+    "type": "surveillance",
+    "priorityType": "medium",
+    "displayName": "The Flat Opposite",
+    "description": "Rent the apartment across from a target in {location} and find out who visits. Two weeks, compressed into however long you can stand it.",
+    "hint": "You will need eyes where a person cannot stand.",
+    "difficultyLevel": 2,
+    "penaltyLevel": 1,
+    "gateId": "gate_surveillance_neighbour_start",
+    "outcomes": [
+      "outcome_surveillance_neighbour_win",
+      "outcome_surveillance_neighbour_lose"
+    ],
+    "restTimeInHour": 8,
+    "isDeclinable": true
+  },
+  {
+    "missionId": "sabotage_deal",
+    "type": "sabotage",
+    "priorityType": "high",
+    "displayName": "Deal Breaker",
+    "description": "Two parties are signing something in {location} this week that our client would prefer stayed unsigned. Nobody needs to be hurt. The deal needs to die.",
+    "hint": "Money talks, but so does a leaked draft.",
+    "difficultyLevel": 3,
+    "penaltyLevel": 2,
+    "gateId": "gate_sabotage_deal_start",
+    "outcomes": [
+      "outcome_sabotage_deal_win",
+      "outcome_sabotage_deal_lose"
+    ],
+    "restTimeInHour": 10,
+    "isDeclinable": true
+  },
+  {
+    "missionId": "escort_principal",
+    "type": "protection",
+    "priorityType": "veryHigh",
+    "displayName": "Close Protection",
+    "description": "A client’s daughter is attending a function in {location} that three separate people have reason to disrupt. She is not to know we are there.",
+    "hint": "Standing between her and it is the whole job.",
+    "difficultyLevel": 2,
+    "penaltyLevel": 3,
+    "gateId": "gate_escort_principal_start",
+    "outcomes": [
+      "outcome_escort_principal_win",
+      "outcome_escort_principal_lose"
+    ],
+    "restTimeInHour": 8,
+    "isDeclinable": true
+  },
+  {
+    "missionId": "prison_break",
+    "type": "extraction",
+    "priorityType": "veryHigh",
+    "displayName": "Nobody Leaves",
+    "description": "One of ours has been sitting in a facility outside {location} for six weeks. The official position is that he was never there.",
+    "hint": "Three problems: the wall, the system, and the walk back.",
+    "difficultyLevel": 4,
+    "penaltyLevel": 4,
+    "gateId": "gate_prison_break_start",
+    "outcomes": [
+      "outcome_prison_break_win",
+      "outcome_prison_break_lose"
+    ],
+    "restTimeInHour": 12,
+    "isDeclinable": true
+  },
+  {
+    "missionId": "find_the_mole",
+    "type": "surveillance",
+    "priorityType": "high",
+    "displayName": "Somebody in the Room",
+    "description": "A client’s office in {location} has a leak. Four candidates, one week, and they cannot know they are being looked at.",
+    "hint": "People tell you more when they think they are choosing to.",
+    "difficultyLevel": 3,
+    "penaltyLevel": 2,
+    "gateId": "gate_find_the_mole_start",
+    "outcomes": [
+      "outcome_find_the_mole_win",
+      "outcome_find_the_mole_lose"
+    ],
+    "restTimeInHour": 10,
+    "isDeclinable": true
+  },
+  {
+    "missionId": "courier_run",
+    "type": "extraction",
+    "priorityType": "low",
+    "displayName": "Courier Run",
+    "description": "Collect a sealed case in {location} and deliver it two districts over. Routine, badly paid, and always available.",
+    "hint": "Do not open it.",
+    "difficultyLevel": 1,
+    "penaltyLevel": 1,
+    "gateId": "gate_courier_run_start",
+    "outcomes": [
+      "outcome_courier_run_win",
+      "outcome_courier_run_lose"
+    ],
+    "restTimeInHour": 6,
+    "isDeclinable": true
+  },
+  {
+    "missionId": "casino_night",
+    "type": "infiltration",
+    "priorityType": "medium",
+    "displayName": "House Edge",
+    "description": "A private table in {location} is where a certain account number gets spoken aloud once a month. Buy in, sit down, listen.",
+    "hint": "You need to belong at that table.",
+    "difficultyLevel": 3,
+    "penaltyLevel": 2,
+    "gateId": "gate_casino_night_start",
+    "outcomes": [
+      "outcome_casino_night_win",
+      "outcome_casino_night_lose"
+    ],
+    "restTimeInHour": 10,
+    "isDeclinable": true
+  },
+  {
+    "missionId": "deepwater_recovery",
+    "type": "searchAndRescue",
+    "priorityType": "high",
+    "displayName": "Twelve Metres Down",
+    "description": "A light aircraft went into the water off {location} carrying something our client insured and would like back before anyone else finds it.",
+    "hint": "The hard part is the breathing.",
+    "difficultyLevel": 3,
+    "penaltyLevel": 2,
+    "gateId": "gate_deepwater_recovery_start",
+    "outcomes": [
+      "outcome_deepwater_recovery_win",
+      "outcome_deepwater_recovery_lose"
+    ],
+    "restTimeInHour": 10,
+    "isDeclinable": true
+  },
+  {
+    "missionId": "protect_activist",
+    "type": "protection",
+    "priorityType": "high",
+    "displayName": "No Bodies",
+    "description": "A journalist in {location} has forty-eight hours before she publishes and a list of people who would rather she did not. The client was explicit: nobody dies over this. Nobody.",
+    "hint": "The client will read the report. Choose who you send.",
+    "difficultyLevel": 2,
+    "penaltyLevel": 2,
+    "gateId": "gate_protect_activist_start",
+    "outcomes": [
+      "outcome_protect_activist_win",
+      "outcome_protect_activist_lose"
+    ],
+    "restTimeInHour": 8,
+    "isDeclinable": true
+  }
+]

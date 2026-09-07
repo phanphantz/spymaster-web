@@ -1,0 +1,15 @@
+[
+  {
+    "feedId": "feed_prototype",
+    "reqPlayerLevel": 1,
+    "maxActiveCount": 4,
+    "minFeedIntervalMinute": 30,
+    "maxFeedIntervalMinute": 90,
+    "pools": [
+      {
+        "poolId": "pool_prototype",
+        "qty": 0
+      }
+    ]
+  }
+]

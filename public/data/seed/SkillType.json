@@ -1,0 +1,30 @@
+[
+  {
+    "skillTypeId": "combat",
+    "displayName": "Combat"
+  },
+  {
+    "skillTypeId": "stealth",
+    "displayName": "Stealth"
+  },
+  {
+    "skillTypeId": "technical",
+    "displayName": "Technical"
+  },
+  {
+    "skillTypeId": "social",
+    "displayName": "Social"
+  },
+  {
+    "skillTypeId": "physical",
+    "displayName": "Physical"
+  },
+  {
+    "skillTypeId": "medical",
+    "displayName": "Medical"
+  },
+  {
+    "skillTypeId": "supernatural",
+    "displayName": "Supernatural"
+  }
+]

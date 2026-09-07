@@ -1,0 +1,130 @@
+[
+  {
+    "locationId": "zurich",
+    "displayName": "Zurich",
+    "country": "switzerland",
+    "latitude": 47.3769,
+    "longitude": 8.5417,
+    "type": "city"
+  },
+  {
+    "locationId": "marrakesh",
+    "displayName": "Marrakesh",
+    "country": "morocco",
+    "latitude": 31.6295,
+    "longitude": -7.9811,
+    "type": "city"
+  },
+  {
+    "locationId": "hongKong",
+    "displayName": "Hong Kong",
+    "country": "china",
+    "latitude": 22.3193,
+    "longitude": 114.1694,
+    "type": "city"
+  },
+  {
+    "locationId": "istanbul",
+    "displayName": "Istanbul",
+    "country": "turkiye",
+    "latitude": 41.0082,
+    "longitude": 28.9784,
+    "type": "city"
+  },
+  {
+    "locationId": "reykjavik",
+    "displayName": "Reykjavik",
+    "country": "iceland",
+    "latitude": 64.1466,
+    "longitude": -21.9426,
+    "type": "city"
+  },
+  {
+    "locationId": "buenosAires",
+    "displayName": "Buenos Aires",
+    "country": "argentina",
+    "latitude": -34.6037,
+    "longitude": -58.3816,
+    "type": "city"
+  },
+  {
+    "locationId": "lagos",
+    "displayName": "Lagos",
+    "country": "nigeria",
+    "latitude": 6.5244,
+    "longitude": 3.3792,
+    "type": "city"
+  },
+  {
+    "locationId": "osaka",
+    "displayName": "Osaka",
+    "country": "japan",
+    "latitude": 34.6937,
+    "longitude": 135.5023,
+    "type": "city"
+  },
+  {
+    "locationId": "prague",
+    "displayName": "Prague",
+    "country": "czechia",
+    "latitude": 50.0755,
+    "longitude": 14.4378,
+    "type": "city"
+  },
+  {
+    "locationId": "dubai",
+    "displayName": "Dubai",
+    "country": "uae",
+    "latitude": 25.2048,
+    "longitude": 55.2708,
+    "type": "city"
+  },
+  {
+    "locationId": "bogota",
+    "displayName": "Bogota",
+    "country": "colombia",
+    "latitude": 4.711,
+    "longitude": -74.0721,
+    "type": "city"
+  },
+  {
+    "locationId": "helsinki",
+    "displayName": "Helsinki",
+    "country": "finland",
+    "latitude": 60.1699,
+    "longitude": 24.9384,
+    "type": "city"
+  },
+  {
+    "locationId": "macau",
+    "displayName": "Macau",
+    "country": "china",
+    "latitude": 22.1987,
+    "longitude": 113.5439,
+    "type": "city"
+  },
+  {
+    "locationId": "valletta",
+    "displayName": "Valletta",
+    "country": "malta",
+    "latitude": 35.8989,
+    "longitude": 14.5146,
+    "type": "city"
+  },
+  {
+    "locationId": "ushuaia",
+    "displayName": "Ushuaia",
+    "country": "argentina",
+    "latitude": -54.8019,
+    "longitude": -68.303,
+    "type": "wilderness"
+  },
+  {
+    "locationId": "gibraltar",
+    "displayName": "Gibraltar",
+    "country": "gibraltar",
+    "latitude": 36.1408,
+    "longitude": -5.3536,
+    "type": "city"
+  }
+]

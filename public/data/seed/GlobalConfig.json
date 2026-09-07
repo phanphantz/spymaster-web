@@ -1,0 +1,27 @@
+[
+  {
+    "configKey": "maxAgentSkillSlot",
+    "value": "4",
+    "description": "How many Skills an agent can hold at once."
+  },
+  {
+    "configKey": "timeScale",
+    "value": "60",
+    "description": "Real seconds to in-game minutes at normal speed."
+  },
+  {
+    "configKey": "fastTimeScale",
+    "value": "180",
+    "description": "The x3 speed setting."
+  },
+  {
+    "configKey": "superFastTimeScale",
+    "value": "480",
+    "description": "The x8 speed setting."
+  },
+  {
+    "configKey": "startingDollar",
+    "value": "12000",
+    "description": "Money the player starts with. Prototype-only key."
+  }
+]

@@ -1,0 +1,250 @@
+[
+  {
+    "gateId": "gate_heist_vault_start",
+    "slotReqIds": [
+      "slot_stealth",
+      "slot_hacker"
+    ]
+  },
+  {
+    "gateId": "gate_heist_vault_win",
+    "sth": 22,
+    "int": 26,
+    "reqItems": [
+      {
+        "itemId": "toolPicklockSet",
+        "qty": 1
+      }
+    ]
+  },
+  {
+    "gateId": "gate_undercover_gang_start",
+    "slotReqIds": [
+      "slot_face",
+      "slot_lead"
+    ]
+  },
+  {
+    "gateId": "gate_undercover_gang_win",
+    "cha": 24,
+    "ast": 16,
+    "reqItems": [
+      {
+        "itemId": "toolFakeIdCard",
+        "qty": 1
+      }
+    ]
+  },
+  {
+    "gateId": "gate_extract_vip_start",
+    "slotReqIds": [
+      "slot_lead",
+      "slot_any",
+      "slot_wheelman"
+    ]
+  },
+  {
+    "gateId": "gate_extract_vip_win",
+    "ast": 20,
+    "end": 20,
+    "sth": 14
+  },
+  {
+    "gateId": "gate_rescue_witness_start",
+    "slotReqIds": [
+      "slot_muscle",
+      "slot_medic"
+    ]
+  },
+  {
+    "gateId": "gate_rescue_witness_win",
+    "ast": 22,
+    "end": 22,
+    "reqItems": [
+      {
+        "itemId": "toolHealPotion",
+        "qty": 1
+      }
+    ]
+  },
+  {
+    "gateId": "gate_silent_kill_start",
+    "slotReqIds": [
+      "slot_shooter",
+      "slot_stealth"
+    ]
+  },
+  {
+    "gateId": "gate_silent_kill_win",
+    "pre": 24,
+    "sth": 20,
+    "conditions": [
+      {
+        "conditionId": "luckRoll",
+        "conditionValue": "0.85"
+      }
+    ]
+  },
+  {
+    "gateId": "gate_assault_hideout_start",
+    "slotReqIds": [
+      "slot_muscle",
+      "slot_lead"
+    ]
+  },
+  {
+    "gateId": "gate_assault_hideout_win",
+    "ast": 26,
+    "end": 20,
+    "reqItems": [
+      {
+        "itemId": "gunMp5",
+        "qty": 1
+      }
+    ]
+  },
+  {
+    "gateId": "gate_surveillance_neighbour_start",
+    "slotReqIds": [
+      "slot_stealth",
+      "slot_hacker"
+    ]
+  },
+  {
+    "gateId": "gate_surveillance_neighbour_win",
+    "sth": 20,
+    "int": 24,
+    "reqItems": [
+      {
+        "itemId": "toolMicroDrone",
+        "qty": 1
+      }
+    ]
+  },
+  {
+    "gateId": "gate_sabotage_deal_start",
+    "slotReqIds": [
+      "slot_face",
+      "slot_hacker"
+    ]
+  },
+  {
+    "gateId": "gate_sabotage_deal_win",
+    "cha": 22,
+    "int": 26
+  },
+  {
+    "gateId": "gate_escort_principal_start",
+    "slotReqIds": [
+      "slot_muscle",
+      "slot_face"
+    ]
+  },
+  {
+    "gateId": "gate_escort_principal_win",
+    "end": 22,
+    "cha": 18
+  },
+  {
+    "gateId": "gate_prison_break_start",
+    "slotReqIds": [
+      "slot_stealth",
+      "slot_hacker",
+      "slot_muscle"
+    ]
+  },
+  {
+    "gateId": "gate_prison_break_win",
+    "sth": 26,
+    "int": 28,
+    "ast": 22,
+    "reqItems": [
+      {
+        "itemId": "toolPicklockGun",
+        "qty": 1
+      }
+    ],
+    "conditions": [
+      {
+        "conditionId": "luckRoll",
+        "conditionValue": "0.8"
+      }
+    ]
+  },
+  {
+    "gateId": "gate_find_the_mole_start",
+    "slotReqIds": [
+      "slot_face",
+      "slot_any"
+    ]
+  },
+  {
+    "gateId": "gate_find_the_mole_win",
+    "cha": 20,
+    "int": 18,
+    "reqItems": [
+      {
+        "itemId": "toolTruthSerum",
+        "qty": 1
+      }
+    ]
+  },
+  {
+    "gateId": "gate_courier_run_start",
+    "slotReqIds": [
+      "slot_any"
+    ]
+  },
+  {
+    "gateId": "gate_courier_run_win",
+    "end": 6
+  },
+  {
+    "gateId": "gate_casino_night_start",
+    "slotReqIds": [
+      "slot_face",
+      "slot_shooter"
+    ]
+  },
+  {
+    "gateId": "gate_casino_night_win",
+    "cha": 26,
+    "pre": 16,
+    "reqItems": [
+      {
+        "itemId": "toolFakePassport",
+        "qty": 1
+      }
+    ]
+  },
+  {
+    "gateId": "gate_deepwater_recovery_start",
+    "slotReqIds": [
+      "slot_any",
+      "slot_any"
+    ]
+  },
+  {
+    "gateId": "gate_deepwater_recovery_win",
+    "end": 24,
+    "reqItems": [
+      {
+        "itemId": "toolOxygenTank",
+        "qty": 1
+      }
+    ]
+  },
+  {
+    "gateId": "gate_protect_activist_start",
+    "slotReqIds": [
+      "slot_clean",
+      "slot_any"
+    ]
+  },
+  {
+    "gateId": "gate_protect_activist_win",
+    "end": 18,
+    "sth": 16,
+    "cha": 14
+  }
+]

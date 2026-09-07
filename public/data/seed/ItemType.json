@@ -1,0 +1,62 @@
+[
+  {
+    "itemTypeId": "handgun",
+    "displayName": "Handgun"
+  },
+  {
+    "itemTypeId": "machineGun",
+    "displayName": "Machine Gun"
+  },
+  {
+    "itemTypeId": "assaultRifle",
+    "displayName": "Assault Rifle"
+  },
+  {
+    "itemTypeId": "sniperRifle",
+    "displayName": "Sniper Rifle"
+  },
+  {
+    "itemTypeId": "shotgun",
+    "displayName": "Shotgun"
+  },
+  {
+    "itemTypeId": "throwable",
+    "displayName": "Throwable"
+  },
+  {
+    "itemTypeId": "explosive",
+    "displayName": "Explosive"
+  },
+  {
+    "itemTypeId": "attachment",
+    "displayName": "Attachment"
+  },
+  {
+    "itemTypeId": "sharpWeapon",
+    "displayName": "Sharp Weapon"
+  },
+  {
+    "itemTypeId": "melee",
+    "displayName": "Melee"
+  },
+  {
+    "itemTypeId": "closeRangeWeapon",
+    "displayName": "Close Range Weapon"
+  },
+  {
+    "itemTypeId": "longRangeWeapon",
+    "displayName": "Long Range Weapon"
+  },
+  {
+    "itemTypeId": "tool",
+    "displayName": "Tool"
+  },
+  {
+    "itemTypeId": "substance",
+    "displayName": "Substance"
+  },
+  {
+    "itemTypeId": "currency",
+    "displayName": "Currency"
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "outcomeTypeId": "best",
+    "displayName": "Best",
+    "description": "The strictest Gate. Everything went right."
+  },
+  {
+    "outcomeTypeId": "acceptable",
+    "displayName": "Acceptable",
+    "description": "The objective held, at a cost."
+  },
+  {
+    "outcomeTypeId": "bad",
+    "displayName": "Bad",
+    "description": "Under-prepared. Damage taken, objective compromised."
+  },
+  {
+    "outcomeTypeId": "criticalFailure",
+    "displayName": "Critical Failure",
+    "description": "The guaranteed fallback. Its Gate is empty and always matches."
+  }
+]

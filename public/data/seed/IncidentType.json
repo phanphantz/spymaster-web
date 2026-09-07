@@ -1,0 +1,18 @@
+[
+  {
+    "incidentTypeId": "reward",
+    "displayName": "Reward"
+  },
+  {
+    "incidentTypeId": "penalty",
+    "displayName": "Penalty"
+  },
+  {
+    "incidentTypeId": "setup",
+    "displayName": "Setup"
+  },
+  {
+    "incidentTypeId": "narrative",
+    "displayName": "Narrative"
+  }
+]

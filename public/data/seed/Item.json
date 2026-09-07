@@ -1,0 +1,1060 @@
+[
+  {
+    "itemId": "dollar",
+    "type": [
+      "currency"
+    ],
+    "displayName": "USD",
+    "description": "The agency runs on it, and so does everyone it deals with.",
+    "size": "tiny",
+    "weight": 0,
+    "isInShop": false,
+    "maxOwnedCount": -1
+  },
+  {
+    "itemId": "toolPicklockSet",
+    "type": [
+      "tool"
+    ],
+    "subType": "gadget",
+    "displayName": "Picklock Set",
+    "description": "Opens anything mechanical, given a minute nobody is watching.",
+    "size": "tiny",
+    "weight": 0.2,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "sthEffect": 2,
+    "priceItemId": "dollar",
+    "priceItemQty": 400,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "stealthy"
+    ]
+  },
+  {
+    "itemId": "toolPicklockGun",
+    "type": [
+      "tool"
+    ],
+    "subType": "gadget",
+    "displayName": "Picklock Gun",
+    "description": "The same job in a fraction of the time, at the cost of a noise.",
+    "size": "small",
+    "weight": 1,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "sthEffect": 3,
+    "priceItemId": "dollar",
+    "priceItemQty": 1200,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "stealthy"
+    ]
+  },
+  {
+    "itemId": "toolEarpiece",
+    "type": [
+      "tool"
+    ],
+    "subType": "gadget",
+    "displayName": "Earpiece",
+    "description": "Keeps the team on the same page. Trivial until it is missing.",
+    "size": "tiny",
+    "weight": 0.2,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "intEffect": 1,
+    "chaEffect": 1,
+    "priceItemId": "dollar",
+    "priceItemQty": 400,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "technical"
+    ]
+  },
+  {
+    "itemId": "toolFlashlight",
+    "type": [
+      "tool"
+    ],
+    "subType": "gadget",
+    "displayName": "Flashlight",
+    "description": "Unglamorous, and the reason people come back from basements.",
+    "size": "small",
+    "weight": 1,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "preEffect": 1,
+    "priceItemId": "dollar",
+    "priceItemQty": 400,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": []
+  },
+  {
+    "itemId": "toolSmartGlasses",
+    "type": [
+      "tool"
+    ],
+    "subType": "gadget",
+    "displayName": "Smart Glasses",
+    "description": "Overlays what the room is not telling you.",
+    "size": "tiny",
+    "weight": 0.2,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "intEffect": 2,
+    "preEffect": 1,
+    "priceItemId": "dollar",
+    "priceItemQty": 1200,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "technical"
+    ]
+  },
+  {
+    "itemId": "toolKeyloggerUsb",
+    "type": [
+      "tool"
+    ],
+    "subType": "gadget",
+    "displayName": "Keylogger USB",
+    "description": "Ten seconds in a port buys a fortnight of somebody’s passwords.",
+    "size": "tiny",
+    "weight": 0.2,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "intEffect": 3,
+    "priceItemId": "dollar",
+    "priceItemQty": 1200,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "technical"
+    ]
+  },
+  {
+    "itemId": "toolFingerprintScanner",
+    "type": [
+      "tool"
+    ],
+    "subType": "gadget",
+    "displayName": "Fingerprint Scanner",
+    "description": "Lifts and replays a print. Works on doors that trust fingers.",
+    "size": "tiny",
+    "weight": 0.2,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "intEffect": 2,
+    "priceItemId": "dollar",
+    "priceItemQty": 1200,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "technical"
+    ]
+  },
+  {
+    "itemId": "toolSuctionGloves",
+    "type": [
+      "tool"
+    ],
+    "subType": "gadget",
+    "displayName": "Suction Gloves",
+    "description": "Turns a glass facade into a staircase.",
+    "size": "small",
+    "weight": 1,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "sthEffect": 2,
+    "endEffect": 1,
+    "priceItemId": "dollar",
+    "priceItemQty": 1200,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": []
+  },
+  {
+    "itemId": "toolMicroDrone",
+    "type": [
+      "tool"
+    ],
+    "subType": "gadget",
+    "displayName": "Micro Drone",
+    "description": "Sees the room before anyone walks into it.",
+    "size": "small",
+    "weight": 1,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "preEffect": 3,
+    "intEffect": 2,
+    "priceItemId": "dollar",
+    "priceItemQty": 3200,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "technical"
+    ]
+  },
+  {
+    "itemId": "toolThermalGoggles",
+    "type": [
+      "tool"
+    ],
+    "subType": "gadget",
+    "displayName": "Thermal Goggles",
+    "description": "Walls stop being opaque. Guards stop being surprises.",
+    "size": "small",
+    "weight": 1,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "preEffect": 3,
+    "sthEffect": 1,
+    "priceItemId": "dollar",
+    "priceItemQty": 3200,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": []
+  },
+  {
+    "itemId": "toolNightVisionMonocular",
+    "type": [
+      "tool"
+    ],
+    "subType": "gadget",
+    "displayName": "Night Vision Monocular",
+    "description": "Darkness becomes an advantage instead of a problem.",
+    "size": "small",
+    "weight": 1,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "preEffect": 2,
+    "sthEffect": 2,
+    "priceItemId": "dollar",
+    "priceItemQty": 3200,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "stealthy"
+    ]
+  },
+  {
+    "itemId": "toolSoundChanger",
+    "type": [
+      "tool"
+    ],
+    "subType": "gadget",
+    "displayName": "Sound Changer",
+    "description": "Be whoever the phone expects to hear.",
+    "size": "tiny",
+    "weight": 0.2,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "chaEffect": 3,
+    "priceItemId": "dollar",
+    "priceItemQty": 3200,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "social"
+    ]
+  },
+  {
+    "itemId": "toolGrapplingHookWatch",
+    "type": [
+      "tool"
+    ],
+    "subType": "gadget",
+    "displayName": "Grappling Hook Watch",
+    "description": "Three floors in one movement, and it tells the time.",
+    "size": "tiny",
+    "weight": 0.2,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "sthEffect": 2,
+    "endEffect": 2,
+    "priceItemId": "dollar",
+    "priceItemQty": 3200,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": []
+  },
+  {
+    "itemId": "toolLaserCutter",
+    "type": [
+      "tool"
+    ],
+    "subType": "gadget",
+    "displayName": "Laser Cutter",
+    "description": "Through a safe door in ninety seconds. Single charge.",
+    "size": "small",
+    "weight": 1,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "intEffect": 2,
+    "astEffect": 1,
+    "priceItemId": "dollar",
+    "priceItemQty": 1440,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "technical"
+    ]
+  },
+  {
+    "itemId": "toolHolographicDecoy",
+    "type": [
+      "tool"
+    ],
+    "subType": "gadget",
+    "displayName": "Holographic Decoy",
+    "description": "Somebody who is not there, standing exactly where you need them to look.",
+    "size": "small",
+    "weight": 1,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "sthEffect": 4,
+    "priceItemId": "dollar",
+    "priceItemQty": 1440,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "stealthy"
+    ]
+  },
+  {
+    "itemId": "toolSmartEyeLens",
+    "type": [
+      "tool"
+    ],
+    "subType": "gadget",
+    "displayName": "Smart Eye Lens",
+    "description": "Everything the Smart Glasses do, with nothing to confiscate.",
+    "size": "tiny",
+    "weight": 0.2,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "intEffect": 3,
+    "preEffect": 3,
+    "sthEffect": 1,
+    "priceItemId": "dollar",
+    "priceItemQty": 8000,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "technical"
+    ]
+  },
+  {
+    "itemId": "toolMustacheFacialDisguise",
+    "type": [
+      "tool"
+    ],
+    "subType": "disguise",
+    "displayName": "Facial Disguise Kit",
+    "description": "Crude, cheap, and enough for a camera at the wrong angle.",
+    "size": "tiny",
+    "weight": 0.2,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "chaEffect": 2,
+    "sthEffect": 1,
+    "priceItemId": "dollar",
+    "priceItemQty": 400,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "social"
+    ]
+  },
+  {
+    "itemId": "toolDoubleOutfit",
+    "type": [
+      "tool"
+    ],
+    "subType": "disguise",
+    "displayName": "Double Outfit",
+    "description": "Two people leave the building. One of them went in.",
+    "size": "medium",
+    "weight": 3,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "chaEffect": 2,
+    "sthEffect": 2,
+    "priceItemId": "dollar",
+    "priceItemQty": 1200,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "social"
+    ]
+  },
+  {
+    "itemId": "toolFakePassport",
+    "type": [
+      "tool"
+    ],
+    "subType": "document",
+    "displayName": "Fake Passport",
+    "description": "Survives a bored official. Not a determined one.",
+    "size": "tiny",
+    "weight": 0.2,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "chaEffect": 2,
+    "priceItemId": "dollar",
+    "priceItemQty": 400,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "social"
+    ]
+  },
+  {
+    "itemId": "toolFakeIdCard",
+    "type": [
+      "tool"
+    ],
+    "subType": "document",
+    "displayName": "Fake ID Card",
+    "description": "Belongs to whichever staff list you need to be on.",
+    "size": "tiny",
+    "weight": 0.2,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "chaEffect": 1,
+    "sthEffect": 1,
+    "priceItemId": "dollar",
+    "priceItemQty": 400,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "social"
+    ]
+  },
+  {
+    "itemId": "toolMaskPrinter",
+    "type": [
+      "tool"
+    ],
+    "subType": "gadget",
+    "displayName": "Mask Printer",
+    "description": "Somebody else’s face, in about an hour.",
+    "size": "medium",
+    "weight": 3,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "chaEffect": 4,
+    "priceItemId": "dollar",
+    "priceItemQty": 3200,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "social"
+    ]
+  },
+  {
+    "itemId": "toolAdrenaline",
+    "type": [
+      "tool"
+    ],
+    "subType": "substance",
+    "displayName": "Adrenaline",
+    "description": "Buys ten violent minutes and charges interest afterwards.",
+    "size": "tiny",
+    "weight": 0.2,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "astEffect": 3,
+    "endEffect": 2,
+    "priceItemId": "dollar",
+    "priceItemQty": 180,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "medical"
+    ]
+  },
+  {
+    "itemId": "toolAntibiotic",
+    "type": [
+      "tool"
+    ],
+    "subType": "substance",
+    "displayName": "Antibiotic",
+    "description": "Turns an infection into an inconvenience.",
+    "size": "tiny",
+    "weight": 0.2,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "endEffect": 2,
+    "priceItemId": "dollar",
+    "priceItemQty": 180,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "medical"
+    ]
+  },
+  {
+    "itemId": "toolHealPotion",
+    "type": [
+      "tool"
+    ],
+    "subType": "substance",
+    "displayName": "Field Stim",
+    "description": "Closes what is bleeding well enough to keep walking.",
+    "size": "tiny",
+    "weight": 0.2,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "endEffect": 3,
+    "priceItemId": "dollar",
+    "priceItemQty": 540,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "medical"
+    ]
+  },
+  {
+    "itemId": "toolSleepingPill",
+    "type": [
+      "tool"
+    ],
+    "subType": "substance",
+    "displayName": "Sleeping Draught",
+    "description": "One guard, one nap, no paperwork.",
+    "size": "tiny",
+    "weight": 0.2,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "sthEffect": 3,
+    "priceItemId": "dollar",
+    "priceItemQty": 180,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "stealthy"
+    ]
+  },
+  {
+    "itemId": "toolPoisonVial",
+    "type": [
+      "tool"
+    ],
+    "subType": "substance",
+    "displayName": "Poison Vial",
+    "description": "Quiet, deniable, and hard to explain if searched.",
+    "size": "tiny",
+    "weight": 0.2,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "astEffect": 3,
+    "priceItemId": "dollar",
+    "priceItemQty": 180,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "lethal"
+    ]
+  },
+  {
+    "itemId": "toolTruthSerum",
+    "type": [
+      "tool"
+    ],
+    "subType": "substance",
+    "displayName": "Truth Serum",
+    "description": "Skips the interrogation and goes straight to the answer.",
+    "size": "tiny",
+    "weight": 0.2,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "intEffect": 3,
+    "chaEffect": 2,
+    "priceItemId": "dollar",
+    "priceItemQty": 1440,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": []
+  },
+  {
+    "itemId": "toolSeductiveVial",
+    "type": [
+      "tool"
+    ],
+    "subType": "substance",
+    "displayName": "Charm Vial",
+    "description": "Lowers a guard’s judgement without lowering their pulse.",
+    "size": "tiny",
+    "weight": 0.2,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "chaEffect": 3,
+    "priceItemId": "dollar",
+    "priceItemQty": 180,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "social"
+    ]
+  },
+  {
+    "itemId": "toolParachute",
+    "type": [
+      "tool"
+    ],
+    "subType": "gear",
+    "displayName": "Parachute",
+    "description": "The exit plan for a building with no stairs left.",
+    "size": "bulky",
+    "weight": 10,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "endEffect": 2,
+    "priceItemId": "dollar",
+    "priceItemQty": 540,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": []
+  },
+  {
+    "itemId": "toolWingsuit",
+    "type": [
+      "tool"
+    ],
+    "subType": "gear",
+    "displayName": "Wingsuit",
+    "description": "Leaves the perimeter without ever touching it.",
+    "size": "large",
+    "weight": 6,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "endEffect": 3,
+    "sthEffect": 2,
+    "priceItemId": "dollar",
+    "priceItemQty": 1440,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": []
+  },
+  {
+    "itemId": "toolOxygenTank",
+    "type": [
+      "tool"
+    ],
+    "subType": "gear",
+    "displayName": "Oxygen Tank",
+    "description": "Underwater, or through whatever they filled the room with.",
+    "size": "large",
+    "weight": 6,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "endEffect": 3,
+    "priceItemId": "dollar",
+    "priceItemQty": 1200,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": []
+  },
+  {
+    "itemId": "melFoldableKnife",
+    "type": [
+      "closeRangeWeapon"
+    ],
+    "subType": "sharpWeapon",
+    "displayName": "Foldable Knife",
+    "description": "Pockets well, argues convincingly.",
+    "size": "tiny",
+    "weight": 0.2,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "astEffect": 2,
+    "priceItemId": "dollar",
+    "priceItemQty": 400,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "lethal"
+    ]
+  },
+  {
+    "itemId": "melThrowingKnife",
+    "type": [
+      "closeRangeWeapon"
+    ],
+    "subType": "sharpWeapon",
+    "displayName": "Throwing Knife",
+    "description": "Reach without noise.",
+    "size": "small",
+    "weight": 1,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "astEffect": 2,
+    "preEffect": 2,
+    "priceItemId": "dollar",
+    "priceItemQty": 400,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "lethal"
+    ]
+  },
+  {
+    "itemId": "melGarroteWire",
+    "type": [
+      "closeRangeWeapon"
+    ],
+    "subType": "fist",
+    "displayName": "Garrote Wire",
+    "description": "Weighs nothing, passes every scanner, ends one conversation.",
+    "size": "tiny",
+    "weight": 0.2,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "astEffect": 3,
+    "sthEffect": 2,
+    "priceItemId": "dollar",
+    "priceItemQty": 1200,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "lethal",
+      "stealthy"
+    ]
+  },
+  {
+    "itemId": "melKarambit",
+    "type": [
+      "closeRangeWeapon"
+    ],
+    "subType": "sharpWeapon",
+    "displayName": "Karambit",
+    "description": "Built for the half-second after someone gets too close.",
+    "size": "tiny",
+    "weight": 0.2,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "astEffect": 4,
+    "priceItemId": "dollar",
+    "priceItemQty": 3200,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "lethal"
+    ]
+  },
+  {
+    "itemId": "melBaton",
+    "type": [
+      "closeRangeWeapon"
+    ],
+    "subType": "bluntWeapon",
+    "displayName": "Baton",
+    "description": "Ends a fight without ending a person.",
+    "size": "medium",
+    "weight": 3,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "astEffect": 2,
+    "endEffect": 1,
+    "priceItemId": "dollar",
+    "priceItemQty": 400,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": []
+  },
+  {
+    "itemId": "melShieldUmbrella",
+    "type": [
+      "closeRangeWeapon"
+    ],
+    "subType": "bluntWeapon",
+    "displayName": "Shield Umbrella",
+    "description": "Armour that reads as an accessory.",
+    "size": "medium",
+    "weight": 3,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "endEffect": 4,
+    "priceItemId": "dollar",
+    "priceItemQty": 3200,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": []
+  },
+  {
+    "itemId": "melKatana",
+    "type": [
+      "closeRangeWeapon"
+    ],
+    "subType": "sharpWeapon",
+    "displayName": "Katana",
+    "description": "Impossible to conceal, and rarely necessary to draw twice.",
+    "size": "large",
+    "weight": 6,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "astEffect": 6,
+    "priceItemId": "dollar",
+    "priceItemQty": 8000,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "lethal",
+      "loud"
+    ]
+  },
+  {
+    "itemId": "gunWaltherPpk",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "subType": "handgun",
+    "displayName": "Walther PPK",
+    "description": "Small, quiet, and entirely at home under a dinner jacket.",
+    "size": "small",
+    "weight": 1,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "astEffect": 3,
+    "preEffect": 2,
+    "priceItemId": "dollar",
+    "priceItemQty": 1200,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "lethal"
+    ]
+  },
+  {
+    "itemId": "gunGlock17",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "subType": "handgun",
+    "displayName": "Glock 17",
+    "description": "Boring, reliable, everywhere.",
+    "size": "small",
+    "weight": 1,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "astEffect": 3,
+    "preEffect": 1,
+    "priceItemId": "dollar",
+    "priceItemQty": 400,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "lethal"
+    ]
+  },
+  {
+    "itemId": "gunColtM1911",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "subType": "handgun",
+    "displayName": "Colt M1911",
+    "description": "Heavier than it needs to be, and settles arguments accordingly.",
+    "size": "small",
+    "weight": 1,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "astEffect": 4,
+    "priceItemId": "dollar",
+    "priceItemQty": 400,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "lethal"
+    ]
+  },
+  {
+    "itemId": "gunMiniSpyPistol",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "subType": "handgun",
+    "displayName": "Mini Spy Pistol",
+    "description": "One shot, no metal, no questions at the door.",
+    "size": "small",
+    "weight": 1,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "astEffect": 2,
+    "sthEffect": 3,
+    "priceItemId": "dollar",
+    "priceItemQty": 3200,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "lethal",
+      "stealthy"
+    ]
+  },
+  {
+    "itemId": "gunDesertEagle",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "subType": "handgun",
+    "displayName": "Desert Eagle",
+    "description": "Everyone in the building now knows where you are.",
+    "size": "medium",
+    "weight": 3,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "astEffect": 6,
+    "priceItemId": "dollar",
+    "priceItemQty": 3200,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "lethal",
+      "loud"
+    ]
+  },
+  {
+    "itemId": "gunMp5",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "subType": "submachineGun",
+    "displayName": "MP5",
+    "description": "The standard answer when the plan has already failed.",
+    "size": "medium",
+    "weight": 3,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "astEffect": 5,
+    "priceItemId": "dollar",
+    "priceItemQty": 400,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "lethal",
+      "loud"
+    ]
+  },
+  {
+    "itemId": "gunMp7",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "subType": "submachineGun",
+    "displayName": "MP7",
+    "description": "Compact enough to carry under a coat, which it should not be.",
+    "size": "medium",
+    "weight": 3,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "astEffect": 5,
+    "preEffect": 2,
+    "priceItemId": "dollar",
+    "priceItemQty": 1200,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "lethal",
+      "loud"
+    ]
+  },
+  {
+    "itemId": "gunKrissVector",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "subType": "submachineGun",
+    "displayName": "KRISS Vector",
+    "description": "Recoil goes down instead of up. Everything else goes down too.",
+    "size": "medium",
+    "weight": 3,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "astEffect": 7,
+    "priceItemId": "dollar",
+    "priceItemQty": 3200,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "lethal",
+      "loud"
+    ]
+  },
+  {
+    "itemId": "gunBenelliM4",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "subType": "shotgun",
+    "displayName": "Benelli M4",
+    "description": "Doors, locks, and the argument about whether to go in.",
+    "size": "large",
+    "weight": 6,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "astEffect": 6,
+    "endEffect": 2,
+    "priceItemId": "dollar",
+    "priceItemQty": 1200,
+    "minPlayerLevel": 1,
+    "maxOwnedCount": -1,
+    "isInShop": true,
+    "tags": [
+      "lethal",
+      "loud"
+    ]
+  }
+]

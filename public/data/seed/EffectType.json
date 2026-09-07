@@ -1,0 +1,46 @@
+[
+  {
+    "effectTypeId": "injury",
+    "displayName": "Injury"
+  },
+  {
+    "effectTypeId": "sickness",
+    "displayName": "Sickness"
+  },
+  {
+    "effectTypeId": "debuff",
+    "displayName": "Debuff"
+  },
+  {
+    "effectTypeId": "death",
+    "displayName": "Death"
+  },
+  {
+    "effectTypeId": "healthChange",
+    "displayName": "Health Change"
+  },
+  {
+    "effectTypeId": "statModifier",
+    "displayName": "Stat Modifier"
+  },
+  {
+    "effectTypeId": "itemGain",
+    "displayName": "Item Gain"
+  },
+  {
+    "effectTypeId": "itemLoss",
+    "displayName": "Item Loss"
+  },
+  {
+    "effectTypeId": "recovery",
+    "displayName": "Recovery"
+  },
+  {
+    "effectTypeId": "triggerEvent",
+    "displayName": "Trigger Event"
+  },
+  {
+    "effectTypeId": "triggerConversation",
+    "displayName": "Trigger Conversation"
+  }
+]

@@ -1,0 +1,13 @@
+[
+  {
+    "feedId": "employment_start",
+    "reqPlayerLevel": 1,
+    "pickQty": 4,
+    "pools": [
+      {
+        "poolId": "pool_agents_all",
+        "qty": 8
+      }
+    ]
+  }
+]

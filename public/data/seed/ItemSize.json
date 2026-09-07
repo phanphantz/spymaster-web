@@ -1,0 +1,22 @@
+[
+  {
+    "itemSizeId": "tiny",
+    "displayName": "Tiny"
+  },
+  {
+    "itemSizeId": "small",
+    "displayName": "Small"
+  },
+  {
+    "itemSizeId": "medium",
+    "displayName": "Medium"
+  },
+  {
+    "itemSizeId": "large",
+    "displayName": "Large"
+  },
+  {
+    "itemSizeId": "bulky",
+    "displayName": "Bulky"
+  }
+]

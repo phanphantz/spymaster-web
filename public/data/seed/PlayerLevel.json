@@ -1,0 +1,102 @@
+[
+  {
+    "level": 1,
+    "accumulativeExp": 0,
+    "rewardUpgradePoint": 0
+  },
+  {
+    "level": 2,
+    "accumulativeExp": 120,
+    "rewardUpgradePoint": 1
+  },
+  {
+    "level": 3,
+    "accumulativeExp": 364,
+    "rewardUpgradePoint": 1
+  },
+  {
+    "level": 4,
+    "accumulativeExp": 696,
+    "rewardUpgradePoint": 1
+  },
+  {
+    "level": 5,
+    "accumulativeExp": 1103,
+    "rewardUpgradePoint": 1
+  },
+  {
+    "level": 6,
+    "accumulativeExp": 1576,
+    "rewardUpgradePoint": 1
+  },
+  {
+    "level": 7,
+    "accumulativeExp": 2110,
+    "rewardUpgradePoint": 1
+  },
+  {
+    "level": 8,
+    "accumulativeExp": 2700,
+    "rewardUpgradePoint": 1
+  },
+  {
+    "level": 9,
+    "accumulativeExp": 3343,
+    "rewardUpgradePoint": 1
+  },
+  {
+    "level": 10,
+    "accumulativeExp": 4036,
+    "rewardUpgradePoint": 1
+  },
+  {
+    "level": 11,
+    "accumulativeExp": 4777,
+    "rewardUpgradePoint": 1
+  },
+  {
+    "level": 12,
+    "accumulativeExp": 5564,
+    "rewardUpgradePoint": 1
+  },
+  {
+    "level": 13,
+    "accumulativeExp": 6395,
+    "rewardUpgradePoint": 1
+  },
+  {
+    "level": 14,
+    "accumulativeExp": 7269,
+    "rewardUpgradePoint": 1
+  },
+  {
+    "level": 15,
+    "accumulativeExp": 8184,
+    "rewardUpgradePoint": 1
+  },
+  {
+    "level": 16,
+    "accumulativeExp": 9140,
+    "rewardUpgradePoint": 1
+  },
+  {
+    "level": 17,
+    "accumulativeExp": 10134,
+    "rewardUpgradePoint": 1
+  },
+  {
+    "level": 18,
+    "accumulativeExp": 11166,
+    "rewardUpgradePoint": 1
+  },
+  {
+    "level": 19,
+    "accumulativeExp": 12235,
+    "rewardUpgradePoint": 1
+  },
+  {
+    "level": 20,
+    "accumulativeExp": 13341,
+    "rewardUpgradePoint": 1
+  }
+]

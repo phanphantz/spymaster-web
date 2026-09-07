@@ -1,0 +1,32 @@
+[
+  {
+    "effectId": "effInjury",
+    "type": "injury",
+    "displayName": "Injury",
+    "description": "Wounds the assigned agents. effectValue is health lost."
+  },
+  {
+    "effectId": "effHeal",
+    "type": "recovery",
+    "displayName": "Recovery",
+    "description": "Restores health. effectValue is health gained."
+  },
+  {
+    "effectId": "effHealthChange",
+    "type": "healthChange",
+    "displayName": "Health Change",
+    "description": "Signed health change. effectValue may be negative."
+  },
+  {
+    "effectId": "effLoseKit",
+    "type": "itemLoss",
+    "displayName": "Equipment Lost",
+    "description": "Destroys carried items. effectValue is how many."
+  },
+  {
+    "effectId": "effDeath",
+    "type": "death",
+    "displayName": "Killed in Action",
+    "description": "Kills an assigned agent. Rare by design."
+  }
+]

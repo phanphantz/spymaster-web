@@ -1,0 +1,74 @@
+[
+  {
+    "tagId": "lethal",
+    "scope": "agent",
+    "displayName": "Lethal",
+    "description": "Willing to kill."
+  },
+  {
+    "tagId": "nonLethal",
+    "scope": "agent",
+    "displayName": "Non Lethal",
+    "description": "Refuses to kill. Excluded from bloody work."
+  },
+  {
+    "tagId": "highMoral",
+    "scope": "agent",
+    "displayName": "High Moral",
+    "description": "Will not take morally grey contracts."
+  },
+  {
+    "tagId": "stealthy",
+    "scope": "agent",
+    "displayName": "Stealthy",
+    "description": "Trained to move unseen."
+  },
+  {
+    "tagId": "loud",
+    "scope": "agent",
+    "displayName": "Loud",
+    "description": "Draws attention. Poor fit for quiet work."
+  },
+  {
+    "tagId": "technical",
+    "scope": "agent",
+    "displayName": "Technical",
+    "description": "Handles electronics and systems."
+  },
+  {
+    "tagId": "social",
+    "scope": "agent",
+    "displayName": "Social",
+    "description": "Works people rather than locks."
+  },
+  {
+    "tagId": "medical",
+    "scope": "agent",
+    "displayName": "Medical",
+    "description": "Can treat injuries in the field."
+  },
+  {
+    "tagId": "driver",
+    "scope": "agent",
+    "displayName": "Driver",
+    "description": "Handles vehicles under pressure."
+  },
+  {
+    "tagId": "veteran",
+    "scope": "agent",
+    "displayName": "Veteran",
+    "description": "Long service. Steady under fire."
+  },
+  {
+    "tagId": "rookie",
+    "scope": "agent",
+    "displayName": "Rookie",
+    "description": "Untested."
+  },
+  {
+    "tagId": "supernatural",
+    "scope": "agent",
+    "displayName": "Supernatural",
+    "description": "Abilities that do not have a mundane explanation."
+  }
+]

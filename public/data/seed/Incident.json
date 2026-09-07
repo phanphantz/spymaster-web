@@ -1,0 +1,392 @@
+[
+  {
+    "incidentId": "inc_heist_vault_win",
+    "type": "reward",
+    "displayName": "Objective met",
+    "description": "The door never made a sound. The ledger was in the third drawer, exactly where the client said it would not be.",
+    "rewardExp": 180,
+    "rewardItems": [
+      {
+        "itemId": "dollar",
+        "qty": 6500
+      }
+    ]
+  },
+  {
+    "incidentId": "inc_heist_vault_lose",
+    "type": "penalty",
+    "displayName": "Objective failed",
+    "description": "Somebody heard the door. The team got out through a service corridor; the ledger did not.",
+    "rewardExp": 45,
+    "effects": [
+      {
+        "effectId": "effInjury",
+        "effectValue": "18"
+      }
+    ]
+  },
+  {
+    "incidentId": "inc_undercover_gang_win",
+    "type": "reward",
+    "displayName": "Objective met",
+    "description": "Three weeks of introductions compressed into one evening. The supplier is a shipping clerk with a gambling problem.",
+    "rewardExp": 150,
+    "rewardItems": [
+      {
+        "itemId": "dollar",
+        "qty": 5200
+      }
+    ]
+  },
+  {
+    "incidentId": "inc_undercover_gang_lose",
+    "type": "penalty",
+    "displayName": "Objective failed",
+    "description": "The papers did not survive a second look. The crew is now aware somebody is asking.",
+    "rewardExp": 38,
+    "effects": [
+      {
+        "effectId": "effInjury",
+        "effectValue": "14"
+      }
+    ]
+  },
+  {
+    "incidentId": "inc_extract_vip_win",
+    "type": "reward",
+    "displayName": "Objective met",
+    "description": "He is somebody else’s problem now, and he was still talking when they took him off our hands.",
+    "rewardExp": 220,
+    "rewardItems": [
+      {
+        "itemId": "dollar",
+        "qty": 7800
+      }
+    ]
+  },
+  {
+    "incidentId": "inc_extract_vip_lose",
+    "type": "penalty",
+    "displayName": "Objective failed",
+    "description": "The roadblock went up an hour early. He is back in the building he came out of, and so is his file.",
+    "rewardExp": 55,
+    "effects": [
+      {
+        "effectId": "effInjury",
+        "effectValue": "22"
+      }
+    ]
+  },
+  {
+    "incidentId": "inc_rescue_witness_win",
+    "type": "reward",
+    "displayName": "Objective met",
+    "description": "She was in worse shape than the file said. She was also conscious by the time we handed her over.",
+    "rewardExp": 210,
+    "rewardItems": [
+      {
+        "itemId": "dollar",
+        "qty": 7200
+      }
+    ]
+  },
+  {
+    "incidentId": "inc_rescue_witness_lose",
+    "type": "penalty",
+    "displayName": "Objective failed",
+    "description": "The team reached the ward. The ward was already empty, and the corridor was not.",
+    "rewardExp": 53,
+    "effects": [
+      {
+        "effectId": "effInjury",
+        "effectValue": "24"
+      }
+    ]
+  },
+  {
+    "incidentId": "inc_silent_kill_win",
+    "type": "reward",
+    "displayName": "Objective met",
+    "description": "The coroner in {location} wrote \"cardiac\" and went home early.",
+    "rewardExp": 240,
+    "rewardItems": [
+      {
+        "itemId": "dollar",
+        "qty": 8400
+      }
+    ]
+  },
+  {
+    "incidentId": "inc_silent_kill_lose",
+    "type": "penalty",
+    "displayName": "Objective failed",
+    "description": "It was quick, but it was not quiet, and there is now a description of somebody.",
+    "rewardExp": 60,
+    "effects": [
+      {
+        "effectId": "effInjury",
+        "effectValue": "20"
+      }
+    ]
+  },
+  {
+    "incidentId": "inc_assault_hideout_win",
+    "type": "reward",
+    "displayName": "Objective met",
+    "description": "Eleven minutes, six rooms, and the equipment still in its crates.",
+    "rewardExp": 200,
+    "rewardItems": [
+      {
+        "itemId": "dollar",
+        "qty": 6800
+      }
+    ]
+  },
+  {
+    "incidentId": "inc_assault_hideout_lose",
+    "type": "penalty",
+    "displayName": "Objective failed",
+    "description": "They were expecting it. The team pulled back with two wounded and nothing to show.",
+    "rewardExp": 50,
+    "effects": [
+      {
+        "effectId": "effInjury",
+        "effectValue": "28"
+      }
+    ]
+  },
+  {
+    "incidentId": "inc_surveillance_neighbour_win",
+    "type": "reward",
+    "displayName": "Objective met",
+    "description": "Eleven visitors, nine identified, and one who took the stairs every single time.",
+    "rewardExp": 130,
+    "rewardItems": [
+      {
+        "itemId": "dollar",
+        "qty": 4200
+      }
+    ]
+  },
+  {
+    "incidentId": "inc_surveillance_neighbour_lose",
+    "type": "penalty",
+    "displayName": "Objective failed",
+    "description": "The drone was found on the balcony. The target moved out the following morning.",
+    "rewardExp": 33,
+    "effects": [
+      {
+        "effectId": "effInjury",
+        "effectValue": "8"
+      }
+    ]
+  },
+  {
+    "incidentId": "inc_sabotage_deal_win",
+    "type": "reward",
+    "displayName": "Objective met",
+    "description": "The draft reached a journalist eleven hours before signing. Both parties now blame each other.",
+    "rewardExp": 190,
+    "rewardItems": [
+      {
+        "itemId": "dollar",
+        "qty": 6900
+      }
+    ]
+  },
+  {
+    "incidentId": "inc_sabotage_deal_lose",
+    "type": "penalty",
+    "displayName": "Objective failed",
+    "description": "The leak was traced back to the room it left. The deal signed on schedule.",
+    "rewardExp": 48,
+    "effects": [
+      {
+        "effectId": "effInjury",
+        "effectValue": "10"
+      }
+    ]
+  },
+  {
+    "incidentId": "inc_escort_principal_win",
+    "type": "reward",
+    "displayName": "Objective met",
+    "description": "She had an unremarkable evening. Two people did not get near the room.",
+    "rewardExp": 160,
+    "rewardItems": [
+      {
+        "itemId": "dollar",
+        "qty": 5600
+      }
+    ]
+  },
+  {
+    "incidentId": "inc_escort_principal_lose",
+    "type": "penalty",
+    "displayName": "Objective failed",
+    "description": "She is unhurt, which is the only good sentence in this report.",
+    "rewardExp": 40,
+    "effects": [
+      {
+        "effectId": "effInjury",
+        "effectValue": "20"
+      }
+    ]
+  },
+  {
+    "incidentId": "inc_prison_break_win",
+    "type": "reward",
+    "displayName": "Objective met",
+    "description": "He walked out through the laundry entrance wearing a guard’s coat, which he intends to keep.",
+    "rewardExp": 300,
+    "rewardItems": [
+      {
+        "itemId": "dollar",
+        "qty": 11500
+      }
+    ]
+  },
+  {
+    "incidentId": "inc_prison_break_lose",
+    "type": "penalty",
+    "displayName": "Objective failed",
+    "description": "The system came back up nine minutes early. He is still inside, and now they know he is worth keeping.",
+    "rewardExp": 75,
+    "effects": [
+      {
+        "effectId": "effInjury",
+        "effectValue": "32"
+      }
+    ]
+  },
+  {
+    "incidentId": "inc_find_the_mole_win",
+    "type": "reward",
+    "displayName": "Objective met",
+    "description": "It was the one nobody suspected, for a reason nobody would have guessed.",
+    "rewardExp": 170,
+    "rewardItems": [
+      {
+        "itemId": "dollar",
+        "qty": 5800
+      }
+    ]
+  },
+  {
+    "incidentId": "inc_find_the_mole_lose",
+    "type": "penalty",
+    "displayName": "Objective failed",
+    "description": "Three of the four now know they were being watched, and the fourth has resigned.",
+    "rewardExp": 43,
+    "effects": [
+      {
+        "effectId": "effInjury",
+        "effectValue": "12"
+      }
+    ]
+  },
+  {
+    "incidentId": "inc_courier_run_win",
+    "type": "reward",
+    "displayName": "Objective met",
+    "description": "Collected, delivered, signed for. Nobody asked what was inside.",
+    "rewardExp": 45,
+    "rewardItems": [
+      {
+        "itemId": "dollar",
+        "qty": 1400
+      }
+    ]
+  },
+  {
+    "incidentId": "inc_courier_run_lose",
+    "type": "penalty",
+    "displayName": "Objective failed",
+    "description": "The pickup point was watched. The case is gone and the client is unimpressed.",
+    "rewardExp": 11,
+    "effects": [
+      {
+        "effectId": "effInjury",
+        "effectValue": "6"
+      }
+    ]
+  },
+  {
+    "incidentId": "inc_casino_night_win",
+    "type": "reward",
+    "displayName": "Objective met",
+    "description": "Down forty thousand of the client’s money at the table, up one account number.",
+    "rewardExp": 195,
+    "rewardItems": [
+      {
+        "itemId": "dollar",
+        "qty": 7100
+      }
+    ]
+  },
+  {
+    "incidentId": "inc_casino_night_lose",
+    "type": "penalty",
+    "displayName": "Objective failed",
+    "description": "The buy-in held. The cover did not survive being asked where the money came from.",
+    "rewardExp": 49,
+    "effects": [
+      {
+        "effectId": "effInjury",
+        "effectValue": "12"
+      }
+    ]
+  },
+  {
+    "incidentId": "inc_deepwater_recovery_win",
+    "type": "reward",
+    "displayName": "Objective met",
+    "description": "Recovered on the second dive, still sealed, still legible.",
+    "rewardExp": 175,
+    "rewardItems": [
+      {
+        "itemId": "dollar",
+        "qty": 6200
+      }
+    ]
+  },
+  {
+    "incidentId": "inc_deepwater_recovery_lose",
+    "type": "penalty",
+    "displayName": "Objective failed",
+    "description": "The current had moved it. Two dives, no case, and one very cold team.",
+    "rewardExp": 44,
+    "effects": [
+      {
+        "effectId": "effInjury",
+        "effectValue": "18"
+      }
+    ]
+  },
+  {
+    "incidentId": "inc_protect_activist_win",
+    "type": "reward",
+    "displayName": "Objective met",
+    "description": "She published on schedule. Two people were dissuaded, and both walked away under their own power.",
+    "rewardExp": 165,
+    "rewardItems": [
+      {
+        "itemId": "dollar",
+        "qty": 5400
+      }
+    ]
+  },
+  {
+    "incidentId": "inc_protect_activist_lose",
+    "type": "penalty",
+    "displayName": "Objective failed",
+    "description": "She published from a different city, a day late, and is no longer taking our calls.",
+    "rewardExp": 41,
+    "effects": [
+      {
+        "effectId": "effInjury",
+        "effectValue": "16"
+      }
+    ]
+  }
+]

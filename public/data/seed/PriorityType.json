@@ -1,0 +1,18 @@
+[
+  {
+    "priorityTypeId": "low",
+    "displayName": "Low"
+  },
+  {
+    "priorityTypeId": "medium",
+    "displayName": "Medium"
+  },
+  {
+    "priorityTypeId": "high",
+    "displayName": "High"
+  },
+  {
+    "priorityTypeId": "veryHigh",
+    "displayName": "Very High"
+  }
+]

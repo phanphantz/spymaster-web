@@ -1,0 +1,74 @@
+[
+  {
+    "slotId": "slot_any",
+    "isMandatory": true,
+    "minLevel": 1
+  },
+  {
+    "slotId": "slot_lead",
+    "isMandatory": true,
+    "minLevel": 1,
+    "ast": 8
+  },
+  {
+    "slotId": "slot_stealth",
+    "isMandatory": true,
+    "minLevel": 1,
+    "sth": 10,
+    "excludedTags": [
+      "loud"
+    ]
+  },
+  {
+    "slotId": "slot_face",
+    "isMandatory": true,
+    "minLevel": 1,
+    "cha": 10
+  },
+  {
+    "slotId": "slot_hacker",
+    "isMandatory": true,
+    "minLevel": 1,
+    "int": 12,
+    "tags": [
+      "technical"
+    ]
+  },
+  {
+    "slotId": "slot_muscle",
+    "isMandatory": true,
+    "minLevel": 1,
+    "ast": 10,
+    "end": 10
+  },
+  {
+    "slotId": "slot_shooter",
+    "isMandatory": true,
+    "minLevel": 1,
+    "pre": 11
+  },
+  {
+    "slotId": "slot_clean",
+    "isMandatory": true,
+    "minLevel": 1,
+    "excludedTags": [
+      "lethal"
+    ]
+  },
+  {
+    "slotId": "slot_medic",
+    "isMandatory": false,
+    "minLevel": 1,
+    "tags": [
+      "medical"
+    ]
+  },
+  {
+    "slotId": "slot_wheelman",
+    "isMandatory": false,
+    "minLevel": 1,
+    "tags": [
+      "driver"
+    ]
+  }
+]

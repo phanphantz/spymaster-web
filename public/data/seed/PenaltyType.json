@@ -1,0 +1,18 @@
+[
+  {
+    "penaltyTypeId": "money",
+    "displayName": "Money"
+  },
+  {
+    "penaltyTypeId": "item",
+    "displayName": "Item"
+  },
+  {
+    "penaltyTypeId": "health",
+    "displayName": "Health"
+  },
+  {
+    "penaltyTypeId": "reputation",
+    "displayName": "Reputation"
+  }
+]

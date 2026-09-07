@@ -1,0 +1,227 @@
+[
+  {
+    "outcomeId": "outcome_heist_vault_win",
+    "type": "best",
+    "gateId": "gate_heist_vault_win",
+    "incidents": [
+      "inc_heist_vault_win"
+    ]
+  },
+  {
+    "outcomeId": "outcome_heist_vault_lose",
+    "type": "criticalFailure",
+    "incidents": [
+      "inc_heist_vault_lose"
+    ]
+  },
+  {
+    "outcomeId": "outcome_undercover_gang_win",
+    "type": "best",
+    "gateId": "gate_undercover_gang_win",
+    "incidents": [
+      "inc_undercover_gang_win"
+    ]
+  },
+  {
+    "outcomeId": "outcome_undercover_gang_lose",
+    "type": "criticalFailure",
+    "incidents": [
+      "inc_undercover_gang_lose"
+    ]
+  },
+  {
+    "outcomeId": "outcome_extract_vip_win",
+    "type": "best",
+    "gateId": "gate_extract_vip_win",
+    "incidents": [
+      "inc_extract_vip_win"
+    ]
+  },
+  {
+    "outcomeId": "outcome_extract_vip_lose",
+    "type": "criticalFailure",
+    "incidents": [
+      "inc_extract_vip_lose"
+    ]
+  },
+  {
+    "outcomeId": "outcome_rescue_witness_win",
+    "type": "best",
+    "gateId": "gate_rescue_witness_win",
+    "incidents": [
+      "inc_rescue_witness_win"
+    ]
+  },
+  {
+    "outcomeId": "outcome_rescue_witness_lose",
+    "type": "criticalFailure",
+    "incidents": [
+      "inc_rescue_witness_lose"
+    ]
+  },
+  {
+    "outcomeId": "outcome_silent_kill_win",
+    "type": "best",
+    "gateId": "gate_silent_kill_win",
+    "incidents": [
+      "inc_silent_kill_win"
+    ]
+  },
+  {
+    "outcomeId": "outcome_silent_kill_lose",
+    "type": "criticalFailure",
+    "incidents": [
+      "inc_silent_kill_lose"
+    ]
+  },
+  {
+    "outcomeId": "outcome_assault_hideout_win",
+    "type": "best",
+    "gateId": "gate_assault_hideout_win",
+    "incidents": [
+      "inc_assault_hideout_win"
+    ]
+  },
+  {
+    "outcomeId": "outcome_assault_hideout_lose",
+    "type": "criticalFailure",
+    "incidents": [
+      "inc_assault_hideout_lose"
+    ]
+  },
+  {
+    "outcomeId": "outcome_surveillance_neighbour_win",
+    "type": "best",
+    "gateId": "gate_surveillance_neighbour_win",
+    "incidents": [
+      "inc_surveillance_neighbour_win"
+    ]
+  },
+  {
+    "outcomeId": "outcome_surveillance_neighbour_lose",
+    "type": "criticalFailure",
+    "incidents": [
+      "inc_surveillance_neighbour_lose"
+    ]
+  },
+  {
+    "outcomeId": "outcome_sabotage_deal_win",
+    "type": "best",
+    "gateId": "gate_sabotage_deal_win",
+    "incidents": [
+      "inc_sabotage_deal_win"
+    ]
+  },
+  {
+    "outcomeId": "outcome_sabotage_deal_lose",
+    "type": "criticalFailure",
+    "incidents": [
+      "inc_sabotage_deal_lose"
+    ]
+  },
+  {
+    "outcomeId": "outcome_escort_principal_win",
+    "type": "best",
+    "gateId": "gate_escort_principal_win",
+    "incidents": [
+      "inc_escort_principal_win"
+    ]
+  },
+  {
+    "outcomeId": "outcome_escort_principal_lose",
+    "type": "criticalFailure",
+    "incidents": [
+      "inc_escort_principal_lose"
+    ]
+  },
+  {
+    "outcomeId": "outcome_prison_break_win",
+    "type": "best",
+    "gateId": "gate_prison_break_win",
+    "incidents": [
+      "inc_prison_break_win"
+    ]
+  },
+  {
+    "outcomeId": "outcome_prison_break_lose",
+    "type": "criticalFailure",
+    "incidents": [
+      "inc_prison_break_lose"
+    ]
+  },
+  {
+    "outcomeId": "outcome_find_the_mole_win",
+    "type": "best",
+    "gateId": "gate_find_the_mole_win",
+    "incidents": [
+      "inc_find_the_mole_win"
+    ]
+  },
+  {
+    "outcomeId": "outcome_find_the_mole_lose",
+    "type": "criticalFailure",
+    "incidents": [
+      "inc_find_the_mole_lose"
+    ]
+  },
+  {
+    "outcomeId": "outcome_courier_run_win",
+    "type": "best",
+    "gateId": "gate_courier_run_win",
+    "incidents": [
+      "inc_courier_run_win"
+    ]
+  },
+  {
+    "outcomeId": "outcome_courier_run_lose",
+    "type": "criticalFailure",
+    "incidents": [
+      "inc_courier_run_lose"
+    ]
+  },
+  {
+    "outcomeId": "outcome_casino_night_win",
+    "type": "best",
+    "gateId": "gate_casino_night_win",
+    "incidents": [
+      "inc_casino_night_win"
+    ]
+  },
+  {
+    "outcomeId": "outcome_casino_night_lose",
+    "type": "criticalFailure",
+    "incidents": [
+      "inc_casino_night_lose"
+    ]
+  },
+  {
+    "outcomeId": "outcome_deepwater_recovery_win",
+    "type": "best",
+    "gateId": "gate_deepwater_recovery_win",
+    "incidents": [
+      "inc_deepwater_recovery_win"
+    ]
+  },
+  {
+    "outcomeId": "outcome_deepwater_recovery_lose",
+    "type": "criticalFailure",
+    "incidents": [
+      "inc_deepwater_recovery_lose"
+    ]
+  },
+  {
+    "outcomeId": "outcome_protect_activist_win",
+    "type": "best",
+    "gateId": "gate_protect_activist_win",
+    "incidents": [
+      "inc_protect_activist_win"
+    ]
+  },
+  {
+    "outcomeId": "outcome_protect_activist_lose",
+    "type": "criticalFailure",
+    "incidents": [
+      "inc_protect_activist_lose"
+    ]
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "locationTypeId": "city",
+    "displayName": "City"
+  },
+  {
+    "locationTypeId": "building",
+    "displayName": "Building"
+  },
+  {
+    "locationTypeId": "compound",
+    "displayName": "Compound"
+  },
+  {
+    "locationTypeId": "wilderness",
+    "displayName": "Wilderness"
+  },
+  {
+    "locationTypeId": "facility",
+    "displayName": "Facility"
+  },
+  {
+    "locationTypeId": "transport",
+    "displayName": "Transport"
+  }
+]

@@ -1,0 +1,87 @@
+[
+  {
+    "poolId": "pool_agents_all",
+    "entries": [
+      {
+        "entryId": "agentBlade",
+        "weight": 3
+      },
+      {
+        "entryId": "agentHangman",
+        "weight": 3
+      },
+      {
+        "entryId": "agentDagger",
+        "weight": 6
+      },
+      {
+        "entryId": "agentIvy",
+        "weight": 6
+      },
+      {
+        "entryId": "agentStorm",
+        "weight": 6
+      },
+      {
+        "entryId": "agentNoire",
+        "weight": 3
+      },
+      {
+        "entryId": "agentPercival",
+        "weight": 6
+      },
+      {
+        "entryId": "agentRook",
+        "weight": 10
+      },
+      {
+        "entryId": "agentScarlet",
+        "weight": 3
+      },
+      {
+        "entryId": "agentSnow",
+        "weight": 6
+      },
+      {
+        "entryId": "agentWolf",
+        "weight": 10
+      },
+      {
+        "entryId": "agentOldman",
+        "weight": 6
+      },
+      {
+        "entryId": "agentJoker",
+        "weight": 10
+      },
+      {
+        "entryId": "agentPatch",
+        "weight": 6
+      },
+      {
+        "entryId": "agentLucky",
+        "weight": 10
+      },
+      {
+        "entryId": "agentMonday",
+        "weight": 6
+      },
+      {
+        "entryId": "agentAngel",
+        "weight": 3
+      },
+      {
+        "entryId": "agentButter",
+        "weight": 10
+      },
+      {
+        "entryId": "agentThirteen",
+        "weight": 3
+      },
+      {
+        "entryId": "agentJohnDoe",
+        "weight": 6
+      }
+    ]
+  }
+]

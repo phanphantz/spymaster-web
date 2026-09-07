@@ -1,0 +1,282 @@
+[
+  {
+    "id": "agentBlade",
+    "firstName": "Ryōsuke",
+    "lastName": "Kurogane",
+    "codeNames": [
+      "Blade"
+    ],
+    "description": "Raised by a legendary swordsman from childhood. Blind, and better for it. Kills only when given a reason, and never near children.",
+    "gender": "male",
+    "nationalities": [
+      "japanese"
+    ],
+    "age": 42
+  },
+  {
+    "id": "agentHangman",
+    "firstName": "Ethan",
+    "lastName": "Briggs",
+    "codeNames": [
+      "Hangman"
+    ],
+    "description": "Retired, until his family was murdered. Cold-blooded with a gun in his hand and a hard line about who is innocent.",
+    "gender": "male",
+    "nationalities": [
+      "american"
+    ],
+    "age": 37
+  },
+  {
+    "id": "agentDagger",
+    "firstName": "Yoruhime",
+    "lastName": "Shinju",
+    "codeNames": [
+      "Dagger"
+    ],
+    "description": "Shinobi lineage, trained in misdirection. Nobody has ever described what she looks like twice the same way.",
+    "gender": "female",
+    "nationalities": [
+      "japanese"
+    ],
+    "age": 28
+  },
+  {
+    "id": "agentIvy",
+    "firstName": "Victoria",
+    "lastName": "Grim",
+    "codeNames": [
+      "Ivy"
+    ],
+    "description": "Everything she touches turns to poison, which she treats as a personality rather than a problem.",
+    "gender": "female",
+    "nationalities": [
+      "british"
+    ],
+    "age": 21
+  },
+  {
+    "id": "agentStorm",
+    "firstName": "Mei",
+    "lastName": "Lin",
+    "codeNames": [
+      "Storm"
+    ],
+    "description": "Never misses with a thrown weapon. Has been asked to prove it and does not enjoy repeating herself.",
+    "gender": "female",
+    "nationalities": [
+      "chinese"
+    ],
+    "age": 22
+  },
+  {
+    "id": "agentNoire",
+    "firstName": "Naomi",
+    "lastName": "Voss",
+    "codeNames": [
+      "Noire"
+    ],
+    "description": "Works in shadow, literally. Cold on the outside, dark past underneath, and defensive about both.",
+    "gender": "female",
+    "nationalities": [
+      "british"
+    ],
+    "age": 25
+  },
+  {
+    "id": "agentPercival",
+    "firstName": "Julian",
+    "lastName": "Hart",
+    "codeNames": [
+      "Percival"
+    ],
+    "description": "Charm as a working tool. Has talked his way out of more rooms than he has shot his way out of.",
+    "gender": "male",
+    "nationalities": [
+      "british"
+    ],
+    "age": 27
+  },
+  {
+    "id": "agentRook",
+    "firstName": "Blake",
+    "lastName": "Coleman",
+    "codeNames": [
+      "Rook"
+    ],
+    "description": "Grounded field agent, no theatrics. The one you send when the plan has to survive contact.",
+    "gender": "male",
+    "nationalities": [
+      "american"
+    ],
+    "age": 32
+  },
+  {
+    "id": "agentScarlet",
+    "firstName": "Irina",
+    "lastName": "Volkova",
+    "codeNames": [
+      "Scarlet"
+    ],
+    "description": "Old-school tradecraft and a temper she has learned to aim. Fire follows her around.",
+    "gender": "female",
+    "nationalities": [
+      "russian"
+    ],
+    "age": 30
+  },
+  {
+    "id": "agentSnow",
+    "firstName": "Sophie",
+    "lastName": "Moreau",
+    "codeNames": [
+      "Snow"
+    ],
+    "description": "Glamorous cover, glacial nerve. Freezes a room in both senses.",
+    "gender": "female",
+    "nationalities": [
+      "french"
+    ],
+    "age": 24
+  },
+  {
+    "id": "agentWolf",
+    "firstName": "Hiroshi",
+    "lastName": "Yamada",
+    "codeNames": [
+      "Wolf"
+    ],
+    "description": "Came up through organised crime and never quite left the manners behind. Drives like the road owes him money.",
+    "gender": "male",
+    "nationalities": [
+      "japanese"
+    ],
+    "age": 32
+  },
+  {
+    "id": "agentOldman",
+    "firstName": "Bernard",
+    "lastName": "Chevalier",
+    "codeNames": [
+      "Oldman"
+    ],
+    "description": "Butler bearing, surgeon hands. Has patched up more of this agency than the agency knows.",
+    "gender": "male",
+    "nationalities": [
+      "french"
+    ],
+    "age": 54
+  },
+  {
+    "id": "agentJoker",
+    "firstName": "Jack",
+    "lastName": "Whitfield",
+    "codeNames": [
+      "Joker"
+    ],
+    "description": "Deadpan, unbothered, unreadable at a card table or a hostage negotiation.",
+    "gender": "male",
+    "nationalities": [
+      "australian"
+    ],
+    "age": 40
+  },
+  {
+    "id": "agentPatch",
+    "firstName": "Devon",
+    "lastName": "Carter",
+    "codeNames": [
+      "Patch"
+    ],
+    "description": "Ex-special forces, discharged for refusing an order he was right to refuse. Fixes things.",
+    "gender": "male",
+    "nationalities": [
+      "african american"
+    ],
+    "age": 29
+  },
+  {
+    "id": "agentLucky",
+    "firstName": "Valentina",
+    "lastName": "Cruz",
+    "codeNames": [
+      "Lucky"
+    ],
+    "description": "Improbably fortunate under fire, and entirely aware of how thin that is as a plan.",
+    "gender": "female",
+    "nationalities": [
+      "spanish"
+    ],
+    "age": 24
+  },
+  {
+    "id": "agentMonday",
+    "firstName": "Brittney",
+    "lastName": "Brooks",
+    "codeNames": [
+      "Monday"
+    ],
+    "description": "Builds the gear everyone else takes for granted. Genius, and tired of saying so.",
+    "gender": "female",
+    "nationalities": [
+      "african american"
+    ],
+    "age": 26
+  },
+  {
+    "id": "agentAngel",
+    "firstName": "Ji-an",
+    "lastName": "Kwon",
+    "codeNames": [
+      "Angel"
+    ],
+    "description": "Was inside three national grids before she was legally allowed to drive.",
+    "gender": "female",
+    "nationalities": [
+      "korean"
+    ],
+    "age": 19
+  },
+  {
+    "id": "agentButter",
+    "firstName": "Benjamin",
+    "lastName": "Fraser",
+    "codeNames": [
+      "Butter"
+    ],
+    "description": "Anxious, apologetic, and the only person here who can improvise a working device out of a hotel minibar.",
+    "gender": "male",
+    "nationalities": [
+      "canadian"
+    ],
+    "age": 22
+  },
+  {
+    "id": "agentThirteen",
+    "firstName": "Maya",
+    "lastName": "Zhou",
+    "codeNames": [
+      "Thirteen"
+    ],
+    "description": "Moves objects and reads rooms without touching either. Does not explain how.",
+    "gender": "female",
+    "nationalities": [
+      "chinese"
+    ],
+    "age": 25
+  },
+  {
+    "id": "agentJohnDoe",
+    "firstName": "Max",
+    "lastName": "Fletcher",
+    "codeNames": [
+      "JohnDoe"
+    ],
+    "description": "Forgettable on purpose. Remembers everything, forges the rest.",
+    "gender": "male",
+    "nationalities": [
+      "american"
+    ],
+    "age": 29
+  }
+]

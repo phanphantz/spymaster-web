@@ -1,0 +1,38 @@
+[
+  {
+    "missionTypeId": "assassination",
+    "displayName": "Assassination"
+  },
+  {
+    "missionTypeId": "sabotage",
+    "displayName": "Sabotage"
+  },
+  {
+    "missionTypeId": "combat",
+    "displayName": "Assault"
+  },
+  {
+    "missionTypeId": "extraction",
+    "displayName": "Extraction"
+  },
+  {
+    "missionTypeId": "rescue",
+    "displayName": "Rescue"
+  },
+  {
+    "missionTypeId": "searchAndRescue",
+    "displayName": "Search & Rescue"
+  },
+  {
+    "missionTypeId": "infiltration",
+    "displayName": "Infiltration"
+  },
+  {
+    "missionTypeId": "surveillance",
+    "displayName": "Surveillance"
+  },
+  {
+    "missionTypeId": "protection",
+    "displayName": "Protection"
+  }
+]
