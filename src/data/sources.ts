@@ -66,16 +66,32 @@ export function layersFromSearch(search: string): LayerId[] {
 export interface LayerReader {
     /** Resolves a tab to its rows, or undefined when that tab is not present in the layer. */
     readTab(directory: string, sheet: SheetName): Promise<Record<string, unknown>[] | undefined>;
+    /** The tabs this layer holds, or undefined when it carries no manifest. */
+    readManifest(directory: string): Promise<SheetName[] | undefined>;
+}
+
+/** Only tabs the workbook actually has can be in a manifest; anything else is ignored. */
+export function parseManifest(parsed: unknown): SheetName[] | undefined {
+    if (!Array.isArray(parsed)) return undefined;
+    const known = new Set<string>(ALL_SHEETS);
+    return parsed.filter((entry): entry is SheetName => typeof entry === 'string' && known.has(entry));
 }
 
 /** Fetches JSON from public/data, the way the browser sees it. */
 export function browserReader(baseUrl: string): LayerReader {
+    const readJson = async (path: string): Promise<unknown> => {
+        const response = await fetch(`${baseUrl}data/${path}`);
+        if (!response.ok) return undefined;
+        return response.json();
+    };
+
     return {
         async readTab(directory, sheet) {
-            const response = await fetch(`${baseUrl}data/${directory}/${sheet}.json`);
-            if (!response.ok) return undefined;
-            const parsed: unknown = await response.json();
+            const parsed = await readJson(`${directory}/${sheet}.json`);
             return Array.isArray(parsed) ? (parsed as Record<string, unknown>[]) : undefined;
+        },
+        async readManifest(directory) {
+            return parseManifest(await readJson(`${directory}/index.json`));
         },
     };
 }
@@ -84,11 +100,16 @@ async function readDirectoryLayer(
     reader: LayerReader,
     directory: string,
 ): Promise<RowMap> {
+    // Each layer directory carries an index.json naming the tabs it actually holds. Without one,
+    // loading a layer means probing all 48 tabs and 404ing on most of them — dozens of wasted
+    // requests, and a console full of failures that hide the real ones. Written by the sync and
+    // snapshot scripts.
+    const manifest = await reader.readManifest(directory).catch(() => undefined);
+    const tabs = manifest ?? ALL_SHEETS;
+
     const rows: RowMap = {};
-    // One request per tab rather than a bundle, so a tab the layer does not carry simply 404s and
-    // the rest still load. Layers are small and the browser parallelises these.
     await Promise.all(
-        ALL_SHEETS.map(async (sheet) => {
+        tabs.map(async (sheet) => {
             const tab = await reader.readTab(directory, sheet).catch(() => undefined);
             if (tab?.length) rows[sheet] = tab;
         }),

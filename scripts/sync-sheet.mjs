@@ -85,6 +85,7 @@ try {
 
     let written = 0;
     let empty = 0;
+    const carried = [];
 
     for (const [index, sheet] of ALL_SHEETS.entries()) {
         const grid = (ranges[index]?.values ?? []).map((row) =>
@@ -101,7 +102,18 @@ try {
             await writeFile(join(TARGET, `${sheet}.json`), `${JSON.stringify(rows, null, 2)}\n`, 'utf8');
         }
         console.log(`  ${sheet}: ${rows.length} rows`);
+        carried.push(sheet);
         written++;
+    }
+
+    // The manifest is what stops the browser probing all 48 tabs and 404ing on the 30 this layer
+    // does not carry.
+    if (!dryRun) {
+        await writeFile(
+            join(TARGET, 'index.json'),
+            `${JSON.stringify(carried, null, 2)}\n`,
+            'utf8',
+        );
     }
 
     const readme =

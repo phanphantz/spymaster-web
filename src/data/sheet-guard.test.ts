@@ -18,7 +18,9 @@ const DATA_ROOT = resolve(__dirname, '../../public/data');
 async function syncedTabs(): Promise<string[]> {
     try {
         const files = await readdir(resolve(DATA_ROOT, 'sheet'));
-        return files.filter((file) => file.endsWith('.json'));
+        // index.json is the layer manifest, not a tab; counting it would make an empty pull look
+        // like a synced one and run these checks against nothing.
+        return files.filter((file) => file.endsWith('.json') && file !== 'index.json');
     } catch {
         return [];
     }

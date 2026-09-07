@@ -1,0 +1,20 @@
+[
+  "AgentData",
+  "CharacterData",
+  "Habit",
+  "Skill",
+  "Item",
+  "Stat",
+  "Mission",
+  "Task",
+  "MissionEvent",
+  "AgentLevel",
+  "PlayerLevel",
+  "MissionDifficulty",
+  "ItemType",
+  "MissionType",
+  "OutcomeType",
+  "EffectType",
+  "ConditionType",
+  "GlobalConfig"
+]

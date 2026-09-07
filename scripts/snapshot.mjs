@@ -72,15 +72,19 @@ try {
     await rm(target, { recursive: true, force: true });
     await mkdir(target, { recursive: true });
 
-    let written = 0;
+    const carried = [];
     for (const sheet of ALL_SHEETS) {
         const rows = data.tables[sheet].rows;
         if (!rows.length) continue;
         await writeFile(join(target, `${sheet}.json`), `${JSON.stringify(rows, null, 2)}\n`, 'utf8');
-        written++;
+        carried.push(sheet);
     }
 
-    console.log(`Wrote ${written} tabs to public/data/snapshots/${name}/`);
+    // Names the tabs this snapshot holds, so loading it costs one request per real tab rather than
+    // a probe of all 48 with a 404 for most of them.
+    await writeFile(join(target, 'index.json'), `${JSON.stringify(carried, null, 2)}\n`, 'utf8');
+
+    console.log(`Wrote ${carried.length} tabs to public/data/snapshots/${name}/`);
     console.log(`Load it with ?data=snapshot:${name}`);
 } finally {
     await server.close();
