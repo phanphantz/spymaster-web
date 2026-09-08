@@ -21,7 +21,7 @@ import { DOLLAR, type GameTables } from '../engine/types';
  */
 
 export type Phase = 'loading' | 'failed' | 'employment' | 'playing';
-export type Overlay = 'none' | 'missionSummary' | 'loadout' | 'result';
+export type Overlay = 'none' | 'missionSummary' | 'result';
 
 interface GameState {
     phase: Phase;
@@ -66,17 +66,17 @@ interface GameState {
     speedIndex: () => number;
     skipAhead: (minutes: number) => void;
 
+    /** Opens a mission's summary and stands up its Loadout session in the same step — assignment
+     *  happens right there, there is no separate page to hand off to. */
     openMission: (instanceId: string) => void;
     closeOverlay: () => void;
     declineMission: (instanceId: string) => void;
-    acceptMission: (instanceId: string) => void;
 
     assignAgent: (slotId: string, characterId: string) => void;
     unassignAgent: (slotId: string) => void;
     purchaseItem: (itemId: string, qty?: number) => void;
     assignItem: (characterId: string, itemId: string, qty?: number) => void;
     unassignItem: (characterId: string, itemId: string, qty?: number) => void;
-    cancelLoadout: () => void;
     deployMission: () => void;
 
     money: () => number;
@@ -230,11 +230,22 @@ export const useGame = create<GameState>((set, get) => ({
     },
 
     openMission(instanceId) {
-        set({ selectedInstanceId: instanceId, overlay: 'missionSummary' });
+        const { tables, roster, inventory, playerLevel, pending } = get();
+        const mission = pending.find((candidate) => candidate.instanceId === instanceId);
+        if (!tables || !mission) return;
+
+        set({
+            selectedInstanceId: instanceId,
+            session: new LoadoutSession(mission, tables, roster, inventory, playerLevel),
+            overlay: 'missionSummary',
+            version: get().version + 1,
+        });
     },
 
     closeOverlay() {
-        set({ overlay: 'none', selectedInstanceId: undefined });
+        // Returns every carried item, so backing out of a mission costs nothing.
+        get().session?.cancel();
+        set({ overlay: 'none', selectedInstanceId: undefined, session: undefined, version: get().version + 1 });
     },
 
     declineMission(instanceId) {
@@ -242,23 +253,12 @@ export const useGame = create<GameState>((set, get) => ({
         // Declining is free, but a Mission authors whether it may be declined at all.
         if (mission && mission.data.isDeclinable === false) return;
 
+        get().session?.cancel();
         set({
             pending: get().pending.filter((candidate) => candidate.instanceId !== instanceId),
             overlay: 'none',
             selectedInstanceId: undefined,
-            version: get().version + 1,
-        });
-    },
-
-    acceptMission(instanceId) {
-        const { tables, roster, inventory, playerLevel, pending } = get();
-        const mission = pending.find((candidate) => candidate.instanceId === instanceId);
-        if (!tables || !mission) return;
-
-        set({
-            session: new LoadoutSession(mission, tables, roster, inventory, playerLevel),
-            overlay: 'loadout',
-            selectedInstanceId: instanceId,
+            session: undefined,
             version: get().version + 1,
         });
     },
@@ -286,12 +286,6 @@ export const useGame = create<GameState>((set, get) => ({
     unassignItem(characterId, itemId, qty = 1) {
         get().session?.unassignItem(characterId, itemId, qty);
         set({ version: get().version + 1 });
-    },
-
-    cancelLoadout() {
-        // Returns every carried item, so backing out of a Loadout costs nothing.
-        get().session?.cancel();
-        set({ session: undefined, overlay: 'none', selectedInstanceId: undefined, version: get().version + 1 });
     },
 
     deployMission() {

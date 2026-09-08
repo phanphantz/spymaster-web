@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { resolve } from 'node:path';
 import { loadTables } from '../data/load';
 import { nodeReader } from '../data/nodeReader';
-import { makeTable } from '../data/merge';
+import { makeTable, type RowMap } from '../data/merge';
 import { Clock } from './clock';
 import { Container, Inventory, StatContainer } from './container';
 import { rollOffer } from './employment';
@@ -22,7 +22,8 @@ import * as weightedPool from './weightedPool';
 import type { GameTables, GateData, LocationData, OutcomeData, SlotRequirementData } from './types';
 
 const DATA_ROOT = resolve(__dirname, '../../public/data');
-const seed = () => loadTables({ layers: ['seed'], reader: nodeReader(DATA_ROOT) });
+const seed = (overrides?: RowMap) =>
+    loadTables({ layers: ['seed'], reader: nodeReader(DATA_ROOT), overrides });
 
 // ---------------------------------------------------------------------------
 // Small hand-built fixtures, so a Gate test does not depend on the seed balance.
@@ -580,8 +581,8 @@ describe('Shop', () => {
 // makes the loop unplayable fails here rather than in the browser.
 // ---------------------------------------------------------------------------
 
-async function fixture(seedValue = 5) {
-    const { tables } = await seed();
+async function fixture(seedValue = 5, overrides?: RowMap) {
+    const { tables } = await seed(overrides);
     const rng: Rng = createRng(seedValue);
     const inventory = new Inventory([['dollar', 50000]]);
 
@@ -644,7 +645,11 @@ describe('Loadout', () => {
     });
 
     it('refuses an agent who fails the slot, and says why', async () => {
-        const { tables, rng, inventory, roster } = await fixture();
+        // Slot requirements are cleared from the authored seed for now, so this patches one back in
+        // just to prove the enforcement mechanism still works end to end.
+        const { tables, rng, inventory, roster } = await fixture(5, {
+            SlotRequirement: [{ slotId: 'slot_hacker', int: 12 }],
+        });
         const mission = generateMission(
             tables.Mission.get('heist_vault')!, tables.Location, rng, 'heist_vault#1', 0,
         );
@@ -826,7 +831,11 @@ describe('deploying a mission', () => {
     });
 
     it('rejects an agent the client prohibited, whatever their stats', async () => {
-        const { tables, rng, inventory, roster } = await fixture();
+        // Slot requirements are cleared from the authored seed for now, so this patches one back in
+        // just to prove the enforcement mechanism still works end to end.
+        const { tables, rng, inventory, roster } = await fixture(5, {
+            SlotRequirement: [{ slotId: 'slot_clean', excludedTags: ['lethal'] }],
+        });
         // The seed roster has no lethal agent, so bring one in for this.
         const scarlet = runtimeAgent.createAgent(
             tables.AgentData.get('agentScarlet')!,

@@ -616,12 +616,7 @@
     text-transform: uppercase;
 }
 
-/* --- Loadout -------------------------------------------------------------- */
-
-.loadout { display: grid; grid-template-columns: 1fr 1fr; min-height: 0; }
-
-.loadout__slots { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
-.loadout__market { padding: 20px; border-left: 1px solid var(--line); display: flex; flex-direction: column; gap: 12px; min-height: 0; }
+/* --- Assignment (in-place Loadout) ----------------------------------------- */
 
 /* Slots as a 2-up grid of assignment cards, rather than a single stacked column. */
 .slot-grid {
@@ -704,7 +699,8 @@
     overflow: hidden;
 }
 
-.stat-gauge__fill { height: 100%; background: var(--cyan); }
+/* A plain <span>, so it needs an explicit display or width/height do nothing. */
+.stat-gauge__fill { display: block; height: 100%; background: var(--cyan); }
 
 .stat-gauge__value {
     flex: 0 0 auto;
@@ -729,8 +725,16 @@
 .tabs {
     display: flex;
     gap: 6px;
-    /* Clears the modal close button, which floats over this column. */
-    padding-right: 44px;
+}
+
+/* The Shop/Inventory section, stacked below the slots and gauges rather than beside them. */
+.kit {
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 0;
 }
 
 .tab {
@@ -865,7 +869,6 @@
 
 @media (max-width: 900px) {
     .summary,
-    .loadout,
     .slot-grid,
     .stat-gauges { grid-template-columns: 1fr; }
 
@@ -874,7 +877,6 @@
     /* The rule and its dot are the seam between two columns; stacked, there is no seam. */
     .summary__divider { display: none; }
     .summary__photo { min-height: 140px; }
-    .loadout__market { border-left: 0; border-top: 1px solid var(--line); }
 
     .summary__name { font-size: var(--fs-money); }
     .reward-row { grid-template-columns: 1fr; }

@@ -1,15 +1,23 @@
-import { useState, type ReactNode } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import { useGame } from '../../store/gameStore';
-import { ConfirmDialog, DifficultyPips, Emphasized, Modal } from '../components/bits';
+import * as runtimeAgent from '../../engine/runtimeAgent';
+import type { RuntimeAgent } from '../../engine/runtimeAgent';
+import { describeReason } from '../../engine/slotRequirementEvaluator';
+import { describePurchaseFailure } from '../../engine/shop';
+import { AgentCard, ConfirmDialog, DifficultyPips, Emphasized, Modal } from '../components/bits';
 import { STAT_IDS } from '../../engine/types';
-import type { GameTables, SlotRequirementData } from '../../engine/types';
+import type { GameTables, ItemData } from '../../engine/types';
+import type { LoadoutSession } from '../../engine/loadout';
 import type { LiveMission } from '../../engine/missionFeed';
 
 /**
- * The Mission Summary UI: read the contract, then accept or decline.
+ * The Mission UI: read the contract, build the team, then deploy or decline.
  *
- * Follows `UIMissionSummary` in `UI_DESIGN_SYSTEM.md` §5.3 — a two-column modal, photo and location
- * on the left, the briefing on the right, split by a steel rule carrying a notification dot.
+ * Follows `UIMissionSummary` in `UI_DESIGN_SYSTEM.md` §5.3 for the briefing half — photo and
+ * location on the left, the briefing on the right, split by a steel rule carrying a notification
+ * dot. Assignment happens in the same modal rather than handing off to a separate Loadout page: the
+ * Loadout session is stood up the moment the mission opens, and the Assignment tab is that session's
+ * real, interactive slot grid, not a preview of it.
  *
  * It shows the hint, which is authored and may be deliberately oblique, and what the job demands of
  * a team. It does **not** show a success chance, because none is computed — the result is whichever
@@ -19,30 +27,58 @@ export function MissionSummary(): ReactNode {
     useGame((state) => state.version);
 
     const tables = useGame((state) => state.tables);
-    const pending = useGame((state) => state.pending);
-    const selectedInstanceId = useGame((state) => state.selectedInstanceId);
+    const session = useGame((state) => state.session);
+    const roster = useGame((state) => state.roster);
     const close = useGame((state) => state.closeOverlay);
     const decline = useGame((state) => state.declineMission);
-    const accept = useGame((state) => state.acceptMission);
+    const deploy = useGame((state) => state.deployMission);
+    const assignAgent = useGame((state) => state.assignAgent);
+    const unassignAgent = useGame((state) => state.unassignAgent);
 
     const [tab, setTab] = useState<'details' | 'assignment'>('details');
     const [confirmingDecline, setConfirmingDecline] = useState(false);
+    const [pickingAgentId, setPickingAgentId] = useState<string>();
+    const [failure, setFailure] = useState('');
 
-    const mission = pending.find((candidate) => candidate.instanceId === selectedInstanceId);
-    if (!mission || !tables) return null;
+    if (!session || !tables) return null;
 
+    const mission = session.mission;
     const canDecline = mission.data.isDeclinable !== false;
 
-    const startGate = tables.Gate.get(mission.data.gateId);
-    const slots = (startGate?.slotReqIds ?? []).map((slotId) => tables.SlotRequirement.get(slotId));
     const keywordTerms = [
         mission.location?.displayName,
         mission.data.type,
-        ...slots.flatMap((slot) => [...(slot?.tags ?? []), ...(slot?.excludedTags ?? [])]),
+        ...session.slots.flatMap((slot) => [
+            ...(slot.requirement?.tags ?? []),
+            ...(slot.requirement?.excludedTags ?? []),
+        ]),
     ].filter((term): term is string => Boolean(term));
 
+    /** Places whichever agent is selected in the roster strip into this slot, or explains why not. */
+    function placeInSlot(slotId: string): void {
+        if (!session || !pickingAgentId) return;
+
+        const candidate = session
+            .candidatesFor(slotId)
+            .find((entry) => entry.agent.characterId === pickingAgentId);
+        if (!candidate) return;
+
+        if (!candidate.isEligible) {
+            setFailure(
+                candidate.reasons.length
+                    ? describeReason(candidate.reasons[0])
+                    : `${runtimeAgent.displayName(candidate.agent)} cannot take this slot`,
+            );
+            return;
+        }
+
+        setFailure('');
+        assignAgent(slotId, pickingAgentId);
+        setPickingAgentId(undefined);
+    }
+
     return (
-        <Modal onClose={close} label={mission.data.displayName ?? 'Mission'}>
+        <Modal onClose={close} wide label={mission.data.displayName ?? 'Mission'}>
             <div className="modal__body">
                 <div className="summary">
                     <div className="summary__left">
@@ -99,10 +135,39 @@ export function MissionSummary(): ReactNode {
                         {tab === 'details' ? (
                             <DetailsTab mission={mission} tables={tables} />
                         ) : (
-                            <AssignmentTab slots={slots} />
+                            <AssignmentTab
+                                session={session}
+                                tables={tables}
+                                pickingAgentId={pickingAgentId}
+                                onPickSlot={placeInSlot}
+                                onUnassign={unassignAgent}
+                                failure={failure}
+                                setFailure={setFailure}
+                            />
                         )}
                     </div>
                 </div>
+            </div>
+
+            <div className="roster loadout__roster">
+                {roster.length === 0 ? (
+                    <span className="meta">No agents employed.</span>
+                ) : (
+                    roster.map((agent) => (
+                        <AgentCard
+                            key={agent.characterId}
+                            agent={agent}
+                            selected={agent.characterId === pickingAgentId}
+                            disabled={!runtimeAgent.isAvailable(agent)}
+                            onClick={() => {
+                                setFailure('');
+                                setPickingAgentId((current) =>
+                                    current === agent.characterId ? undefined : agent.characterId,
+                                );
+                            }}
+                        />
+                    ))
+                )}
             </div>
 
             <div className="modal__footer">
@@ -115,12 +180,18 @@ export function MissionSummary(): ReactNode {
                 >
                     Decline
                 </button>
+                <span className="meta">
+                    {session.canConfirm
+                        ? 'Ready to deploy'
+                        : `Fill ${session.missingMandatorySlots.length} more slot(s)`}
+                </span>
                 <button
                     type="button"
                     className="btn btn--primary"
-                    onClick={() => accept(mission.instanceId)}
+                    onClick={deploy}
+                    disabled={!session.canConfirm}
                 >
-                    Assign
+                    Deploy
                 </button>
             </div>
 
@@ -231,21 +302,312 @@ function DetailsTab({ mission, tables }: { mission: LiveMission; tables: GameTab
 }
 
 /**
- * Who the job needs.
+ * Who goes, and what they carry — the real Loadout, in place.
  *
  * A Mission has no slot list of its own — the slots are whatever its start Gate names, in authored
- * order. This is the same list the Loadout page will present.
+ * order, and `session.slots` is that list. Tap an agent in the roster strip below, then tap an empty
+ * slot here to place them; an occupied slot clears with its 'x'.
  */
-function AssignmentTab({ slots }: { slots: (SlotRequirementData | undefined)[] }): ReactNode {
+function AssignmentTab({
+    session,
+    tables,
+    pickingAgentId,
+    onPickSlot,
+    onUnassign,
+    failure,
+    setFailure,
+}: {
+    session: LoadoutSession;
+    tables: GameTables;
+    pickingAgentId: string | undefined;
+    onPickSlot: (slotId: string) => void;
+    onUnassign: (slotId: string) => void;
+    failure: string;
+    setFailure: (message: string) => void;
+}): ReactNode {
+    const [kitTab, setKitTab] = useState<'shop' | 'inventory'>('shop');
+    const [query, setQuery] = useState('');
+
+    const assignedAgents = session.slots
+        .map((slot) => session.agentIn(slot.slotId))
+        .filter((agent): agent is NonNullable<typeof agent> => agent !== undefined);
+
     return (
         <div className="tabpanel" role="tabpanel">
-            <div className="summary__label">Required team</div>
-            <div className="marker-list">
-                {slots.map((slot, index) => (
-                    <div className="marker-row" key={slot?.slotId ?? index}>
-                        <span className="marker" />
-                        <span>{slotLabel(slot)}</span>
-                        <span className="marker-row__note">{describeRequirement(slot)}</span>
+            <div className="slot-grid">
+                {session.slots.map((slot) => {
+                    const occupant = session.agentIn(slot.slotId);
+                    const className = [
+                        'slot',
+                        occupant ? 'slot--filled' : '',
+                        !occupant && slot.isMandatory ? 'slot--needed' : '',
+                    ]
+                        .filter(Boolean)
+                        .join(' ');
+
+                    return (
+                        <div className={className} key={slot.slotId}>
+                            <div className="slot__head">
+                                <span className="micro">
+                                    {slot.slotId.replace(/^slot_/, '')}
+                                    {slot.isMandatory ? '' : ' · optional'}
+                                </span>
+                            </div>
+
+                            {occupant ? (
+                                <>
+                                    <button
+                                        type="button"
+                                        className="slot__remove"
+                                        onClick={() => onUnassign(slot.slotId)}
+                                        aria-label={`Remove ${runtimeAgent.displayName(occupant)}`}
+                                    >
+                                        ✕
+                                    </button>
+                                    <CarriedItems characterId={occupant.characterId} />
+                                </>
+                            ) : (
+                                <button
+                                    type="button"
+                                    className="slot__empty"
+                                    disabled={!pickingAgentId}
+                                    onClick={() => onPickSlot(slot.slotId)}
+                                >
+                                    {pickingAgentId ? 'Tap to assign' : 'Select an agent below'}
+                                </button>
+                            )}
+                        </div>
+                    );
+                })}
+            </div>
+
+            <StatGauges agents={assignedAgents} tables={tables} />
+
+            <div className="kit">
+                <div className="tabs" role="tablist">
+                    <button
+                        type="button"
+                        role="tab"
+                        className="tab"
+                        aria-selected={kitTab === 'shop'}
+                        onClick={() => setKitTab('shop')}
+                    >
+                        Shop
+                    </button>
+                    <button
+                        type="button"
+                        role="tab"
+                        className="tab"
+                        aria-selected={kitTab === 'inventory'}
+                        onClick={() => setKitTab('inventory')}
+                    >
+                        Inventory
+                    </button>
+                </div>
+
+                <input
+                    className="search"
+                    placeholder="Search kit…"
+                    value={query}
+                    onChange={(event) => setQuery(event.target.value)}
+                />
+
+                {failure ? <div className="meta danger">{failure}</div> : null}
+
+                {kitTab === 'shop' ? (
+                    <ShopList query={query} onFailure={setFailure} />
+                ) : (
+                    <InventoryList query={query} />
+                )}
+            </div>
+        </div>
+    );
+}
+
+/** The team's combined Stats, as 2-up gauges — full name on the left, bar and total on the right. */
+function StatGauges({
+    agents,
+    tables,
+}: {
+    agents: readonly RuntimeAgent[];
+    tables: GameTables;
+}): ReactNode {
+    return (
+        <div className="stat-gauges">
+            {STAT_IDS.map((stat) => {
+                const total = agents.reduce((sum, agent) => sum + runtimeAgent.effectiveStats(agent).get(stat), 0);
+                const definition = tables.Stat.get(stat);
+                const cap = (definition?.maxValue ?? 20) * Math.max(1, agents.length);
+                const ratio = cap > 0 ? Math.min(1, total / cap) : 0;
+
+                return (
+                    <div className="stat-gauge" key={stat}>
+                        <span className="stat-gauge__label">{definition?.displayName ?? stat.toUpperCase()}</span>
+                        <span className="stat-gauge__track">
+                            <span className="stat-gauge__fill" style={{ width: `${Math.round(ratio * 100)}%` }} />
+                        </span>
+                        <span className="stat-gauge__value">{total}</span>
+                    </div>
+                );
+            })}
+        </div>
+    );
+}
+
+/** Assigning an item transfers real stock out of the pool, so the counts here are the truth. */
+function ShopList({
+    query,
+    onFailure,
+}: {
+    query: string;
+    onFailure: (message: string) => void;
+}): ReactNode {
+    useGame((state) => state.version);
+
+    const session = useGame((state) => state.session)!;
+    const purchase = useGame((state) => state.purchaseItem);
+
+    const items = useMemo(
+        () => filterItems(session.shop.availableItems(), query),
+        [session, query],
+    );
+
+    return (
+        <div className="item-list">
+            {items.map((item) => {
+                const price = session.shop.priceOf(item.itemId!)?.qty ?? 0;
+                const failure = session.shop.checkPurchase(item.itemId!, 1);
+
+                return (
+                    <div className="item-row" key={item.itemId}>
+                        <span>
+                            <span className="item-row__name">{item.displayName ?? item.itemId}</span>
+                            <br />
+                            <span className="item-row__effects">{describeEffects(item)}</span>
+                        </span>
+                        <span className="item-row__price">${price.toLocaleString('en-US')}</span>
+                        <button
+                            type="button"
+                            className="btn btn--small"
+                            disabled={failure !== 'none'}
+                            title={describePurchaseFailure(failure)}
+                            onClick={() => {
+                                onFailure('');
+                                const result = session.shop.checkPurchase(item.itemId!, 1);
+                                if (result !== 'none') onFailure(describePurchaseFailure(result));
+                                else purchase(item.itemId!, 1);
+                            }}
+                        >
+                            Buy
+                        </button>
+                    </div>
+                );
+            })}
+        </div>
+    );
+}
+
+/** What the agency owns, and who to hand it to. */
+function InventoryList({ query }: { query: string }): ReactNode {
+    useGame((state) => state.version);
+
+    const session = useGame((state) => state.session)!;
+    const tables = useGame((state) => state.tables)!;
+    const inventory = useGame((state) => state.inventory);
+    const assignItem = useGame((state) => state.assignItem);
+
+    const carriers = session.slots
+        .map((slot) => session.agentIn(slot.slotId))
+        .filter((agent): agent is NonNullable<typeof agent> => agent !== undefined);
+
+    const owned = inventory.entries
+        .filter(([itemId]) => itemId !== 'dollar')
+        .map(([itemId, qty]) => ({ item: tables.Item.get(itemId), itemId, qty }))
+        .filter((entry) => entry.item)
+        .filter((entry) => matches(entry.item!, query));
+
+    if (!owned.length) {
+        return (
+            <div className="item-list">
+                <p className="meta">Nothing in stock. Buy something from the Shop tab.</p>
+            </div>
+        );
+    }
+
+    return (
+        <div className="item-list">
+            {owned.map(({ item, itemId, qty }) => (
+                <div className="item-row" key={itemId}>
+                    <span>
+                        <span className="item-row__name">
+                            {item!.displayName ?? itemId} ×{qty}
+                        </span>
+                        <br />
+                        <span className="item-row__effects">{describeEffects(item!)}</span>
+                    </span>
+                    <span />
+                    <span style={{ display: 'flex', gap: 4 }}>
+                        {carriers.length === 0 ? (
+                            <span className="meta dim">assign an agent first</span>
+                        ) : (
+                            carriers.map((agent) => (
+                                <button
+                                    type="button"
+                                    key={agent.characterId}
+                                    className="btn btn--small"
+                                    disabled={session.remainingCapacity(agent.characterId) < 1}
+                                    onClick={() => assignItem(agent.characterId, itemId, 1)}
+                                    title={`Give to ${runtimeAgent.displayName(agent)}`}
+                                >
+                                    → {runtimeAgent.displayName(agent)}
+                                </button>
+                            ))
+                        )}
+                    </span>
+                </div>
+            ))}
+        </div>
+    );
+}
+
+function CarriedItems({ characterId }: { characterId: string }): ReactNode {
+    useGame((state) => state.version);
+
+    const session = useGame((state) => state.session)!;
+    const tables = useGame((state) => state.tables)!;
+    const unassignItem = useGame((state) => state.unassignItem);
+
+    const agent = session.agentIn(session.slotOf(characterId) ?? '')!;
+    const carried = session.carriedBy(characterId).entries;
+    const capacity = runtimeAgent.inventorySize(agent);
+
+    return (
+        <div>
+            <div className="agent-card__name">{runtimeAgent.displayName(agent)}</div>
+            <div className="statline" style={{ marginTop: 6 }}>
+                {STAT_IDS.map((stat) => (
+                    <span key={stat}>
+                        {stat.toUpperCase()} <b>{runtimeAgent.effectiveStats(agent).get(stat)}</b>
+                    </span>
+                ))}
+            </div>
+
+            <div className="carry">
+                <div className="micro dim">
+                    Carrying {carried.reduce((sum, [, qty]) => sum + qty, 0)} / {capacity}
+                </div>
+                {carried.map(([itemId, qty]) => (
+                    <div className="carry__row" key={itemId}>
+                        <span>
+                            {tables.Item.get(itemId)?.displayName ?? itemId} ×{qty}
+                        </span>
+                        <button
+                            type="button"
+                            className="btn btn--small btn--quiet"
+                            onClick={() => unassignItem(characterId, itemId, 1)}
+                        >
+                            Return
+                        </button>
                     </div>
                 ))}
             </div>
@@ -253,26 +615,27 @@ function AssignmentTab({ slots }: { slots: (SlotRequirementData | undefined)[] }
     );
 }
 
-function slotLabel(slot: SlotRequirementData | undefined): string {
-    if (!slot?.slotId) return 'Open slot';
-    const name = slot.slotId.replace(/^slot_/, '').replace(/([A-Z])/g, ' $1');
-    return name.charAt(0).toUpperCase() + name.slice(1) + (slot.isMandatory === false ? ' (optional)' : '');
+function filterItems(items: readonly ItemData[], query: string): ItemData[] {
+    return items.filter((item) => matches(item, query));
 }
 
-/** The demands, without giving away the Outcome Gate — that is what the hint is for. */
-function describeRequirement(slot: SlotRequirementData | undefined): string {
-    if (!slot) return 'anyone';
+function matches(item: ItemData, query: string): boolean {
+    if (!query.trim()) return true;
+    const haystack = [item.itemId, item.displayName, item.subType, ...(item.type ?? []), ...(item.tags ?? [])]
+        .join(' ')
+        .toLowerCase();
+    return haystack.includes(query.trim().toLowerCase());
+}
 
-    const parts: string[] = [];
-    if (slot.minLevel && slot.minLevel > 1) parts.push(`LV ${slot.minLevel}+`);
-    for (const stat of STAT_IDS) {
-        const value = slot[stat];
-        if (value) parts.push(`${stat.toUpperCase()} ${value}+`);
-    }
-    for (const tag of slot.tags ?? []) parts.push(tag);
-    for (const tag of slot.excludedTags ?? []) parts.push(`no ${tag}`);
+/** The stat swing an item gives, which is the only thing about it a Gate can see. */
+function describeEffects(item: ItemData): string {
+    const parts = STAT_IDS.map((stat) => {
+        const value = item[`${stat}Effect` as keyof ItemData] as number | undefined;
+        return value ? `${stat.toUpperCase()} +${value}` : '';
+    }).filter(Boolean);
 
-    return parts.length ? parts.join(' · ') : 'anyone';
+    const consumable = item.isGoneAfterUse ? 'single use' : '';
+    return [...parts, consumable].filter(Boolean).join(' · ') || '—';
 }
 
 function rewardOf(
