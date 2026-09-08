@@ -1,10 +1,11 @@
 import { useMemo, useState, type ReactNode } from 'react';
 import { useGame } from '../../store/gameStore';
 import * as runtimeAgent from '../../engine/runtimeAgent';
+import type { RuntimeAgent } from '../../engine/runtimeAgent';
 import { describeReason } from '../../engine/slotRequirementEvaluator';
 import { describePurchaseFailure } from '../../engine/shop';
-import { STAT_IDS, type ItemData } from '../../engine/types';
-import { Modal, Money } from '../components/bits';
+import { STAT_IDS, type GameTables, type ItemData } from '../../engine/types';
+import { AgentCard, Emphasized, Modal, Money } from '../components/bits';
 
 /**
  * The Loadout page: who goes, and what they carry.
@@ -17,6 +18,7 @@ export function LoadoutScreen(): ReactNode {
 
     const session = useGame((state) => state.session);
     const tables = useGame((state) => state.tables);
+    const roster = useGame((state) => state.roster);
     const assignAgent = useGame((state) => state.assignAgent);
     const unassignAgent = useGame((state) => state.unassignAgent);
     const cancel = useGame((state) => state.cancelLoadout);
@@ -25,12 +27,36 @@ export function LoadoutScreen(): ReactNode {
     const [tab, setTab] = useState<'shop' | 'inventory'>('shop');
     const [query, setQuery] = useState('');
     const [failure, setFailure] = useState('');
+    const [pickingAgentId, setPickingAgentId] = useState<string>();
 
     if (!session || !tables) return null;
 
     const assignedAgents = session.slots
         .map((slot) => session.agentIn(slot.slotId))
         .filter((agent): agent is NonNullable<typeof agent> => agent !== undefined);
+
+    /** Places whichever agent is selected below into this slot, or explains why not. */
+    function placeInSlot(slotId: string): void {
+        if (!session || !pickingAgentId) return;
+
+        const candidate = session
+            .candidatesFor(slotId)
+            .find((entry) => entry.agent.characterId === pickingAgentId);
+        if (!candidate) return;
+
+        if (!candidate.isEligible) {
+            setFailure(
+                candidate.reasons.length
+                    ? describeReason(candidate.reasons[0])
+                    : `${runtimeAgent.displayName(candidate.agent)} cannot take this slot`,
+            );
+            return;
+        }
+
+        setFailure('');
+        assignAgent(slotId, pickingAgentId);
+        setPickingAgentId(undefined);
+    }
 
     return (
         <Modal onClose={cancel} wide label={`Loadout: ${session.mission.data.displayName}`}>
@@ -43,80 +69,59 @@ export function LoadoutScreen(): ReactNode {
                         </div>
 
                         {session.mission.data.hint ? (
-                            <p className="hint">“{session.mission.data.hint}”</p>
+                            <p className="hint">
+                                <Emphasized text={session.mission.data.hint} />
+                            </p>
                         ) : null}
 
-                        {session.slots.map((slot) => {
-                            const occupant = session.agentIn(slot.slotId);
-                            const className = [
-                                'slot',
-                                occupant ? 'slot--filled' : '',
-                                !occupant && slot.isMandatory ? 'slot--needed' : '',
-                            ]
-                                .filter(Boolean)
-                                .join(' ');
+                        <div className="slot-grid">
+                            {session.slots.map((slot) => {
+                                const occupant = session.agentIn(slot.slotId);
+                                const className = [
+                                    'slot',
+                                    occupant ? 'slot--filled' : '',
+                                    !occupant && slot.isMandatory ? 'slot--needed' : '',
+                                ]
+                                    .filter(Boolean)
+                                    .join(' ');
 
-                            return (
-                                <div className={className} key={slot.slotId}>
-                                    <div className="slot__head">
-                                        <span className="micro">
-                                            {slot.slotId.replace(/^slot_/, '')}
-                                            {slot.isMandatory ? '' : ' · optional'}
-                                        </span>
+                                return (
+                                    <div className={className} key={slot.slotId}>
+                                        <div className="slot__head">
+                                            <span className="micro">
+                                                {slot.slotId.replace(/^slot_/, '')}
+                                                {slot.isMandatory ? '' : ' · optional'}
+                                            </span>
+                                        </div>
+
                                         {occupant ? (
-                                            <button
-                                                type="button"
-                                                className="btn btn--small btn--quiet"
-                                                onClick={() => unassignAgent(slot.slotId)}
-                                            >
-                                                Remove
-                                            </button>
-                                        ) : null}
-                                    </div>
-
-                                    {occupant ? (
-                                        <CarriedItems characterId={occupant.characterId} />
-                                    ) : (
-                                        <div className="candidate-list">
-                                            {session.candidatesFor(slot.slotId).map((candidate) => (
+                                            <>
                                                 <button
                                                     type="button"
-                                                    key={candidate.agent.characterId}
-                                                    className="candidate"
-                                                    disabled={!candidate.isEligible}
-                                                    onClick={() =>
-                                                        assignAgent(
-                                                            slot.slotId,
-                                                            candidate.agent.characterId,
-                                                        )
-                                                    }
+                                                    className="slot__remove"
+                                                    onClick={() => unassignAgent(slot.slotId)}
+                                                    aria-label={`Remove ${runtimeAgent.displayName(occupant)}`}
                                                 >
-                                                    {runtimeAgent.displayName(candidate.agent)}
-                                                    {candidate.reasons.length ? (
-                                                        <span className="candidate__why">
-                                                            {describeReason(candidate.reasons[0])}
-                                                        </span>
-                                                    ) : null}
+                                                    ✕
                                                 </button>
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
-                            );
-                        })}
+                                                <CarriedItems characterId={occupant.characterId} />
+                                            </>
+                                        ) : (
+                                            <button
+                                                type="button"
+                                                className="slot__empty"
+                                                disabled={!pickingAgentId}
+                                                onClick={() => placeInSlot(slot.slotId)}
+                                            >
+                                                {pickingAgentId ? 'Tap to assign' : 'Select an agent below'}
+                                            </button>
+                                        )}
+                                    </div>
+                                );
+                            })}
+                        </div>
 
-                        {assignedAgents.length ? (
-                            <div className="meta">
-                                Combined:{' '}
-                                {STAT_IDS.map((stat) => {
-                                    const total = assignedAgents.reduce(
-                                        (sum, agent) => sum + runtimeAgent.effectiveStats(agent).get(stat),
-                                        0,
-                                    );
-                                    return `${stat.toUpperCase()} ${total}`;
-                                }).join('  ')}
-                            </div>
-                        ) : null}
+                        <StatGauges agents={assignedAgents} tables={tables} />
                     </div>
 
                     <div className="loadout__market">
@@ -159,6 +164,27 @@ export function LoadoutScreen(): ReactNode {
                 </div>
             </div>
 
+            <div className="roster loadout__roster">
+                {roster.length === 0 ? (
+                    <span className="meta">No agents employed.</span>
+                ) : (
+                    roster.map((agent) => (
+                        <AgentCard
+                            key={agent.characterId}
+                            agent={agent}
+                            selected={agent.characterId === pickingAgentId}
+                            disabled={!runtimeAgent.isAvailable(agent)}
+                            onClick={() => {
+                                setFailure('');
+                                setPickingAgentId((current) =>
+                                    current === agent.characterId ? undefined : agent.characterId,
+                                );
+                            }}
+                        />
+                    ))
+                )}
+            </div>
+
             <div className="modal__footer">
                 <span className="meta">
                     {session.canConfirm
@@ -178,6 +204,36 @@ export function LoadoutScreen(): ReactNode {
                 </button>
             </div>
         </Modal>
+    );
+}
+
+/** The team's combined Stats, as 2-up gauges — full name on the left, bar and total on the right. */
+function StatGauges({
+    agents,
+    tables,
+}: {
+    agents: readonly RuntimeAgent[];
+    tables: GameTables;
+}): ReactNode {
+    return (
+        <div className="stat-gauges">
+            {STAT_IDS.map((stat) => {
+                const total = agents.reduce((sum, agent) => sum + runtimeAgent.effectiveStats(agent).get(stat), 0);
+                const definition = tables.Stat.get(stat);
+                const cap = (definition?.maxValue ?? 20) * Math.max(1, agents.length);
+                const ratio = cap > 0 ? Math.min(1, total / cap) : 0;
+
+                return (
+                    <div className="stat-gauge" key={stat}>
+                        <span className="stat-gauge__label">{definition?.displayName ?? stat.toUpperCase()}</span>
+                        <span className="stat-gauge__track">
+                            <span className="stat-gauge__fill" style={{ width: `${Math.round(ratio * 100)}%` }} />
+                        </span>
+                        <span className="stat-gauge__value">{total}</span>
+                    </div>
+                );
+            })}
+        </div>
     );
 }
 

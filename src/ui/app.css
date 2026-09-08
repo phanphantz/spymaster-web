@@ -89,6 +89,9 @@
 
 .btn--quiet { border-color: var(--line); color: var(--steel); }
 
+.btn--danger { background: var(--danger); border-color: var(--danger); color: var(--inverse); }
+.btn--danger:hover:not(:disabled) { filter: brightness(1.1); }
+
 .btn:disabled { opacity: 0.35; cursor: not-allowed; }
 
 .btn--small { padding: 5px 10px; font-size: var(--fs-micro); }
@@ -261,6 +264,9 @@
     overflow-x: auto;
 }
 
+/* The Loadout's agent strip: same card list, but pinned so it never scrolls out of view. */
+.loadout__roster { flex-shrink: 0; }
+
 .agent-card {
     position: relative;
     flex: 0 0 auto;
@@ -347,15 +353,51 @@
     z-index: 1;
 }
 
-.modal__body { overflow-y: auto; }
+.modal__body { overflow-y: auto; min-height: 0; }
 
 .modal__footer {
+    flex-shrink: 0;
     display: flex;
     gap: 10px;
     justify-content: flex-end;
     align-items: center;
     padding: 14px 20px;
     border-top: 1px solid var(--line);
+}
+
+/* Pushes whatever carries this class to the far side of a flex-end footer. */
+.footer-left { margin-right: auto; }
+
+/* --- Confirm dialog --------------------------------------------------------- */
+
+.confirm {
+    width: min(360px, 100%);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+}
+
+.confirm__title {
+    font-size: var(--fs-item);
+    color: var(--text);
+    margin: 0;
+}
+
+.confirm__body {
+    font-size: var(--fs-meta);
+    color: var(--muted);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.confirm__actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
 }
 
 /* --- Mission Summary ------------------------------------------------------ */
@@ -488,12 +530,19 @@
 
 .summary__body { color: var(--muted); line-height: 1.6; margin: 0; }
 
+/* A plain paragraph, same weight as the rest of the briefing — the emphasis is on the keywords, not
+   the sentence itself. */
 .hint {
-    padding: 10px 14px;
-    border-left: 2px solid var(--cyan);
-    background: var(--cyan-faint);
+    color: var(--text);
+    line-height: 1.6;
+    margin: 0;
+    font-style: normal;
+}
+
+/* An objective-relevant fact — a place, a sum, a duration — inside a run of prose. */
+.kw {
     color: var(--cyan);
-    font-style: italic;
+    font-weight: 700;
 }
 
 /* Details | Assignment, sitting on the rule that separates them from the body above. */
@@ -567,10 +616,6 @@
     text-transform: uppercase;
 }
 
-.kv { display: flex; justify-content: space-between; gap: 12px; font-size: var(--fs-meta); }
-.kv dt { color: var(--steel); letter-spacing: 0.06em; }
-.kv dd { margin: 0; color: var(--text); }
-
 /* --- Loadout -------------------------------------------------------------- */
 
 .loadout { display: grid; grid-template-columns: 1fr 1fr; min-height: 0; }
@@ -578,7 +623,15 @@
 .loadout__slots { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
 .loadout__market { padding: 20px; border-left: 1px solid var(--line); display: flex; flex-direction: column; gap: 12px; min-height: 0; }
 
+/* Slots as a 2-up grid of assignment cards, rather than a single stacked column. */
+.slot-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
 .slot {
+    position: relative;
     padding: 14px;
     border: 1px solid var(--line);
     border-radius: var(--radius);
@@ -589,21 +642,78 @@
 
 .slot__head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 10px; }
 
-.candidate-list { display: flex; flex-wrap: wrap; gap: 6px; }
-
-.candidate {
-    padding: 6px 10px;
+/* The 'x' that clears an occupied slot, pinned to its top-right corner. */
+.slot__remove {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 22px;
+    height: 22px;
+    display: grid;
+    place-items: center;
+    padding: 0;
     background: transparent;
     border: 1px solid var(--line);
     color: var(--steel);
-    font-size: var(--fs-meta);
+    font-size: var(--fs-micro);
     border-radius: var(--radius);
-    text-align: left;
 }
 
-.candidate:hover:not(:disabled) { border-color: var(--cyan); color: var(--cyan); }
-.candidate:disabled { opacity: 0.4; cursor: not-allowed; }
-.candidate__why { display: block; font-size: var(--fs-micro); color: var(--danger); }
+.slot__remove:hover { border-color: var(--danger); color: var(--danger); }
+
+/* An empty slot is itself the tap target — select an agent below, then tap here. */
+.slot__empty {
+    width: 100%;
+    padding: 18px 10px;
+    background: transparent;
+    border: 1px dashed var(--line);
+    border-radius: var(--radius);
+    color: var(--steel);
+    font-size: var(--fs-meta);
+    letter-spacing: 0.06em;
+    text-align: center;
+}
+
+.slot__empty:hover:not(:disabled) { border-color: var(--cyan); color: var(--cyan); }
+.slot__empty:disabled { cursor: not-allowed; opacity: 0.6; }
+
+/* --- Combined stat gauges --------------------------------------------------- */
+
+.stat-gauges {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 20px;
+}
+
+.stat-gauge { display: flex; align-items: center; gap: 8px; }
+
+.stat-gauge__label {
+    flex: 0 0 auto;
+    width: 78px;
+    font-size: var(--fs-micro);
+    color: var(--steel);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.stat-gauge__track {
+    flex: 1;
+    height: 6px;
+    background: var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.stat-gauge__fill { height: 100%; background: var(--cyan); }
+
+.stat-gauge__value {
+    flex: 0 0 auto;
+    min-width: 20px;
+    text-align: right;
+    font-size: var(--fs-micro);
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+}
 
 .carry { margin-top: 10px; display: flex; flex-direction: column; gap: 4px; }
 
@@ -755,7 +865,9 @@
 
 @media (max-width: 900px) {
     .summary,
-    .loadout { grid-template-columns: 1fr; }
+    .loadout,
+    .slot-grid,
+    .stat-gauges { grid-template-columns: 1fr; }
 
     .summary { min-height: 0; }
     .summary__left { border-bottom: 1px solid var(--line); }

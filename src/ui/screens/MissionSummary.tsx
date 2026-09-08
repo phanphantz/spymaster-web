@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from 'react';
 import { useGame } from '../../store/gameStore';
-import { DifficultyPips, Modal } from '../components/bits';
+import { ConfirmDialog, DifficultyPips, Emphasized, Modal } from '../components/bits';
 import { STAT_IDS } from '../../engine/types';
 import type { GameTables, SlotRequirementData } from '../../engine/types';
 import type { LiveMission } from '../../engine/missionFeed';
@@ -26,11 +26,20 @@ export function MissionSummary(): ReactNode {
     const accept = useGame((state) => state.acceptMission);
 
     const [tab, setTab] = useState<'details' | 'assignment'>('details');
+    const [confirmingDecline, setConfirmingDecline] = useState(false);
 
     const mission = pending.find((candidate) => candidate.instanceId === selectedInstanceId);
     if (!mission || !tables) return null;
 
     const canDecline = mission.data.isDeclinable !== false;
+
+    const startGate = tables.Gate.get(mission.data.gateId);
+    const slots = (startGate?.slotReqIds ?? []).map((slotId) => tables.SlotRequirement.get(slotId));
+    const keywordTerms = [
+        mission.location?.displayName,
+        mission.data.type,
+        ...slots.flatMap((slot) => [...(slot?.tags ?? []), ...(slot?.excludedTags ?? [])]),
+    ].filter((term): term is string => Boolean(term));
 
     return (
         <Modal onClose={close} label={mission.data.displayName ?? 'Mission'}>
@@ -54,12 +63,17 @@ export function MissionSummary(): ReactNode {
                             <DifficultyPips level={mission.data.difficultyLevel} />
                         </div>
 
-                        <div>
-                            <div className="summary__label">Description</div>
-                            <p className="summary__body">{mission.data.description}</p>
-                        </div>
+                        {mission.data.hint ? (
+                            <p className="hint">
+                                <Emphasized text={mission.data.hint} terms={keywordTerms} />
+                            </p>
+                        ) : null}
 
-                        {mission.data.hint ? <p className="hint">“{mission.data.hint}”</p> : null}
+                        {mission.data.description ? (
+                            <p className="summary__body">
+                                <Emphasized text={mission.data.description} terms={keywordTerms} />
+                            </p>
+                        ) : null}
 
                         <div className="tabrow" role="tablist">
                             <button
@@ -85,7 +99,7 @@ export function MissionSummary(): ReactNode {
                         {tab === 'details' ? (
                             <DetailsTab mission={mission} tables={tables} />
                         ) : (
-                            <AssignmentTab mission={mission} tables={tables} />
+                            <AssignmentTab slots={slots} />
                         )}
                     </div>
                 </div>
@@ -94,8 +108,8 @@ export function MissionSummary(): ReactNode {
             <div className="modal__footer">
                 <button
                     type="button"
-                    className="btn btn--quiet"
-                    onClick={() => decline(mission.instanceId)}
+                    className="btn btn--quiet footer-left"
+                    onClick={() => setConfirmingDecline(true)}
                     disabled={!canDecline}
                     title={canDecline ? undefined : 'This client does not take no for an answer'}
                 >
@@ -109,6 +123,19 @@ export function MissionSummary(): ReactNode {
                     Assign
                 </button>
             </div>
+
+            <ConfirmDialog
+                open={confirmingDecline}
+                title="Decline this mission?"
+                message="The client won't be asked twice. This contract leaves the board for good."
+                confirmLabel="Decline"
+                danger
+                onConfirm={() => {
+                    setConfirmingDecline(false);
+                    decline(mission.instanceId);
+                }}
+                onCancel={() => setConfirmingDecline(false)}
+            />
         </Modal>
     );
 }
@@ -199,23 +226,6 @@ function DetailsTab({ mission, tables }: { mission: LiveMission; tables: GameTab
                     </div>
                 </div>
             </div>
-
-            <dl style={{ margin: 0, display: 'grid', gap: 6 }}>
-                <div className="kv">
-                    <dt>Contract</dt>
-                    <dd>{mission.data.missionId}</dd>
-                </div>
-                <div className="kv">
-                    <dt>Priority</dt>
-                    <dd>{mission.data.priorityType ?? '—'}</dd>
-                </div>
-                <div className="kv">
-                    <dt>Declinable</dt>
-                    <dd className={mission.data.isDeclinable === false ? 'danger' : undefined}>
-                        {mission.data.isDeclinable === false ? 'No' : 'Yes'}
-                    </dd>
-                </div>
-            </dl>
         </div>
     );
 }
@@ -226,10 +236,7 @@ function DetailsTab({ mission, tables }: { mission: LiveMission; tables: GameTab
  * A Mission has no slot list of its own — the slots are whatever its start Gate names, in authored
  * order. This is the same list the Loadout page will present.
  */
-function AssignmentTab({ mission, tables }: { mission: LiveMission; tables: GameTables }): ReactNode {
-    const startGate = tables.Gate.get(mission.data.gateId);
-    const slots = (startGate?.slotReqIds ?? []).map((slotId) => tables.SlotRequirement.get(slotId));
-
+function AssignmentTab({ slots }: { slots: (SlotRequirementData | undefined)[] }): ReactNode {
     return (
         <div className="tabpanel" role="tabpanel">
             <div className="summary__label">Required team</div>
@@ -242,10 +249,6 @@ function AssignmentTab({ mission, tables }: { mission: LiveMission; tables: Game
                     </div>
                 ))}
             </div>
-            <p className="summary__body meta">
-                Requirements are per agent. What the job as a whole demands is not published — the
-                hint is the only signal.
-            </p>
         </div>
     );
 }
