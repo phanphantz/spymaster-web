@@ -533,15 +533,23 @@
    of stopping at the bottom of `.summary` — a background layer sits behind every button and piece
    of text, so it reads as running continuously through the footer to the modal's true bottom edge
    without needing to dodge anything sitting on top of it. Offsets match `.summary`'s own
-   `grid-template-columns: 400px 2px 1fr 280px` (the second line sits at the stats rail's left
-   edge: 400 + 2 + the middle column's width at the modal's fixed 1620px). Solid --steel rather than
-   the very faint --line — this is the one place the line has to read clearly against plain, mostly
-   empty footer background rather than sitting next to other hairline UI. */
+   `grid-template-columns: 400px 2px 1fr 280px`: the first line is pinned 400px from the LEFT
+   (that column's width never changes), the second is pinned 280px from the RIGHT (the stats
+   rail's own width never changes either) — anchoring each line from the edge its column is fixed
+   to is what keeps them aligned with the real grid even when `min(1620px, 100%)` falls back to
+   100% and the flexible middle column is what actually shrinks. A left-offset for the second line
+   only held at exactly 1620px wide and drifted into the stats rail's own content on any narrower
+   window. Solid --steel rather than the very faint --line — this is the one place the line has to
+   read clearly against plain, mostly empty footer background rather than sitting next to other
+   hairline UI. The second line's right-offset is 280px plus a fixed ~16px — `.modal__body`'s own
+   `scrollbar-gutter: stable` permanently reserves a scrollbar's width inside it (so the grid
+   never shifts between a scrolling and non-scrolling mission), which this background layer,
+   painted on `.modal` itself, sits outside of and so has to compensate for by hand. */
 .modal--wide {
     width: min(1620px, 100%);
     background:
-        linear-gradient(var(--steel), var(--steel)) no-repeat 400px 0 / 2px 100%,
-        linear-gradient(var(--steel), var(--steel)) no-repeat 1324px 0 / 2px 100%,
+        linear-gradient(var(--steel), var(--steel)) no-repeat left 400px top 0 / 2px 100%,
+        linear-gradient(var(--steel), var(--steel)) no-repeat right 296px top 0 / 2px 100%,
         var(--surface);
 }
 
