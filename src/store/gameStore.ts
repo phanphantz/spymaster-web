@@ -23,7 +23,8 @@ import { DOLLAR, type GameTables } from '../engine/types';
  */
 
 export type Phase = 'loading' | 'failed' | 'employment' | 'playing';
-export type Overlay = 'none' | 'missionSummary' | 'result';
+export type Overlay = 'none' | 'missionSummary' | 'result' | 'shop';
+export type MissionTab = 'details' | 'assignment';
 
 interface GameState {
     phase: Phase;
@@ -63,6 +64,12 @@ interface GameState {
     /** Why the last slot placement failed, shown under the Assignment tab. */
     assignmentFailure: string;
 
+    /** Which tab the mission modal was on — lifted out of the modal so it survives a detour to the
+     *  Shop page and back (Done always lands where the pencil was tapped from). */
+    missionTab: MissionTab;
+    /** The agent the full-page Shop is equipping. Set by the pencil on a filled slot. */
+    shopCharacterId?: string;
+
     /** Dev panel visibility, off by default. */
     showDataPanel: boolean;
 
@@ -82,6 +89,12 @@ interface GameState {
     openMission: (instanceId: string) => void;
     closeOverlay: () => void;
     declineMission: (instanceId: string) => void;
+    setMissionTab: (tab: MissionTab) => void;
+
+    /** Opens the full-page Shop focused on one agent — from the pencil on their filled slot. */
+    openShop: (characterId: string) => void;
+    /** Done: back to the mission modal, same tab the pencil was tapped from. */
+    closeShop: () => void;
 
     /** Toggle-selects an agent; if a slot is already picked, completes the placement instead. */
     pickAgent: (characterId: string) => void;
@@ -153,6 +166,7 @@ export const useGame = create<GameState>((set, get) => {
     picked: [],
     pending: [],
     assignmentFailure: '',
+    missionTab: 'details',
     showDataPanel: false,
 
     async init() {
@@ -201,6 +215,8 @@ export const useGame = create<GameState>((set, get) => {
             pickingAgentId: undefined,
             pickingSlotId: undefined,
             assignmentFailure: '',
+            missionTab: 'details',
+            shopCharacterId: undefined,
             version: get().version + 1,
         });
 
@@ -290,6 +306,8 @@ export const useGame = create<GameState>((set, get) => {
             pickingAgentId: undefined,
             pickingSlotId: undefined,
             assignmentFailure: '',
+            missionTab: 'details',
+            shopCharacterId: undefined,
             version: get().version + 1,
         });
     },
@@ -304,6 +322,7 @@ export const useGame = create<GameState>((set, get) => {
             pickingAgentId: undefined,
             pickingSlotId: undefined,
             assignmentFailure: '',
+            shopCharacterId: undefined,
             version: get().version + 1,
         });
     },
@@ -322,8 +341,21 @@ export const useGame = create<GameState>((set, get) => {
             pickingAgentId: undefined,
             pickingSlotId: undefined,
             assignmentFailure: '',
+            shopCharacterId: undefined,
             version: get().version + 1,
         });
+    },
+
+    setMissionTab(tab) {
+        set({ missionTab: tab });
+    },
+
+    openShop(characterId) {
+        set({ overlay: 'shop', shopCharacterId: characterId });
+    },
+
+    closeShop() {
+        set({ overlay: 'missionSummary', shopCharacterId: undefined });
     },
 
     pickAgent(characterId) {
@@ -388,6 +420,7 @@ export const useGame = create<GameState>((set, get) => {
             selectedInstanceId: undefined,
             pickingAgentId: undefined,
             pickingSlotId: undefined,
+            shopCharacterId: undefined,
             pending: pending.filter((candidate) => candidate.instanceId !== session.mission.instanceId),
             version: get().version + 1,
         });

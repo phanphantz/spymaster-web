@@ -696,11 +696,17 @@
 
 .slot__head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 10px; }
 
-/* The 'x' that clears an occupied slot, pinned to its top-right corner. */
-.slot__remove {
+/* The pencil (edit kit) and 'x' (clear) on an occupied slot, pinned to its top-right corner. */
+.slot__actions {
     position: absolute;
     top: 8px;
     right: 8px;
+    display: flex;
+    gap: 4px;
+}
+
+.slot__edit,
+.slot__remove {
     width: 22px;
     height: 22px;
     display: grid;
@@ -713,6 +719,7 @@
     border-radius: var(--radius);
 }
 
+.slot__edit:hover { border-color: var(--cyan); color: var(--cyan); }
 .slot__remove:hover { border-color: var(--danger); color: var(--danger); }
 
 /* An empty slot is itself the tap target — select an agent below, then tap here. */
@@ -758,16 +765,6 @@
     gap: 6px;
 }
 
-/* The Shop/Inventory section, stacked below the slots and gauges rather than beside them. */
-.kit {
-    padding-top: 14px;
-    border-top: 1px solid var(--line);
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    min-height: 0;
-}
-
 .tab {
     padding: 6px 12px;
     background: transparent;
@@ -781,16 +778,107 @@
 
 .tab[aria-selected='true'] { background: var(--cyan); color: var(--inverse); border-color: var(--cyan); }
 
-.search {
-    width: 100%;
-    padding: 8px 10px;
-    background: var(--bg);
-    border: 1px solid var(--line);
+/* --- Kit (Shop + Inventory, one page, one agent) --------------------------- */
+
+/* Same flex:1 + min-height:0 chain as .worldmap — proven not to blow up, unlike the old
+   modal-embedded kit, which had no such chain and no bounded ancestor to resolve flex:1 against. */
+.shop {
+    flex: 1;
+    min-height: 0;
+    padding: 20px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.shop__header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.shop__header .title { margin: 0 0 4px; }
+
+/* What the focused agent already carries, as a horizontal strip — tap one to unequip it. */
+.shop__equipped {
+    flex: 0 0 auto;
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+}
+
+.equip-icon {
+    position: relative;
+    flex: 0 0 auto;
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    background: var(--surface-2);
+    border: 1px solid var(--cyan);
+    border-radius: var(--radius);
     color: var(--text);
-    font: inherit;
+}
+
+.equip-icon:hover { border-color: var(--danger); color: var(--danger); }
+
+.equip-icon__glyph { font-size: var(--fs-meta); letter-spacing: 0.02em; }
+
+.equip-icon__qty {
+    position: absolute;
+    bottom: 2px;
+    right: 3px;
+    font-size: 9px;
+    color: var(--cyan);
+}
+
+/* Left: main type. Top of the right column: subtype. Both authored on the Item sheet. */
+.shop__body {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 16px;
+}
+
+.shop__types {
+    min-height: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.shop__type {
+    padding: 8px 10px;
+    text-align: left;
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--steel);
     font-size: var(--fs-meta);
+    letter-spacing: 0.04em;
     border-radius: var(--radius);
 }
+
+.shop__type[aria-selected='true'] { background: var(--cyan); color: var(--inverse); border-color: var(--cyan); }
+.shop__type:hover:not([aria-selected='true']) { border-color: var(--cyan); color: var(--cyan); }
+
+.shop__main {
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.shop__subtypes { flex-wrap: wrap; }
+
+.shop-items {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.shop-item__owned { color: var(--steel); font-size: var(--fs-micro); }
+.shop-item__actions { display: flex; gap: 6px; }
 
 /* flex: 1 here has no bounded ancestor to resolve against (.kit sizes to content, same as the modal
    above it) — left unbounded, that ambiguity is what was blowing the whole modal up to ~20000px. */
