@@ -36,13 +36,16 @@ function combinedStats(agents: readonly RuntimeAgent[]): Map<StatId, number> {
 }
 
 /**
- * The Mission UI: read the contract, build the team, then deploy or decline.
+ * The Mission UI: read the contract, build the team, then deploy or decline — one page, not a
+ * tab switcher. Follows `UIMissionSummary` in `UI_DESIGN_SYSTEM.md` §5.3 for the briefing half —
+ * photo and location on the left, the briefing and the team in the middle, split by a steel rule
+ * carrying a notification dot. The team's combined stats — hexagon and gauges — live in their own
+ * rail on the far right, always visible instead of swapped in over the location block, since
+ * they're what the player is actually optimizing while they work the slot grid next to them.
  *
- * Follows `UIMissionSummary` in `UI_DESIGN_SYSTEM.md` §5.3 for the briefing half — photo and
- * location on the left, the briefing on the right, split by a steel rule carrying a notification
- * dot. Assignment happens in the same modal rather than handing off to a separate Loadout page: the
- * Loadout session is stood up the moment the mission opens, and the Assignment tab is that session's
- * real, interactive slot grid, not a preview of it.
+ * Assignment happens in the same modal rather than handing off to a separate Loadout page: the
+ * Loadout session is stood up the moment the mission opens, and the slot grid is that session's
+ * real, interactive state, not a preview of it.
  *
  * It shows the hint, which is authored and may be deliberately oblique, and what the job demands of
  * a team. It does **not** show a success chance, because none is computed — the result is whichever
@@ -66,8 +69,6 @@ export function MissionSummary(): ReactNode {
     const resolveSwap = useGame((state) => state.resolveSwap);
     const cancelSwap = useGame((state) => state.cancelSwap);
     const failure = useGame((state) => state.assignmentFailure);
-    const tab = useGame((state) => state.missionTab);
-    const setTab = useGame((state) => state.setMissionTab);
     const openShop = useGame((state) => state.openShop);
 
     const [confirmingDecline, setConfirmingDecline] = useState(false);
@@ -79,6 +80,7 @@ export function MissionSummary(): ReactNode {
     const mission = session.mission;
     const canDecline = mission.data.isDeclinable !== false;
     const hasAssignments = session.assignments.size > 0;
+    const assigned = assignedAgentsOf(session);
 
     const keywordTerms = [
         mission.location?.displayName,
@@ -98,29 +100,15 @@ export function MissionSummary(): ReactNode {
             <div className="modal__body">
                 <div className="summary">
                     <div className="summary__left">
-                        {tab === 'assignment' ? (
-                            <>
-                                <div className="summary__photo summary__photo--stats">
-                                    <StatHexagon totals={combinedStats(assignedAgentsOf(session))} />
-                                </div>
-                                <div className="summary__lower-anchor">
-                                    <hr className="summary__dashrule" />
-                                    <StatGaugeList agents={assignedAgentsOf(session)} tables={tables} />
-                                </div>
-                            </>
-                        ) : (
-                            <>
-                                <div className="summary__photo">NO IMAGE</div>
-                                <div className="summary__lower-anchor">
-                                    <hr className="summary__dashrule" />
-                                    <LocationBlock mission={mission} />
-                                </div>
-                            </>
-                        )}
+                        <div className="summary__photo">NO IMAGE</div>
+                        <div className="summary__lower-anchor">
+                            <hr className="summary__dashrule" />
+                            <LocationBlock mission={mission} />
+                        </div>
                     </div>
 
                     <div className="summary__divider">
-                        {tab === 'details' ? <span className="summary__dot" aria-hidden="true" /> : null}
+                        <span className="summary__dot" aria-hidden="true" />
                     </div>
 
                     <div className="summary__right">
@@ -143,43 +131,29 @@ export function MissionSummary(): ReactNode {
                             </p>
                         ) : null}
 
-                        <div className="tabrow" role="tablist">
-                            <button
-                                type="button"
-                                role="tab"
-                                className="tabrow__tab"
-                                aria-selected={tab === 'details'}
-                                onClick={() => setTab('details')}
-                            >
-                                Details
-                            </button>
-                            <button
-                                type="button"
-                                role="tab"
-                                className="tabrow__tab"
-                                aria-selected={tab === 'assignment'}
-                                onClick={() => setTab('assignment')}
-                            >
-                                Assignment
-                            </button>
-                        </div>
+                        <MissionBody
+                            mission={mission}
+                            tables={tables}
+                            session={session}
+                            pickingAgentId={pickingAgentId}
+                            pickingSlotId={pickingSlotId}
+                            onPickSlot={pickSlot}
+                            onDropAgent={placeAgent}
+                            onUnassign={unassignAgent}
+                            onEdit={openShop}
+                            onDiscardItems={setDiscardTarget}
+                            failure={failure}
+                        />
+                    </div>
 
-                        {tab === 'details' ? (
-                            <DetailsTab mission={mission} tables={tables} />
-                        ) : (
-                            <AssignmentTab
-                                session={session}
-                                tables={tables}
-                                pickingAgentId={pickingAgentId}
-                                pickingSlotId={pickingSlotId}
-                                onPickSlot={pickSlot}
-                                onDropAgent={placeAgent}
-                                onUnassign={unassignAgent}
-                                onEdit={openShop}
-                                onDiscardItems={setDiscardTarget}
-                                failure={failure}
-                            />
-                        )}
+                    <div className="summary__stats">
+                        <div className="summary__photo summary__photo--stats">
+                            <StatHexagon totals={combinedStats(assigned)} />
+                        </div>
+                        <div className="summary__lower-anchor">
+                            <hr className="summary__dashrule" />
+                            <StatGaugeList agents={assigned} tables={tables} />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -324,8 +298,8 @@ function SwapDialog({
 
 /**
  * The team's combined stats as horizontal gauges — icon + code on the left, a fixed-width bar, the
- * total on the right. Sits where the location block would, on the Assignment tab: the hexagon above
- * is the shape, this is the same numbers read as a bar per stat.
+ * total on the right. Sits under the hexagon in the always-visible right rail: the hexagon above is
+ * the shape, this is the same numbers read as a bar per stat.
  */
 function StatGaugeList({ agents, tables }: { agents: readonly RuntimeAgent[]; tables: GameTables }): ReactNode {
     return (
@@ -387,18 +361,47 @@ function LocationBlock({ mission }: { mission: LiveMission }): ReactNode {
 }
 
 /**
- * Tasks and rewards.
+ * Tasks, rewards and the team's slot grid, stacked on one page.
  *
  * The sketch puts a Task list here. v1 cuts Tasks, so the list renders whatever `starterTasks`
  * resolves to and says plainly when there is nothing — which is honest now and fills itself in
  * once Tasks are authored, rather than needing this rewritten.
+ *
+ * The slot grid below it is the real, interactive Loadout — pick an agent from the roster strip
+ * below the modal, then tap a slot, or tap an empty slot first and pick the agent after; either
+ * order lands the same placement. An occupied slot clears with its 'x'. What that agent carries
+ * lives on its own page, opened with the pencil — a slot has no room for a kit list.
  */
-function DetailsTab({ mission, tables }: { mission: LiveMission; tables: GameTables }): ReactNode {
+function MissionBody({
+    mission,
+    tables,
+    session,
+    pickingAgentId,
+    pickingSlotId,
+    onPickSlot,
+    onDropAgent,
+    onUnassign,
+    onEdit,
+    onDiscardItems,
+    failure,
+}: {
+    mission: LiveMission;
+    tables: GameTables;
+    session: LoadoutSession;
+    pickingAgentId: string | undefined;
+    pickingSlotId: string | undefined;
+    onPickSlot: (slotId: string) => void;
+    onDropAgent: (slotId: string, characterId: string, fromSlotId?: string) => void;
+    onUnassign: (slotId: string) => void;
+    onEdit: (characterId: string) => void;
+    onDiscardItems: (agent: RuntimeAgent) => void;
+    failure: string;
+}): ReactNode {
     const tasks = tables.Task.getMany(mission.data.starterTasks);
     const reward = previewReward(tables, mission.data.outcomes?.[0]);
 
     return (
-        <div className="tabpanel" role="tabpanel">
+        <div className="mission-body">
             <div>
                 <div className="summary__label">Tasks</div>
                 <div className="marker-list">
@@ -441,175 +444,142 @@ function DetailsTab({ mission, tables }: { mission: LiveMission; tables: GameTab
                     </div>
                 </div>
             </div>
-        </div>
-    );
-}
 
-/**
- * Who goes — the real Loadout, in place.
- *
- * A Mission has no slot list of its own — the slots are whatever its start Gate names, in authored
- * order, and `session.slots` is that list. Pick an agent from the roster strip below, then tap a
- * slot — or tap an empty slot first, then pick the agent — either order lands the same placement.
- * An occupied slot clears with its 'x'; the team's combined stats show on the panel's left, not
- * here, so a filled slot stays exactly the footprint of an empty one. What that agent carries lives
- * on its own page now, opened with the pencil — a slot has no room for a kit list.
- */
-function AssignmentTab({
-    session,
-    tables,
-    pickingAgentId,
-    pickingSlotId,
-    onPickSlot,
-    onDropAgent,
-    onUnassign,
-    onEdit,
-    onDiscardItems,
-    failure,
-}: {
-    session: LoadoutSession;
-    tables: GameTables;
-    pickingAgentId: string | undefined;
-    pickingSlotId: string | undefined;
-    onPickSlot: (slotId: string) => void;
-    onDropAgent: (slotId: string, characterId: string, fromSlotId?: string) => void;
-    onUnassign: (slotId: string) => void;
-    onEdit: (characterId: string) => void;
-    onDiscardItems: (agent: RuntimeAgent) => void;
-    failure: string;
-}): ReactNode {
-    return (
-        <div className="tabpanel" role="tabpanel">
-            <div className="slot-grid">
-                {session.slots.map((slot) => {
-                    const occupant = session.agentIn(slot.slotId);
-                    const isTarget = slot.slotId === pickingSlotId;
-                    // A picked agent (from a click, not mid-drag) could land here and bump someone —
-                    // hinted so the slot doesn't just look like a dead end while something is picked.
-                    const isReplaceable = Boolean(occupant && pickingAgentId && occupant.characterId !== pickingAgentId);
-                    const className = [
-                        'slot',
-                        occupant ? 'slot--filled' : '',
-                        !occupant && slot.isMandatory ? 'slot--needed' : '',
-                        isTarget ? 'slot--picking' : '',
-                        isReplaceable ? 'slot--replaceable' : '',
-                    ]
-                        .filter(Boolean)
-                        .join(' ');
+            <div>
+                <div className="summary__label">Team</div>
+                <div className="slot-grid">
+                    {session.slots.map((slot) => {
+                        const occupant = session.agentIn(slot.slotId);
+                        const isTarget = slot.slotId === pickingSlotId;
+                        // A picked agent (from a click, not mid-drag) could land here and bump someone —
+                        // hinted so the slot doesn't just look like a dead end while something is picked.
+                        const isReplaceable = Boolean(
+                            occupant && pickingAgentId && occupant.characterId !== pickingAgentId,
+                        );
+                        const className = [
+                            'slot',
+                            occupant ? 'slot--filled' : '',
+                            !occupant && slot.isMandatory ? 'slot--needed' : '',
+                            isTarget ? 'slot--picking' : '',
+                            isReplaceable ? 'slot--replaceable' : '',
+                        ]
+                            .filter(Boolean)
+                            .join(' ');
 
-                    return (
-                        <div
-                            className={className}
-                            key={slot.slotId}
-                            onDragOver={(event) => event.preventDefault()}
-                            onDrop={(event) => {
-                                event.preventDefault();
-                                const raw = event.dataTransfer.getData('text/plain');
-                                if (!raw) return;
-                                const payload = parseAgentDragPayload(raw);
-                                if (payload) onDropAgent(slot.slotId, payload.characterId, payload.fromSlotId);
-                            }}
-                        >
-                            <div className="slot__head">
-                                <span className="micro">
-                                    {slot.slotId.replace(/^slot_/, '')}
-                                    {slot.isMandatory ? '' : ' · optional'}
-                                </span>
-                            </div>
-
-                            {occupant ? (
-                                <div
-                                    className="slot__filled"
-                                    onClick={() => onPickSlot(slot.slotId)}
-                                    role={pickingAgentId ? 'button' : undefined}
-                                >
-                                    <div className="slot__actions">
-                                        <button
-                                            type="button"
-                                            className="slot__edit"
-                                            onClick={(event) => {
-                                                event.stopPropagation();
-                                                onEdit(occupant.characterId);
-                                            }}
-                                            aria-label={`Edit ${runtimeAgent.displayName(occupant)}'s kit`}
-                                            title="Edit kit"
-                                        >
-                                            ✎
-                                        </button>
-                                        <button
-                                            type="button"
-                                            className="slot__remove"
-                                            onClick={(event) => {
-                                                event.stopPropagation();
-                                                onUnassign(slot.slotId);
-                                            }}
-                                            aria-label={`Remove ${runtimeAgent.displayName(occupant)}`}
-                                        >
-                                            ✕
-                                        </button>
-                                    </div>
-                                    <AgentCard agent={occupant} size="sm" draggable dragFromSlotId={slot.slotId} />
-                                    {(() => {
-                                        const carried = session.carriedBy(occupant.characterId).entries;
-                                        const capacity = runtimeAgent.inventorySize(occupant);
-                                        const carriedTotal = carried.reduce((sum, [, qty]) => sum + qty, 0);
-                                        const emptySlots = Math.max(0, capacity - carriedTotal);
-                                        if (capacity <= 0) return null;
-
-                                        return (
-                                            <>
-                                                <div className="slot__items">
-                                                    {carried.map(([itemId, qty]) => {
-                                                        const name = tables.Item.get(itemId)?.displayName ?? itemId;
-                                                        return <EquipIcon key={itemId} name={name} qty={qty} mini />;
-                                                    })}
-                                                    {Array.from({ length: emptySlots }, (_, index) => (
-                                                        <span
-                                                            key={`empty-${index}`}
-                                                            className="equip-icon equip-icon--mini equip-icon--empty"
-                                                            aria-hidden="true"
-                                                        />
-                                                    ))}
-                                                </div>
-                                                {carried.length > 0 ? (
-                                                    <button
-                                                        type="button"
-                                                        className="slot__discard"
-                                                        onClick={(event) => {
-                                                            event.stopPropagation();
-                                                            onDiscardItems(occupant);
-                                                        }}
-                                                        aria-label={`Discard everything ${runtimeAgent.displayName(occupant)} is carrying`}
-                                                        title="Discard all items"
-                                                    >
-                                                        🗑
-                                                    </button>
-                                                ) : null}
-                                            </>
-                                        );
-                                    })()}
-                                    <StatHexagon agent={occupant} mini />
+                        return (
+                            <div
+                                className={className}
+                                key={slot.slotId}
+                                onDragOver={(event) => event.preventDefault()}
+                                onDrop={(event) => {
+                                    event.preventDefault();
+                                    const raw = event.dataTransfer.getData('text/plain');
+                                    if (!raw) return;
+                                    const payload = parseAgentDragPayload(raw);
+                                    if (payload) onDropAgent(slot.slotId, payload.characterId, payload.fromSlotId);
+                                }}
+                            >
+                                <div className="slot__head">
+                                    <span className="micro">
+                                        {slot.slotId.replace(/^slot_/, '')}
+                                        {slot.isMandatory ? '' : ' · optional'}
+                                    </span>
                                 </div>
-                            ) : (
-                                <button
-                                    type="button"
-                                    className="slot__empty"
-                                    aria-pressed={isTarget}
-                                    onClick={() => onPickSlot(slot.slotId)}
-                                >
-                                    {pickingAgentId
-                                        ? 'Tap to assign'
-                                        : isTarget
-                                          ? 'Pick an agent below'
-                                          : 'Select an agent, drag one, or tap here first'}
-                                </button>
-                            )}
-                        </div>
-                    );
-                })}
-            </div>
 
-            {failure ? <div className="meta danger">{failure}</div> : null}
+                                {occupant ? (
+                                    <div
+                                        className="slot__filled"
+                                        onClick={() => onPickSlot(slot.slotId)}
+                                        role={pickingAgentId ? 'button' : undefined}
+                                    >
+                                        <div className="slot__actions">
+                                            <button
+                                                type="button"
+                                                className="slot__edit"
+                                                onClick={(event) => {
+                                                    event.stopPropagation();
+                                                    onEdit(occupant.characterId);
+                                                }}
+                                                aria-label={`Edit ${runtimeAgent.displayName(occupant)}'s kit`}
+                                                title="Edit kit"
+                                            >
+                                                ✎
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className="slot__remove"
+                                                onClick={(event) => {
+                                                    event.stopPropagation();
+                                                    onUnassign(slot.slotId);
+                                                }}
+                                                aria-label={`Remove ${runtimeAgent.displayName(occupant)}`}
+                                            >
+                                                ✕
+                                            </button>
+                                        </div>
+                                        <AgentCard agent={occupant} size="sm" draggable dragFromSlotId={slot.slotId} />
+                                        {(() => {
+                                            const carried = session.carriedBy(occupant.characterId).entries;
+                                            const capacity = runtimeAgent.inventorySize(occupant);
+                                            const carriedTotal = carried.reduce((sum, [, qty]) => sum + qty, 0);
+                                            const emptySlots = Math.max(0, capacity - carriedTotal);
+                                            if (capacity <= 0) return null;
+
+                                            return (
+                                                <>
+                                                    <div className="slot__items">
+                                                        {carried.map(([itemId, qty]) => {
+                                                            const name = tables.Item.get(itemId)?.displayName ?? itemId;
+                                                            return <EquipIcon key={itemId} name={name} qty={qty} mini />;
+                                                        })}
+                                                        {Array.from({ length: emptySlots }, (_, index) => (
+                                                            <span
+                                                                key={`empty-${index}`}
+                                                                className="equip-icon equip-icon--mini equip-icon--empty"
+                                                                aria-hidden="true"
+                                                            />
+                                                        ))}
+                                                    </div>
+                                                    {carried.length > 0 ? (
+                                                        <button
+                                                            type="button"
+                                                            className="slot__discard"
+                                                            onClick={(event) => {
+                                                                event.stopPropagation();
+                                                                onDiscardItems(occupant);
+                                                            }}
+                                                            aria-label={`Discard everything ${runtimeAgent.displayName(occupant)} is carrying`}
+                                                            title="Discard all items"
+                                                        >
+                                                            🗑
+                                                        </button>
+                                                    ) : null}
+                                                </>
+                                            );
+                                        })()}
+                                        <StatHexagon agent={occupant} mini />
+                                    </div>
+                                ) : (
+                                    <button
+                                        type="button"
+                                        className="slot__empty"
+                                        aria-pressed={isTarget}
+                                        onClick={() => onPickSlot(slot.slotId)}
+                                    >
+                                        {pickingAgentId
+                                            ? 'Tap to assign'
+                                            : isTarget
+                                              ? 'Pick an agent below'
+                                              : 'Select an agent, drag one, or tap here first'}
+                                    </button>
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
+
+                {failure ? <div className="meta danger">{failure}</div> : null}
+            </div>
         </div>
     );
 }

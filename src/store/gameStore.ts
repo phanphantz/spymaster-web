@@ -24,7 +24,6 @@ import { DOLLAR, type GameTables } from '../engine/types';
 
 export type Phase = 'loading' | 'failed' | 'employment' | 'playing';
 export type Overlay = 'none' | 'missionSummary' | 'result' | 'shop';
-export type MissionTab = 'details' | 'assignment';
 
 interface GameState {
     phase: Phase;
@@ -67,9 +66,6 @@ interface GameState {
      *  whether the agents trade slots, their kits trade slots, or both. */
     pendingSwap?: { slotA: string; slotB: string };
 
-    /** Which tab the mission modal was on — lifted out of the modal so it survives a detour to the
-     *  Shop page and back (Done always lands where the pencil was tapped from). */
-    missionTab: MissionTab;
     /** The agent the full-page Shop is equipping. Set by the pencil on a filled slot. */
     shopCharacterId?: string;
 
@@ -92,7 +88,6 @@ interface GameState {
     openMission: (instanceId: string) => void;
     closeOverlay: () => void;
     declineMission: (instanceId: string) => void;
-    setMissionTab: (tab: MissionTab) => void;
 
     /** Opens the full-page Shop focused on one agent — from the pencil on their filled slot. */
     openShop: (characterId: string) => void;
@@ -307,7 +302,6 @@ export const useGame = create<GameState>((set, get) => {
     picked: [],
     pending: [],
     assignmentFailure: '',
-    missionTab: 'details',
     showDataPanel: false,
 
     async init() {
@@ -356,7 +350,6 @@ export const useGame = create<GameState>((set, get) => {
             pickingAgentId: undefined,
             pickingSlotId: undefined,
             assignmentFailure: '',
-            missionTab: 'details',
             shopCharacterId: undefined,
             pendingSwap: undefined,
             version: get().version + 1,
@@ -448,7 +441,6 @@ export const useGame = create<GameState>((set, get) => {
             pickingAgentId: undefined,
             pickingSlotId: undefined,
             assignmentFailure: '',
-            missionTab: 'details',
             shopCharacterId: undefined,
             pendingSwap: undefined,
             version: get().version + 1,
@@ -489,10 +481,6 @@ export const useGame = create<GameState>((set, get) => {
             pendingSwap: undefined,
             version: get().version + 1,
         });
-    },
-
-    setMissionTab(tab) {
-        set({ missionTab: tab });
     },
 
     openShop(characterId) {

@@ -529,7 +529,7 @@
     border-radius: var(--radius);
 }
 
-.modal--wide { width: min(1340px, 100%); }
+.modal--wide { width: min(1620px, 100%); }
 
 .modal__close {
     position: absolute;
@@ -612,12 +612,14 @@
 
 .summary {
     display: grid;
-    /* The divider is its own column so the dot can sit centred on it. */
-    grid-template-columns: 400px 2px 1fr;
-    /* Fixed, not min — content-driven height is exactly what let Details and Assignment differ and
-       made the whole modal visibly resize (and re-center, via the backdrop) switching tabs. Sized
-       for Assignment's worst case: a full 2x2 slot-grid (4 is the most a mission ever asks for). */
-    height: 580px;
+    /* The divider is its own column so the dot can sit centred on it. The stats rail is a fourth,
+       always-visible column rather than something the middle column swaps in — it's what the player
+       is actually optimizing while working the slot grid next to it. */
+    grid-template-columns: 400px 2px 1fr 280px;
+    /* Fixed, not min — content-driven height is what used to make the whole modal visibly resize
+       (and re-center, via the backdrop) as tabs changed what filled it. Everything that can outgrow
+       this now scrolls internally instead (`.summary__right{overflow-y:auto}`). */
+    height: 620px;
 }
 
 .summary__left {
@@ -653,21 +655,31 @@
     pointer-events: none;
 }
 
-/* Assignment tab: the mount shows the assigned team's combined stats instead of mission art — no
-   photo to fade into the location block below it. Still grows to fill the space above the gauges
-   (inherited flex: 1), so the hexagon centers within that area rather than sitting flush at top. */
+/* The stats rail's mount shows the assigned team's combined stats instead of mission art — no photo
+   to fade into anything below it. Still grows to fill the space above the gauges (inherited
+   flex: 1), so the hexagon centers within that area rather than sitting flush at top. */
 .summary__photo--stats { padding: 10px; }
 .summary__photo--stats::after { display: none; }
 
-/* The dashrule and whatever sits under it (location block, or the stat gauges) pushed down as one
-   group — leftover space the photo/hexagon above doesn't claim collects above this instead of below
-   it, so the group stays compact and ends up flush with the column's own bottom rather than
-   floating with dead space beneath it. Shared by both tabs' left column. */
+/* The dashrule and whatever sits under it (the left column's location block, or the stats rail's
+   gauges) pushed down as one group — leftover space the photo/hexagon above doesn't claim collects
+   above this instead of below it, so the group stays compact and ends up flush with the column's
+   own bottom rather than floating with dead space beneath it. Shared by both columns. */
 .summary__lower-anchor { margin-top: auto; }
 
-/* Assignment tab only, where the location block would otherwise sit — same numbers as the hexagon
-   above, read as a bar per stat instead of a shape. Kept shorter than the hexagon on purpose: this
-   is the secondary reading, not the headline. */
+/* The always-visible right rail: team stats, whether or not any slot is filled yet. A plain
+   border rather than a second `.summary__divider` — the notification dot only ever marked the one
+   rule, between the photo and the briefing. */
+.summary__stats {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    border-left: 1px solid var(--line);
+}
+
+/* Same numbers as the hexagon above, read as a bar per stat instead of a shape. Kept shorter than
+   the hexagon on purpose: this is the secondary reading, not the headline. */
 .stat-gauges {
     padding: 6px 20px 10px;
     display: flex;
@@ -808,29 +820,8 @@
     font-weight: 700;
 }
 
-/* Details | Assignment, sitting on the rule that separates them from the body above. */
-.tabrow {
-    display: flex;
-    align-items: baseline;
-    gap: 16px;
-    border-bottom: 1px solid var(--line);
-    padding-bottom: 8px;
-}
-
-.tabrow__tab {
-    padding: 3px 10px;
-    background: transparent;
-    border: 0;
-    color: var(--steel);
-    font-size: var(--fs-chip);
-    letter-spacing: 0.06em;
-    border-radius: var(--radius);
-}
-
-.tabrow__tab[aria-selected='true'] { background: var(--cyan); color: var(--inverse); }
-
-/* A floor, so switching tab does not resize the modal and shift everything under the cursor. */
-.tabpanel { display: flex; flex-direction: column; gap: 12px; min-height: 140px; }
+/* Tasks, Rewards and the Team slot grid, stacked as one scrollable page in the middle column. */
+.mission-body { display: flex; flex-direction: column; gap: 16px; }
 
 .marker-list { display: flex; flex-direction: column; gap: 8px; }
 
