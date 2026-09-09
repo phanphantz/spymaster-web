@@ -553,21 +553,20 @@
     border-top: 1px solid var(--line);
 }
 
-/* Mission UI only: gridded on the same columns as `.summary` above it, so the two dividers run
-   straight down from the panel into the footer instead of stopping at the row, and each zone lands
-   under the column it belongs to — Decline under the left column, the fill-status line under the
-   middle column (where a wide empty stretch used to sit), Deploy under the stats rail. */
+/* Mission UI only: gridded on the left column's own width, so its divider line runs straight down
+   from the panel into the footer instead of stopping at the row. Everything right of it — status
+   and Deploy — stays in one cell, grouped tight at the far edge, rather than spread across separate
+   cells that left a wide empty strip between Decline and Deploy. */
 .modal__footer--grid {
     display: grid;
-    grid-template-columns: 400px 2px 1fr 280px;
+    grid-template-columns: 400px 2px 1fr;
     padding: 0;
     gap: 0;
 }
 
 .modal__footer-cell { display: flex; align-items: center; padding: 12px 20px; }
 .modal__footer-cell--left { justify-content: flex-start; }
-.modal__footer-cell--mid { justify-content: flex-end; }
-.modal__footer-cell--stats { justify-content: flex-end; }
+.modal__footer-cell--right { justify-content: flex-end; gap: 14px; }
 
 /* Continues the summary's own divider line straight down. */
 .modal__footer-divider { background: var(--line); }
@@ -687,7 +686,6 @@
    border rather than a second `.summary__divider` — the notification dot only ever marked the one
    rule, between the photo and the briefing. */
 .summary__stats {
-    position: relative;
     display: flex;
     flex-direction: column;
     min-height: 0;

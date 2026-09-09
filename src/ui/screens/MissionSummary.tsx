@@ -166,10 +166,10 @@ export function MissionSummary(): ReactNode {
                 </div>
             </div>
 
-            {/* Gridded on the same columns as `.summary` above it, so the two dividers run straight
-                through from top to bottom instead of stopping at the row — Decline sits under the
-                left column, the fill-status line under the middle column (where the empty stretch
-                used to be), Deploy under the stats rail. */}
+            {/* Gridded on the left column's own width, so its divider line runs straight through
+                from the panel into the footer instead of stopping at the row. Status and Deploy stay
+                grouped tight on the right rather than spread across their own separate cells — that
+                just left a wide empty strip between Decline and Deploy. */}
             <div className="modal__footer modal__footer--grid">
                 <div className="modal__footer-cell modal__footer-cell--left">
                     <button
@@ -183,14 +183,12 @@ export function MissionSummary(): ReactNode {
                     </button>
                 </div>
                 <div className="modal__footer-divider" aria-hidden="true" />
-                <div className="modal__footer-cell modal__footer-cell--mid">
+                <div className="modal__footer-cell modal__footer-cell--right">
                     <span className="meta">
                         {session.canConfirm
                             ? 'Ready to deploy'
                             : `Fill ${session.missingMandatorySlots.length} more slot(s)`}
                     </span>
-                </div>
-                <div className="modal__footer-cell modal__footer-cell--stats">
                     <button
                         type="button"
                         className="btn btn--primary"
@@ -353,13 +351,13 @@ function RewardSquares({ mission, tables }: { mission: LiveMission; tables: Game
 
     return (
         <div className="reward-squares">
-            <div className="reward-square hatch">
+            <div className="reward-square">
                 <span className="reward-square__icon" aria-hidden="true">💰</span>
                 <span className="reward-square__value">
                     {reward.money ? `$${reward.money.toLocaleString('en-US')}` : '—'}
                 </span>
             </div>
-            <div className="reward-square hatch">
+            <div className="reward-square">
                 <span className="reward-square__icon" aria-hidden="true">⭐</span>
                 <span className="reward-square__value">{reward.exp || '—'}</span>
             </div>
