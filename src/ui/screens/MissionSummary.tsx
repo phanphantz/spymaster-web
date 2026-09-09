@@ -103,7 +103,7 @@ export function MissionSummary(): ReactNode {
                                 <div className="summary__photo summary__photo--stats">
                                     <StatHexagon totals={combinedStats(assignedAgentsOf(session))} />
                                 </div>
-                                <div className="summary__gauges-anchor">
+                                <div className="summary__lower-anchor">
                                     <hr className="summary__dashrule" />
                                     <StatGaugeList agents={assignedAgentsOf(session)} tables={tables} />
                                 </div>
@@ -111,8 +111,10 @@ export function MissionSummary(): ReactNode {
                         ) : (
                             <>
                                 <div className="summary__photo">NO IMAGE</div>
-                                <hr className="summary__dashrule" />
-                                <LocationBlock mission={mission} />
+                                <div className="summary__lower-anchor">
+                                    <hr className="summary__dashrule" />
+                                    <LocationBlock mission={mission} />
+                                </div>
                             </>
                         )}
                     </div>

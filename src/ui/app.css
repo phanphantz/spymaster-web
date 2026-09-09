@@ -659,10 +659,11 @@
 .summary__photo--stats { padding: 10px; }
 .summary__photo--stats::after { display: none; }
 
-/* The rule that WAS between hexagon and gauges pushed down instead, with the gauges — so the
-   leftover space (the hexagon no longer claims) sits above this group, not below it: the gauges end
-   up flush with the column's own bottom rather than floating with dead space beneath them. */
-.summary__gauges-anchor { margin-top: auto; }
+/* The dashrule and whatever sits under it (location block, or the stat gauges) pushed down as one
+   group — leftover space the photo/hexagon above doesn't claim collects above this instead of below
+   it, so the group stays compact and ends up flush with the column's own bottom rather than
+   floating with dead space beneath it. Shared by both tabs' left column. */
+.summary__lower-anchor { margin-top: auto; }
 
 /* Assignment tab only, where the location block would otherwise sit — same numbers as the hexagon
    above, read as a bar per stat instead of a shape. Kept shorter than the hexagon on purpose: this
