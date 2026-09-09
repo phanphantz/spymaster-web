@@ -113,29 +113,36 @@ export function MissionSummary(): ReactNode {
                     </div>
 
                     <div className="summary__right">
-                        <h2 className="summary__name">{mission.data.displayName}</h2>
+                        <div className="summary__scroll">
+                            <h2 className="summary__name">{mission.data.displayName}</h2>
 
-                        <div className="summary__row">
-                            <span className="chip">{mission.data.type ?? 'contract'}</span>
-                            <DifficultyPips level={mission.data.difficultyLevel} />
+                            <div className="summary__row">
+                                <span className="chip">{mission.data.type ?? 'contract'}</span>
+                                <DifficultyPips level={mission.data.difficultyLevel} />
+                            </div>
+
+                            {mission.data.hint ? (
+                                <p className="hint">
+                                    <Emphasized text={mission.data.hint} terms={keywordTerms} />
+                                </p>
+                            ) : null}
+
+                            {mission.data.description ? (
+                                <p className="summary__body">
+                                    <Emphasized text={mission.data.description} terms={keywordTerms} />
+                                </p>
+                            ) : null}
+
+                            <MissionTasks mission={mission} tables={tables} />
                         </div>
 
-                        {mission.data.hint ? (
-                            <p className="hint">
-                                <Emphasized text={mission.data.hint} terms={keywordTerms} />
-                            </p>
-                        ) : null}
-
-                        {mission.data.description ? (
-                            <p className="summary__body">
-                                <Emphasized text={mission.data.description} terms={keywordTerms} />
-                            </p>
-                        ) : null}
-
-                        <MissionBody
-                            mission={mission}
-                            tables={tables}
+                        {/* Pinned outside the scroll region, not squeezed by it — a long hint or
+                            description scrolls in the space above, but the slot grid (up to 4 slots,
+                            2 rows at their fixed height) always has the room it needs and is never
+                            what gets clipped or pushed into a scrollbar. */}
+                        <MissionTeam
                             session={session}
+                            tables={tables}
                             pickingAgentId={pickingAgentId}
                             pickingSlotId={pickingSlotId}
                             onPickSlot={pickSlot}
@@ -386,21 +393,54 @@ function LocationBlock({ mission }: { mission: LiveMission }): ReactNode {
 }
 
 /**
- * Tasks, rewards and the team's slot grid, stacked on one page.
+ * Tasks, in the scrollable briefing area above the team.
  *
  * The sketch puts a Task list here. v1 cuts Tasks, so the list renders whatever `starterTasks`
  * resolves to and says plainly when there is nothing — which is honest now and fills itself in
  * once Tasks are authored, rather than needing this rewritten.
- *
- * The slot grid below it is the real, interactive Loadout — pick an agent from the roster strip
- * below the modal, then tap a slot, or tap an empty slot first and pick the agent after; either
- * order lands the same placement. An occupied slot clears with its 'x'. What that agent carries
- * lives on its own page, opened with the pencil — a slot has no room for a kit list.
  */
-function MissionBody({
-    mission,
-    tables,
+function MissionTasks({ mission, tables }: { mission: LiveMission; tables: GameTables }): ReactNode {
+    const tasks = tables.Task.getMany(mission.data.starterTasks);
+
+    return (
+        <div>
+            <div className="summary__label">Tasks</div>
+            <div className="marker-list">
+                {tasks.length ? (
+                    tasks.map((task) => (
+                        <div className="marker-row" key={task.taskId}>
+                            <span className="marker" />
+                            <span>{task.displayName ?? task.taskId}</span>
+                            <span className="marker-row__note">
+                                {task.minDurationInHours ? `${task.minDurationInHours}h` : ''}
+                            </span>
+                        </div>
+                    ))
+                ) : (
+                    <div className="marker-row">
+                        <span className="marker" />
+                        <span className="dim">Single operation. Tasks are not modelled in this prototype.</span>
+                        <span />
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}
+
+/**
+ * The team's slot grid — pinned to the floor of the middle column, outside the briefing's scroll
+ * area, so a long hint or description never squeezes it. Up to 4 slots (2 rows at their fixed
+ * height) always has the room it needs; the briefing scrolls instead.
+ *
+ * The real, interactive Loadout — pick an agent from the roster strip below the modal, then tap a
+ * slot, or tap an empty slot first and pick the agent after; either order lands the same placement.
+ * An occupied slot clears with its 'x'. What that agent carries lives on its own page, opened with
+ * the pencil — a slot has no room for a kit list.
+ */
+function MissionTeam({
     session,
+    tables,
     pickingAgentId,
     pickingSlotId,
     onPickSlot,
@@ -410,9 +450,8 @@ function MissionBody({
     onDiscardItems,
     failure,
 }: {
-    mission: LiveMission;
-    tables: GameTables;
     session: LoadoutSession;
+    tables: GameTables;
     pickingAgentId: string | undefined;
     pickingSlotId: string | undefined;
     onPickSlot: (slotId: string) => void;
@@ -422,39 +461,11 @@ function MissionBody({
     onDiscardItems: (agent: RuntimeAgent) => void;
     failure: string;
 }): ReactNode {
-    const tasks = tables.Task.getMany(mission.data.starterTasks);
-
     return (
-        <div className="mission-body">
-            <div>
-                <div className="summary__label">Tasks</div>
-                <div className="marker-list">
-                    {tasks.length ? (
-                        tasks.map((task) => (
-                            <div className="marker-row" key={task.taskId}>
-                                <span className="marker" />
-                                <span>{task.displayName ?? task.taskId}</span>
-                                <span className="marker-row__note">
-                                    {task.minDurationInHours ? `${task.minDurationInHours}h` : ''}
-                                </span>
-                            </div>
-                        ))
-                    ) : (
-                        <div className="marker-row">
-                            <span className="marker" />
-                            <span className="dim">
-                                Single operation. Tasks are not modelled in this prototype.
-                            </span>
-                            <span />
-                        </div>
-                    )}
-                </div>
-            </div>
-
-            <div className="summary__lower-anchor">
-                <div className="summary__label">Team</div>
-                <div className="slot-grid">
-                    {session.slots.map((slot) => {
+        <div className="summary__team">
+            <div className="summary__label">Team</div>
+            <div className="slot-grid">
+                {session.slots.map((slot) => {
                         const occupant = session.agentIn(slot.slotId);
                         const isTarget = slot.slotId === pickingSlotId;
                         // A picked agent (from a click, not mid-drag) could land here and bump someone —
@@ -584,8 +595,7 @@ function MissionBody({
                     })}
                 </div>
 
-                {failure ? <div className="meta danger">{failure}</div> : null}
-            </div>
+            {failure ? <div className="meta danger">{failure}</div> : null}
         </div>
     );
 }

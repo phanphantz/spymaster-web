@@ -784,11 +784,27 @@
     flex-direction: column;
     gap: 10px;
     min-width: 0;
-    /* .summary is now a fixed height, not min-height — this is what actually absorbs an unusually
-       long hint/description or a 4-slot Assignment grid without pushing the row itself taller. */
+    /* .summary is a fixed height, not min-height — the scroll region below absorbs an unusually
+       long hint/description instead of pushing the row itself taller. */
     min-height: 0;
+}
+
+/* The name, chips, hint, description and Tasks — everything that can genuinely run long. Scrolls
+   on its own so it's this, and never the Team slot grid below it, that gives when content is
+   longer than the fixed-height modal has room for. */
+.summary__scroll {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     overflow-y: auto;
 }
+
+/* The team's slot grid, pinned outside the scroll region above — never squeezed by a long
+   briefing. Up to 4 slots (2 rows at their own fixed height, `.slot { height: 126px }`) always
+   has the room it needs. */
+.summary__team { flex: 0 0 auto; }
 
 .summary__name {
     font-size: var(--fs-display);
@@ -823,12 +839,6 @@
     color: var(--cyan);
     font-weight: 700;
 }
-
-/* Tasks, Rewards and the Team slot grid, stacked as one scrollable page in the middle column. */
-/* Grows to claim whatever height the name/chips/hint/description above it don't, so the Team
-   group's own margin-top: auto (`.summary__lower-anchor`) has room to push it to the floor instead
-   of sitting flush under Tasks. */
-.mission-body { flex: 1; display: flex; flex-direction: column; gap: 16px; min-height: 0; }
 
 .marker-list { display: flex; flex-direction: column; gap: 8px; }
 
