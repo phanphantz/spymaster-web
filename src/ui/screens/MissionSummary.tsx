@@ -451,7 +451,7 @@ function MissionBody({
                 </div>
             </div>
 
-            <div>
+            <div className="summary__lower-anchor">
                 <div className="summary__label">Team</div>
                 <div className="slot-grid">
                     {session.slots.map((slot) => {

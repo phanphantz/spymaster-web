@@ -825,7 +825,10 @@
 }
 
 /* Tasks, Rewards and the Team slot grid, stacked as one scrollable page in the middle column. */
-.mission-body { display: flex; flex-direction: column; gap: 16px; }
+/* Grows to claim whatever height the name/chips/hint/description above it don't, so the Team
+   group's own margin-top: auto (`.summary__lower-anchor`) has room to push it to the floor instead
+   of sitting flush under Tasks. */
+.mission-body { flex: 1; display: flex; flex-direction: column; gap: 16px; min-height: 0; }
 
 .marker-list { display: flex; flex-direction: column; gap: 8px; }
 
