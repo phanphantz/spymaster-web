@@ -743,6 +743,10 @@
     letter-spacing: 0.04em;
 }
 
+/* Payment and exp, under the location info group — same horizontal padding as it, so the two
+   groups read as one column rather than two independently-aligned blocks. */
+.summary__rewards { padding: 14px 24px 0; }
+
 /* UIMissionLink: a thin light chip, black text, sitting inline under the address. */
 .mission-link {
     align-self: flex-start;

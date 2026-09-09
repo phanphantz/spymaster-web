@@ -104,6 +104,7 @@ export function MissionSummary(): ReactNode {
                         <div className="summary__lower-anchor">
                             <hr className="summary__dashrule" />
                             <LocationBlock mission={mission} />
+                            <RewardRow mission={mission} tables={tables} />
                         </div>
                     </div>
 
@@ -327,6 +328,30 @@ function StatGaugeList({ agents, tables }: { agents: readonly RuntimeAgent[]; ta
     );
 }
 
+/** Payment and exp, sitting under the location info group at the foot of the left column. */
+function RewardRow({ mission, tables }: { mission: LiveMission; tables: GameTables }): ReactNode {
+    const reward = previewReward(tables, mission.data.outcomes?.[0]);
+
+    return (
+        <div className="summary__rewards">
+            <div className="reward-row">
+                <div className="reward-box hatch">
+                    <span className="reward-box__icon" aria-hidden="true">💰</span>
+                    <span className="reward-box__value">
+                        {reward.money ? `$${reward.money.toLocaleString('en-US')}` : '—'}
+                    </span>
+                    <span className="reward-box__unit">payment</span>
+                </div>
+                <div className="reward-box hatch">
+                    <span className="reward-box__icon" aria-hidden="true">⭐</span>
+                    <span className="reward-box__value">{reward.exp || '—'}</span>
+                    <span className="reward-box__unit">exp</span>
+                </div>
+            </div>
+        </div>
+    );
+}
+
 /** Location name, address and coordinates, sitting under the photo's fade. */
 function LocationBlock({ mission }: { mission: LiveMission }): ReactNode {
     const [expanded, setExpanded] = useState(false);
@@ -398,7 +423,6 @@ function MissionBody({
     failure: string;
 }): ReactNode {
     const tasks = tables.Task.getMany(mission.data.starterTasks);
-    const reward = previewReward(tables, mission.data.outcomes?.[0]);
 
     return (
         <div className="mission-body">
@@ -424,24 +448,6 @@ function MissionBody({
                             <span />
                         </div>
                     )}
-                </div>
-            </div>
-
-            <div>
-                <div className="summary__label">Rewards</div>
-                <div className="reward-row">
-                    <div className="reward-box hatch">
-                        <span className="reward-box__icon" aria-hidden="true">💰</span>
-                        <span className="reward-box__value">
-                            {reward.money ? `$${reward.money.toLocaleString('en-US')}` : '—'}
-                        </span>
-                        <span className="reward-box__unit">payment</span>
-                    </div>
-                    <div className="reward-box hatch">
-                        <span className="reward-box__icon" aria-hidden="true">⭐</span>
-                        <span className="reward-box__value">{reward.exp || '—'}</span>
-                        <span className="reward-box__unit">exp</span>
-                    </div>
                 </div>
             </div>
 
