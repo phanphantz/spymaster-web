@@ -529,7 +529,21 @@
     border-radius: var(--radius);
 }
 
-.modal--wide { width: min(1620px, 100%); }
+/* Mission UI only: the two column dividers, painted as part of the modal's own background instead
+   of stopping at the bottom of `.summary` — a background layer sits behind every button and piece
+   of text, so it reads as running continuously through the footer to the modal's true bottom edge
+   without needing to dodge anything sitting on top of it. Offsets match `.summary`'s own
+   `grid-template-columns: 400px 2px 1fr 280px` (the second line sits at the stats rail's left
+   edge: 400 + 2 + the middle column's width at the modal's fixed 1620px). Solid --steel rather than
+   the very faint --line — this is the one place the line has to read clearly against plain, mostly
+   empty footer background rather than sitting next to other hairline UI. */
+.modal--wide {
+    width: min(1620px, 100%);
+    background:
+        linear-gradient(var(--steel), var(--steel)) no-repeat 400px 0 / 2px 100%,
+        linear-gradient(var(--steel), var(--steel)) no-repeat 1324px 0 / 2px 100%,
+        var(--surface);
+}
 
 .modal__close {
     position: absolute;
@@ -1315,6 +1329,9 @@ button.equip-icon:hover { border-color: var(--danger); color: var(--danger); }
     .summary__left { border-bottom: 1px solid var(--line); }
     /* The rule and its dot are the seam between two columns; stacked, there is no seam. */
     .summary__divider { display: none; }
+    /* Same reasoning — the background dividers line up with the desktop grid, which no longer
+       applies once the columns stack. */
+    .modal--wide { background: var(--surface); }
     .summary__photo { min-height: 140px; }
 
     .summary__name { font-size: var(--fs-money); }
