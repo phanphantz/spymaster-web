@@ -760,6 +760,19 @@
 
 .slot__filled .stat-hex--mini { margin-left: auto; }
 
+/* What the agent carries, previewed in the space between the portrait and the hexagon — wraps and
+   caps at the slot's own height rather than growing it; the pencil is where the full list lives. */
+.slot__items {
+    flex: 0 1 auto;
+    max-width: 76px;
+    max-height: 56px;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 3px;
+    overflow: hidden;
+}
+
 .tabs {
     display: flex;
     gap: 6px;
@@ -816,7 +829,19 @@
     color: var(--text);
 }
 
-.equip-icon:hover { border-color: var(--danger); color: var(--danger); }
+/* Only the clickable (Shop page, "tap to unequip") one hints at that — a filled slot's preview is
+   a plain <span>, read-only, so it stays cyan on hover instead of implying a click does something. */
+button.equip-icon:hover { border-color: var(--danger); color: var(--danger); }
+
+/* The filled-slot preview: same tile, small enough to sit beside the portrait without growing it. */
+.equip-icon--mini {
+    width: 16px;
+    height: 16px;
+    border-width: 1px;
+}
+
+.equip-icon--mini .equip-icon__glyph { font-size: 6px; }
+.equip-icon--mini .equip-icon__qty { display: none; }
 
 .equip-icon__glyph { font-size: var(--fs-meta); letter-spacing: 0.02em; }
 

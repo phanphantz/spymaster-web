@@ -20,6 +20,52 @@ export function StatAbbr({ stat }: { stat: StatId }): ReactNode {
     );
 }
 
+/** Up to two letters standing in for an item's icon — nothing in the data has real art per item. */
+function initials(name: string): string {
+    const words = name.trim().split(/\s+/).filter(Boolean);
+    if (words.length === 0) return '?';
+    if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
+    return (words[0][0] + words[1][0]).toUpperCase();
+}
+
+/**
+ * An item, standing in as a small monogram tile since nothing in the data has real per-item icons.
+ * Used both for the Shop page's "equipped" strip (clickable, to unequip) and a filled slot's compact
+ * preview of what its agent carries (not clickable — the pencil is what opens the real page for that).
+ */
+export function EquipIcon({
+    name,
+    qty,
+    mini,
+    onClick,
+    title,
+}: {
+    name: string;
+    qty?: number;
+    mini?: boolean;
+    onClick?: () => void;
+    title?: string;
+}): ReactNode {
+    const className = mini ? 'equip-icon equip-icon--mini' : 'equip-icon';
+    const label = title ?? (qty && qty > 1 ? `${name} ×${qty}` : name);
+    const content = (
+        <>
+            <span className="equip-icon__glyph">{initials(name)}</span>
+            {qty && qty > 1 ? <span className="equip-icon__qty">×{qty}</span> : null}
+        </>
+    );
+
+    return onClick ? (
+        <button type="button" className={className} onClick={onClick} title={label}>
+            {content}
+        </button>
+    ) : (
+        <span className={className} title={label}>
+            {content}
+        </span>
+    );
+}
+
 /** Difficulty as diamonds, the way the Unity Mission Summary shows it — no number, no percentage. */
 export function DifficultyPips({ level = 0, max = 4 }: { level?: number; max?: number }): ReactNode {
     return (

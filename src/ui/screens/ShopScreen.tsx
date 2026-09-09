@@ -2,21 +2,13 @@ import { useState, type ReactNode } from 'react';
 import { useGame } from '../../store/gameStore';
 import * as runtimeAgent from '../../engine/runtimeAgent';
 import { describePurchaseFailure } from '../../engine/shop';
-import { StatAbbr } from '../components/bits';
+import { EquipIcon, StatAbbr } from '../components/bits';
 import { STAT_IDS } from '../../engine/types';
 import type { ItemData } from '../../engine/types';
 
 /** camelCase id → Title Case label, for the subtype row — there's no vocabulary tab for these. */
 function humanize(id: string): string {
     return id.replace(/([a-z0-9])([A-Z])/g, '$1 $2').replace(/^./, (letter) => letter.toUpperCase());
-}
-
-/** Up to two letters standing in for an item's icon — nothing in the data has real art per item. */
-function initials(name: string): string {
-    const words = name.trim().split(/\s+/).filter(Boolean);
-    if (words.length === 0) return '?';
-    if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
-    return (words[0][0] + words[1][0]).toUpperCase();
 }
 
 /** The stat swing an item gives, which is the only thing about it a Gate can see. */
@@ -110,16 +102,13 @@ export function ShopScreen(): ReactNode {
                         const item = tables.Item.get(itemId);
                         const name = item?.displayName ?? itemId;
                         return (
-                            <button
-                                type="button"
+                            <EquipIcon
                                 key={itemId}
-                                className="equip-icon"
+                                name={name}
+                                qty={qty}
                                 onClick={() => unassignItem(shopCharacterId, itemId, 1)}
                                 title={`${name} ×${qty} — tap to unequip`}
-                            >
-                                <span className="equip-icon__glyph">{initials(name)}</span>
-                                {qty > 1 ? <span className="equip-icon__qty">×{qty}</span> : null}
-                            </button>
+                            />
                         );
                     })
                 )}

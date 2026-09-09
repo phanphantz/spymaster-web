@@ -2,7 +2,7 @@ import { useState, type ReactNode } from 'react';
 import { useGame } from '../../store/gameStore';
 import * as runtimeAgent from '../../engine/runtimeAgent';
 import type { RuntimeAgent } from '../../engine/runtimeAgent';
-import { AgentCard, ConfirmDialog, DifficultyPips, Emphasized, Modal, StatHexagon } from '../components/bits';
+import { AgentCard, ConfirmDialog, DifficultyPips, Emphasized, EquipIcon, Modal, StatHexagon } from '../components/bits';
 import { STAT_IDS } from '../../engine/types';
 import type { GameTables, StatId } from '../../engine/types';
 import type { LoadoutSession } from '../../engine/loadout';
@@ -136,6 +136,7 @@ export function MissionSummary(): ReactNode {
                         ) : (
                             <AssignmentTab
                                 session={session}
+                                tables={tables}
                                 pickingAgentId={pickingAgentId}
                                 pickingSlotId={pickingSlotId}
                                 onPickSlot={pickSlot}
@@ -291,6 +292,7 @@ function DetailsTab({ mission, tables }: { mission: LiveMission; tables: GameTab
  */
 function AssignmentTab({
     session,
+    tables,
     pickingAgentId,
     pickingSlotId,
     onPickSlot,
@@ -299,6 +301,7 @@ function AssignmentTab({
     failure,
 }: {
     session: LoadoutSession;
+    tables: GameTables;
     pickingAgentId: string | undefined;
     pickingSlotId: string | undefined;
     onPickSlot: (slotId: string) => void;
@@ -352,6 +355,14 @@ function AssignmentTab({
                                         </button>
                                     </div>
                                     <AgentCard agent={occupant} size="sm" />
+                                    {session.carriedBy(occupant.characterId).entries.length > 0 ? (
+                                        <div className="slot__items">
+                                            {session.carriedBy(occupant.characterId).entries.map(([itemId, qty]) => {
+                                                const name = tables.Item.get(itemId)?.displayName ?? itemId;
+                                                return <EquipIcon key={itemId} name={name} qty={qty} mini />;
+                                            })}
+                                        </div>
+                                    ) : null}
                                     <StatHexagon agent={occupant} mini />
                                 </div>
                             ) : (
