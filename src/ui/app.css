@@ -267,6 +267,7 @@
     bottom: 0;
     z-index: 11;
     display: flex;
+    justify-content: center;
     gap: 8px;
     padding: 10px 20px;
     background: var(--bg);
@@ -402,7 +403,10 @@
     z-index: 1;
 }
 
-.modal__body { overflow-y: auto; min-height: 0; }
+/* Reserves the scrollbar's width whether or not content actually overflows — otherwise Details
+   (short, no scroll) and Assignment (up to 4 slots, usually does scroll) render at different usable
+   widths on a classic (non-overlay) scrollbar, and the whole panel visibly shifts switching tabs. */
+.modal__body { overflow-y: auto; min-height: 0; scrollbar-gutter: stable; }
 
 .modal__footer {
     flex-shrink: 0;
@@ -512,9 +516,15 @@
 }
 
 /* Assignment tab: the mount shows the assigned team's combined stats instead of mission art — no
-   photo to fade into the location block below it. */
+   photo to fade into the location block below it. Still grows to fill the space above the gauges
+   (inherited flex: 1), so the hexagon centers within that area rather than sitting flush at top. */
 .summary__photo--stats { padding: 10px; }
 .summary__photo--stats::after { display: none; }
+
+/* The rule that WAS between hexagon and gauges pushed down instead, with the gauges — so the
+   leftover space (the hexagon no longer claims) sits above this group, not below it: the gauges end
+   up flush with the column's own bottom rather than floating with dead space beneath them. */
+.summary__gauges-anchor { margin-top: auto; }
 
 /* Assignment tab only, where the location block would otherwise sit — same numbers as the hexagon
    above, read as a bar per stat instead of a shape. Kept shorter than the hexagon on purpose: this
@@ -919,6 +929,14 @@ button.equip-icon:hover { border-color: var(--danger); color: var(--danger); }
 
 .equip-icon--mini .equip-icon__glyph { font-size: 6px; }
 .equip-icon--mini .equip-icon__qty { display: none; }
+
+/* Unused inventory capacity, shown alongside what's actually carried — so how much room is left
+   reads at a glance without opening the kit page. */
+.equip-icon--empty {
+    background: transparent;
+    border-style: dashed;
+    border-color: var(--line);
+}
 
 .equip-icon__glyph { font-size: var(--fs-meta); letter-spacing: 0.02em; }
 

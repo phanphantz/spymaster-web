@@ -102,8 +102,10 @@ export function MissionSummary(): ReactNode {
                                 <div className="summary__photo summary__photo--stats">
                                     <StatHexagon totals={combinedStats(assignedAgentsOf(session))} />
                                 </div>
-                                <hr className="summary__dashrule" />
-                                <StatGaugeList agents={assignedAgentsOf(session)} tables={tables} />
+                                <div className="summary__gauges-anchor">
+                                    <hr className="summary__dashrule" />
+                                    <StatGaugeList agents={assignedAgentsOf(session)} tables={tables} />
+                                </div>
                             </>
                         ) : (
                             <>
@@ -542,28 +544,45 @@ function AssignmentTab({
                                         </button>
                                     </div>
                                     <AgentCard agent={occupant} size="sm" draggable dragFromSlotId={slot.slotId} />
-                                    {session.carriedBy(occupant.characterId).entries.length > 0 ? (
-                                        <>
-                                            <div className="slot__items">
-                                                {session.carriedBy(occupant.characterId).entries.map(([itemId, qty]) => {
-                                                    const name = tables.Item.get(itemId)?.displayName ?? itemId;
-                                                    return <EquipIcon key={itemId} name={name} qty={qty} mini />;
-                                                })}
-                                            </div>
-                                            <button
-                                                type="button"
-                                                className="slot__discard"
-                                                onClick={(event) => {
-                                                    event.stopPropagation();
-                                                    onDiscardItems(occupant);
-                                                }}
-                                                aria-label={`Discard everything ${runtimeAgent.displayName(occupant)} is carrying`}
-                                                title="Discard all items"
-                                            >
-                                                🗑
-                                            </button>
-                                        </>
-                                    ) : null}
+                                    {(() => {
+                                        const carried = session.carriedBy(occupant.characterId).entries;
+                                        const capacity = runtimeAgent.inventorySize(occupant);
+                                        const carriedTotal = carried.reduce((sum, [, qty]) => sum + qty, 0);
+                                        const emptySlots = Math.max(0, capacity - carriedTotal);
+                                        if (capacity <= 0) return null;
+
+                                        return (
+                                            <>
+                                                <div className="slot__items">
+                                                    {carried.map(([itemId, qty]) => {
+                                                        const name = tables.Item.get(itemId)?.displayName ?? itemId;
+                                                        return <EquipIcon key={itemId} name={name} qty={qty} mini />;
+                                                    })}
+                                                    {Array.from({ length: emptySlots }, (_, index) => (
+                                                        <span
+                                                            key={`empty-${index}`}
+                                                            className="equip-icon equip-icon--mini equip-icon--empty"
+                                                            aria-hidden="true"
+                                                        />
+                                                    ))}
+                                                </div>
+                                                {carried.length > 0 ? (
+                                                    <button
+                                                        type="button"
+                                                        className="slot__discard"
+                                                        onClick={(event) => {
+                                                            event.stopPropagation();
+                                                            onDiscardItems(occupant);
+                                                        }}
+                                                        aria-label={`Discard everything ${runtimeAgent.displayName(occupant)} is carrying`}
+                                                        title="Discard all items"
+                                                    >
+                                                        🗑
+                                                    </button>
+                                                ) : null}
+                                            </>
+                                        );
+                                    })()}
                                     <StatHexagon agent={occupant} mini />
                                 </div>
                             ) : (
