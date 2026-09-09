@@ -516,6 +516,41 @@
 .summary__photo--stats { padding: 10px; }
 .summary__photo--stats::after { display: none; }
 
+/* Assignment tab only, where the location block would otherwise sit — same numbers as the hexagon
+   above, read as a bar per stat instead of a shape. */
+.stat-gauges {
+    padding: 14px 24px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.stat-gauge { display: flex; align-items: center; gap: 8px; }
+
+.stat-gauge__label { flex: 0 0 auto; }
+
+.stat-gauge__track {
+    flex: 1;
+    /* Fixed regardless of the column's own width, so the bars read as a consistent scale. */
+    max-width: 110px;
+    height: 6px;
+    background: var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+/* A plain <span>, so it needs an explicit display or width/height do nothing. */
+.stat-gauge__fill { display: block; height: 100%; background: var(--cyan); }
+
+.stat-gauge__value {
+    flex: 0 0 auto;
+    min-width: 20px;
+    text-align: right;
+    font-size: var(--fs-micro);
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+}
+
 .summary__dashrule {
     height: 0;
     margin: 0 24px;

@@ -9,6 +9,7 @@ import {
     Emphasized,
     EquipIcon,
     Modal,
+    StatAbbr,
     StatHexagon,
     parseAgentDragPayload,
 } from '../components/bits';
@@ -97,18 +98,24 @@ export function MissionSummary(): ReactNode {
                 <div className="summary">
                     <div className="summary__left">
                         {tab === 'assignment' ? (
-                            <div className="summary__photo summary__photo--stats">
-                                <StatHexagon totals={combinedStats(assignedAgentsOf(session))} />
-                            </div>
+                            <>
+                                <div className="summary__photo summary__photo--stats">
+                                    <StatHexagon totals={combinedStats(assignedAgentsOf(session))} />
+                                </div>
+                                <hr className="summary__dashrule" />
+                                <StatGaugeList agents={assignedAgentsOf(session)} tables={tables} />
+                            </>
                         ) : (
-                            <div className="summary__photo">NO IMAGE</div>
+                            <>
+                                <div className="summary__photo">NO IMAGE</div>
+                                <hr className="summary__dashrule" />
+                                <LocationBlock mission={mission} />
+                            </>
                         )}
-                        <hr className="summary__dashrule" />
-                        <LocationBlock mission={mission} />
                     </div>
 
                     <div className="summary__divider">
-                        <span className="summary__dot" aria-hidden="true" />
+                        {tab === 'details' ? <span className="summary__dot" aria-hidden="true" /> : null}
                     </div>
 
                     <div className="summary__right">
@@ -306,6 +313,35 @@ function SwapDialog({
                     </button>
                 </div>
             </div>
+        </div>
+    );
+}
+
+/**
+ * The team's combined stats as horizontal gauges — icon + code on the left, a fixed-width bar, the
+ * total on the right. Sits where the location block would, on the Assignment tab: the hexagon above
+ * is the shape, this is the same numbers read as a bar per stat.
+ */
+function StatGaugeList({ agents, tables }: { agents: readonly RuntimeAgent[]; tables: GameTables }): ReactNode {
+    return (
+        <div className="stat-gauges">
+            {STAT_IDS.map((stat) => {
+                const total = agents.reduce((sum, agent) => sum + runtimeAgent.effectiveStats(agent).get(stat), 0);
+                const cap = (tables.Stat.get(stat)?.maxValue ?? 20) * Math.max(1, agents.length);
+                const ratio = cap > 0 ? Math.min(1, total / cap) : 0;
+
+                return (
+                    <div className="stat-gauge" key={stat}>
+                        <span className="stat-gauge__label">
+                            <StatAbbr stat={stat} />
+                        </span>
+                        <span className="stat-gauge__track">
+                            <span className="stat-gauge__fill" style={{ width: `${Math.round(ratio * 100)}%` }} />
+                        </span>
+                        <span className="stat-gauge__value">{total}</span>
+                    </div>
+                );
+            })}
         </div>
     );
 }
