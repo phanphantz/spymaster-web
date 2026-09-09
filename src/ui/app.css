@@ -725,6 +725,27 @@
 .slot__edit:hover { border-color: var(--cyan); color: var(--cyan); }
 .slot__remove:hover { border-color: var(--danger); color: var(--danger); }
 
+/* Bulk-return everything the occupant carries — bottom-right, away from edit/remove up top. Only
+   rendered when there's something to discard. */
+.slot__discard {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    width: 20px;
+    height: 20px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--steel);
+    font-size: 11px;
+    line-height: 1;
+    border-radius: var(--radius);
+}
+
+.slot__discard:hover { border-color: var(--danger); color: var(--danger); }
+
 /* An empty slot is itself the tap target — select an agent below, then tap here. */
 .slot__empty {
     width: 100%;

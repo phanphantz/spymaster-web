@@ -203,6 +203,7 @@ export function AgentCard({
     size = 'md',
     onClick,
     draggable,
+    dragFromSlotId,
 }: {
     agent: RuntimeAgent;
     selected?: boolean;
@@ -210,8 +211,12 @@ export function AgentCard({
     size?: 'md' | 'sm';
     onClick?: () => void;
     /** PC-only pick-up-and-drop-on-a-slot, as an alternative to the click-agent-then-click-slot
-     *  flow. Carries the character id as plain text, which a slot's onDrop reads back out. */
+     *  flow. The character id (plus `dragFromSlotId`, if given) travels as JSON text, which a
+     *  slot's onDrop reads back out. */
     draggable?: boolean;
+    /** Set when this card is a filled slot's own display, not the roster's — lets the drop target
+     *  tell "moved from the roster" apart from "moved from another slot" (the latter is a swap). */
+    dragFromSlotId?: string;
 }): ReactNode {
     const className = [
         'agent-card',
@@ -227,12 +232,15 @@ export function AgentCard({
             type="button"
             className={className}
             onClick={onClick}
-            disabled={disabled || !onClick}
+            disabled={disabled || (!onClick && !draggable)}
             draggable={draggable}
             onDragStart={
                 draggable
                     ? (event) => {
-                          event.dataTransfer.setData('text/plain', agent.characterId);
+                          const payload = dragFromSlotId
+                              ? { characterId: agent.characterId, fromSlotId: dragFromSlotId }
+                              : { characterId: agent.characterId };
+                          event.dataTransfer.setData('text/plain', JSON.stringify(payload));
                           event.dataTransfer.effectAllowed = 'move';
                       }
                     : undefined

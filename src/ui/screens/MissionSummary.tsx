@@ -24,6 +24,17 @@ function combinedStats(agents: readonly RuntimeAgent[]): Map<StatId, number> {
     return totals;
 }
 
+/** What a slot's onDrop reads back — set by AgentCard's onDragStart, with `fromSlotId` present only
+ *  when the drag started on another slot's own card (the roster's cards don't set it). */
+function parseDragPayload(raw: string): { characterId: string; fromSlotId?: string } | undefined {
+    try {
+        const parsed = JSON.parse(raw);
+        return typeof parsed?.characterId === 'string' ? parsed : undefined;
+    } catch {
+        return undefined;
+    }
+}
+
 /**
  * The Mission UI: read the contract, build the team, then deploy or decline.
  *
@@ -42,18 +53,15 @@ export function MissionSummary(): ReactNode {
 
     const tables = useGame((state) => state.tables);
     const session = useGame((state) => state.session);
-    const roster = useGame((state) => state.roster);
     const close = useGame((state) => state.closeOverlay);
     const decline = useGame((state) => state.declineMission);
     const deploy = useGame((state) => state.deployMission);
     const unassignAgent = useGame((state) => state.unassignAgent);
+    const discardCarriedItems = useGame((state) => state.discardCarriedItems);
     const pickingAgentId = useGame((state) => state.pickingAgentId);
     const pickingSlotId = useGame((state) => state.pickingSlotId);
     const pickSlot = useGame((state) => state.pickSlot);
     const placeAgent = useGame((state) => state.placeAgent);
-    const pendingReplace = useGame((state) => state.pendingReplace);
-    const resolveReplace = useGame((state) => state.resolveReplace);
-    const cancelReplace = useGame((state) => state.cancelReplace);
     const failure = useGame((state) => state.assignmentFailure);
     const tab = useGame((state) => state.missionTab);
     const setTab = useGame((state) => state.setMissionTab);
@@ -61,6 +69,7 @@ export function MissionSummary(): ReactNode {
 
     const [confirmingDecline, setConfirmingDecline] = useState(false);
     const [confirmingClose, setConfirmingClose] = useState(false);
+    const [discardTarget, setDiscardTarget] = useState<RuntimeAgent>();
 
     if (!session || !tables) return null;
 
@@ -154,6 +163,7 @@ export function MissionSummary(): ReactNode {
                                 onDropAgent={placeAgent}
                                 onUnassign={unassignAgent}
                                 onEdit={openShop}
+                                onDiscardItems={setDiscardTarget}
                                 failure={failure}
                             />
                         )}
@@ -212,79 +222,23 @@ export function MissionSummary(): ReactNode {
                 onCancel={() => setConfirmingClose(false)}
             />
 
-            <ReplaceAgentDialog
-                pendingReplace={pendingReplace}
-                session={session}
-                roster={roster}
-                onKeep={() => resolveReplace(true)}
-                onDiscard={() => resolveReplace(false)}
-                onCancel={cancelReplace}
+            <ConfirmDialog
+                open={Boolean(discardTarget)}
+                title="Discard all items?"
+                message={
+                    discardTarget
+                        ? `Everything ${runtimeAgent.displayName(discardTarget)} is carrying returns to stock.`
+                        : undefined
+                }
+                confirmLabel="Discard"
+                danger
+                onConfirm={() => {
+                    if (discardTarget) discardCarriedItems(discardTarget.characterId);
+                    setDiscardTarget(undefined);
+                }}
+                onCancel={() => setDiscardTarget(undefined)}
             />
         </Modal>
-    );
-}
-
-/**
- * Dropping — or picking, either order — an agent onto a slot that already holds someone carrying
- * items pauses here rather than silently bumping them: keep what fits on the new agent, or return
- * it all to stock. Nothing is destroyed either way, only Keep can leave some behind if the new
- * agent's capacity is smaller than what the old one was carrying.
- */
-function ReplaceAgentDialog({
-    pendingReplace,
-    session,
-    roster,
-    onKeep,
-    onDiscard,
-    onCancel,
-}: {
-    pendingReplace: { slotId: string; characterId: string } | undefined;
-    session: LoadoutSession;
-    roster: readonly RuntimeAgent[];
-    onKeep: () => void;
-    onDiscard: () => void;
-    onCancel: () => void;
-}): ReactNode {
-    if (!pendingReplace) return null;
-
-    const previous = session.agentIn(pendingReplace.slotId);
-    const incoming = roster.find((agent) => agent.characterId === pendingReplace.characterId);
-    if (!previous || !incoming) return null;
-
-    const carried = session.carriedBy(previous.characterId).entries;
-    const carriedTotal = carried.reduce((sum, [, qty]) => sum + qty, 0);
-    const newCapacity = runtimeAgent.inventorySize(incoming);
-    const wontFit = Math.max(0, carriedTotal - newCapacity);
-
-    return (
-        <div className="backdrop" onClick={onCancel} role="presentation">
-            <div
-                className="confirm"
-                role="alertdialog"
-                aria-modal="true"
-                aria-label="Replace agent"
-                onClick={(event) => event.stopPropagation()}
-            >
-                <h3 className="confirm__title">Replace {runtimeAgent.displayName(previous)}?</h3>
-                <p className="confirm__body">
-                    {runtimeAgent.displayName(incoming)} takes this slot instead.{' '}
-                    {runtimeAgent.displayName(previous)} is carrying {carriedTotal}{' '}
-                    item{carriedTotal === 1 ? '' : 's'} — keep what fits on{' '}
-                    {runtimeAgent.displayName(incoming)}, or return all of it to stock.
-                </p>
-                <div className="confirm__actions">
-                    <button type="button" className="btn btn--quiet" onClick={onCancel}>
-                        Cancel
-                    </button>
-                    <button type="button" className="btn btn--quiet" onClick={onDiscard}>
-                        Discard items
-                    </button>
-                    <button type="button" className="btn btn--primary" onClick={onKeep}>
-                        Keep items{wontFit > 0 ? ` (${wontFit} won't fit)` : ''}
-                    </button>
-                </div>
-            </div>
-        </div>
     );
 }
 
@@ -397,6 +351,7 @@ function AssignmentTab({
     onDropAgent,
     onUnassign,
     onEdit,
+    onDiscardItems,
     failure,
 }: {
     session: LoadoutSession;
@@ -404,9 +359,10 @@ function AssignmentTab({
     pickingAgentId: string | undefined;
     pickingSlotId: string | undefined;
     onPickSlot: (slotId: string) => void;
-    onDropAgent: (slotId: string, characterId: string) => void;
+    onDropAgent: (slotId: string, characterId: string, fromSlotId?: string) => void;
     onUnassign: (slotId: string) => void;
     onEdit: (characterId: string) => void;
+    onDiscardItems: (agent: RuntimeAgent) => void;
     failure: string;
 }): ReactNode {
     return (
@@ -435,8 +391,10 @@ function AssignmentTab({
                             onDragOver={(event) => event.preventDefault()}
                             onDrop={(event) => {
                                 event.preventDefault();
-                                const characterId = event.dataTransfer.getData('text/plain');
-                                if (characterId) onDropAgent(slot.slotId, characterId);
+                                const raw = event.dataTransfer.getData('text/plain');
+                                if (!raw) return;
+                                const payload = parseDragPayload(raw);
+                                if (payload) onDropAgent(slot.slotId, payload.characterId, payload.fromSlotId);
                             }}
                         >
                             <div className="slot__head">
@@ -477,14 +435,28 @@ function AssignmentTab({
                                             ✕
                                         </button>
                                     </div>
-                                    <AgentCard agent={occupant} size="sm" />
+                                    <AgentCard agent={occupant} size="sm" draggable dragFromSlotId={slot.slotId} />
                                     {session.carriedBy(occupant.characterId).entries.length > 0 ? (
-                                        <div className="slot__items">
-                                            {session.carriedBy(occupant.characterId).entries.map(([itemId, qty]) => {
-                                                const name = tables.Item.get(itemId)?.displayName ?? itemId;
-                                                return <EquipIcon key={itemId} name={name} qty={qty} mini />;
-                                            })}
-                                        </div>
+                                        <>
+                                            <div className="slot__items">
+                                                {session.carriedBy(occupant.characterId).entries.map(([itemId, qty]) => {
+                                                    const name = tables.Item.get(itemId)?.displayName ?? itemId;
+                                                    return <EquipIcon key={itemId} name={name} qty={qty} mini />;
+                                                })}
+                                            </div>
+                                            <button
+                                                type="button"
+                                                className="slot__discard"
+                                                onClick={(event) => {
+                                                    event.stopPropagation();
+                                                    onDiscardItems(occupant);
+                                                }}
+                                                aria-label={`Discard everything ${runtimeAgent.displayName(occupant)} is carrying`}
+                                                title="Discard all items"
+                                            >
+                                                🗑
+                                            </button>
+                                        </>
                                     ) : null}
                                     <StatHexagon agent={occupant} mini />
                                 </div>

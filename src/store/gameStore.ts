@@ -63,9 +63,6 @@ interface GameState {
     pickingSlotId?: string;
     /** Why the last slot placement failed, shown under the Assignment tab. */
     assignmentFailure: string;
-    /** A placement that would bump someone carrying items out of a slot — held here until the
-     *  player says whether those items travel with the new agent or go back to stock. */
-    pendingReplace?: { slotId: string; characterId: string };
 
     /** Which tab the mission modal was on — lifted out of the modal so it survives a detour to the
      *  Shop page and back (Done always lands where the pencil was tapped from). */
@@ -105,15 +102,16 @@ interface GameState {
      *  placement instead. */
     pickSlot: (slotId: string) => void;
     /** The drag-and-drop entry point: both halves arrive at once, so this skips the toggle-select
-     *  dance pickAgent/pickSlot do and always attempts the placement directly. */
-    placeAgent: (slotId: string, characterId: string) => void;
-    /** Resolves a pendingReplace: keep the bumped agent's items on the new agent (up to their
-     *  capacity) or return them all to stock. */
-    resolveReplace: (keepItems: boolean) => void;
-    cancelReplace: () => void;
+     *  dance pickAgent/pickSlot do. Pass `fromSlotId` when the drag started on another slot's own
+     *  agent card (rather than the roster) — dropped onto a slot occupied by someone else, that
+     *  swaps the two agents in place instead of bumping either one out. */
+    placeAgent: (slotId: string, characterId: string, fromSlotId?: string) => void;
     setAssignmentFailure: (message: string) => void;
 
     unassignAgent: (slotId: string) => void;
+    /** Returns everything one agent carries to stock, in one go — the slot itself has no room to
+     *  list items one at a time. */
+    discardCarriedItems: (characterId: string) => void;
     purchaseItem: (itemId: string, qty?: number) => void;
     assignItem: (characterId: string, itemId: string, qty?: number) => void;
     unassignItem: (characterId: string, itemId: string, qty?: number) => void;
@@ -138,9 +136,9 @@ function configuredTimeScale(tables: GameTables): number {
 export const useGame = create<GameState>((set, get) => {
     /** The one path an agent actually lands in a slot, whichever was picked first — or both at once,
      *  from a drop. Eligibility is re-checked here rather than trusted from the picker, since the
-     *  Loadout session is the source of truth for who can go where. Bumping an occupant who is
-     *  carrying something stops short of committing and opens the keep/discard dialog instead;
-     *  resolveReplace finishes the job. */
+     *  Loadout session is the source of truth for who can go where. Bumping an occupant carries
+     *  their items over to whoever replaces them, automatically, up to the new agent's capacity —
+     *  whatever doesn't fit goes back to stock rather than being lost. */
     function placeAgentInSlot(slotId: string, characterId: string): void {
         const { session } = get();
         if (!session) return;
@@ -158,22 +156,62 @@ export const useGame = create<GameState>((set, get) => {
         }
 
         const occupant = session.agentIn(slotId);
-        if (occupant && occupant.characterId !== characterId && session.carriedBy(occupant.characterId).entries.length) {
-            set({
-                pickingAgentId: undefined,
-                pickingSlotId: undefined,
-                assignmentFailure: '',
-                pendingReplace: { slotId, characterId },
-            });
-            return;
-        }
+        const carriedBefore =
+            occupant && occupant.characterId !== characterId ? [...session.carriedBy(occupant.characterId).entries] : [];
 
         session.assignAgent(slotId, characterId);
+
+        for (const [itemId, qty] of carriedBefore) {
+            const room = session.remainingCapacity(characterId);
+            if (room <= 0) break;
+            session.assignItem(characterId, itemId, Math.min(qty, room));
+        }
+
         set({
             pickingAgentId: undefined,
             pickingSlotId: undefined,
             assignmentFailure: '',
-            pendingReplace: undefined,
+            version: get().version + 1,
+        });
+    }
+
+    /** Exchanges the two slots' agents in place, each keeping exactly what they were already
+     *  carrying — a swap never touches capacity, since both were already carrying it. Refuses if
+     *  either agent fails the other slot's requirement, rather than half-completing it. */
+    function swapAgentsInSlots(slotIdA: string, slotIdB: string): void {
+        const { session } = get();
+        if (!session || slotIdA === slotIdB) return;
+
+        const agentA = session.agentIn(slotIdA);
+        const agentB = session.agentIn(slotIdB);
+        if (!agentA || !agentB || agentA.characterId === agentB.characterId) return;
+
+        const aFitsB = session.candidatesFor(slotIdB).find((entry) => entry.agent.characterId === agentA.characterId);
+        const bFitsA = session.candidatesFor(slotIdA).find((entry) => entry.agent.characterId === agentB.characterId);
+
+        if (!aFitsB?.isEligible || !bFitsA?.isEligible) {
+            const blocked = !aFitsB?.isEligible ? agentA : agentB;
+            set({ assignmentFailure: `${runtimeAgent.displayName(blocked)} cannot take that slot` });
+            return;
+        }
+
+        const itemsA = [...session.carriedBy(agentA.characterId).entries];
+        const itemsB = [...session.carriedBy(agentB.characterId).entries];
+
+        // Vacate both first so neither assignAgent call's own displacement logic fires on the other
+        // — it would otherwise dump the displaced agent's items to stock rather than move them.
+        session.unassignAgent(slotIdA);
+        session.unassignAgent(slotIdB);
+        session.assignAgent(slotIdB, agentA.characterId);
+        session.assignAgent(slotIdA, agentB.characterId);
+
+        for (const [itemId, qty] of itemsA) session.assignItem(agentA.characterId, itemId, qty);
+        for (const [itemId, qty] of itemsB) session.assignItem(agentB.characterId, itemId, qty);
+
+        set({
+            pickingAgentId: undefined,
+            pickingSlotId: undefined,
+            assignmentFailure: '',
             version: get().version + 1,
         });
     }
@@ -242,7 +280,6 @@ export const useGame = create<GameState>((set, get) => {
             assignmentFailure: '',
             missionTab: 'details',
             shopCharacterId: undefined,
-            pendingReplace: undefined,
             version: get().version + 1,
         });
 
@@ -334,7 +371,6 @@ export const useGame = create<GameState>((set, get) => {
             assignmentFailure: '',
             missionTab: 'details',
             shopCharacterId: undefined,
-            pendingReplace: undefined,
             version: get().version + 1,
         });
     },
@@ -350,7 +386,6 @@ export const useGame = create<GameState>((set, get) => {
             pickingSlotId: undefined,
             assignmentFailure: '',
             shopCharacterId: undefined,
-            pendingReplace: undefined,
             version: get().version + 1,
         });
     },
@@ -370,7 +405,6 @@ export const useGame = create<GameState>((set, get) => {
             pickingSlotId: undefined,
             assignmentFailure: '',
             shopCharacterId: undefined,
-            pendingReplace: undefined,
             version: get().version + 1,
         });
     },
@@ -411,40 +445,16 @@ export const useGame = create<GameState>((set, get) => {
         }));
     },
 
-    placeAgent(slotId, characterId) {
-        placeAgentInSlot(slotId, characterId);
-    },
-
-    resolveReplace(keepItems) {
-        const { pendingReplace, session } = get();
-        if (!pendingReplace || !session) return;
-        const { slotId, characterId } = pendingReplace;
-
-        const previousOccupant = session.agentIn(slotId);
-        const carriedBefore = previousOccupant ? [...session.carriedBy(previousOccupant.characterId).entries] : [];
-
-        // Displaces the previous occupant, returning everything they carried to stock.
-        session.assignAgent(slotId, characterId);
-
-        if (keepItems) {
-            for (const [itemId, qty] of carriedBefore) {
-                const room = session.remainingCapacity(characterId);
-                if (room <= 0) break;
-                session.assignItem(characterId, itemId, Math.min(qty, room));
+    placeAgent(slotId, characterId, fromSlotId) {
+        const { session } = get();
+        if (session && fromSlotId && fromSlotId !== slotId) {
+            const targetOccupant = session.agentIn(slotId);
+            if (targetOccupant && targetOccupant.characterId !== characterId) {
+                swapAgentsInSlots(fromSlotId, slotId);
+                return;
             }
         }
-
-        set({
-            pickingAgentId: undefined,
-            pickingSlotId: undefined,
-            assignmentFailure: '',
-            pendingReplace: undefined,
-            version: get().version + 1,
-        });
-    },
-
-    cancelReplace() {
-        set({ pendingReplace: undefined });
+        placeAgentInSlot(slotId, characterId);
     },
 
     setAssignmentFailure(message) {
@@ -453,6 +463,15 @@ export const useGame = create<GameState>((set, get) => {
 
     unassignAgent(slotId) {
         get().session?.unassignAgent(slotId);
+        set({ version: get().version + 1 });
+    },
+
+    discardCarriedItems(characterId) {
+        const { session } = get();
+        if (!session) return;
+        for (const [itemId, qty] of [...session.carriedBy(characterId).entries]) {
+            session.unassignItem(characterId, itemId, qty);
+        }
         set({ version: get().version + 1 });
     },
 
@@ -486,7 +505,6 @@ export const useGame = create<GameState>((set, get) => {
             pickingAgentId: undefined,
             pickingSlotId: undefined,
             shopCharacterId: undefined,
-            pendingReplace: undefined,
             pending: pending.filter((candidate) => candidate.instanceId !== session.mission.instanceId),
             version: get().version + 1,
         });
