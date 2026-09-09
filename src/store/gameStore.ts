@@ -63,6 +63,9 @@ interface GameState {
     pickingSlotId?: string;
     /** Why the last slot placement failed, shown under the Assignment tab. */
     assignmentFailure: string;
+    /** A placement that would bump someone carrying items out of a slot — held here until the
+     *  player says whether those items travel with the new agent or go back to stock. */
+    pendingReplace?: { slotId: string; characterId: string };
 
     /** Which tab the mission modal was on — lifted out of the modal so it survives a detour to the
      *  Shop page and back (Done always lands where the pencil was tapped from). */
@@ -98,8 +101,16 @@ interface GameState {
 
     /** Toggle-selects an agent; if a slot is already picked, completes the placement instead. */
     pickAgent: (characterId: string) => void;
-    /** Toggle-selects an empty slot; if an agent is already picked, completes the placement instead. */
+    /** Toggle-selects a slot (empty or occupied); if an agent is already picked, completes the
+     *  placement instead. */
     pickSlot: (slotId: string) => void;
+    /** The drag-and-drop entry point: both halves arrive at once, so this skips the toggle-select
+     *  dance pickAgent/pickSlot do and always attempts the placement directly. */
+    placeAgent: (slotId: string, characterId: string) => void;
+    /** Resolves a pendingReplace: keep the bumped agent's items on the new agent (up to their
+     *  capacity) or return them all to stock. */
+    resolveReplace: (keepItems: boolean) => void;
+    cancelReplace: () => void;
     setAssignmentFailure: (message: string) => void;
 
     unassignAgent: (slotId: string) => void;
@@ -125,9 +136,11 @@ function configuredTimeScale(tables: GameTables): number {
 }
 
 export const useGame = create<GameState>((set, get) => {
-    /** The one path an agent actually lands in a slot, whichever was picked first. Eligibility is
-     *  re-checked here rather than trusted from the picker, since the Loadout session is the source
-     *  of truth for who can go where. */
+    /** The one path an agent actually lands in a slot, whichever was picked first — or both at once,
+     *  from a drop. Eligibility is re-checked here rather than trusted from the picker, since the
+     *  Loadout session is the source of truth for who can go where. Bumping an occupant who is
+     *  carrying something stops short of committing and opens the keep/discard dialog instead;
+     *  resolveReplace finishes the job. */
     function placeAgentInSlot(slotId: string, characterId: string): void {
         const { session } = get();
         if (!session) return;
@@ -144,11 +157,23 @@ export const useGame = create<GameState>((set, get) => {
             return;
         }
 
+        const occupant = session.agentIn(slotId);
+        if (occupant && occupant.characterId !== characterId && session.carriedBy(occupant.characterId).entries.length) {
+            set({
+                pickingAgentId: undefined,
+                pickingSlotId: undefined,
+                assignmentFailure: '',
+                pendingReplace: { slotId, characterId },
+            });
+            return;
+        }
+
         session.assignAgent(slotId, characterId);
         set({
             pickingAgentId: undefined,
             pickingSlotId: undefined,
             assignmentFailure: '',
+            pendingReplace: undefined,
             version: get().version + 1,
         });
     }
@@ -217,6 +242,7 @@ export const useGame = create<GameState>((set, get) => {
             assignmentFailure: '',
             missionTab: 'details',
             shopCharacterId: undefined,
+            pendingReplace: undefined,
             version: get().version + 1,
         });
 
@@ -308,6 +334,7 @@ export const useGame = create<GameState>((set, get) => {
             assignmentFailure: '',
             missionTab: 'details',
             shopCharacterId: undefined,
+            pendingReplace: undefined,
             version: get().version + 1,
         });
     },
@@ -323,6 +350,7 @@ export const useGame = create<GameState>((set, get) => {
             pickingSlotId: undefined,
             assignmentFailure: '',
             shopCharacterId: undefined,
+            pendingReplace: undefined,
             version: get().version + 1,
         });
     },
@@ -342,6 +370,7 @@ export const useGame = create<GameState>((set, get) => {
             pickingSlotId: undefined,
             assignmentFailure: '',
             shopCharacterId: undefined,
+            pendingReplace: undefined,
             version: get().version + 1,
         });
     },
@@ -380,6 +409,42 @@ export const useGame = create<GameState>((set, get) => {
             pickingSlotId: state.pickingSlotId === slotId ? undefined : slotId,
             assignmentFailure: '',
         }));
+    },
+
+    placeAgent(slotId, characterId) {
+        placeAgentInSlot(slotId, characterId);
+    },
+
+    resolveReplace(keepItems) {
+        const { pendingReplace, session } = get();
+        if (!pendingReplace || !session) return;
+        const { slotId, characterId } = pendingReplace;
+
+        const previousOccupant = session.agentIn(slotId);
+        const carriedBefore = previousOccupant ? [...session.carriedBy(previousOccupant.characterId).entries] : [];
+
+        // Displaces the previous occupant, returning everything they carried to stock.
+        session.assignAgent(slotId, characterId);
+
+        if (keepItems) {
+            for (const [itemId, qty] of carriedBefore) {
+                const room = session.remainingCapacity(characterId);
+                if (room <= 0) break;
+                session.assignItem(characterId, itemId, Math.min(qty, room));
+            }
+        }
+
+        set({
+            pickingAgentId: undefined,
+            pickingSlotId: undefined,
+            assignmentFailure: '',
+            pendingReplace: undefined,
+            version: get().version + 1,
+        });
+    },
+
+    cancelReplace() {
+        set({ pendingReplace: undefined });
     },
 
     setAssignmentFailure(message) {
@@ -421,6 +486,7 @@ export const useGame = create<GameState>((set, get) => {
             pickingAgentId: undefined,
             pickingSlotId: undefined,
             shopCharacterId: undefined,
+            pendingReplace: undefined,
             pending: pending.filter((candidate) => candidate.instanceId !== session.mission.instanceId),
             version: get().version + 1,
         });

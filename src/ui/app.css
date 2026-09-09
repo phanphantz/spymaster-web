@@ -691,8 +691,11 @@
 
 .slot--filled { border-color: var(--cyan); }
 .slot--needed { border-color: var(--danger); }
-/* The slot picked as the assignment target when an agent hasn't been picked yet — slot-first flow. */
+/* The slot picked as the assignment target — either flow order, empty or already occupied. */
 .slot--picking { border-color: var(--cyan); border-style: dashed; }
+/* An occupied slot that would bump its agent if the one currently picked landed here. */
+.slot--replaceable { border-color: var(--money); border-style: dashed; }
+.slot--replaceable .slot__filled { cursor: pointer; }
 
 .slot__head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 10px; }
 

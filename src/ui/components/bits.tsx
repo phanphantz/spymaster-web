@@ -202,12 +202,16 @@ export function AgentCard({
     disabled,
     size = 'md',
     onClick,
+    draggable,
 }: {
     agent: RuntimeAgent;
     selected?: boolean;
     disabled?: boolean;
     size?: 'md' | 'sm';
     onClick?: () => void;
+    /** PC-only pick-up-and-drop-on-a-slot, as an alternative to the click-agent-then-click-slot
+     *  flow. Carries the character id as plain text, which a slot's onDrop reads back out. */
+    draggable?: boolean;
 }): ReactNode {
     const className = [
         'agent-card',
@@ -224,6 +228,15 @@ export function AgentCard({
             className={className}
             onClick={onClick}
             disabled={disabled || !onClick}
+            draggable={draggable}
+            onDragStart={
+                draggable
+                    ? (event) => {
+                          event.dataTransfer.setData('text/plain', agent.characterId);
+                          event.dataTransfer.effectAllowed = 'move';
+                      }
+                    : undefined
+            }
             style={{ backgroundImage: `url(${import.meta.env.BASE_URL}avatars/${agent.characterId}.png)` }}
         >
             <span className="agent-card__name">{runtimeAgent.displayName(agent)}</span>

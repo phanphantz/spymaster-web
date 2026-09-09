@@ -42,6 +42,7 @@ export function MissionSummary(): ReactNode {
 
     const tables = useGame((state) => state.tables);
     const session = useGame((state) => state.session);
+    const roster = useGame((state) => state.roster);
     const close = useGame((state) => state.closeOverlay);
     const decline = useGame((state) => state.declineMission);
     const deploy = useGame((state) => state.deployMission);
@@ -49,17 +50,23 @@ export function MissionSummary(): ReactNode {
     const pickingAgentId = useGame((state) => state.pickingAgentId);
     const pickingSlotId = useGame((state) => state.pickingSlotId);
     const pickSlot = useGame((state) => state.pickSlot);
+    const placeAgent = useGame((state) => state.placeAgent);
+    const pendingReplace = useGame((state) => state.pendingReplace);
+    const resolveReplace = useGame((state) => state.resolveReplace);
+    const cancelReplace = useGame((state) => state.cancelReplace);
     const failure = useGame((state) => state.assignmentFailure);
     const tab = useGame((state) => state.missionTab);
     const setTab = useGame((state) => state.setMissionTab);
     const openShop = useGame((state) => state.openShop);
 
     const [confirmingDecline, setConfirmingDecline] = useState(false);
+    const [confirmingClose, setConfirmingClose] = useState(false);
 
     if (!session || !tables) return null;
 
     const mission = session.mission;
     const canDecline = mission.data.isDeclinable !== false;
+    const hasAssignments = session.assignments.size > 0;
 
     const keywordTerms = [
         mission.location?.displayName,
@@ -71,7 +78,11 @@ export function MissionSummary(): ReactNode {
     ].filter((term): term is string => Boolean(term));
 
     return (
-        <Modal onClose={close} wide label={mission.data.displayName ?? 'Mission'}>
+        <Modal
+            onClose={() => (hasAssignments ? setConfirmingClose(true) : close())}
+            wide
+            label={mission.data.displayName ?? 'Mission'}
+        >
             <div className="modal__body">
                 <div className="summary">
                     <div className="summary__left">
@@ -140,6 +151,7 @@ export function MissionSummary(): ReactNode {
                                 pickingAgentId={pickingAgentId}
                                 pickingSlotId={pickingSlotId}
                                 onPickSlot={pickSlot}
+                                onDropAgent={placeAgent}
                                 onUnassign={unassignAgent}
                                 onEdit={openShop}
                                 failure={failure}
@@ -186,7 +198,93 @@ export function MissionSummary(): ReactNode {
                 }}
                 onCancel={() => setConfirmingDecline(false)}
             />
+
+            <ConfirmDialog
+                open={confirmingClose}
+                title="Close this loadout?"
+                message="Every assigned agent will be pulled off this job and anything they're carrying returned to stock. Nothing is lost — but you'll have to build the team again."
+                confirmLabel="Close"
+                danger
+                onConfirm={() => {
+                    setConfirmingClose(false);
+                    close();
+                }}
+                onCancel={() => setConfirmingClose(false)}
+            />
+
+            <ReplaceAgentDialog
+                pendingReplace={pendingReplace}
+                session={session}
+                roster={roster}
+                onKeep={() => resolveReplace(true)}
+                onDiscard={() => resolveReplace(false)}
+                onCancel={cancelReplace}
+            />
         </Modal>
+    );
+}
+
+/**
+ * Dropping — or picking, either order — an agent onto a slot that already holds someone carrying
+ * items pauses here rather than silently bumping them: keep what fits on the new agent, or return
+ * it all to stock. Nothing is destroyed either way, only Keep can leave some behind if the new
+ * agent's capacity is smaller than what the old one was carrying.
+ */
+function ReplaceAgentDialog({
+    pendingReplace,
+    session,
+    roster,
+    onKeep,
+    onDiscard,
+    onCancel,
+}: {
+    pendingReplace: { slotId: string; characterId: string } | undefined;
+    session: LoadoutSession;
+    roster: readonly RuntimeAgent[];
+    onKeep: () => void;
+    onDiscard: () => void;
+    onCancel: () => void;
+}): ReactNode {
+    if (!pendingReplace) return null;
+
+    const previous = session.agentIn(pendingReplace.slotId);
+    const incoming = roster.find((agent) => agent.characterId === pendingReplace.characterId);
+    if (!previous || !incoming) return null;
+
+    const carried = session.carriedBy(previous.characterId).entries;
+    const carriedTotal = carried.reduce((sum, [, qty]) => sum + qty, 0);
+    const newCapacity = runtimeAgent.inventorySize(incoming);
+    const wontFit = Math.max(0, carriedTotal - newCapacity);
+
+    return (
+        <div className="backdrop" onClick={onCancel} role="presentation">
+            <div
+                className="confirm"
+                role="alertdialog"
+                aria-modal="true"
+                aria-label="Replace agent"
+                onClick={(event) => event.stopPropagation()}
+            >
+                <h3 className="confirm__title">Replace {runtimeAgent.displayName(previous)}?</h3>
+                <p className="confirm__body">
+                    {runtimeAgent.displayName(incoming)} takes this slot instead.{' '}
+                    {runtimeAgent.displayName(previous)} is carrying {carriedTotal}{' '}
+                    item{carriedTotal === 1 ? '' : 's'} — keep what fits on{' '}
+                    {runtimeAgent.displayName(incoming)}, or return all of it to stock.
+                </p>
+                <div className="confirm__actions">
+                    <button type="button" className="btn btn--quiet" onClick={onCancel}>
+                        Cancel
+                    </button>
+                    <button type="button" className="btn btn--quiet" onClick={onDiscard}>
+                        Discard items
+                    </button>
+                    <button type="button" className="btn btn--primary" onClick={onKeep}>
+                        Keep items{wontFit > 0 ? ` (${wontFit} won't fit)` : ''}
+                    </button>
+                </div>
+            </div>
+        </div>
     );
 }
 
@@ -296,6 +394,7 @@ function AssignmentTab({
     pickingAgentId,
     pickingSlotId,
     onPickSlot,
+    onDropAgent,
     onUnassign,
     onEdit,
     failure,
@@ -305,6 +404,7 @@ function AssignmentTab({
     pickingAgentId: string | undefined;
     pickingSlotId: string | undefined;
     onPickSlot: (slotId: string) => void;
+    onDropAgent: (slotId: string, characterId: string) => void;
     onUnassign: (slotId: string) => void;
     onEdit: (characterId: string) => void;
     failure: string;
@@ -314,18 +414,31 @@ function AssignmentTab({
             <div className="slot-grid">
                 {session.slots.map((slot) => {
                     const occupant = session.agentIn(slot.slotId);
-                    const isTarget = !occupant && slot.slotId === pickingSlotId;
+                    const isTarget = slot.slotId === pickingSlotId;
+                    // A picked agent (from a click, not mid-drag) could land here and bump someone —
+                    // hinted so the slot doesn't just look like a dead end while something is picked.
+                    const isReplaceable = Boolean(occupant && pickingAgentId && occupant.characterId !== pickingAgentId);
                     const className = [
                         'slot',
                         occupant ? 'slot--filled' : '',
                         !occupant && slot.isMandatory ? 'slot--needed' : '',
                         isTarget ? 'slot--picking' : '',
+                        isReplaceable ? 'slot--replaceable' : '',
                     ]
                         .filter(Boolean)
                         .join(' ');
 
                     return (
-                        <div className={className} key={slot.slotId}>
+                        <div
+                            className={className}
+                            key={slot.slotId}
+                            onDragOver={(event) => event.preventDefault()}
+                            onDrop={(event) => {
+                                event.preventDefault();
+                                const characterId = event.dataTransfer.getData('text/plain');
+                                if (characterId) onDropAgent(slot.slotId, characterId);
+                            }}
+                        >
                             <div className="slot__head">
                                 <span className="micro">
                                     {slot.slotId.replace(/^slot_/, '')}
@@ -334,12 +447,19 @@ function AssignmentTab({
                             </div>
 
                             {occupant ? (
-                                <div className="slot__filled">
+                                <div
+                                    className="slot__filled"
+                                    onClick={() => onPickSlot(slot.slotId)}
+                                    role={pickingAgentId ? 'button' : undefined}
+                                >
                                     <div className="slot__actions">
                                         <button
                                             type="button"
                                             className="slot__edit"
-                                            onClick={() => onEdit(occupant.characterId)}
+                                            onClick={(event) => {
+                                                event.stopPropagation();
+                                                onEdit(occupant.characterId);
+                                            }}
                                             aria-label={`Edit ${runtimeAgent.displayName(occupant)}'s kit`}
                                             title="Edit kit"
                                         >
@@ -348,7 +468,10 @@ function AssignmentTab({
                                         <button
                                             type="button"
                                             className="slot__remove"
-                                            onClick={() => onUnassign(slot.slotId)}
+                                            onClick={(event) => {
+                                                event.stopPropagation();
+                                                onUnassign(slot.slotId);
+                                            }}
                                             aria-label={`Remove ${runtimeAgent.displayName(occupant)}`}
                                         >
                                             ✕
@@ -376,7 +499,7 @@ function AssignmentTab({
                                         ? 'Tap to assign'
                                         : isTarget
                                           ? 'Pick an agent below'
-                                          : 'Select an agent, or tap here first'}
+                                          : 'Select an agent, drag one, or tap here first'}
                                 </button>
                             )}
                         </div>

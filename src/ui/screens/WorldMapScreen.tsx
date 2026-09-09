@@ -19,9 +19,14 @@ export function WorldMapScreen(): ReactNode {
     const roster = useGame((state) => state.roster);
     const openMission = useGame((state) => state.openMission);
     const overlay = useGame((state) => state.overlay);
+    const session = useGame((state) => state.session);
     const pickingAgentId = useGame((state) => state.pickingAgentId);
     const pickAgent = useGame((state) => state.pickAgent);
     const picking = overlay === 'missionSummary';
+
+    // An agent already filling a slot on this mission isn't free to pick for another — the roster
+    // card disappears the moment it's assigned, and comes back the moment it's unassigned.
+    const availableRoster = session ? roster.filter((agent) => !session.slotOf(agent.characterId)) : roster;
 
     return (
         <div className="worldmap">
@@ -63,14 +68,17 @@ export function WorldMapScreen(): ReactNode {
             <div className="roster">
                 {roster.length === 0 ? (
                     <span className="meta">No agents employed.</span>
+                ) : availableRoster.length === 0 ? (
+                    <span className="meta dim">Everyone's already assigned.</span>
                 ) : (
-                    roster.map((agent) => (
+                    availableRoster.map((agent) => (
                         <AgentCard
                             key={agent.characterId}
                             agent={agent}
                             selected={picking && agent.characterId === pickingAgentId}
                             disabled={picking && !runtimeAgent.isAvailable(agent)}
                             onClick={picking ? () => pickAgent(agent.characterId) : undefined}
+                            draggable={picking && runtimeAgent.isAvailable(agent)}
                         />
                     ))
                 )}
