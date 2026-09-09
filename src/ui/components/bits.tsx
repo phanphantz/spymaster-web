@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { useGame } from '../../store/gameStore';
 import * as runtimeAgent from '../../engine/runtimeAgent';
 import type { RuntimeAgent } from '../../engine/runtimeAgent';
-import type { StatId } from '../../engine/types';
+import type { SkillData, StatId } from '../../engine/types';
 
 /** Small shared pieces. Anything used on two screens lives here rather than being copied. */
 
@@ -241,20 +241,42 @@ export function AgentCard({
         .join(' ');
 
     const buttonRef = useRef<HTMLButtonElement>(null);
-    const timerRef = useRef<number>();
+    const showTimerRef = useRef<number>();
+    const hideTimerRef = useRef<number>();
     const [anchor, setAnchor] = useState<DOMRect>();
 
-    useEffect(() => () => window.clearTimeout(timerRef.current), []);
+    useEffect(
+        () => () => {
+            window.clearTimeout(showTimerRef.current);
+            window.clearTimeout(hideTimerRef.current);
+        },
+        [],
+    );
 
-    function scheduleTooltip(): void {
-        window.clearTimeout(timerRef.current);
-        timerRef.current = window.setTimeout(() => {
+    function scheduleShow(): void {
+        window.clearTimeout(hideTimerRef.current);
+        window.clearTimeout(showTimerRef.current);
+        showTimerRef.current = window.setTimeout(() => {
             if (buttonRef.current) setAnchor(buttonRef.current.getBoundingClientRect());
         }, 500);
     }
 
-    function hideTooltip(): void {
-        window.clearTimeout(timerRef.current);
+    // A short grace period rather than hiding immediately — the tooltip is a portal, not a DOM
+    // child of the card, so the mouse crosses genuinely empty space moving from one to the other.
+    // Cancelled by the tooltip's own onMouseEnter if the cursor lands there in time.
+    function scheduleHide(): void {
+        window.clearTimeout(showTimerRef.current);
+        window.clearTimeout(hideTimerRef.current);
+        hideTimerRef.current = window.setTimeout(() => setAnchor(undefined), 150);
+    }
+
+    function cancelHide(): void {
+        window.clearTimeout(hideTimerRef.current);
+    }
+
+    function hideNow(): void {
+        window.clearTimeout(showTimerRef.current);
+        window.clearTimeout(hideTimerRef.current);
         setAnchor(undefined);
     }
 
@@ -263,7 +285,7 @@ export function AgentCard({
         // button remains the real layout child. It only exists because a *disabled* <button> (an
         // unpicked-agent card, most of the time) doesn't fire mouse events in Chromium, and the
         // hover-to-preview should work on those too, not just clickable cards.
-        <span style={{ display: 'contents' }} onMouseEnter={scheduleTooltip} onMouseLeave={hideTooltip}>
+        <span style={{ display: 'contents' }} onMouseEnter={scheduleShow} onMouseLeave={scheduleHide}>
             <button
                 ref={buttonRef}
                 type="button"
@@ -282,12 +304,17 @@ export function AgentCard({
                           }
                         : undefined
                 }
-                onDragStartCapture={hideTooltip}
+                onDragStartCapture={hideNow}
                 style={{ backgroundImage: `url(${import.meta.env.BASE_URL}avatars/${agent.characterId}.png)` }}
             >
                 <span className="agent-card__name">{runtimeAgent.displayName(agent)}</span>
             </button>
-            {anchor ? createPortal(<AgentTooltip agent={agent} anchor={anchor} />, document.body) : null}
+            {anchor
+                ? createPortal(
+                      <AgentTooltip agent={agent} anchor={anchor} onMouseEnter={cancelHide} onMouseLeave={scheduleHide} />,
+                      document.body,
+                  )
+                : null}
         </span>
     );
 }
@@ -296,8 +323,20 @@ export function AgentCard({
  * The "who is this" preview — stats, name, skills — for whichever card is being hovered. A portal
  * into document.body rather than a child of the card: several of the card's real containers (a
  * fixed-height slot, the bottom roster's scroll strip) clip overflow, which would cut this off.
+ * Its own onMouseEnter/onMouseLeave (from AgentCard) are what let the cursor move onto the panel —
+ * hover a skill row inside it — without the whole thing vanishing first.
  */
-function AgentTooltip({ agent, anchor }: { agent: RuntimeAgent; anchor: DOMRect }): ReactNode {
+function AgentTooltip({
+    agent,
+    anchor,
+    onMouseEnter,
+    onMouseLeave,
+}: {
+    agent: RuntimeAgent;
+    anchor: DOMRect;
+    onMouseEnter: () => void;
+    onMouseLeave: () => void;
+}): ReactNode {
     const tables = useGame((state) => state.tables);
     const skills = agent.data.baseSkillIds ?? [];
 
@@ -314,7 +353,13 @@ function AgentTooltip({ agent, anchor }: { agent: RuntimeAgent; anchor: DOMRect 
     );
 
     return (
-        <div className={above ? 'agent-tooltip' : 'agent-tooltip agent-tooltip--below'} role="tooltip" style={{ top, left }}>
+        <div
+            className={above ? 'agent-tooltip' : 'agent-tooltip agent-tooltip--below'}
+            role="tooltip"
+            style={{ top, left }}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+        >
             <div className="agent-tooltip__hex">
                 <StatHexagon agent={agent} />
             </div>
@@ -322,12 +367,64 @@ function AgentTooltip({ agent, anchor }: { agent: RuntimeAgent; anchor: DOMRect 
                 <div className="agent-tooltip__name">{runtimeAgent.fullName(agent)}</div>
                 <div className="skill-list agent-tooltip__skills">
                     {skills.map((skillId) => (
-                        <div className="skill-row" key={skillId}>
-                            {tables?.Skill.get(skillId)?.displayName ?? skillId}
-                        </div>
+                        <SkillRow key={skillId} skillId={skillId} skill={tables?.Skill.get(skillId)} />
                     ))}
                 </div>
             </div>
+        </div>
+    );
+}
+
+/** One skill inside the agent tooltip — hovering it, after a short delay, opens a second-level
+ *  portal tooltip with the skill's own description. Read-only (pointer-events: none), so it needs
+ *  no hover-over-it handling of its own the way AgentTooltip does. */
+function SkillRow({ skillId, skill }: { skillId: string; skill: SkillData | undefined }): ReactNode {
+    const rowRef = useRef<HTMLDivElement>(null);
+    const timerRef = useRef<number>();
+    const [anchor, setAnchor] = useState<DOMRect>();
+
+    useEffect(() => () => window.clearTimeout(timerRef.current), []);
+
+    function scheduleShow(): void {
+        window.clearTimeout(timerRef.current);
+        timerRef.current = window.setTimeout(() => {
+            if (rowRef.current) setAnchor(rowRef.current.getBoundingClientRect());
+        }, 300);
+    }
+
+    function hide(): void {
+        window.clearTimeout(timerRef.current);
+        setAnchor(undefined);
+    }
+
+    return (
+        <div ref={rowRef} className="skill-row" onMouseEnter={scheduleShow} onMouseLeave={hide}>
+            {skill?.displayName ?? skillId}
+            {anchor ? createPortal(<SkillDetailTooltip skillId={skillId} skill={skill} anchor={anchor} />, document.body) : null}
+        </div>
+    );
+}
+
+function SkillDetailTooltip({
+    skillId,
+    skill,
+    anchor,
+}: {
+    skillId: string;
+    skill: SkillData | undefined;
+    anchor: DOMRect;
+}): ReactNode {
+    const width = 220;
+    const margin = 10;
+    const onRight = anchor.right + margin + width <= window.innerWidth;
+    const left = onRight ? anchor.right + margin : Math.max(8, anchor.left - margin - width);
+    const top = Math.min(anchor.top, window.innerHeight - 130);
+
+    return (
+        <div className="skill-tooltip" role="tooltip" style={{ top, left, width }}>
+            <div className="skill-tooltip__name">{skill?.displayName ?? skillId}</div>
+            {skill?.type ? <div className="skill-tooltip__type">{skill.type}</div> : null}
+            <div className="skill-tooltip__desc">{skill?.description || 'No further detail on file.'}</div>
         </div>
     );
 }

@@ -368,7 +368,8 @@
     border: 1px solid var(--cyan);
     border-radius: var(--radius);
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
-    pointer-events: none;
+    /* Interactive now — the cursor needs to be able to cross onto the panel and hover a skill row
+       inside it (AgentCard's grace-period hide is what makes that crossing survive). */
     opacity: 0;
     animation: agent-tooltip-in 150ms ease-out forwards;
 }
@@ -404,6 +405,47 @@
     min-height: 0;
     margin-top: 0;
     overflow-y: auto;
+}
+
+/* Hints that a skill row itself has more behind it (the second-level detail tooltip). */
+.agent-tooltip__skills .skill-row:hover { border-color: var(--cyan); color: var(--cyan); }
+
+/* The skill row's own hover detail — a second portal, so it isn't clipped by the first tooltip's
+   overflow-y: auto skill list. Not interactive (pointer-events: none): it's read-only text, so the
+   cursor never needs to cross onto it the way it does for the tooltip underneath. */
+.skill-tooltip {
+    position: fixed;
+    z-index: 60;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background: var(--surface);
+    border: 1px solid var(--cyan);
+    border-radius: var(--radius);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+    opacity: 0;
+    animation: agent-tooltip-in 120ms ease-out forwards;
+}
+
+.skill-tooltip__name {
+    font-size: var(--fs-meta);
+    color: var(--text);
+    letter-spacing: 0.04em;
+}
+
+.skill-tooltip__type {
+    font-size: var(--fs-micro);
+    color: var(--cyan-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.skill-tooltip__desc {
+    font-size: var(--fs-micro);
+    color: var(--muted);
+    line-height: 1.5;
 }
 
 /* Icon + three-letter code, the one way a stat is ever labeled. */
