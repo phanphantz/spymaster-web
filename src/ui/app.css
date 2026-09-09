@@ -479,7 +479,10 @@
     display: grid;
     /* The divider is its own column so the dot can sit centred on it. */
     grid-template-columns: 260px 2px 1fr;
-    min-height: 380px;
+    /* Fixed, not min — content-driven height is exactly what let Details and Assignment differ and
+       made the whole modal visibly resize (and re-center, via the backdrop) switching tabs. Sized
+       for Assignment's worst case: a full 2x2 slot-grid (4 is the most a mission ever asks for). */
+    height: 580px;
 }
 
 .summary__left {
@@ -629,6 +632,10 @@
     flex-direction: column;
     gap: 10px;
     min-width: 0;
+    /* .summary is now a fixed height, not min-height — this is what actually absorbs an unusually
+       long hint/description or a 4-slot Assignment grid without pushing the row itself taller. */
+    min-height: 0;
+    overflow-y: auto;
 }
 
 .summary__name {
@@ -747,9 +754,15 @@
 
 .slot {
     position: relative;
+    /* Fixed, not content-driven — an unusually long agent name or several carried items must clip
+       (the internal overflow: hidden pieces already do that) rather than grow the box. */
+    height: 126px;
     padding: 14px;
+    display: flex;
+    flex-direction: column;
     border: 1px solid var(--line);
     border-radius: var(--radius);
+    overflow: hidden;
 }
 
 .slot--filled { border-color: var(--cyan); }
@@ -809,10 +822,15 @@
 
 .slot__discard:hover { border-color: var(--danger); color: var(--danger); }
 
-/* An empty slot is itself the tap target — select an agent below, then tap here. */
+/* An empty slot is itself the tap target — select an agent below, then tap here. Fills whatever
+   height .slot__head leaves in the fixed-height .slot rather than sizing off its own padding. */
 .slot__empty {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    padding: 18px 10px;
+    padding: 10px;
     background: transparent;
     border: 1px dashed var(--line);
     border-radius: var(--radius);
@@ -825,17 +843,18 @@
 .slot__empty:hover { border-color: var(--cyan); color: var(--cyan); }
 
 /* Occupied: portrait fits the slot's height on the left, a mini hexagon on the right — the same
-   footprint as an empty slot, never taller. */
+   footprint as an empty slot, never taller (fills the same flex: 1 row .slot__empty does). */
 .slot__filled {
+    flex: 1;
     display: flex;
     align-items: center;
     gap: 10px;
-    min-height: 56px;
+    min-width: 0;
 }
 
 .slot__filled .agent-card {
     width: auto;
-    height: 56px;
+    height: 100%;
     flex: 0 0 auto;
 }
 
@@ -852,7 +871,7 @@
 .slot__items {
     flex: 0 1 auto;
     max-width: 76px;
-    max-height: 56px;
+    max-height: 100%;
     display: flex;
     flex-wrap: wrap;
     align-content: flex-start;
@@ -1139,7 +1158,9 @@ button.equip-icon:hover { border-color: var(--danger); color: var(--danger); }
     .summary,
     .slot-grid { grid-template-columns: 1fr; }
 
-    .summary { min-height: 0; }
+    /* Stacked single-column layout — the fixed desktop height (sized for two columns side by side)
+       no longer applies; let it size to content again. */
+    .summary { height: auto; min-height: 0; }
     .summary__left { border-bottom: 1px solid var(--line); }
     /* The rule and its dot are the seam between two columns; stacked, there is no seam. */
     .summary__divider { display: none; }
