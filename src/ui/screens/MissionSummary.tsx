@@ -104,7 +104,6 @@ export function MissionSummary(): ReactNode {
                         <div className="summary__lower-anchor">
                             <hr className="summary__dashrule" />
                             <LocationBlock mission={mission} />
-                            <RewardRow mission={mission} tables={tables} />
                         </div>
                     </div>
 
@@ -155,6 +154,7 @@ export function MissionSummary(): ReactNode {
                     </div>
 
                     <div className="summary__stats">
+                        <RewardSquares mission={mission} tables={tables} />
                         <div className="summary__photo summary__photo--stats">
                             <StatHexagon totals={combinedStats(assigned)} />
                         </div>
@@ -166,29 +166,40 @@ export function MissionSummary(): ReactNode {
                 </div>
             </div>
 
-            <div className="modal__footer">
-                <button
-                    type="button"
-                    className="btn btn--quiet footer-left"
-                    onClick={() => setConfirmingDecline(true)}
-                    disabled={!canDecline}
-                    title={canDecline ? undefined : 'This client does not take no for an answer'}
-                >
-                    Decline
-                </button>
-                <span className="meta">
-                    {session.canConfirm
-                        ? 'Ready to deploy'
-                        : `Fill ${session.missingMandatorySlots.length} more slot(s)`}
-                </span>
-                <button
-                    type="button"
-                    className="btn btn--primary"
-                    onClick={deploy}
-                    disabled={!session.canConfirm}
-                >
-                    Deploy
-                </button>
+            {/* Gridded on the same columns as `.summary` above it, so the two dividers run straight
+                through from top to bottom instead of stopping at the row — Decline sits under the
+                left column, the fill-status line under the middle column (where the empty stretch
+                used to be), Deploy under the stats rail. */}
+            <div className="modal__footer modal__footer--grid">
+                <div className="modal__footer-cell modal__footer-cell--left">
+                    <button
+                        type="button"
+                        className="btn btn--quiet"
+                        onClick={() => setConfirmingDecline(true)}
+                        disabled={!canDecline}
+                        title={canDecline ? undefined : 'This client does not take no for an answer'}
+                    >
+                        Decline
+                    </button>
+                </div>
+                <div className="modal__footer-divider" aria-hidden="true" />
+                <div className="modal__footer-cell modal__footer-cell--mid">
+                    <span className="meta">
+                        {session.canConfirm
+                            ? 'Ready to deploy'
+                            : `Fill ${session.missingMandatorySlots.length} more slot(s)`}
+                    </span>
+                </div>
+                <div className="modal__footer-cell modal__footer-cell--stats">
+                    <button
+                        type="button"
+                        className="btn btn--primary"
+                        onClick={deploy}
+                        disabled={!session.canConfirm}
+                    >
+                        Deploy
+                    </button>
+                </div>
             </div>
 
             <ConfirmDialog
@@ -335,25 +346,22 @@ function StatGaugeList({ agents, tables }: { agents: readonly RuntimeAgent[]; ta
     );
 }
 
-/** Payment and exp, sitting under the location info group at the foot of the left column. */
-function RewardRow({ mission, tables }: { mission: LiveMission; tables: GameTables }): ReactNode {
+/** Payment and exp, as a small square item list at the head of the stats rail — above the hexagon,
+ *  which centers in whatever room that leaves above the gauges. */
+function RewardSquares({ mission, tables }: { mission: LiveMission; tables: GameTables }): ReactNode {
     const reward = previewReward(tables, mission.data.outcomes?.[0]);
 
     return (
-        <div className="summary__rewards">
-            <div className="reward-row">
-                <div className="reward-box hatch">
-                    <span className="reward-box__icon" aria-hidden="true">💰</span>
-                    <span className="reward-box__value">
-                        {reward.money ? `$${reward.money.toLocaleString('en-US')}` : '—'}
-                    </span>
-                    <span className="reward-box__unit">payment</span>
-                </div>
-                <div className="reward-box hatch">
-                    <span className="reward-box__icon" aria-hidden="true">⭐</span>
-                    <span className="reward-box__value">{reward.exp || '—'}</span>
-                    <span className="reward-box__unit">exp</span>
-                </div>
+        <div className="reward-squares">
+            <div className="reward-square hatch">
+                <span className="reward-square__icon" aria-hidden="true">💰</span>
+                <span className="reward-square__value">
+                    {reward.money ? `$${reward.money.toLocaleString('en-US')}` : '—'}
+                </span>
+            </div>
+            <div className="reward-square hatch">
+                <span className="reward-square__icon" aria-hidden="true">⭐</span>
+                <span className="reward-square__value">{reward.exp || '—'}</span>
             </div>
         </div>
     );

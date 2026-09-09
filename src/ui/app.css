@@ -553,8 +553,24 @@
     border-top: 1px solid var(--line);
 }
 
-/* Pushes whatever carries this class to the far side of a flex-end footer. */
-.footer-left { margin-right: auto; }
+/* Mission UI only: gridded on the same columns as `.summary` above it, so the two dividers run
+   straight down from the panel into the footer instead of stopping at the row, and each zone lands
+   under the column it belongs to — Decline under the left column, the fill-status line under the
+   middle column (where a wide empty stretch used to sit), Deploy under the stats rail. */
+.modal__footer--grid {
+    display: grid;
+    grid-template-columns: 400px 2px 1fr 280px;
+    padding: 0;
+    gap: 0;
+}
+
+.modal__footer-cell { display: flex; align-items: center; padding: 12px 20px; }
+.modal__footer-cell--left { justify-content: flex-start; }
+.modal__footer-cell--mid { justify-content: flex-end; }
+.modal__footer-cell--stats { justify-content: flex-end; }
+
+/* Continues the summary's own divider line straight down. */
+.modal__footer-divider { background: var(--line); }
 
 /* --- Confirm dialog --------------------------------------------------------- */
 
@@ -743,10 +759,6 @@
     letter-spacing: 0.04em;
 }
 
-/* Payment and exp, under the location info group — same horizontal padding as it, so the two
-   groups read as one column rather than two independently-aligned blocks. */
-.summary__rewards { padding: 14px 24px 0; }
-
 /* UIMissionLink: a thin light chip, black text, sitting inline under the address. */
 .mission-link {
     align-self: flex-start;
@@ -861,52 +873,53 @@
 
 .marker-row__note { color: var(--cyan-dim); font-size: var(--fs-micro); letter-spacing: 0.08em; }
 
-/* Two UISharpInfoBox read-outs: a value and its unit. */
-.reward-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+/* Payment and exp, as a small square item list at the head of the stats rail — same visual family
+   as a UISharpInfoBox read-out, just square and compact enough for the rail's own width. */
+.reward-squares { display: flex; justify-content: center; gap: 8px; padding: 16px 16px 0; }
 
-.reward-box {
-    position: relative;
-    padding: 10px 14px;
+.reward-square {
+    width: 72px;
+    height: 72px;
+    flex: 0 0 auto;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
     border: 1px solid var(--line);
     border-radius: var(--radius);
     overflow: hidden;
 }
 
-.reward-box__icon {
-    position: absolute;
-    top: 8px;
-    right: 10px;
-    font-size: 15px;
-    opacity: 0.7;
-    line-height: 1;
-}
+.reward-square__icon { font-size: 18px; opacity: 0.8; line-height: 1; }
 
-.reward-box__value {
-    display: block;
-    font-size: var(--fs-money);
+.reward-square__value {
+    font-size: 13px;
     color: var(--money);
     font-variant-numeric: tabular-nums;
     line-height: 1.1;
-}
-
-.reward-box__unit {
-    font-size: var(--fs-micro);
-    color: var(--money);
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    text-align: center;
 }
 
 /* --- Assignment (in-place Loadout) ----------------------------------------- */
 
-/* Slots as a 2-up grid of assignment cards, rather than a single stacked column. */
+/* A single row, not a wrapping grid — a mission never asks for more than 4, so each slot is sized
+   to exactly a quarter of the row up front rather than reflowing as slots fill in. Centered so a
+   2- or 3-slot mission's row sits in the middle of the space a 4-slot one would use, not pinned
+   to the left edge. */
 .slot-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    justify-content: center;
     gap: 12px;
 }
 
 .slot {
     position: relative;
+    /* A quarter of the row (minus its share of the three gaps) — fixed, not flexible, so a 2-slot
+       mission's cards are exactly as wide as a 4-slot mission's, just fewer of them. */
+    flex: 0 0 calc((100% - 36px) / 4);
+    width: calc((100% - 36px) / 4);
     /* Fixed, not content-driven — an unusually long agent name or several carried items must clip
        (the internal overflow: hidden pieces already do that) rather than grow the box. */
     height: 126px;
@@ -1308,19 +1321,25 @@ button.equip-icon:hover { border-color: var(--danger); color: var(--danger); }
 /* --- Narrow screens ------------------------------------------------------- */
 
 @media (max-width: 900px) {
-    .summary,
-    .slot-grid { grid-template-columns: 1fr; }
+    .summary { grid-template-columns: 1fr; }
+    /* .slot-grid is a fixed-width flex row on desktop (each slot exactly a quarter of it) — that
+       math doesn't hold in one narrow column, so slots stack full-width instead. */
+    .slot-grid { flex-wrap: wrap; }
+    .slot { flex: 1 1 100%; width: auto; }
 
-    /* Stacked single-column layout — the fixed desktop height (sized for two columns side by side)
-       no longer applies; let it size to content again. */
+    /* Stacked single-column layout — the fixed desktop height (sized for four columns side by
+       side) no longer applies; let it size to content again. */
     .summary { height: auto; min-height: 0; }
     .summary__left { border-bottom: 1px solid var(--line); }
     /* The rule and its dot are the seam between two columns; stacked, there is no seam. */
     .summary__divider { display: none; }
     .summary__photo { min-height: 140px; }
 
+    /* Same reasoning as the divider above — nothing left to divide once the columns stack. */
+    .modal__footer--grid { grid-template-columns: 1fr; }
+    .modal__footer-divider { display: none; }
+
     .summary__name { font-size: var(--fs-money); }
-    .reward-row { grid-template-columns: 1fr; }
     .result__verdict { font-size: var(--fs-money); }
 
     .topbar { gap: 12px; padding: 10px 14px; }
