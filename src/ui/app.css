@@ -517,23 +517,28 @@
 .summary__photo--stats::after { display: none; }
 
 /* Assignment tab only, where the location block would otherwise sit — same numbers as the hexagon
-   above, read as a bar per stat instead of a shape. */
+   above, read as a bar per stat instead of a shape. Kept shorter than the hexagon on purpose: this
+   is the secondary reading, not the headline. */
 .stat-gauges {
-    padding: 14px 24px 24px;
+    padding: 8px 24px 12px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 5px;
 }
 
-.stat-gauge { display: flex; align-items: center; gap: 8px; }
+.stat-gauge { display: flex; align-items: center; gap: 6px; }
 
 .stat-gauge__label { flex: 0 0 auto; }
+
+/* Bigger icon, smaller code — the icon carries the identification here, the letters are a caption. */
+.stat-gauge__label .stat-abbr { gap: 3px; font-size: 8px; }
+.stat-gauge__label .stat-abbr__icon { width: 17px; height: 17px; }
 
 .stat-gauge__track {
     flex: 1;
     /* Fixed regardless of the column's own width, so the bars read as a consistent scale. */
-    max-width: 110px;
-    height: 6px;
+    max-width: 100px;
+    height: 5px;
     background: var(--line);
     border-radius: var(--radius);
     overflow: hidden;

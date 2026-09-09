@@ -327,7 +327,9 @@ function StatGaugeList({ agents, tables }: { agents: readonly RuntimeAgent[]; ta
         <div className="stat-gauges">
             {STAT_IDS.map((stat) => {
                 const total = agents.reduce((sum, agent) => sum + runtimeAgent.effectiveStats(agent).get(stat), 0);
-                const cap = (tables.Stat.get(stat)?.maxValue ?? 20) * Math.max(1, agents.length);
+                // Fixed to one agent's max, not the team's — a second agent should visibly push the
+                // bar further, not just hold the same ratio the cap grew to match.
+                const cap = tables.Stat.get(stat)?.maxValue ?? 20;
                 const ratio = cap > 0 ? Math.min(1, total / cap) : 0;
 
                 return (
