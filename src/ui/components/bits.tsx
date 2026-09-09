@@ -1,4 +1,5 @@
-import type { ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 import { useGame } from '../../store/gameStore';
 import * as runtimeAgent from '../../engine/runtimeAgent';
 import type { RuntimeAgent } from '../../engine/runtimeAgent';
@@ -239,28 +240,95 @@ export function AgentCard({
         .filter(Boolean)
         .join(' ');
 
+    const buttonRef = useRef<HTMLButtonElement>(null);
+    const timerRef = useRef<number>();
+    const [anchor, setAnchor] = useState<DOMRect>();
+
+    useEffect(() => () => window.clearTimeout(timerRef.current), []);
+
+    function scheduleTooltip(): void {
+        window.clearTimeout(timerRef.current);
+        timerRef.current = window.setTimeout(() => {
+            if (buttonRef.current) setAnchor(buttonRef.current.getBoundingClientRect());
+        }, 500);
+    }
+
+    function hideTooltip(): void {
+        window.clearTimeout(timerRef.current);
+        setAnchor(undefined);
+    }
+
     return (
-        <button
-            type="button"
-            className={className}
-            onClick={onClick}
-            disabled={disabled || (!onClick && !draggable)}
-            draggable={draggable}
-            onDragStart={
-                draggable
-                    ? (event) => {
-                          const payload = dragFromSlotId
-                              ? { characterId: agent.characterId, fromSlotId: dragFromSlotId }
-                              : { characterId: agent.characterId };
-                          event.dataTransfer.setData('text/plain', JSON.stringify(payload));
-                          event.dataTransfer.effectAllowed = 'move';
-                      }
-                    : undefined
-            }
-            style={{ backgroundImage: `url(${import.meta.env.BASE_URL}avatars/${agent.characterId}.png)` }}
-        >
-            <span className="agent-card__name">{runtimeAgent.displayName(agent)}</span>
-        </button>
+        // display: contents so this wrapper is invisible to the parent's flex/grid layout — the
+        // button remains the real layout child. It only exists because a *disabled* <button> (an
+        // unpicked-agent card, most of the time) doesn't fire mouse events in Chromium, and the
+        // hover-to-preview should work on those too, not just clickable cards.
+        <span style={{ display: 'contents' }} onMouseEnter={scheduleTooltip} onMouseLeave={hideTooltip}>
+            <button
+                ref={buttonRef}
+                type="button"
+                className={className}
+                onClick={onClick}
+                disabled={disabled || (!onClick && !draggable)}
+                draggable={draggable}
+                onDragStart={
+                    draggable
+                        ? (event) => {
+                              const payload = dragFromSlotId
+                                  ? { characterId: agent.characterId, fromSlotId: dragFromSlotId }
+                                  : { characterId: agent.characterId };
+                              event.dataTransfer.setData('text/plain', JSON.stringify(payload));
+                              event.dataTransfer.effectAllowed = 'move';
+                          }
+                        : undefined
+                }
+                onDragStartCapture={hideTooltip}
+                style={{ backgroundImage: `url(${import.meta.env.BASE_URL}avatars/${agent.characterId}.png)` }}
+            >
+                <span className="agent-card__name">{runtimeAgent.displayName(agent)}</span>
+            </button>
+            {anchor ? createPortal(<AgentTooltip agent={agent} anchor={anchor} />, document.body) : null}
+        </span>
+    );
+}
+
+/**
+ * The "who is this" preview — stats, name, skills — for whichever card is being hovered. A portal
+ * into document.body rather than a child of the card: several of the card's real containers (a
+ * fixed-height slot, the bottom roster's scroll strip) clip overflow, which would cut this off.
+ */
+function AgentTooltip({ agent, anchor }: { agent: RuntimeAgent; anchor: DOMRect }): ReactNode {
+    const tables = useGame((state) => state.tables);
+    const skills = agent.data.baseSkillIds ?? [];
+
+    // Matches the fixed size in CSS (.agent-tooltip) — flips below and clamps sideways for cards
+    // near the top or the left/right edge (the Employment grid's top row, in particular).
+    const width = 300;
+    const height = 170;
+    const margin = 8;
+    const above = anchor.top >= height + margin + 12;
+    const top = above ? anchor.top - margin : anchor.bottom + margin;
+    const left = Math.min(
+        Math.max(anchor.left + anchor.width / 2, width / 2 + 8),
+        window.innerWidth - width / 2 - 8,
+    );
+
+    return (
+        <div className={above ? 'agent-tooltip' : 'agent-tooltip agent-tooltip--below'} role="tooltip" style={{ top, left }}>
+            <div className="agent-tooltip__hex">
+                <StatHexagon agent={agent} />
+            </div>
+            <div className="agent-tooltip__info">
+                <div className="agent-tooltip__name">{runtimeAgent.fullName(agent)}</div>
+                <div className="skill-list agent-tooltip__skills">
+                    {skills.map((skillId) => (
+                        <div className="skill-row" key={skillId}>
+                            {tables?.Skill.get(skillId)?.displayName ?? skillId}
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
     );
 }
 

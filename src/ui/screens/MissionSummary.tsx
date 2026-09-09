@@ -17,6 +17,7 @@ import { STAT_IDS } from '../../engine/types';
 import type { GameTables, StatId } from '../../engine/types';
 import type { LoadoutSession } from '../../engine/loadout';
 import type { LiveMission } from '../../engine/missionFeed';
+import { previewReward } from '../../engine/missionPreview';
 
 /** Every agent currently occupying a slot, in slot order. */
 function assignedAgentsOf(session: LoadoutSession): RuntimeAgent[] {
@@ -392,7 +393,7 @@ function LocationBlock({ mission }: { mission: LiveMission }): ReactNode {
  */
 function DetailsTab({ mission, tables }: { mission: LiveMission; tables: GameTables }): ReactNode {
     const tasks = tables.Task.getMany(mission.data.starterTasks);
-    const reward = rewardOf(tables, mission.data.outcomes?.[0]);
+    const reward = previewReward(tables, mission.data.outcomes?.[0]);
 
     return (
         <div className="tabpanel" role="tabpanel">
@@ -425,12 +426,14 @@ function DetailsTab({ mission, tables }: { mission: LiveMission; tables: GameTab
                 <div className="summary__label">Rewards</div>
                 <div className="reward-row">
                     <div className="reward-box hatch">
+                        <span className="reward-box__icon" aria-hidden="true">💰</span>
                         <span className="reward-box__value">
                             {reward.money ? `$${reward.money.toLocaleString('en-US')}` : '—'}
                         </span>
                         <span className="reward-box__unit">payment</span>
                     </div>
                     <div className="reward-box hatch">
+                        <span className="reward-box__icon" aria-hidden="true">⭐</span>
                         <span className="reward-box__value">{reward.exp || '—'}</span>
                         <span className="reward-box__unit">exp</span>
                     </div>
@@ -607,25 +610,6 @@ function AssignmentTab({
             {failure ? <div className="meta danger">{failure}</div> : null}
         </div>
     );
-}
-
-function rewardOf(
-    tables: GameTables,
-    bestOutcomeId: string | undefined,
-): { money: number; exp: number } {
-    const outcome = tables.Outcome.get(bestOutcomeId);
-    const incidents = tables.Incident.getMany(outcome?.incidents);
-
-    let money = 0;
-    let exp = 0;
-    for (const incident of incidents) {
-        exp += incident.rewardExp ?? 0;
-        for (const reward of incident.rewardItems ?? []) {
-            if (reward.itemId === 'dollar') money += reward.qty ?? 0;
-        }
-    }
-
-    return { money, exp };
 }
 
 /** Country and state ids are authored lowercase; they read as an address, so present them as one. */

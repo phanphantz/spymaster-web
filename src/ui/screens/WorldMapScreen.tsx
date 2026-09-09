@@ -1,8 +1,10 @@
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { SPEED_STEPS } from '../../engine/clock';
 import { useGame } from '../../store/gameStore';
 import * as runtimeAgent from '../../engine/runtimeAgent';
-import { AgentCard, DifficultyPips, Money, parseAgentDragPayload } from '../components/bits';
+import { previewReward, slotCountFor } from '../../engine/missionPreview';
+import type { LiveMission } from '../../engine/missionFeed';
+import { AgentCard, ConfirmDialog, DifficultyPips, Money, parseAgentDragPayload } from '../components/bits';
 
 /**
  * The World Map, as a list.
@@ -17,13 +19,17 @@ export function WorldMapScreen(): ReactNode {
 
     const pending = useGame((state) => state.pending);
     const roster = useGame((state) => state.roster);
+    const tables = useGame((state) => state.tables);
     const openMission = useGame((state) => state.openMission);
+    const declineMission = useGame((state) => state.declineMission);
     const overlay = useGame((state) => state.overlay);
     const session = useGame((state) => state.session);
     const pickingAgentId = useGame((state) => state.pickingAgentId);
     const pickAgent = useGame((state) => state.pickAgent);
     const unassignAgent = useGame((state) => state.unassignAgent);
     const picking = overlay === 'missionSummary';
+
+    const [decliningMission, setDecliningMission] = useState<LiveMission>();
 
     // An agent already filling a slot on this mission isn't free to pick for another — the roster
     // card disappears the moment it's assigned, and comes back the moment it's unassigned.
@@ -41,25 +47,51 @@ export function WorldMapScreen(): ReactNode {
                 </div>
             ) : (
                 <div className="mission-list">
-                    {pending.map((mission) => (
-                        <button
-                            type="button"
-                            key={mission.instanceId}
-                            className="mission-row"
-                            onClick={() => openMission(mission.instanceId)}
-                        >
-                            <DifficultyPips level={mission.data.difficultyLevel} />
-                            <span>
-                                <span className="mission-row__name">{mission.data.displayName}</span>
-                                <br />
-                                <span className="mission-row__where">
-                                    {mission.location?.displayName ?? 'Unknown'} ·{' '}
-                                    {mission.data.type ?? 'contract'}
+                    {pending.map((mission) => {
+                        const reward = tables ? previewReward(tables, mission.data.outcomes?.[0]) : { money: 0, exp: 0 };
+                        const slots = tables ? slotCountFor(mission, tables) : { mandatory: 0, total: 0 };
+                        const canDecline = mission.data.isDeclinable !== false;
+
+                        return (
+                            <div className="mission-row" key={mission.instanceId}>
+                                <button
+                                    type="button"
+                                    className="mission-row__open"
+                                    onClick={() => openMission(mission.instanceId)}
+                                >
+                                    <DifficultyPips level={mission.data.difficultyLevel} />
+                                    <span className="mission-row__info">
+                                        <span className="mission-row__name">{mission.data.displayName}</span>
+                                        <br />
+                                        <span className="mission-row__where">
+                                            {mission.location?.displayName ?? 'Unknown'} ·{' '}
+                                            {mission.data.type ?? 'contract'} · {slots.mandatory}{' '}
+                                            agent{slots.mandatory === 1 ? '' : 's'}
+                                        </span>
+                                    </span>
+                                </button>
+
+                                <span className="mission-row__rewards">
+                                    <span className="mission-row__reward" title="Payment">
+                                        <span aria-hidden="true">💰</span> x{reward.money.toLocaleString('en-US')}
+                                    </span>
+                                    <span className="mission-row__reward" title="Experience">
+                                        <span aria-hidden="true">⭐</span> x{reward.exp}
+                                    </span>
                                 </span>
-                            </span>
-                            <span className="micro">Open ›</span>
-                        </button>
-                    ))}
+
+                                {canDecline ? (
+                                    <button
+                                        type="button"
+                                        className="btn btn--small btn--quiet mission-row__decline"
+                                        onClick={() => setDecliningMission(mission)}
+                                    >
+                                        Decline
+                                    </button>
+                                ) : null}
+                            </div>
+                        );
+                    })}
                 </div>
             )}
 
@@ -96,6 +128,19 @@ export function WorldMapScreen(): ReactNode {
                     ))
                 )}
             </div>
+
+            <ConfirmDialog
+                open={Boolean(decliningMission)}
+                title="Decline this mission?"
+                message="The client won't be asked twice. This contract leaves the board for good."
+                confirmLabel="Decline"
+                danger
+                onConfirm={() => {
+                    if (decliningMission) declineMission(decliningMission.instanceId);
+                    setDecliningMission(undefined);
+                }}
+                onCancel={() => setDecliningMission(undefined)}
+            />
         </div>
     );
 }

@@ -209,22 +209,38 @@
     overflow-y: auto;
 }
 
+/* A row is no longer one big button — Decline sits beside it now, and a button can't nest inside a
+   button. .mission-row__open carries the click-to-open behaviour; the row itself just lays out the
+   three pieces (open / rewards / decline) and gives them one shared hover and border. */
 .mission-row {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
+    display: flex;
     align-items: center;
     gap: 14px;
     padding: 14px 16px;
     width: 100%;
-    text-align: left;
     background: var(--surface);
     border: 1px solid var(--line);
     border-left: 3px solid var(--cyan);
     border-radius: var(--radius);
-    color: inherit;
 }
 
 .mission-row:hover { background: var(--surface-2); }
+
+.mission-row__open {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    text-align: left;
+    color: inherit;
+    font: inherit;
+}
+
+.mission-row__info { min-width: 0; }
 
 .mission-row__name {
     font-size: var(--fs-item);
@@ -232,10 +248,33 @@
 }
 
 .mission-row__where {
+    display: block;
     font-size: var(--fs-meta);
     color: var(--cyan-dim);
     letter-spacing: 0.08em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
+
+/* Payment and exp, read at a glance without opening the mission. */
+.mission-row__rewards {
+    flex: 0 0 auto;
+    display: flex;
+    gap: 12px;
+}
+
+.mission-row__reward {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: var(--fs-meta);
+    color: var(--money);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.mission-row__decline { flex: 0 0 auto; }
 
 .pips { display: inline-flex; gap: 3px; }
 
@@ -311,6 +350,60 @@
     color: var(--text);
     letter-spacing: 0.06em;
     background: linear-gradient(to top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0));
+}
+
+/* Hover-and-hold preview of an agent card — a portal (see AgentCard), so `top`/`left` are fixed
+   viewport coordinates computed from the hovered card's own rect, not CSS-positioned off a parent. */
+.agent-tooltip {
+    position: fixed;
+    transform: translate(-50%, -100%);
+    z-index: 50;
+    width: 300px;
+    height: 170px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: var(--surface);
+    border: 1px solid var(--cyan);
+    border-radius: var(--radius);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+    opacity: 0;
+    animation: agent-tooltip-in 150ms ease-out forwards;
+}
+
+@keyframes agent-tooltip-in {
+    to { opacity: 1; }
+}
+
+/* Not enough room above the card (the Employment grid's top row, mainly) — sit below it instead. */
+.agent-tooltip--below { transform: translate(-50%, 0); }
+
+.agent-tooltip__hex { flex: 0 0 auto; width: 140px; }
+
+.agent-tooltip__info {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.agent-tooltip__name {
+    flex: 0 0 auto;
+    font-size: var(--fs-item);
+    color: var(--text);
+    letter-spacing: 0.04em;
+    line-height: 1.25;
+}
+
+.agent-tooltip__skills {
+    flex: 1;
+    min-height: 0;
+    margin-top: 0;
+    overflow-y: auto;
 }
 
 /* Icon + three-letter code, the one way a stat is ever labeled. */
@@ -726,6 +819,15 @@
     border: 1px solid var(--line);
     border-radius: var(--radius);
     overflow: hidden;
+}
+
+.reward-box__icon {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    font-size: 15px;
+    opacity: 0.7;
+    line-height: 1;
 }
 
 .reward-box__value {
