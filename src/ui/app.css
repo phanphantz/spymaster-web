@@ -195,12 +195,14 @@
 .worldmap {
     flex: 1;
     display: grid;
-    grid-template-rows: 1fr auto;
+    grid-template-rows: 1fr;
     min-height: 0;
 }
 
 .mission-list {
     padding: 20px;
+    /* Clears the roster strip, which is pinned over this rather than laid out above it. */
+    padding-bottom: 148px;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -256,60 +258,105 @@
 
 /* --- Roster strip --------------------------------------------------------- */
 
+/* Pinned to the screen, not just the World Map — it sits above the mission modal's backdrop
+   (z-index 10) so it stays the one place to pick an agent, modal open or not. */
 .roster {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 11;
     display: flex;
-    gap: 10px;
-    padding: 14px 20px;
+    gap: 8px;
+    padding: 10px 20px;
+    background: var(--bg);
     border-top: 1px solid var(--line);
     overflow-x: auto;
 }
 
-/* The Loadout's agent strip: same card list, but pinned so it never scrolls out of view. */
-.loadout__roster { flex-shrink: 0; }
+.roster .agent-card { width: 80px; }
+.roster .agent-card__name { padding: 6px 8px; font-size: var(--fs-micro); }
 
 .agent-card {
     position: relative;
     flex: 0 0 auto;
-    width: 150px;
-    padding: 12px;
+    width: 130px;
+    aspect-ratio: 2 / 3;
+    padding: 0;
+    display: flex;
+    align-items: flex-end;
     text-align: left;
-    background: var(--surface);
+    background-color: var(--surface);
+    background-size: cover;
+    background-position: top center;
     border: 1px solid var(--line);
     border-radius: var(--radius);
     color: inherit;
+    overflow: hidden;
 }
 
-.agent-card--selected { border-color: var(--cyan); background: var(--surface-2); }
+.agent-card--selected { border-color: var(--cyan); }
 .agent-card--disabled { opacity: 0.4; }
+
+/* 0.75x — same proportions, smaller footprint for a horizontal picker row. */
+.agent-card--sm { width: 97px; }
+.agent-card--sm .agent-card__name { padding: 6px 8px; font-size: var(--fs-micro); }
 
 .agent-card__name {
     display: block;
+    width: 100%;
+    padding: 8px 10px;
     font-size: var(--fs-item);
-    color: var(--cyan);
+    color: var(--text);
     letter-spacing: 0.06em;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0));
 }
 
-.agent-card__real {
-    display: block;
-    font-size: var(--fs-micro);
-    color: var(--steel);
-    letter-spacing: 0.08em;
-    margin-bottom: 8px;
+/* Icon + three-letter code, the one way a stat is ever labeled. */
+.stat-abbr { display: inline-flex; align-items: center; gap: 3px; white-space: nowrap; }
+
+.stat-abbr__icon {
+    width: 12px;
+    height: 12px;
+    object-fit: contain;
+    opacity: 0.85;
 }
 
-.statline {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 3px 8px;
-    font-size: var(--fs-micro);
-    color: var(--steel);
-    font-variant-numeric: tabular-nums;
+/* The six stats as a hexagon radar, replacing the old row-of-numbers stat line. */
+.stat-hex { width: 100%; max-width: 220px; }
+
+/* Same SVG, shrunk via CSS — for a filled slot, where it sits beside the agent card. */
+.stat-hex--mini { max-width: 56px; flex: 0 0 auto; }
+
+.stat-hex__ring {
+    fill: none;
+    stroke: var(--cyan-faint);
+    stroke-width: 1;
 }
 
-/* A stat and its value are one unit; wrapping between them reads as two rows of noise. */
-.statline > span { white-space: nowrap; }
+.stat-hex__axis {
+    stroke: var(--cyan-faint);
+    stroke-width: 1;
+}
 
-.statline b { color: var(--text); font-weight: 700; }
+.stat-hex__value {
+    fill: var(--cyan-dim);
+    stroke: var(--cyan);
+    stroke-width: 1.5;
+    stroke-linejoin: round;
+}
+
+.stat-hex__dot { fill: var(--cyan); }
+
+.stat-hex__icon {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 0.85;
+    cursor: default;
+}
+
+.stat-hex__icon:hover { opacity: 1; }
 
 .healthbar {
     height: 3px;
@@ -329,14 +376,16 @@
     display: grid;
     place-items: center;
     padding: 20px;
+    /* Clears the pinned roster strip, so the modal never sits under it. */
+    padding-bottom: 148px;
     z-index: 10;
     overflow-y: auto;
 }
 
 .modal {
     position: relative;
-    width: min(1000px, 100%);
-    max-height: calc(100vh - 40px);
+    width: min(720px, 100%);
+    max-height: calc(100vh - 168px);
     display: flex;
     flex-direction: column;
     background: var(--surface);
@@ -344,7 +393,7 @@
     border-radius: var(--radius);
 }
 
-.modal--wide { width: min(1180px, 100%); }
+.modal--wide { width: min(880px, 100%); }
 
 .modal__close {
     position: absolute;
@@ -411,8 +460,8 @@
 .summary {
     display: grid;
     /* The divider is its own column so the dot can sit centred on it. */
-    grid-template-columns: 370px 2px 1fr;
-    min-height: 520px;
+    grid-template-columns: 260px 2px 1fr;
+    min-height: 380px;
 }
 
 .summary__left {
@@ -426,7 +475,10 @@
 .summary__photo {
     position: relative;
     flex: 1;
-    min-height: 200px;
+    min-height: 130px;
+    /* Grid's auto row height and this flex-grow child otherwise chase each other in a loop when the
+       right column (Assignment, with its slots and shop list) runs tall — bound it. */
+    max-height: 260px;
     display: grid;
     place-items: center;
     background: var(--surface-2);
@@ -444,6 +496,11 @@
     background: linear-gradient(to bottom, transparent, var(--surface));
     pointer-events: none;
 }
+
+/* Assignment tab: the mount shows the assigned team's combined stats instead of mission art — no
+   photo to fade into the location block below it. */
+.summary__photo--stats { padding: 10px; }
+.summary__photo--stats::after { display: none; }
 
 .summary__dashrule {
     height: 0;
@@ -495,7 +552,7 @@
 .summary__dot {
     position: absolute;
     left: 50%;
-    bottom: 128px;
+    bottom: 90px;
     width: 13px;
     height: 13px;
     transform: translateX(-50%);
@@ -504,10 +561,10 @@
 }
 
 .summary__right {
-    padding: 26px 28px 22px;
+    padding: 20px 22px 16px;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 10px;
     min-width: 0;
 }
 
@@ -567,7 +624,7 @@
 .tabrow__tab[aria-selected='true'] { background: var(--cyan); color: var(--inverse); }
 
 /* A floor, so switching tab does not resize the modal and shift everything under the cursor. */
-.tabpanel { display: flex; flex-direction: column; gap: 14px; min-height: 190px; }
+.tabpanel { display: flex; flex-direction: column; gap: 12px; min-height: 140px; }
 
 .marker-list { display: flex; flex-direction: column; gap: 8px; }
 
@@ -634,6 +691,8 @@
 
 .slot--filled { border-color: var(--cyan); }
 .slot--needed { border-color: var(--danger); }
+/* The slot picked as the assignment target when an agent hasn't been picked yet — slot-first flow. */
+.slot--picking { border-color: var(--cyan); border-style: dashed; }
 
 .slot__head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 10px; }
 
@@ -669,58 +728,30 @@
     text-align: center;
 }
 
-.slot__empty:hover:not(:disabled) { border-color: var(--cyan); color: var(--cyan); }
-.slot__empty:disabled { cursor: not-allowed; opacity: 0.6; }
+.slot__empty:hover { border-color: var(--cyan); color: var(--cyan); }
 
-/* --- Combined stat gauges --------------------------------------------------- */
-
-.stat-gauges {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px 20px;
-}
-
-.stat-gauge { display: flex; align-items: center; gap: 8px; }
-
-.stat-gauge__label {
-    flex: 0 0 auto;
-    width: 78px;
-    font-size: var(--fs-micro);
-    color: var(--steel);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-}
-
-.stat-gauge__track {
-    flex: 1;
-    height: 6px;
-    background: var(--line);
-    border-radius: var(--radius);
-    overflow: hidden;
-}
-
-/* A plain <span>, so it needs an explicit display or width/height do nothing. */
-.stat-gauge__fill { display: block; height: 100%; background: var(--cyan); }
-
-.stat-gauge__value {
-    flex: 0 0 auto;
-    min-width: 20px;
-    text-align: right;
-    font-size: var(--fs-micro);
-    color: var(--text);
-    font-variant-numeric: tabular-nums;
-}
-
-.carry { margin-top: 10px; display: flex; flex-direction: column; gap: 4px; }
-
-.carry__row {
+/* Occupied: portrait fits the slot's height on the left, a mini hexagon on the right — the same
+   footprint as an empty slot, never taller. */
+.slot__filled {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: 8px;
-    font-size: var(--fs-meta);
-    color: var(--muted);
+    gap: 10px;
+    min-height: 56px;
 }
+
+.slot__filled .agent-card {
+    width: auto;
+    height: 56px;
+    flex: 0 0 auto;
+}
+
+.slot__filled .agent-card__name {
+    padding: 2px 4px;
+    font-size: 8px;
+    letter-spacing: 0;
+}
+
+.slot__filled .stat-hex--mini { margin-left: auto; }
 
 .tabs {
     display: flex;
@@ -761,7 +792,9 @@
     border-radius: var(--radius);
 }
 
-.item-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; min-height: 160px; }
+/* flex: 1 here has no bounded ancestor to resolve against (.kit sizes to content, same as the modal
+   above it) — left unbounded, that ambiguity is what was blowing the whole modal up to ~20000px. */
+.item-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; min-height: 160px; max-height: 260px; }
 
 .item-row {
     display: grid;
@@ -842,13 +875,14 @@
 .employment { padding: 28px; display: flex; flex-direction: column; gap: 20px; }
 
 .candidate-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
 }
 
 .candidate-card {
-    padding: 14px;
+    width: 160px;
+    padding: 10px;
     text-align: left;
     background: var(--surface);
     border: 1px solid var(--line);
@@ -858,6 +892,16 @@
 
 .candidate-card--picked { border-color: var(--cyan); background: var(--surface-2); }
 
+.candidate-card .agent-card { margin-bottom: 8px; }
+
+.candidate-card .agent-card__real {
+    display: block;
+    font-size: var(--fs-micro);
+    color: var(--steel);
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+}
+
 .candidate-card__bio {
     font-size: var(--fs-micro);
     color: var(--steel);
@@ -865,12 +909,27 @@
     margin: 8px 0 0;
 }
 
+.skill-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 8px;
+}
+
+.skill-row {
+    padding: 5px 8px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    font-size: var(--fs-micro);
+    color: var(--text);
+    letter-spacing: 0.04em;
+}
+
 /* --- Narrow screens ------------------------------------------------------- */
 
 @media (max-width: 900px) {
     .summary,
-    .slot-grid,
-    .stat-gauges { grid-template-columns: 1fr; }
+    .slot-grid { grid-template-columns: 1fr; }
 
     .summary { min-height: 0; }
     .summary__left { border-bottom: 1px solid var(--line); }

@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { useGame } from '../../store/gameStore';
 import * as runtimeAgent from '../../engine/runtimeAgent';
-import { StatLine } from '../components/bits';
+import { AgentCard, StatHexagon } from '../components/bits';
 
 /**
  * Employment: pick a roster out of a shortlist.
@@ -14,6 +14,7 @@ export function EmploymentScreen(): ReactNode {
     const picked = useGame((state) => state.picked);
     const togglePicked = useGame((state) => state.togglePicked);
     const confirm = useGame((state) => state.confirmEmployment);
+    const tables = useGame((state) => state.tables);
 
     if (!offer) return null;
 
@@ -36,24 +37,27 @@ export function EmploymentScreen(): ReactNode {
                     const isBlocked = !isPicked && remaining === 0;
 
                     return (
-                        <button
-                            type="button"
+                        <div
                             key={agent.characterId}
                             className={isPicked ? 'candidate-card candidate-card--picked' : 'candidate-card'}
-                            onClick={() => togglePicked(agent.characterId)}
-                            disabled={isBlocked}
-                            aria-pressed={isPicked}
                         >
-                            <span className="agent-card__name">{runtimeAgent.displayName(agent)}</span>
-                            <span className="agent-card__real">
-                                {runtimeAgent.fullName(agent)} · {agent.data.rarity ?? 'common'}
-                            </span>
-                            <StatLine agent={agent} />
-                            <p className="candidate-card__bio">{agent.character?.description}</p>
-                            <p className="candidate-card__bio dim">
-                                {(agent.data.tags ?? []).join(' · ')}
-                            </p>
-                        </button>
+                            <AgentCard
+                                agent={agent}
+                                size="sm"
+                                selected={isPicked}
+                                disabled={isBlocked}
+                                onClick={() => togglePicked(agent.characterId)}
+                            />
+                            <span className="agent-card__real">{runtimeAgent.fullName(agent)}</span>
+                            <StatHexagon agent={agent} />
+                            <div className="skill-list">
+                                {(agent.data.baseSkillIds ?? []).map((skillId) => (
+                                    <div className="skill-row" key={skillId}>
+                                        {tables?.Skill.get(skillId)?.displayName ?? skillId}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     );
                 })}
             </div>

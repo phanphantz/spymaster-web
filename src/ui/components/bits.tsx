@@ -1,12 +1,23 @@
 import type { ReactNode } from 'react';
+import { useGame } from '../../store/gameStore';
 import * as runtimeAgent from '../../engine/runtimeAgent';
 import type { RuntimeAgent } from '../../engine/runtimeAgent';
-import { STAT_IDS } from '../../engine/types';
+import type { StatId } from '../../engine/types';
 
 /** Small shared pieces. Anything used on two screens lives here rather than being copied. */
 
 export function Money({ amount }: { amount: number }): ReactNode {
     return <span className="money">${amount.toLocaleString('en-US')}</span>;
+}
+
+/** A stat's icon plus its three-letter code — the one way a stat ID is ever shown in the UI. */
+export function StatAbbr({ stat }: { stat: StatId }): ReactNode {
+    return (
+        <span className="stat-abbr">
+            <img className="stat-abbr__icon" src={`${import.meta.env.BASE_URL}icons/stats/${stat}.png`} alt="" />
+            {stat.toUpperCase()}
+        </span>
+    );
 }
 
 /** Difficulty as diamonds, the way the Unity Mission Summary shows it — no number, no percentage. */
@@ -20,16 +31,104 @@ export function DifficultyPips({ level = 0, max = 4 }: { level?: number; max?: n
     );
 }
 
-export function StatLine({ agent }: { agent: RuntimeAgent }): ReactNode {
-    const stats = runtimeAgent.effectiveStats(agent);
+/** Corner layout, clockwise from the top — independent of STAT_IDS's data order. */
+const HEX_ORDER: readonly StatId[] = ['int', 'end', 'sth', 'cha', 'pre', 'ast'];
+const HEX_ANGLES = HEX_ORDER.map((_, index) => ((-90 + index * 60) * Math.PI) / 180);
+
+/** What each stat governs — shown as the icon's hover tooltip, since the corner carries no text. */
+const STAT_EXPLAINER: Record<StatId, string> = {
+    ast: 'Assault — firepower and close-quarters combat.',
+    end: 'Endurance — health and resilience under fire.',
+    sth: 'Stealth — staying unseen and unheard.',
+    pre: 'Precision — accuracy, timing, technical finesse.',
+    int: 'Intellect — analysis, hacking, planning.',
+    cha: 'Charisma — persuasion, deception, social leverage.',
+};
+
+function pointAt(cx: number, cy: number, angle: number, radius: number): readonly [number, number] {
+    return [cx + radius * Math.cos(angle), cy + radius * Math.sin(angle)];
+}
+
+/**
+ * The six stats as a hexagon radar — shape reads at a glance, hover a corner icon for what it means.
+ *
+ * Reads one agent's stats by default. Pass `totals` instead (a per-stat sum, e.g. the whole assigned
+ * team) to plot that instead — the same shape either way, just a different source for the numbers.
+ * `mini` shrinks it via CSS alone; the SVG's own geometry — and so the hover targets — don't change.
+ */
+export function StatHexagon({
+    agent,
+    totals,
+    mini,
+}: {
+    agent?: RuntimeAgent;
+    totals?: ReadonlyMap<StatId, number>;
+    mini?: boolean;
+}): ReactNode {
+    const tables = useGame((state) => state.tables);
+    const valueOf = (stat: StatId): number =>
+        totals ? (totals.get(stat) ?? 0) : agent ? runtimeAgent.effectiveStats(agent).get(stat) : 0;
+
+    const cx = 105;
+    const cy = 100;
+    const radius = 54;
+    const iconRadius = radius + 24;
+    const iconSize = 33;
+
+    const ringPolygons = [0.33, 0.66, 1].map((f) =>
+        HEX_ANGLES.map((angle) => pointAt(cx, cy, angle, f * radius).join(',')).join(' '),
+    );
+
+    const valuePoints = HEX_ORDER.map((stat, index) => {
+        const max = tables?.Stat.get(stat)?.maxValue ?? 20;
+        const frac = Math.max(0, Math.min(1, max > 0 ? valueOf(stat) / max : 0));
+        return pointAt(cx, cy, HEX_ANGLES[index], frac * radius);
+    });
+
     return (
-        <div className="statline">
-            {STAT_IDS.map((stat) => (
-                <span key={stat}>
-                    {stat.toUpperCase()} <b>{stats.get(stat)}</b>
-                </span>
+        <svg
+            className={mini ? 'stat-hex stat-hex--mini' : 'stat-hex'}
+            viewBox="0 0 210 210"
+            role="img"
+            aria-label={totals ? 'Team stats' : 'Stats'}
+        >
+            {ringPolygons.map((points, index) => (
+                <polygon key={index} points={points} className="stat-hex__ring" />
             ))}
-        </div>
+            {HEX_ANGLES.map((angle, index) => {
+                const [x, y] = pointAt(cx, cy, angle, radius);
+                return <line key={index} x1={cx} y1={cy} x2={x} y2={y} className="stat-hex__axis" />;
+            })}
+            <polygon points={valuePoints.map((point) => point.join(',')).join(' ')} className="stat-hex__value" />
+            {valuePoints.map(([x, y], index) => {
+                const stat = HEX_ORDER[index];
+                return (
+                    <circle key={stat} cx={x} cy={y} r={2.5} className="stat-hex__dot">
+                        <title>{`${stat.toUpperCase()}: ${valueOf(stat)}`}</title>
+                    </circle>
+                );
+            })}
+            {HEX_ANGLES.map((angle, index) => {
+                const stat = HEX_ORDER[index];
+                const [ix, iy] = pointAt(cx, cy, angle, iconRadius);
+                return (
+                    <foreignObject
+                        key={stat}
+                        x={ix - iconSize / 2}
+                        y={iy - iconSize / 2}
+                        width={iconSize}
+                        height={iconSize}
+                    >
+                        <img
+                            className="stat-hex__icon"
+                            src={`${import.meta.env.BASE_URL}icons/stats/${stat}.png`}
+                            alt={tables?.Stat.get(stat)?.displayName ?? stat.toUpperCase()}
+                            title={STAT_EXPLAINER[stat]}
+                        />
+                    </foreignObject>
+                );
+            })}
+        </svg>
     );
 }
 
@@ -55,15 +154,18 @@ export function AgentCard({
     agent,
     selected,
     disabled,
+    size = 'md',
     onClick,
 }: {
     agent: RuntimeAgent;
     selected?: boolean;
     disabled?: boolean;
+    size?: 'md' | 'sm';
     onClick?: () => void;
 }): ReactNode {
     const className = [
         'agent-card',
+        size === 'sm' ? 'agent-card--sm' : '',
         selected ? 'agent-card--selected' : '',
         disabled ? 'agent-card--disabled' : '',
     ]
@@ -71,11 +173,14 @@ export function AgentCard({
         .join(' ');
 
     return (
-        <button type="button" className={className} onClick={onClick} disabled={!onClick}>
+        <button
+            type="button"
+            className={className}
+            onClick={onClick}
+            disabled={disabled || !onClick}
+            style={{ backgroundImage: `url(${import.meta.env.BASE_URL}avatars/${agent.characterId}.png)` }}
+        >
             <span className="agent-card__name">{runtimeAgent.displayName(agent)}</span>
-            <span className="agent-card__real">{runtimeAgent.fullName(agent)}</span>
-            <StatLine agent={agent} />
-            <HealthBar agent={agent} />
         </button>
     );
 }

@@ -7,7 +7,9 @@ import { LoadoutSession } from '../engine/loadout';
 import { MissionFeedRuntime, type LiveMission } from '../engine/missionFeed';
 import { deploy, type DeploymentResult } from '../engine/missionRun';
 import { createRng, randomSeed, type Rng } from '../engine/rng';
+import * as runtimeAgent from '../engine/runtimeAgent';
 import type { RuntimeAgent } from '../engine/runtimeAgent';
+import { describeReason } from '../engine/slotRequirementEvaluator';
 import { DOLLAR, type GameTables } from '../engine/types';
 
 /**
@@ -52,6 +54,15 @@ interface GameState {
     session?: LoadoutSession;
     result?: DeploymentResult;
 
+    /** Which roster agent is "in hand" for assignment, and which empty slot is "the target" — either
+     *  can be set first: pick an agent then tap a slot, or tap a slot then pick an agent. Whichever
+     *  is picked second completes the placement. Lives here, not in the modal, so the same
+     *  bottom-pinned roster card list stays clickable while the modal sits on top of it. */
+    pickingAgentId?: string;
+    pickingSlotId?: string;
+    /** Why the last slot placement failed, shown under the Assignment tab. */
+    assignmentFailure: string;
+
     /** Dev panel visibility, off by default. */
     showDataPanel: boolean;
 
@@ -72,7 +83,12 @@ interface GameState {
     closeOverlay: () => void;
     declineMission: (instanceId: string) => void;
 
-    assignAgent: (slotId: string, characterId: string) => void;
+    /** Toggle-selects an agent; if a slot is already picked, completes the placement instead. */
+    pickAgent: (characterId: string) => void;
+    /** Toggle-selects an empty slot; if an agent is already picked, completes the placement instead. */
+    pickSlot: (slotId: string) => void;
+    setAssignmentFailure: (message: string) => void;
+
     unassignAgent: (slotId: string) => void;
     purchaseItem: (itemId: string, qty?: number) => void;
     assignItem: (characterId: string, itemId: string, qty?: number) => void;
@@ -95,7 +111,36 @@ function configuredTimeScale(tables: GameTables): number {
     return Number.isFinite(configured) && configured > 0 ? configured : 60;
 }
 
-export const useGame = create<GameState>((set, get) => ({
+export const useGame = create<GameState>((set, get) => {
+    /** The one path an agent actually lands in a slot, whichever was picked first. Eligibility is
+     *  re-checked here rather than trusted from the picker, since the Loadout session is the source
+     *  of truth for who can go where. */
+    function placeAgentInSlot(slotId: string, characterId: string): void {
+        const { session } = get();
+        if (!session) return;
+
+        const candidate = session.candidatesFor(slotId).find((entry) => entry.agent.characterId === characterId);
+        if (!candidate) return;
+
+        if (!candidate.isEligible) {
+            set({
+                assignmentFailure: candidate.reasons.length
+                    ? describeReason(candidate.reasons[0])
+                    : `${runtimeAgent.displayName(candidate.agent)} cannot take this slot`,
+            });
+            return;
+        }
+
+        session.assignAgent(slotId, characterId);
+        set({
+            pickingAgentId: undefined,
+            pickingSlotId: undefined,
+            assignmentFailure: '',
+            version: get().version + 1,
+        });
+    }
+
+    return {
     phase: 'loading',
     overlay: 'none',
     seed: 0,
@@ -107,6 +152,7 @@ export const useGame = create<GameState>((set, get) => ({
     playerLevel: 1,
     picked: [],
     pending: [],
+    assignmentFailure: '',
     showDataPanel: false,
 
     async init() {
@@ -152,6 +198,9 @@ export const useGame = create<GameState>((set, get) => ({
             session: undefined,
             result: undefined,
             selectedInstanceId: undefined,
+            pickingAgentId: undefined,
+            pickingSlotId: undefined,
+            assignmentFailure: '',
             version: get().version + 1,
         });
 
@@ -238,6 +287,9 @@ export const useGame = create<GameState>((set, get) => ({
             selectedInstanceId: instanceId,
             session: new LoadoutSession(mission, tables, roster, inventory, playerLevel),
             overlay: 'missionSummary',
+            pickingAgentId: undefined,
+            pickingSlotId: undefined,
+            assignmentFailure: '',
             version: get().version + 1,
         });
     },
@@ -245,7 +297,15 @@ export const useGame = create<GameState>((set, get) => ({
     closeOverlay() {
         // Returns every carried item, so backing out of a mission costs nothing.
         get().session?.cancel();
-        set({ overlay: 'none', selectedInstanceId: undefined, session: undefined, version: get().version + 1 });
+        set({
+            overlay: 'none',
+            selectedInstanceId: undefined,
+            session: undefined,
+            pickingAgentId: undefined,
+            pickingSlotId: undefined,
+            assignmentFailure: '',
+            version: get().version + 1,
+        });
     },
 
     declineMission(instanceId) {
@@ -259,13 +319,39 @@ export const useGame = create<GameState>((set, get) => ({
             overlay: 'none',
             selectedInstanceId: undefined,
             session: undefined,
+            pickingAgentId: undefined,
+            pickingSlotId: undefined,
+            assignmentFailure: '',
             version: get().version + 1,
         });
     },
 
-    assignAgent(slotId, characterId) {
-        get().session?.assignAgent(slotId, characterId);
-        set({ version: get().version + 1 });
+    pickAgent(characterId) {
+        const { pickingSlotId, session } = get();
+        if (pickingSlotId && session) {
+            placeAgentInSlot(pickingSlotId, characterId);
+            return;
+        }
+        set((state) => ({
+            pickingAgentId: state.pickingAgentId === characterId ? undefined : characterId,
+            assignmentFailure: '',
+        }));
+    },
+
+    pickSlot(slotId) {
+        const { pickingAgentId, session } = get();
+        if (pickingAgentId && session) {
+            placeAgentInSlot(slotId, pickingAgentId);
+            return;
+        }
+        set((state) => ({
+            pickingSlotId: state.pickingSlotId === slotId ? undefined : slotId,
+            assignmentFailure: '',
+        }));
+    },
+
+    setAssignmentFailure(message) {
+        set({ assignmentFailure: message });
     },
 
     unassignAgent(slotId) {
@@ -300,6 +386,8 @@ export const useGame = create<GameState>((set, get) => ({
             overlay: 'result',
             session: undefined,
             selectedInstanceId: undefined,
+            pickingAgentId: undefined,
+            pickingSlotId: undefined,
             pending: pending.filter((candidate) => candidate.instanceId !== session.mission.instanceId),
             version: get().version + 1,
         });
@@ -312,4 +400,5 @@ export const useGame = create<GameState>((set, get) => ({
     toggleDataPanel() {
         set({ showDataPanel: !get().showDataPanel });
     },
-}));
+    };
+});

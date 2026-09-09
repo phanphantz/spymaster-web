@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { SPEED_STEPS } from '../../engine/clock';
 import { useGame } from '../../store/gameStore';
+import * as runtimeAgent from '../../engine/runtimeAgent';
 import { AgentCard, DifficultyPips, Money } from '../components/bits';
 
 /**
@@ -17,6 +18,10 @@ export function WorldMapScreen(): ReactNode {
     const pending = useGame((state) => state.pending);
     const roster = useGame((state) => state.roster);
     const openMission = useGame((state) => state.openMission);
+    const overlay = useGame((state) => state.overlay);
+    const pickingAgentId = useGame((state) => state.pickingAgentId);
+    const pickAgent = useGame((state) => state.pickAgent);
+    const picking = overlay === 'missionSummary';
 
     return (
         <div className="worldmap">
@@ -52,11 +57,22 @@ export function WorldMapScreen(): ReactNode {
                 </div>
             )}
 
+            {/* Pinned to the bottom of the screen at all times — including while the mission modal
+                sits on top of it, so it doubles as that modal's agent picker rather than the modal
+                carrying its own copy of the same list. */}
             <div className="roster">
                 {roster.length === 0 ? (
                     <span className="meta">No agents employed.</span>
                 ) : (
-                    roster.map((agent) => <AgentCard key={agent.characterId} agent={agent} />)
+                    roster.map((agent) => (
+                        <AgentCard
+                            key={agent.characterId}
+                            agent={agent}
+                            selected={picking && agent.characterId === pickingAgentId}
+                            disabled={picking && !runtimeAgent.isAvailable(agent)}
+                            onClick={picking ? () => pickAgent(agent.characterId) : undefined}
+                        />
+                    ))
                 )}
             </div>
         </div>
