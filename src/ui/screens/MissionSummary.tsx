@@ -166,38 +166,31 @@ export function MissionSummary(): ReactNode {
                 </div>
             </div>
 
-            {/* Gridded on the left column's own width, so its divider line runs straight through
-                from the panel into the footer instead of stopping at the row. Status and Deploy stay
-                grouped tight on the right rather than spread across their own separate cells — that
-                just left a wide empty strip between Decline and Deploy. */}
-            <div className="modal__footer modal__footer--grid">
-                <div className="modal__footer-cell modal__footer-cell--left">
-                    <button
-                        type="button"
-                        className="btn btn--quiet"
-                        onClick={() => setConfirmingDecline(true)}
-                        disabled={!canDecline}
-                        title={canDecline ? undefined : 'This client does not take no for an answer'}
-                    >
-                        Decline
-                    </button>
-                </div>
-                <div className="modal__footer-divider" aria-hidden="true" />
-                <div className="modal__footer-cell modal__footer-cell--right">
-                    <span className="meta">
-                        {session.canConfirm
-                            ? 'Ready to deploy'
-                            : `Fill ${session.missingMandatorySlots.length} more slot(s)`}
-                    </span>
-                    <button
-                        type="button"
-                        className="btn btn--primary"
-                        onClick={deploy}
-                        disabled={!session.canConfirm}
-                    >
-                        Deploy
-                    </button>
-                </div>
+            {/* Decline, status and Deploy grouped in one tight cluster at the right edge — not
+                pinned to opposite corners, which just left a wide empty strip between them. */}
+            <div className="modal__footer">
+                <button
+                    type="button"
+                    className="btn btn--quiet"
+                    onClick={() => setConfirmingDecline(true)}
+                    disabled={!canDecline}
+                    title={canDecline ? undefined : 'This client does not take no for an answer'}
+                >
+                    Decline
+                </button>
+                <span className="meta">
+                    {session.canConfirm
+                        ? 'Ready to deploy'
+                        : `Fill ${session.missingMandatorySlots.length} more slot(s)`}
+                </span>
+                <button
+                    type="button"
+                    className="btn btn--primary"
+                    onClick={deploy}
+                    disabled={!session.canConfirm}
+                >
+                    Deploy
+                </button>
             </div>
 
             <ConfirmDialog

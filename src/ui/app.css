@@ -543,33 +543,17 @@
    widths on a classic (non-overlay) scrollbar, and the whole panel visibly shifts switching tabs. */
 .modal__body { overflow-y: auto; min-height: 0; scrollbar-gutter: stable; }
 
+/* One tight cluster at the right edge — Decline, status, Deploy — not pinned to opposite corners,
+   which left a wide empty strip of nothing between them. */
 .modal__footer {
     flex-shrink: 0;
     display: flex;
-    gap: 10px;
+    gap: 14px;
     justify-content: flex-end;
     align-items: center;
     padding: 14px 20px;
     border-top: 1px solid var(--line);
 }
-
-/* Mission UI only: gridded on the left column's own width, so its divider line runs straight down
-   from the panel into the footer instead of stopping at the row. Everything right of it — status
-   and Deploy — stays in one cell, grouped tight at the far edge, rather than spread across separate
-   cells that left a wide empty strip between Decline and Deploy. */
-.modal__footer--grid {
-    display: grid;
-    grid-template-columns: 400px 2px 1fr;
-    padding: 0;
-    gap: 0;
-}
-
-.modal__footer-cell { display: flex; align-items: center; padding: 12px 20px; }
-.modal__footer-cell--left { justify-content: flex-start; }
-.modal__footer-cell--right { justify-content: flex-end; gap: 14px; }
-
-/* Continues the summary's own divider line straight down. */
-.modal__footer-divider { background: var(--line); }
 
 /* --- Confirm dialog --------------------------------------------------------- */
 
@@ -1332,10 +1316,6 @@ button.equip-icon:hover { border-color: var(--danger); color: var(--danger); }
     /* The rule and its dot are the seam between two columns; stacked, there is no seam. */
     .summary__divider { display: none; }
     .summary__photo { min-height: 140px; }
-
-    /* Same reasoning as the divider above — nothing left to divide once the columns stack. */
-    .modal__footer--grid { grid-template-columns: 1fr; }
-    .modal__footer-divider { display: none; }
 
     .summary__name { font-size: var(--fs-money); }
     .result__verdict { font-size: var(--fs-money); }
