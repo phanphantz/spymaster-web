@@ -63,6 +63,9 @@ interface GameState {
     pickingSlotId?: string;
     /** Why the last slot placement failed, shown under the Assignment tab. */
     assignmentFailure: string;
+    /** A drag or click that would trade two occupied slots — held here until the player says
+     *  whether the agents trade slots, their kits trade slots, or both. */
+    pendingSwap?: { slotA: string; slotB: string };
 
     /** Which tab the mission modal was on — lifted out of the modal so it survives a detour to the
      *  Shop page and back (Done always lands where the pencil was tapped from). */
@@ -104,8 +107,11 @@ interface GameState {
     /** The drag-and-drop entry point: both halves arrive at once, so this skips the toggle-select
      *  dance pickAgent/pickSlot do. Pass `fromSlotId` when the drag started on another slot's own
      *  agent card (rather than the roster) — dropped onto a slot occupied by someone else, that
-     *  swaps the two agents in place instead of bumping either one out. */
+     *  opens the swap dialog instead of bumping either one out. */
     placeAgent: (slotId: string, characterId: string, fromSlotId?: string) => void;
+    /** Resolves a pendingSwap: trade the two slots' agents, their kits, or both. */
+    resolveSwap: (mode: 'agents' | 'items' | 'both') => void;
+    cancelSwap: () => void;
     setAssignmentFailure: (message: string) => void;
 
     unassignAgent: (slotId: string) => void;
@@ -175,25 +181,41 @@ export const useGame = create<GameState>((set, get) => {
         });
     }
 
-    /** Exchanges the two slots' agents in place, each keeping exactly what they were already
-     *  carrying — a swap never touches capacity, since both were already carrying it. Refuses if
-     *  either agent fails the other slot's requirement, rather than half-completing it. */
-    function swapAgentsInSlots(slotIdA: string, slotIdB: string): void {
+    /** Both slots must be occupied by two different agents to trade at all, and — for the two modes
+     *  that move an agent into the other slot — each must qualify for the slot they'd land in.
+     *  Returns the pair, or undefined (with assignmentFailure already set) if the trade is blocked. */
+    function agentsForSwap(
+        slotIdA: string,
+        slotIdB: string,
+        checkEligibility: boolean,
+    ): [RuntimeAgent, RuntimeAgent] | undefined {
         const { session } = get();
-        if (!session || slotIdA === slotIdB) return;
+        if (!session || slotIdA === slotIdB) return undefined;
 
         const agentA = session.agentIn(slotIdA);
         const agentB = session.agentIn(slotIdB);
-        if (!agentA || !agentB || agentA.characterId === agentB.characterId) return;
+        if (!agentA || !agentB || agentA.characterId === agentB.characterId) return undefined;
 
-        const aFitsB = session.candidatesFor(slotIdB).find((entry) => entry.agent.characterId === agentA.characterId);
-        const bFitsA = session.candidatesFor(slotIdA).find((entry) => entry.agent.characterId === agentB.characterId);
-
-        if (!aFitsB?.isEligible || !bFitsA?.isEligible) {
-            const blocked = !aFitsB?.isEligible ? agentA : agentB;
-            set({ assignmentFailure: `${runtimeAgent.displayName(blocked)} cannot take that slot` });
-            return;
+        if (checkEligibility) {
+            const aFitsB = session.candidatesFor(slotIdB).find((entry) => entry.agent.characterId === agentA.characterId);
+            const bFitsA = session.candidatesFor(slotIdA).find((entry) => entry.agent.characterId === agentB.characterId);
+            if (!aFitsB?.isEligible || !bFitsA?.isEligible) {
+                const blocked = !aFitsB?.isEligible ? agentA : agentB;
+                set({ assignmentFailure: `${runtimeAgent.displayName(blocked)} cannot take that slot` });
+                return undefined;
+            }
         }
+
+        return [agentA, agentB];
+    }
+
+    /** Trades the two slots' agents; each keeps their own kit, which travels with them. Never
+     *  touches capacity, since both were already carrying what they carry. */
+    function swapBoth(slotIdA: string, slotIdB: string): void {
+        const { session } = get();
+        const pair = agentsForSwap(slotIdA, slotIdB, true);
+        if (!session || !pair) return;
+        const [agentA, agentB] = pair;
 
         const itemsA = [...session.carriedBy(agentA.characterId).entries];
         const itemsB = [...session.carriedBy(agentB.characterId).entries];
@@ -208,12 +230,68 @@ export const useGame = create<GameState>((set, get) => {
         for (const [itemId, qty] of itemsA) session.assignItem(agentA.characterId, itemId, qty);
         for (const [itemId, qty] of itemsB) session.assignItem(agentB.characterId, itemId, qty);
 
-        set({
-            pickingAgentId: undefined,
-            pickingSlotId: undefined,
-            assignmentFailure: '',
-            version: get().version + 1,
-        });
+        set({ pickingAgentId: undefined, pickingSlotId: undefined, assignmentFailure: '', version: get().version + 1 });
+    }
+
+    /** Trades the two slots' agents, but their kits stay put — each agent arrives wearing whoever
+     *  was there before's kit (capped to their own capacity; anything that doesn't fit goes to
+     *  stock rather than being lost). */
+    function swapAgentsOnly(slotIdA: string, slotIdB: string): void {
+        const { session } = get();
+        const pair = agentsForSwap(slotIdA, slotIdB, true);
+        if (!session || !pair) return;
+        const [agentA, agentB] = pair;
+
+        const itemsA = [...session.carriedBy(agentA.characterId).entries];
+        const itemsB = [...session.carriedBy(agentB.characterId).entries];
+
+        session.unassignAgent(slotIdA);
+        session.unassignAgent(slotIdB);
+        session.assignAgent(slotIdB, agentA.characterId);
+        session.assignAgent(slotIdA, agentB.characterId);
+
+        // itemsA belonged to slotA, which agentB now occupies — and vice versa.
+        for (const [itemId, qty] of itemsA) {
+            const room = session.remainingCapacity(agentB.characterId);
+            if (room <= 0) break;
+            session.assignItem(agentB.characterId, itemId, Math.min(qty, room));
+        }
+        for (const [itemId, qty] of itemsB) {
+            const room = session.remainingCapacity(agentA.characterId);
+            if (room <= 0) break;
+            session.assignItem(agentA.characterId, itemId, Math.min(qty, room));
+        }
+
+        set({ pickingAgentId: undefined, pickingSlotId: undefined, assignmentFailure: '', version: get().version + 1 });
+    }
+
+    /** Trades the two slots' kits; both agents stay right where they are. No eligibility check —
+     *  a slot's requirement is about the agent standing in it, not what they're carrying. Capped to
+     *  each agent's own capacity, same as swapAgentsOnly. */
+    function swapItemsOnly(slotIdA: string, slotIdB: string): void {
+        const { session } = get();
+        const pair = agentsForSwap(slotIdA, slotIdB, false);
+        if (!session || !pair) return;
+        const [agentA, agentB] = pair;
+
+        const itemsA = [...session.carriedBy(agentA.characterId).entries];
+        const itemsB = [...session.carriedBy(agentB.characterId).entries];
+
+        for (const [itemId, qty] of itemsA) session.unassignItem(agentA.characterId, itemId, qty);
+        for (const [itemId, qty] of itemsB) session.unassignItem(agentB.characterId, itemId, qty);
+
+        for (const [itemId, qty] of itemsA) {
+            const room = session.remainingCapacity(agentB.characterId);
+            if (room <= 0) break;
+            session.assignItem(agentB.characterId, itemId, Math.min(qty, room));
+        }
+        for (const [itemId, qty] of itemsB) {
+            const room = session.remainingCapacity(agentA.characterId);
+            if (room <= 0) break;
+            session.assignItem(agentA.characterId, itemId, Math.min(qty, room));
+        }
+
+        set({ pickingAgentId: undefined, pickingSlotId: undefined, assignmentFailure: '', version: get().version + 1 });
     }
 
     return {
@@ -280,6 +358,7 @@ export const useGame = create<GameState>((set, get) => {
             assignmentFailure: '',
             missionTab: 'details',
             shopCharacterId: undefined,
+            pendingSwap: undefined,
             version: get().version + 1,
         });
 
@@ -371,6 +450,7 @@ export const useGame = create<GameState>((set, get) => {
             assignmentFailure: '',
             missionTab: 'details',
             shopCharacterId: undefined,
+            pendingSwap: undefined,
             version: get().version + 1,
         });
     },
@@ -386,6 +466,7 @@ export const useGame = create<GameState>((set, get) => {
             pickingSlotId: undefined,
             assignmentFailure: '',
             shopCharacterId: undefined,
+            pendingSwap: undefined,
             version: get().version + 1,
         });
     },
@@ -405,6 +486,7 @@ export const useGame = create<GameState>((set, get) => {
             pickingSlotId: undefined,
             assignmentFailure: '',
             shopCharacterId: undefined,
+            pendingSwap: undefined,
             version: get().version + 1,
         });
     },
@@ -450,11 +532,30 @@ export const useGame = create<GameState>((set, get) => {
         if (session && fromSlotId && fromSlotId !== slotId) {
             const targetOccupant = session.agentIn(slotId);
             if (targetOccupant && targetOccupant.characterId !== characterId) {
-                swapAgentsInSlots(fromSlotId, slotId);
+                set({
+                    pickingAgentId: undefined,
+                    pickingSlotId: undefined,
+                    assignmentFailure: '',
+                    pendingSwap: { slotA: fromSlotId, slotB: slotId },
+                });
                 return;
             }
         }
         placeAgentInSlot(slotId, characterId);
+    },
+
+    resolveSwap(mode) {
+        const { pendingSwap } = get();
+        if (!pendingSwap) return;
+        const { slotA, slotB } = pendingSwap;
+        set({ pendingSwap: undefined });
+        if (mode === 'agents') swapAgentsOnly(slotA, slotB);
+        else if (mode === 'items') swapItemsOnly(slotA, slotB);
+        else swapBoth(slotA, slotB);
+    },
+
+    cancelSwap() {
+        set({ pendingSwap: undefined });
     },
 
     setAssignmentFailure(message) {
@@ -505,6 +606,7 @@ export const useGame = create<GameState>((set, get) => {
             pickingAgentId: undefined,
             pickingSlotId: undefined,
             shopCharacterId: undefined,
+            pendingSwap: undefined,
             pending: pending.filter((candidate) => candidate.instanceId !== session.mission.instanceId),
             version: get().version + 1,
         });

@@ -420,6 +420,7 @@
 /* --- Confirm dialog --------------------------------------------------------- */
 
 .confirm {
+    position: relative;
     width: min(360px, 100%);
     padding: 20px;
     display: flex;
@@ -434,6 +435,8 @@
     font-size: var(--fs-item);
     color: var(--text);
     margin: 0;
+    /* Clears the close button, when there is one. */
+    padding-right: 28px;
 }
 
 .confirm__body {
@@ -447,6 +450,17 @@
     display: flex;
     gap: 10px;
     justify-content: flex-end;
+}
+
+/* Three named choices read better stacked than squeezed into one row. */
+.confirm__actions--stack { flex-direction: column; }
+.confirm__actions--stack .btn { width: 100%; }
+
+/* The ✕-to-cancel on a dialog that offers real choices instead of confirm/cancel. */
+.confirm__close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
 }
 
 /* --- Mission Summary ------------------------------------------------------ */

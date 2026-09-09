@@ -6,6 +6,18 @@ import type { StatId } from '../../engine/types';
 
 /** Small shared pieces. Anything used on two screens lives here rather than being copied. */
 
+/** What a drop target reads back — set by AgentCard's onDragStart. `fromSlotId` is present only
+ *  when the drag started on a slot's own card rather than the roster's, so a drop target can tell
+ *  "assign from the roster" apart from "moved from another slot" (a relocate, or half of a swap). */
+export function parseAgentDragPayload(raw: string): { characterId: string; fromSlotId?: string } | undefined {
+    try {
+        const parsed = JSON.parse(raw);
+        return typeof parsed?.characterId === 'string' ? parsed : undefined;
+    } catch {
+        return undefined;
+    }
+}
+
 export function Money({ amount }: { amount: number }): ReactNode {
     return <span className="money">${amount.toLocaleString('en-US')}</span>;
 }

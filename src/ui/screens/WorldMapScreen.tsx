@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { SPEED_STEPS } from '../../engine/clock';
 import { useGame } from '../../store/gameStore';
 import * as runtimeAgent from '../../engine/runtimeAgent';
-import { AgentCard, DifficultyPips, Money } from '../components/bits';
+import { AgentCard, DifficultyPips, Money, parseAgentDragPayload } from '../components/bits';
 
 /**
  * The World Map, as a list.
@@ -22,6 +22,7 @@ export function WorldMapScreen(): ReactNode {
     const session = useGame((state) => state.session);
     const pickingAgentId = useGame((state) => state.pickingAgentId);
     const pickAgent = useGame((state) => state.pickAgent);
+    const unassignAgent = useGame((state) => state.unassignAgent);
     const picking = overlay === 'missionSummary';
 
     // An agent already filling a slot on this mission isn't free to pick for another — the roster
@@ -64,8 +65,20 @@ export function WorldMapScreen(): ReactNode {
 
             {/* Pinned to the bottom of the screen at all times — including while the mission modal
                 sits on top of it, so it doubles as that modal's agent picker rather than the modal
-                carrying its own copy of the same list. */}
-            <div className="roster">
+                carrying its own copy of the same list. Dropping a slot's own agent card back here
+                (fromSlotId set) unassigns them — the QoL mirror of dragging one out to a slot. */}
+            <div
+                className="roster"
+                onDragOver={(event) => {
+                    if (picking) event.preventDefault();
+                }}
+                onDrop={(event) => {
+                    if (!picking) return;
+                    event.preventDefault();
+                    const payload = parseAgentDragPayload(event.dataTransfer.getData('text/plain'));
+                    if (payload?.fromSlotId) unassignAgent(payload.fromSlotId);
+                }}
+            >
                 {roster.length === 0 ? (
                     <span className="meta">No agents employed.</span>
                 ) : availableRoster.length === 0 ? (

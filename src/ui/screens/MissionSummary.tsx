@@ -2,7 +2,16 @@ import { useState, type ReactNode } from 'react';
 import { useGame } from '../../store/gameStore';
 import * as runtimeAgent from '../../engine/runtimeAgent';
 import type { RuntimeAgent } from '../../engine/runtimeAgent';
-import { AgentCard, ConfirmDialog, DifficultyPips, Emphasized, EquipIcon, Modal, StatHexagon } from '../components/bits';
+import {
+    AgentCard,
+    ConfirmDialog,
+    DifficultyPips,
+    Emphasized,
+    EquipIcon,
+    Modal,
+    StatHexagon,
+    parseAgentDragPayload,
+} from '../components/bits';
 import { STAT_IDS } from '../../engine/types';
 import type { GameTables, StatId } from '../../engine/types';
 import type { LoadoutSession } from '../../engine/loadout';
@@ -22,17 +31,6 @@ function combinedStats(agents: readonly RuntimeAgent[]): Map<StatId, number> {
         totals.set(stat, agents.reduce((sum, agent) => sum + runtimeAgent.effectiveStats(agent).get(stat), 0));
     }
     return totals;
-}
-
-/** What a slot's onDrop reads back — set by AgentCard's onDragStart, with `fromSlotId` present only
- *  when the drag started on another slot's own card (the roster's cards don't set it). */
-function parseDragPayload(raw: string): { characterId: string; fromSlotId?: string } | undefined {
-    try {
-        const parsed = JSON.parse(raw);
-        return typeof parsed?.characterId === 'string' ? parsed : undefined;
-    } catch {
-        return undefined;
-    }
 }
 
 /**
@@ -62,6 +60,9 @@ export function MissionSummary(): ReactNode {
     const pickingSlotId = useGame((state) => state.pickingSlotId);
     const pickSlot = useGame((state) => state.pickSlot);
     const placeAgent = useGame((state) => state.placeAgent);
+    const pendingSwap = useGame((state) => state.pendingSwap);
+    const resolveSwap = useGame((state) => state.resolveSwap);
+    const cancelSwap = useGame((state) => state.cancelSwap);
     const failure = useGame((state) => state.assignmentFailure);
     const tab = useGame((state) => state.missionTab);
     const setTab = useGame((state) => state.setMissionTab);
@@ -238,7 +239,74 @@ export function MissionSummary(): ReactNode {
                 }}
                 onCancel={() => setDiscardTarget(undefined)}
             />
+
+            <SwapDialog
+                pendingSwap={pendingSwap}
+                session={session}
+                onSwapAgents={() => resolveSwap('agents')}
+                onSwapItems={() => resolveSwap('items')}
+                onSwapBoth={() => resolveSwap('both')}
+                onCancel={cancelSwap}
+            />
         </Modal>
+    );
+}
+
+/**
+ * Dragging (or clicking) one occupied slot's agent onto another pauses here rather than picking a
+ * default — trade just who stands where, just their kits, or both together (each agent leaving with
+ * their own kit, as if they'd simply swapped places).
+ */
+function SwapDialog({
+    pendingSwap,
+    session,
+    onSwapAgents,
+    onSwapItems,
+    onSwapBoth,
+    onCancel,
+}: {
+    pendingSwap: { slotA: string; slotB: string } | undefined;
+    session: LoadoutSession;
+    onSwapAgents: () => void;
+    onSwapItems: () => void;
+    onSwapBoth: () => void;
+    onCancel: () => void;
+}): ReactNode {
+    if (!pendingSwap) return null;
+
+    const agentA = session.agentIn(pendingSwap.slotA);
+    const agentB = session.agentIn(pendingSwap.slotB);
+    if (!agentA || !agentB) return null;
+
+    return (
+        <div className="backdrop" onClick={onCancel} role="presentation">
+            <div
+                className="confirm"
+                role="alertdialog"
+                aria-modal="true"
+                aria-label="Swap slots"
+                onClick={(event) => event.stopPropagation()}
+            >
+                <button type="button" className="icon-btn confirm__close" onClick={onCancel} aria-label="Cancel">
+                    ✕
+                </button>
+                <h3 className="confirm__title">
+                    Swap {runtimeAgent.displayName(agentA)} and {runtimeAgent.displayName(agentB)}?
+                </h3>
+                <p className="confirm__body">Trade who's in which slot, what they're carrying, or both.</p>
+                <div className="confirm__actions confirm__actions--stack">
+                    <button type="button" className="btn btn--quiet" onClick={onSwapAgents}>
+                        Swap Agents
+                    </button>
+                    <button type="button" className="btn btn--quiet" onClick={onSwapItems}>
+                        Swap Items
+                    </button>
+                    <button type="button" className="btn btn--primary" onClick={onSwapBoth}>
+                        Swap Both
+                    </button>
+                </div>
+            </div>
+        </div>
     );
 }
 
@@ -393,7 +461,7 @@ function AssignmentTab({
                                 event.preventDefault();
                                 const raw = event.dataTransfer.getData('text/plain');
                                 if (!raw) return;
-                                const payload = parseDragPayload(raw);
+                                const payload = parseAgentDragPayload(raw);
                                 if (payload) onDropAgent(slot.slotId, payload.characterId, payload.fromSlotId);
                             }}
                         >
