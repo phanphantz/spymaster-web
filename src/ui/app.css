@@ -500,23 +500,32 @@
 /* Not enough room above the card (the Employment grid's top row, mainly) — sit below it instead. */
 .agent-tooltip--below { transform: translate(-50%, 0); }
 
+.agent-tooltip__left {
+    flex: 0 0 auto;
+    width: 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+/* The hex itself is untouched by this wrapper — same width, same StatHexagon markup, just a row
+   of badges added below it rather than overlaid on top. */
 .agent-tooltip__hex { flex: 0 0 auto; width: 140px; }
 
-/* Positioned off the card itself (which is already `position: fixed`), not the hex — pinned to
-   the tooltip's own corners regardless of the hex's padding. */
+.agent-tooltip__hex-badges {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
 .agent-tooltip__badge {
-    position: absolute;
-    left: 4px;
     display: inline-flex;
     align-items: center;
     gap: 3px;
     font-size: var(--fs-micro);
     color: var(--text);
-    pointer-events: none;
 }
-
-.agent-tooltip__badge--hp { top: 4px; }
-.agent-tooltip__badge--inv { bottom: 4px; }
 
 .agent-tooltip__info {
     flex: 1;

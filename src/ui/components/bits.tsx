@@ -504,14 +504,18 @@ function AgentTooltip({
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
         >
-            <span className="agent-tooltip__badge agent-tooltip__badge--hp" title="Full HP">
-                <span aria-hidden="true">❤</span> {runtimeAgent.maxHealth(agent)}
-            </span>
-            <span className="agent-tooltip__badge agent-tooltip__badge--inv" title="Inventory slots">
-                <span aria-hidden="true">🎒</span> {runtimeAgent.inventorySize(agent)}
-            </span>
-            <div className="agent-tooltip__hex">
-                <StatHexagon agent={agent} />
+            <div className="agent-tooltip__left">
+                <div className="agent-tooltip__hex">
+                    <StatHexagon agent={agent} />
+                </div>
+                <div className="agent-tooltip__hex-badges">
+                    <span className="agent-tooltip__badge" title="Full HP">
+                        <span aria-hidden="true">❤</span> {runtimeAgent.maxHealth(agent)}
+                    </span>
+                    <span className="agent-tooltip__badge" title="Inventory slots">
+                        <span aria-hidden="true">🎒</span> {runtimeAgent.inventorySize(agent)}
+                    </span>
+                </div>
             </div>
             <div className="agent-tooltip__info">
                 <div className="agent-tooltip__name">{runtimeAgent.displayName(agent)}</div>
