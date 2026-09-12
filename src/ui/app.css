@@ -1861,42 +1861,99 @@ button.equip-icon:hover { border-color: var(--danger); color: var(--danger); }
 
 /* --- Employment ----------------------------------------------------------- */
 
-.employment { padding: 28px; display: flex; flex-direction: column; gap: 20px; }
-
-.candidate-grid {
+/* Full-screen stage, not a modal — the only screen shown while `phase === 'employment'`, so it
+   owns the whole `.app` column (`flex: 1`) rather than sizing to its own content. Bottom padding
+   clears the fixed `.roster` picker strip the same way `.mission-list` does. */
+.employment {
+    flex: 1;
+    min-height: 0;
+    padding: 28px;
+    padding-bottom: calc(var(--roster-h) + 20px);
     display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
+    flex-direction: column;
+    gap: 20px;
 }
 
-.candidate-card {
-    width: 160px;
-    padding: 10px;
-    text-align: left;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    color: inherit;
-}
-
-.candidate-card--picked { border-color: var(--cyan); background: var(--surface-2); }
-
-.candidate-card .agent-card { margin-bottom: 8px; }
-
-.candidate-card .agent-card__real {
-    display: block;
-    font-size: var(--fs-micro);
+.employment__title {
+    font-size: var(--fs-display);
     color: var(--steel);
     letter-spacing: 0.08em;
-    margin-bottom: 8px;
+    text-transform: uppercase;
+    margin: 0;
 }
 
-.candidate-card__bio {
-    font-size: var(--fs-micro);
-    color: var(--steel);
-    line-height: 1.5;
+/* Portrait half on the left, sheet (hexagon/skills/bio) on the right — the focused candidate's
+   full spread, replacing the old per-card grid. */
+.employment__stage {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.employment__portrait {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background-color: var(--surface-2);
+    background-size: cover;
+    background-position: center top;
+    display: flex;
+    align-items: flex-end;
+}
+
+/* The black fade the codename sits on. */
+.employment__portrait::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0) 60%);
+    pointer-events: none;
+}
+
+.employment__portrait-info {
+    position: relative;
+    z-index: 1;
+    padding: 24px;
+}
+
+.employment__codename {
+    font-size: var(--fs-display);
+    color: var(--text);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    line-height: 1.1;
+}
+
+.employment__fullname {
+    font-size: var(--fs-detail);
+    color: var(--cyan-dim);
+    letter-spacing: 0.06em;
+    margin-top: 4px;
+}
+
+.employment__aside {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 12px;
+}
+
+.employment__bio {
+    align-self: stretch;
+    color: var(--muted);
+    font-size: var(--fs-chip);
+    line-height: 1.6;
     margin: 8px 0 0;
 }
+
+/* Sits just above the fixed roster strip in normal flow — `.employment`'s own bottom padding is
+   what reserves the strip's space, so this footer lands flush above it rather than under it. */
+.employment__footer { border-top: 1px solid var(--line); }
 
 .skill-list {
     display: flex;
@@ -1939,6 +1996,9 @@ button.equip-icon:hover { border-color: var(--danger); color: var(--danger); }
     .topbar { gap: 12px; padding: 10px 14px; }
     .brand { letter-spacing: 0.18em; }
     .mission-list { padding: 14px; }
+
+    .employment__stage { grid-template-columns: 1fr; }
+    .employment__portrait { min-height: 180px; }
 
     /* The action bar has to stay reachable with one thumb. */
     .modal__footer { position: sticky; bottom: 0; background: var(--surface); }
