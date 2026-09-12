@@ -1276,6 +1276,11 @@
     align-items: stretch;
     gap: 8px;
     min-width: 0;
+    /* Without this, the flex item's automatic minimum height is its content's intrinsic size (the
+       card and hexagon's own aspect-ratio-driven height), which can exceed the slot's fixed 126px
+       and silently overflow it — clipped by `.slot`'s own `overflow: hidden` into a cropped-looking
+       card and hexagon instead of an error. This is what actually lets it shrink to fit. */
+    min-height: 0;
 }
 
 .slot__filled .agent-card {
