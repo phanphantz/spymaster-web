@@ -719,6 +719,31 @@ describe('Loadout', () => {
         expect(session.carriedBy('agentNoire').get('toolPicklockSet')).toBe(2);
     });
 
+    it('lets a duplicate of an already-carried stackable item stack for free even at full capacity', async () => {
+        const { tables, rng, roster } = await fixture(5, {
+            Item: [{ itemId: 'toolFlashlight', maxStackCount: 5 }],
+        });
+        const mission = generateMission(
+            tables.Mission.get('heist_vault')!, tables.Location, rng, 'heist_vault#1', 0,
+        );
+        const inventory = new Inventory([['dollar', 50000]]);
+        const session = new LoadoutSession(mission, tables, roster, inventory, 1);
+        session.assignAgent('slot_stealth', 'agentNoire');
+
+        // Fill every slot but one with distinct non-stackable items, and the last with the stackable
+        // one — so remainingCapacity reads 0 with the stackable item's own stack holding just 1.
+        const capacity = runtimeAgent.inventorySize(roster[0]);
+        const fillers = ['melFoldableKnife', 'melThrowingKnife', 'toolPicklockGun'].slice(0, capacity - 1);
+        for (const itemId of fillers) session.assignItem('agentNoire', itemId, 1);
+        session.assignItem('agentNoire', 'toolFlashlight', 1);
+        expect(session.remainingCapacity('agentNoire')).toBe(0);
+
+        // A duplicate of the stackable item shares its existing slot rather than needing a new one,
+        // so it goes through despite there being no room left for anything else.
+        expect(session.assignItem('agentNoire', 'toolFlashlight', 1)).toBe(true);
+        expect(session.carriedBy('agentNoire').get('toolFlashlight')).toBe(2);
+    });
+
     it('returns a displaced agent’s items but keeps a moved agent’s', async () => {
         const { tables, rng, inventory, roster } = await fixture();
         const mission = generateMission(

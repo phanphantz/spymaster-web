@@ -570,18 +570,20 @@ export const useGame = create<GameState>((set, get) => {
         const { session } = get();
         if (!session) return;
 
-        if (session.remainingCapacity(characterId) < qty) {
-            set({ assignmentFailure: 'No room left to carry that' });
-            return;
-        }
-
+        // Affordability and unlock are checked up front for a precise message; room is not — a
+        // duplicate of an already-carried stackable item needs no additional slot, and only
+        // session.assignItem itself knows whether this particular drop does.
         const failure = session.shop.checkEquip(itemId, qty);
         if (failure !== 'none') {
             set({ assignmentFailure: describeEquipFailure(failure) });
             return;
         }
 
-        session.assignItem(characterId, itemId, qty);
+        if (!session.assignItem(characterId, itemId, qty)) {
+            set({ assignmentFailure: 'No room left to carry that' });
+            return;
+        }
+
         set({ assignmentFailure: '', version: get().version + 1 });
     },
 
