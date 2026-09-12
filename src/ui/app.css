@@ -96,6 +96,26 @@
 
 .btn--small { padding: 5px 10px; font-size: var(--fs-micro); }
 
+/* Press-and-hold guard for a consequential action (deploying a mission) — `.btn--hold__fill` sweeps
+   left to right while the pointer is down, and only completing that sweep counts as a press;
+   releasing early snaps it back via the same transition, shortened. `isolation: isolate` keeps the
+   fill's z-index scoped to this button rather than fighting anything it happens to sit above. */
+.btn--hold { position: relative; overflow: hidden; isolation: isolate; }
+
+.btn--hold__fill {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 0%;
+    background: rgba(255, 255, 255, 0.3);
+    transition: width 160ms linear;
+    pointer-events: none;
+}
+
+.btn--hold-active .btn--hold__fill { width: 100%; transition-duration: var(--hold-ms, 800ms); }
+
+.btn--hold__label { position: relative; z-index: 1; }
+
 .icon-btn {
     width: 28px;
     height: 28px;
@@ -678,6 +698,27 @@
     z-index: 1;
 }
 
+/* Mirrors `.modal__corner`, pinned to the opposite side — the Close button's fixed spot regardless
+   of which of this Modal's own screens (Mission or Kit) is currently filling `children`. */
+.modal__corner--left {
+    right: auto;
+    left: 16px;
+}
+
+/* Cost, Success and the hold-to-confirm button read as one connected group in the top-right corner —
+   the same status a player reads to decide whether to commit is right next to the button that
+   commits it. */
+.mission-corner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.mission-corner__confirm {
+    padding: 6px 16px;
+    font-size: var(--fs-meta);
+}
+
 .planning-status {
     display: flex;
     align-items: stretch;
@@ -834,7 +875,9 @@
 /* The stats rail's mount shows the assigned team's combined stats instead of mission art — no photo
    to fade into anything below it. Still grows to fill the space above the gauges (inherited
    flex: 1), so the hexagon centers within that area rather than sitting flush at top. */
-.summary__photo--stats { padding: 10px; }
+/* The team's combined hexagon reads as a shape floating over the rail, not a panel — drop the plain
+   `.summary__photo` surface behind it that every other mount (a location photo) still wants. */
+.summary__photo--stats { padding: 10px; background: transparent; }
 .summary__photo--stats::after { display: none; }
 
 /* Stands in for the hexagon (and the gauges below stay unmounted) until an agent is assigned —
@@ -924,7 +967,6 @@
     padding: 10px 24px 20px;
 }
 
-.summary__actions--split { justify-content: space-between; }
 .summary__actions--right { padding: 10px 20px 20px; justify-content: flex-end; }
 
 .summary__location {
@@ -1163,9 +1205,7 @@
     overflow: hidden;
 }
 
-/* No padding once filled — the agent card and hexagon go flush to the slot's own edges instead of
-   sitting inset from them. Empty stays padded: .slot__empty draws its own dashed inset box. */
-.slot--filled { border-color: var(--cyan); padding: 0; }
+.slot--filled { border-color: var(--cyan); }
 .slot--needed { border-color: var(--danger); }
 /* The slot picked as the assignment target — either flow order, empty or already occupied. */
 .slot--picking { border-color: var(--cyan); border-style: dashed; }
@@ -1220,39 +1260,40 @@
 
 .slot__empty:hover { border-color: var(--cyan); color: var(--cyan); }
 
-/* Occupied, edge to edge now .slot--filled has zeroed the padding: the portrait fills the slot's
-   full height on the left, the hexagon fills whatever width is left on the right. */
+/* Occupied: the portrait and the hexagon sit centred as a pair, each sized to its own natural
+   aspect ratio within the slot's fixed height instead of either being stretched to fill it — the
+   card keeps its own border/radius (no longer flush-merged with the slot's), and the hexagon (a
+   square viewBox) matches the card's own height rather than stretching wide to fill the leftover
+   row. */
 .slot__filled {
     flex: 1;
     display: flex;
-    align-items: stretch;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
     min-width: 0;
 }
 
 .slot__filled .agent-card {
-    width: auto;
-    height: 100%;
+    /* Slot content height is 126px minus its 14px padding (98px) — 60px wide at the card's 2:3
+       ratio comes out to 90px tall, comfortably inside that instead of overflowing it. */
+    width: 60px;
+    height: auto;
+    aspect-ratio: 2 / 3;
     flex: 0 0 auto;
-    border-top: 0;
-    border-bottom: 0;
-    border-left: 0;
-    border-radius: 0;
 }
 
 .slot__filled .agent-card__name {
-    padding: 2px 4px;
-    font-size: 8px;
+    padding: 3px 5px;
+    font-size: 7px;
     letter-spacing: 0;
 }
 
-/* Fills the rest of the row instead of the small fixed corner size .stat-hex--mini gets everywhere
- * else (there's nowhere else it's used mini and NOT here) — the SVG's own square viewBox keeps it
- * centred and unstretched no matter how wide that remaining space actually is. */
 .slot__filled .stat-hex--mini {
-    flex: 1;
-    width: 100%;
-    max-width: none;
+    flex: 0 0 auto;
+    width: auto;
     height: 100%;
+    max-width: none;
     margin-left: 0;
 }
 

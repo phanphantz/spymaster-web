@@ -8,7 +8,9 @@ import {
     DifficultyPips,
     Emphasized,
     EquipIcon,
+    HoldButton,
     Modal,
+    PageTabs,
     StatAbbr,
     StatHexagon,
     parseAgentDragPayload,
@@ -49,17 +51,37 @@ function PlanningStatus({ session }: { session: LoadoutSession }): ReactNode {
     return (
         <div className="planning-status">
             <span className="planning-status__item">
-                <span className="planning-status__label">Success</span>
-                <span className={`planning-status__value planning-status__value--${likelihood ?? 'none'}`}>
-                    {likelihood ? LIKELIHOOD_LABEL[likelihood] : '—'}
-                </span>
-            </span>
-            <span className="planning-status__item">
                 <span className="planning-status__label">Cost</span>
                 <span className="planning-status__value planning-status__value--cost">
                     ${cost.toLocaleString('en-US')}
                 </span>
             </span>
+            <span className="planning-status__item">
+                <span className="planning-status__label">Success</span>
+                <span className={`planning-status__value planning-status__value--${likelihood ?? 'none'}`}>
+                    {likelihood ? LIKELIHOOD_LABEL[likelihood] : '—'}
+                </span>
+            </span>
+        </div>
+    );
+}
+
+/**
+ * The modal's whole top-right fixture: Cost, Success, then Confirm — grouped so deploying is one
+ * press-and-hold away from the same status a player is reading to decide whether to. Pinned to the
+ * modal frame itself (not `.summary__stats`), it stays reachable from the Kit page too — there's no
+ * longer a separate Confirm button that only existed on the Mission page.
+ */
+function MissionCorner({ session, onDeploy }: { session: LoadoutSession; onDeploy: () => void }): ReactNode {
+    return (
+        <div className="mission-corner">
+            <PlanningStatus session={session} />
+            <HoldButton
+                className="btn--primary mission-corner__confirm"
+                label="Confirm"
+                disabled={!session.canConfirm}
+                onComplete={onDeploy}
+            />
         </div>
     );
 }
@@ -128,11 +150,24 @@ export function MissionSummary(): ReactNode {
             kit={inventoryMode}
             label={inventoryMode ? 'Kit' : (mission.data.displayName ?? 'Mission')}
             hideClose
-            corner={<PlanningStatus session={session} />}
+            corner={<MissionCorner session={session} onDeploy={deploy} />}
+            topLeft={
+                <button
+                    type="button"
+                    className="btn btn--quiet btn--small"
+                    onClick={() => (hasAssignments ? setConfirmingClose(true) : close())}
+                >
+                    Close
+                </button>
+            }
         >
             <div className="modal__body">
                 {inventoryMode ? (
-                    <ShopScreen session={session} tables={tables} onDone={closeShop} />
+                    <ShopScreen
+                        session={session}
+                        tables={tables}
+                        onSelectTab={(tab) => (tab === 'agent' ? closeShop() : undefined)}
+                    />
                 ) : (
                 <div className="summary">
                     <div className="summary__left">
@@ -140,15 +175,6 @@ export function MissionSummary(): ReactNode {
                         <div className="summary__lower-anchor">
                             <hr className="summary__dashrule" />
                             <LocationBlock mission={mission} />
-                            <div className="summary__actions">
-                                <button
-                                    type="button"
-                                    className="btn btn--quiet"
-                                    onClick={() => (hasAssignments ? setConfirmingClose(true) : close())}
-                                >
-                                    Back
-                                </button>
-                            </div>
                         </div>
                     </div>
 
@@ -218,17 +244,7 @@ export function MissionSummary(): ReactNode {
                             <hr className="summary__dashrule" />
                             {assigned.length > 0 ? <StatGaugeList agents={assigned} tables={tables} /> : null}
                             <div className="summary__actions summary__actions--right">
-                                <button type="button" className="btn btn--quiet" onClick={() => openShop('')}>
-                                    Inventory
-                                </button>
-                                <button
-                                    type="button"
-                                    className="btn btn--primary"
-                                    onClick={deploy}
-                                    disabled={!session.canConfirm}
-                                >
-                                    Confirm
-                                </button>
+                                <PageTabs active="agent" onSelect={(tab) => (tab === 'inventory' ? openShop('') : undefined)} />
                             </div>
                         </div>
                     </div>

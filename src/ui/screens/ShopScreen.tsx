@@ -1,10 +1,25 @@
 import { useState, type ReactNode } from 'react';
 import { useGame } from '../../store/gameStore';
 import { describeEquipFailure } from '../../engine/shop';
-import { StatAbbr, initials, setSquareDragImage } from '../components/bits';
+import { PageTabs, StatAbbr, initials, setSquareDragImage } from '../components/bits';
 import { RARITY_TIERS, STAT_IDS } from '../../engine/types';
-import type { GameTables, ItemData } from '../../engine/types';
+import type { GameTables, ItemData, VocabularyEntry } from '../../engine/types';
 import type { LoadoutSession } from '../../engine/loadout';
+
+/** The order the type rail should read in, top to bottom — matched against each row's own
+ *  `displayName` (case-insensitive) rather than its `itemTypeId`, since the id spelling is
+ *  authored in the sheet and not guaranteed to match this literally. Anything not named here keeps
+ *  whatever order the sheet gave it, after all of these. */
+const TYPE_ORDER = ['Tool', 'Close Range Weapon', 'Long Range Weapon', 'Explosive'];
+
+function sortTypes(rows: readonly VocabularyEntry[]): VocabularyEntry[] {
+    const rankOf = (row: VocabularyEntry): number => {
+        const label = (row.displayName ?? row.itemTypeId ?? '').toLowerCase();
+        const index = TYPE_ORDER.findIndex((name) => name.toLowerCase() === label);
+        return index === -1 ? TYPE_ORDER.length : index;
+    };
+    return [...rows].sort((a, b) => rankOf(a) - rankOf(b));
+}
 
 /** Not modelled in this prototype yet — no ammo economy, no attachment slots on a weapon. Hidden
  *  from the type rail entirely rather than left to dead-end as an empty tab; an item that carries
@@ -96,11 +111,13 @@ function describeEffects(item: ItemData): ReactNode {
 export function ShopScreen({
     session,
     tables,
-    onDone,
+    onSelectTab,
 }: {
     session: LoadoutSession;
     tables: GameTables;
-    onDone: () => void;
+    /** Only ever called with 'agent' — this page IS the 'inventory' tab, so picking it again is a
+     *  no-op the caller doesn't need to handle. */
+    onSelectTab: (tab: 'agent' | 'inventory') => void;
 }): ReactNode {
     useGame((state) => state.version);
 
@@ -113,8 +130,10 @@ export function ShopScreen({
     const items = session.shop.availableItems();
 
     const presentTypes = new Set(items.flatMap((item) => item.type ?? []));
-    const types = tables.ItemType.rows.filter(
-        (row) => row.itemTypeId && presentTypes.has(row.itemTypeId) && !HIDDEN_TYPES.has(row.itemTypeId),
+    const types = sortTypes(
+        tables.ItemType.rows.filter(
+            (row) => row.itemTypeId && presentTypes.has(row.itemTypeId) && !HIDDEN_TYPES.has(row.itemTypeId),
+        ),
     );
     const activeType = typeId && presentTypes.has(typeId) ? typeId : types[0]?.itemTypeId;
 
@@ -187,13 +206,6 @@ export function ShopScreen({
                         </button>
                     ))}
                 </div>
-                <div className="summary__lower-anchor">
-                    <div className="summary__actions summary__actions--right">
-                        <button type="button" className="btn btn--quiet" onClick={onDone}>
-                            Done
-                        </button>
-                    </div>
-                </div>
             </div>
 
             <div className="summary__divider" />
@@ -260,6 +272,12 @@ export function ShopScreen({
                         <span className="meta dim">Select an item.</span>
                     </div>
                 )}
+                <div className="summary__lower-anchor">
+                    <hr className="summary__dashrule" />
+                    <div className="summary__actions summary__actions--right">
+                        <PageTabs active="inventory" onSelect={onSelectTab} />
+                    </div>
+                </div>
             </div>
         </div>
     );

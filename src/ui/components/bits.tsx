@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type DragEvent, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type CSSProperties, type DragEvent, type ReactNode, type TransitionEvent } from 'react';
 import { createPortal } from 'react-dom';
 import { useGame } from '../../store/gameStore';
 import * as runtimeAgent from '../../engine/runtimeAgent';
@@ -566,6 +566,95 @@ export function ConfirmDialog({
     );
 }
 
+/**
+ * A press-and-hold button, guarded against the accidental single tap a normal button risks for a
+ * consequential action (deploying a mission) — the fill sweeps left to right over `holdMs`, and only
+ * a hold that survives the full sweep fires `onComplete`. Releasing early (pointerup, or the pointer
+ * leaving the button) snaps the fill back and cancels — the same click that started it, wherever it
+ * ends, either commits or costs nothing.
+ */
+export function HoldButton({
+    label,
+    holdMs = 800,
+    disabled,
+    onComplete,
+    className,
+}: {
+    label: ReactNode;
+    holdMs?: number;
+    disabled?: boolean;
+    onComplete: () => void;
+    className?: string;
+}): ReactNode {
+    const [holding, setHolding] = useState(false);
+    // Guards against the fill's own snap-back transition (width 100% -> 0%) re-firing this — only
+    // the transition that grows to 100% while still holding should ever commit.
+    const firedRef = useRef(false);
+
+    function start(): void {
+        if (disabled) return;
+        firedRef.current = false;
+        setHolding(true);
+    }
+
+    function cancel(): void {
+        setHolding(false);
+    }
+
+    function onFillTransitionEnd(event: TransitionEvent<HTMLSpanElement>): void {
+        if (event.propertyName !== 'width' || !holding || firedRef.current) return;
+        firedRef.current = true;
+        setHolding(false);
+        onComplete();
+    }
+
+    const className_ = ['btn', 'btn--hold', holding ? 'btn--hold-active' : '', className].filter(Boolean).join(' ');
+
+    return (
+        <button
+            type="button"
+            className={className_}
+            disabled={disabled}
+            onPointerDown={start}
+            onPointerUp={cancel}
+            onPointerLeave={cancel}
+            onPointerCancel={cancel}
+            style={{ '--hold-ms': `${holdMs}ms` } as CSSProperties}
+        >
+            <span className="btn--hold__fill" onTransitionEnd={onFillTransitionEnd} aria-hidden="true" />
+            <span className="btn--hold__label">{label}</span>
+        </button>
+    );
+}
+
+/** Agent (the team/slot grid) vs Inventory (the Kit catalog) — the one control that moves the Mission
+ *  UI between its two pages, replacing what used to be a one-way "Inventory" button forward and a
+ *  "Done" button back. Lives at the same bottom-right spot on both pages. */
+export function PageTabs({
+    active,
+    onSelect,
+}: {
+    active: 'agent' | 'inventory';
+    onSelect: (tab: 'agent' | 'inventory') => void;
+}): ReactNode {
+    return (
+        <div className="tabs page-tabs" role="tablist">
+            <button type="button" role="tab" className="tab" aria-selected={active === 'agent'} onClick={() => onSelect('agent')}>
+                Agent
+            </button>
+            <button
+                type="button"
+                role="tab"
+                className="tab"
+                aria-selected={active === 'inventory'}
+                onClick={() => onSelect('inventory')}
+            >
+                Inventory
+            </button>
+        </div>
+    );
+}
+
 export function Modal({
     children,
     onClose,
@@ -574,6 +663,7 @@ export function Modal({
     label,
     hideClose,
     corner,
+    topLeft,
 }: {
     children: ReactNode;
     onClose: () => void;
@@ -587,6 +677,9 @@ export function Modal({
      *  `hideClose`, so there is nothing to collide with. One spot, painted once, is what makes it
      *  read as the same fixture whichever of this Modal's own screens is currently filling `children`. */
     corner?: ReactNode;
+    /** Mirrors `corner`, pinned top-left instead — a fixture of the modal frame itself, so it stays
+     *  put (and stays reachable) no matter which of this Modal's own screens is currently showing. */
+    topLeft?: ReactNode;
 }): ReactNode {
     const modalClassName = ['modal', wide ? 'modal--wide' : '', wide && kit ? 'modal--kit' : '']
         .filter(Boolean)
@@ -612,6 +705,7 @@ export function Modal({
                     </button>
                 )}
                 {corner ? <div className="modal__corner">{corner}</div> : null}
+                {topLeft ? <div className="modal__corner modal__corner--left">{topLeft}</div> : null}
                 {children}
             </div>
         </div>
