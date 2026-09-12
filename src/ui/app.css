@@ -556,7 +556,7 @@
    of stopping at the bottom of `.summary` — a background layer sits behind every button and piece
    of text, so it reads as running continuously through the footer to the modal's true bottom edge
    without needing to dodge anything sitting on top of it. Offsets match `.summary`'s own
-   `grid-template-columns: 400px 2px 1fr 280px`: the first line is pinned 400px from the LEFT
+   `grid-template-columns: 280px 2px 1fr 280px`: the first line is pinned 280px from the LEFT
    (that column's width never changes), the second is pinned 280px from the RIGHT (the stats
    rail's own width never changes either) — anchoring each line from the edge its column is fixed
    to is what keeps them aligned with the real grid even when `min(1620px, 100%)` falls back to
@@ -571,7 +571,7 @@
 .modal--wide {
     width: min(1620px, 100%);
     background:
-        linear-gradient(var(--steel), var(--steel)) no-repeat left 400px top 0 / 2px 100%,
+        linear-gradient(var(--steel), var(--steel)) no-repeat left 280px top 0 / 2px 100%,
         linear-gradient(var(--steel), var(--steel)) no-repeat right 296px top 0 / 2px 100%,
         var(--surface);
 }
@@ -659,7 +659,7 @@
     /* The divider is its own column so the dot can sit centred on it. The stats rail is a fourth,
        always-visible column rather than something the middle column swaps in — it's what the player
        is actually optimizing while working the slot grid next to it. */
-    grid-template-columns: 400px 2px 1fr 280px;
+    grid-template-columns: 280px 2px 1fr 280px;
     /* Fixed, not min — content-driven height is what used to make the whole modal visibly resize
        (and re-center, via the backdrop) as tabs changed what filled it. Everything that can outgrow
        this now scrolls internally instead (`.summary__right{overflow-y:auto}`). */
@@ -1130,7 +1130,7 @@
 
 /* --- Kit (Shop + Inventory, in the Mission UI's own three-column modal) ---- */
 /*
- * Kit mode reuses `.summary`'s grid wholesale (400px type rail, divider, flexible browse column,
+ * Kit mode reuses `.summary`'s grid wholesale (280px type rail, divider, flexible browse column,
  * 280px detail rail) so switching into it reads as the same modal changing what fills its columns,
  * not a different screen. The agent inventory rows a dragged item actually lands on live below the
  * modal, in `.roster--inventory` — not in here.
