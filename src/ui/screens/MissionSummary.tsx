@@ -347,16 +347,19 @@ function RewardSquares({ mission, tables }: { mission: LiveMission; tables: Game
     const reward = previewReward(tables, mission.data.outcomes?.[0]);
 
     return (
-        <div className="reward-squares">
-            <div className="reward-square">
-                <span className="reward-square__icon" aria-hidden="true">💰</span>
-                <span className="reward-square__value">
-                    {reward.money ? `$${reward.money.toLocaleString('en-US')}` : '—'}
-                </span>
-            </div>
-            <div className="reward-square">
-                <span className="reward-square__icon" aria-hidden="true">⭐</span>
-                <span className="reward-square__value">{reward.exp || '—'}</span>
+        <div className="reward-box">
+            <span className="reward-box__label">Rewards</span>
+            <div className="reward-squares">
+                <div className="reward-square">
+                    <span className="reward-square__icon" aria-hidden="true">💰</span>
+                    <span className="reward-square__value">
+                        {reward.money ? `$${reward.money.toLocaleString('en-US')}` : '—'}
+                    </span>
+                </div>
+                <div className="reward-square">
+                    <span className="reward-square__icon" aria-hidden="true">⭐</span>
+                    <span className="reward-square__value">{reward.exp || '—'}</span>
+                </div>
             </div>
         </div>
     );

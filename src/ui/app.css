@@ -924,9 +924,29 @@
 
 .marker-row__note { color: var(--cyan-dim); font-size: var(--fs-micro); letter-spacing: 0.08em; }
 
-/* Payment and exp, as a small square item list at the head of the stats rail — same visual family
-   as a UISharpInfoBox read-out, just square and compact enough for the rail's own width. */
-.reward-squares { display: flex; justify-content: center; gap: 8px; padding: 16px 16px 0; }
+/* The rounded frame around the reward squares, with its "Rewards" sign overlapping the top edge
+   like a legend tab — same square-item family as a UISharpInfoBox read-out, just boxed. */
+.reward-box {
+    position: relative;
+    margin: 20px 16px 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+}
+
+.reward-box__label {
+    position: absolute;
+    top: 0;
+    left: 16px;
+    transform: translateY(-50%);
+    padding: 2px 8px;
+    background: var(--surface);
+    color: var(--steel);
+    font-size: var(--fs-micro);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.reward-squares { display: flex; justify-content: center; gap: 8px; padding: 14px 8px 8px; }
 
 .reward-square {
     width: 72px;
