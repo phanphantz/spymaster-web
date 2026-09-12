@@ -10,6 +10,7 @@ import { createRng, randomSeed, type Rng } from '../engine/rng';
 import * as runtimeAgent from '../engine/runtimeAgent';
 import type { RuntimeAgent } from '../engine/runtimeAgent';
 import { describeReason } from '../engine/slotRequirementEvaluator';
+import { describeEquipFailure } from '../engine/shop';
 import { DOLLAR, type GameTables } from '../engine/types';
 
 /**
@@ -110,10 +111,11 @@ interface GameState {
     setAssignmentFailure: (message: string) => void;
 
     unassignAgent: (slotId: string) => void;
-    /** Returns everything one agent carries to stock, in one go — the slot itself has no room to
-     *  list items one at a time. */
+    /** Refunds everything one agent carries, in one go — the slot itself has no room to list items
+     *  one at a time. */
     discardCarriedItems: (characterId: string) => void;
-    purchaseItem: (itemId: string, qty?: number) => void;
+    /** Drag-and-drop entry point: charges the price and conjures the item onto the agent, or sets
+     *  assignmentFailure and leaves everything as it was. */
     assignItem: (characterId: string, itemId: string, qty?: number) => void;
     unassignItem: (characterId: string, itemId: string, qty?: number) => void;
     deployMission: () => void;
@@ -564,14 +566,23 @@ export const useGame = create<GameState>((set, get) => {
         set({ version: get().version + 1 });
     },
 
-    purchaseItem(itemId, qty = 1) {
-        get().session?.shop.purchase(itemId, qty);
-        set({ version: get().version + 1 });
-    },
-
     assignItem(characterId, itemId, qty = 1) {
-        get().session?.assignItem(characterId, itemId, qty);
-        set({ version: get().version + 1 });
+        const { session } = get();
+        if (!session) return;
+
+        if (session.remainingCapacity(characterId) < qty) {
+            set({ assignmentFailure: 'No room left to carry that' });
+            return;
+        }
+
+        const failure = session.shop.checkEquip(itemId, qty);
+        if (failure !== 'none') {
+            set({ assignmentFailure: describeEquipFailure(failure) });
+            return;
+        }
+
+        session.assignItem(characterId, itemId, qty);
+        set({ assignmentFailure: '', version: get().version + 1 });
     },
 
     unassignItem(characterId, itemId, qty = 1) {

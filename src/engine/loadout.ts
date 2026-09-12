@@ -18,9 +18,9 @@ import type { GameTables, SlotRequirementData } from './types';
  *
  * - **A Mission has no slot list of its own.** The slots are whatever its start Gate names, in
  *   authored order. Modelling them on the Mission diverges from the data model immediately.
- * - **Items are moved, not marked.** Assigning transfers stock out of the player's inventory into
- *   the agent's carried inventory, and unassigning, swapping or cancelling transfers it back — so an
- *   abandoned Loadout leaves nothing stranded.
+ * - **There is no owned stock.** Assigning an item charges its price straight out of the player's
+ *   money as the cost of preparing for the job, and conjures it onto the agent; unassigning,
+ *   swapping or cancelling refunds that charge — so an abandoned Loadout costs nothing.
  */
 
 export interface LoadoutSlot {
@@ -48,7 +48,7 @@ export class LoadoutSession {
         readonly mission: LiveMission,
         private readonly tables: GameTables,
         private readonly roster: readonly RuntimeAgent[],
-        private readonly inventory: Inventory,
+        inventory: Inventory,
         playerLevel: number,
     ) {
         const startGate = tables.Gate.get(mission.data.gateId);
@@ -158,17 +158,25 @@ export class LoadoutSession {
         return Math.max(0, runtimeAgent.inventorySize(agent) - this.carriedBy(characterId).total);
     }
 
-    /** Transfers stock out of the player's inventory. Refuses rather than over-filling a slot. */
+    /** Charges the item's price and conjures it onto the agent. Refuses rather than over-filling a slot. */
     assignItem(characterId: string, itemId: string, qty = 1): boolean {
         if (!this.slotOf(characterId)) return false;
         if (this.remainingCapacity(characterId) < qty) return false;
-        if (this.inventory.get(itemId) < qty) return false;
+        if (!this.shop.charge(itemId, qty)) return false;
 
-        return this.inventory.transferTo(this.carriedBy(characterId), itemId, qty) === qty;
+        this.carriedBy(characterId).add(itemId, qty);
+        return true;
     }
 
+    /** Removes up to `qty` and refunds their price — undoing an assignment costs nothing. */
     unassignItem(characterId: string, itemId: string, qty = 1): boolean {
-        return this.carriedBy(characterId).transferTo(this.inventory, itemId, qty) > 0;
+        const carried = this.carriedBy(characterId);
+        const moved = Math.min(qty, carried.get(itemId));
+        if (moved <= 0) return false;
+
+        carried.set(itemId, carried.get(itemId) - moved);
+        this.shop.refund(itemId, moved);
+        return true;
     }
 
     /** Mandatory slots still empty. Confirming is blocked while this is non-empty and nothing else. */
@@ -229,7 +237,12 @@ export class LoadoutSession {
         this.assigned.clear();
     }
 
+    /** Refunds everything this agent is carrying and empties it out. */
     private returnCarried(characterId: string): void {
-        this.carried.get(characterId)?.transferAllTo(this.inventory);
+        const carried = this.carried.get(characterId);
+        if (!carried) return;
+
+        for (const [itemId, qty] of carried.entries) this.shop.refund(itemId, qty);
+        this.carried.set(characterId, new Inventory());
     }
 }

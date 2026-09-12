@@ -541,6 +541,11 @@
     overflow-y: auto;
 }
 
+/* A confirm dialog always has to read as the topmost thing on screen, including above the pinned
+   roster strip (z-index 11) and above a Modal it was triggered from outside of — Kit mode's agent
+   strip sits above its own modal for exactly that reason, and Discard opens from there. */
+.backdrop--top { z-index: 15; }
+
 .modal {
     position: relative;
     width: min(720px, 100%);
@@ -1275,6 +1280,9 @@ button.equip-icon:hover { border-color: var(--danger); color: var(--danger); }
 
 .item-tile[aria-selected='true'] { border-color: var(--cyan); }
 .item-tile:hover:not([aria-selected='true']) { border-color: var(--cyan-dim); }
+/* Still draggable — the drop is what actually fails — this just hints it won't land before the
+   player tries. */
+.item-tile[aria-disabled='true'] { opacity: 0.5; }
 
 .item-tile__icon {
     align-self: flex-start;
@@ -1297,9 +1305,8 @@ button.equip-icon:hover { border-color: var(--danger); color: var(--danger); }
     text-overflow: ellipsis;
 }
 
-.item-tile__meta { display: flex; justify-content: space-between; font-size: var(--fs-micro); }
+.item-tile__meta { display: flex; font-size: var(--fs-micro); }
 .item-tile__price { color: var(--money); }
-.item-tile__owned { color: var(--steel); }
 
 /* The right rail while Kit mode has an item selected — same column `.summary__stats` uses for the
    team's combined stats, just showing one item's stats, description and Buy instead. */

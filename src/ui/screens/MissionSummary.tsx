@@ -150,8 +150,6 @@ export function MissionSummary(): ReactNode {
                                     <Emphasized text={mission.data.description} terms={keywordTerms} />
                                 </p>
                             ) : null}
-
-                            <MissionTasks mission={mission} tables={tables} />
                         </div>
 
                         {/* Pinned outside the scroll region, not squeezed by it — a long hint or
@@ -214,7 +212,7 @@ export function MissionSummary(): ReactNode {
             <ConfirmDialog
                 open={confirmingClose}
                 title="Close this loadout?"
-                message="Every assigned agent will be pulled off this job and anything they're carrying returned to stock. Nothing is lost — but you'll have to build the team again."
+                message="Every assigned agent will be pulled off this job and anything they're carrying is refunded. Nothing is lost — but you'll have to build the team again."
                 confirmLabel="Close"
                 danger
                 onConfirm={() => {
@@ -349,9 +347,10 @@ function RewardSquares({ mission, tables }: { mission: LiveMission; tables: Game
     );
 }
 
-/** Location name, address and coordinates, sitting under the photo's fade. */
+/** Location name, address and coordinates, sitting under the photo's fade.
+ *  The More/Less disclosure (type, size, state) is hidden for now — hidden, not removed, since the
+ *  fields it read are still authored and this is the one place they'd surface. */
 function LocationBlock({ mission }: { mission: LiveMission }): ReactNode {
-    const [expanded, setExpanded] = useState(false);
     const location = mission.location;
 
     return (
@@ -364,56 +363,6 @@ function LocationBlock({ mission }: { mission: LiveMission }): ReactNode {
                 {formatCoordinate(location?.latitude, 'N', 'S')}{' '}
                 {formatCoordinate(location?.longitude, 'E', 'W')}
             </span>
-
-            {expanded ? (
-                <span className="summary__location-detail dim">
-                    {[location?.type, location?.locationSize, location?.state]
-                        .filter(Boolean)
-                        .join(' · ') || 'No further detail on file'}
-                </span>
-            ) : null}
-
-            {/* UIMissionLink. There is no deeper location view in v1, so it discloses the rest of
-                what the Location row actually carries rather than pretending to navigate. */}
-            <button type="button" className="mission-link" onClick={() => setExpanded(!expanded)}>
-                {expanded ? '‹ Less' : 'More ›'}
-            </button>
-        </div>
-    );
-}
-
-/**
- * Tasks, in the scrollable briefing area above the team.
- *
- * The sketch puts a Task list here. v1 cuts Tasks, so the list renders whatever `starterTasks`
- * resolves to and says plainly when there is nothing — which is honest now and fills itself in
- * once Tasks are authored, rather than needing this rewritten.
- */
-function MissionTasks({ mission, tables }: { mission: LiveMission; tables: GameTables }): ReactNode {
-    const tasks = tables.Task.getMany(mission.data.starterTasks);
-
-    return (
-        <div>
-            <div className="summary__label">Tasks</div>
-            <div className="marker-list">
-                {tasks.length ? (
-                    tasks.map((task) => (
-                        <div className="marker-row" key={task.taskId}>
-                            <span className="marker" />
-                            <span>{task.displayName ?? task.taskId}</span>
-                            <span className="marker-row__note">
-                                {task.minDurationInHours ? `${task.minDurationInHours}h` : ''}
-                            </span>
-                        </div>
-                    ))
-                ) : (
-                    <div className="marker-row">
-                        <span className="marker" />
-                        <span className="dim">Single operation. Tasks are not modelled in this prototype.</span>
-                        <span />
-                    </div>
-                )}
-            </div>
         </div>
     );
 }

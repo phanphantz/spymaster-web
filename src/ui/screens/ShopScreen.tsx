@@ -1,10 +1,15 @@
 import { useState, type ReactNode } from 'react';
 import { useGame } from '../../store/gameStore';
-import { describePurchaseFailure } from '../../engine/shop';
+import { describeEquipFailure } from '../../engine/shop';
 import { StatAbbr, initials } from '../components/bits';
 import { STAT_IDS } from '../../engine/types';
 import type { GameTables, ItemData } from '../../engine/types';
 import type { LoadoutSession } from '../../engine/loadout';
+
+/** Not modelled in this prototype yet — no ammo economy, no attachment slots on a weapon. Hidden
+ *  from the type rail entirely rather than left to dead-end as an empty tab; an item that carries
+ *  one of these as a secondary type still shows under whichever other type it also has. */
+const HIDDEN_TYPES = new Set(['ammoMagazine', 'attachment']);
 
 /** camelCase id → Title Case label, for the subtype row — there's no vocabulary tab for these. */
 function humanize(id: string): string {
@@ -31,11 +36,13 @@ function describeEffects(item: ItemData): ReactNode {
 }
 
 /**
- * The Kit page: browse and buy the whole catalog, then drag what you own onto whoever's carrying it
- * — the agent inventory row below the modal (`WorldMapScreen`'s roster strip, switched into that
- * mode for as long as this is open). There is no one focused agent here the way the old per-agent
- * Shop had: any assigned teammate can receive a drop, so the catalog stays one shared browse instead
- * of a tab per agent.
+ * The Kit page: browse the whole catalog and drag any unlocked item straight onto whoever's meant
+ * to carry it — the agent inventory row below the modal (`WorldMapScreen`'s roster strip, switched
+ * into that mode for as long as this is open). There is no ownership step: every item listed is
+ * already unlocked, and dropping one onto an agent charges its price on the spot, as the cost of
+ * preparing for the job — undone (unassigned, swapped away, or the loadout cancelled) for a full
+ * refund. There is no one focused agent here the way the old per-agent Shop had: any assigned
+ * teammate can receive a drop, so the catalog stays one shared browse instead of a tab per agent.
  *
  * Mirrors the Mission UI's own three-column grid (`.summary`) so switching into Kit mode reads as
  * the same modal changing what fills its columns, not a different screen replacing it: type sits in
@@ -53,9 +60,7 @@ export function ShopScreen({
     onDone: () => void;
 }): ReactNode {
     useGame((state) => state.version);
-    const purchase = useGame((state) => state.purchaseItem);
 
-    const [failure, setFailure] = useState('');
     const [typeId, setTypeId] = useState<string>();
     const [subType, setSubType] = useState<string>();
     const [selectedItemId, setSelectedItemId] = useState<string>();
@@ -63,7 +68,9 @@ export function ShopScreen({
     const items = session.shop.availableItems();
 
     const presentTypes = new Set(items.flatMap((item) => item.type ?? []));
-    const types = tables.ItemType.rows.filter((row) => row.itemTypeId && presentTypes.has(row.itemTypeId));
+    const types = tables.ItemType.rows.filter(
+        (row) => row.itemTypeId && presentTypes.has(row.itemTypeId) && !HIDDEN_TYPES.has(row.itemTypeId),
+    );
     const activeType = typeId && presentTypes.has(typeId) ? typeId : types[0]?.itemTypeId;
 
     const itemsOfType = items.filter((item) => (item.type ?? []).includes(activeType ?? ''));
@@ -127,8 +134,8 @@ export function ShopScreen({
 
                 <div className="inv-grid">
                     {filtered.map((item) => {
-                        const owned = session.shop.ownedCount(item.itemId!);
                         const price = session.shop.priceOf(item.itemId!)?.qty ?? 0;
+                        const canEquip = session.shop.checkEquip(item.itemId!, 1) === 'none';
 
                         return (
                             <button
@@ -136,7 +143,8 @@ export function ShopScreen({
                                 key={item.itemId}
                                 className="item-tile"
                                 aria-selected={selectedItemId === item.itemId}
-                                draggable={owned > 0}
+                                aria-disabled={!canEquip}
+                                draggable
                                 onDragStart={(event) => {
                                     event.dataTransfer.setData('text/plain', JSON.stringify({ itemId: item.itemId }));
                                     event.dataTransfer.effectAllowed = 'copy';
@@ -149,7 +157,6 @@ export function ShopScreen({
                                 <span className="item-tile__name">{item.displayName ?? item.itemId}</span>
                                 <span className="item-tile__meta">
                                     <span className="item-tile__price">${price.toLocaleString('en-US')}</span>
-                                    <span className="item-tile__owned">owned {owned}</span>
                                 </span>
                             </button>
                         );
@@ -162,17 +169,8 @@ export function ShopScreen({
                 {selectedItem ? (
                     <ItemDetail
                         item={selectedItem}
-                        owned={session.shop.ownedCount(selectedItem.itemId!)}
                         price={session.shop.priceOf(selectedItem.itemId!)?.qty ?? 0}
-                        failure={failure}
-                        onBuy={() => {
-                            setFailure('');
-                            const result = session.shop.checkPurchase(selectedItem.itemId!, 1);
-                            if (result !== 'none') setFailure(describePurchaseFailure(result));
-                            else purchase(selectedItem.itemId!, 1);
-                        }}
-                        canBuy={session.shop.checkPurchase(selectedItem.itemId!, 1) === 'none'}
-                        buyDisabledReason={describePurchaseFailure(session.shop.checkPurchase(selectedItem.itemId!, 1))}
+                        equipDisabledReason={describeEquipFailure(session.shop.checkEquip(selectedItem.itemId!, 1))}
                     />
                 ) : (
                     <div className="inv-detail inv-detail--empty">
@@ -184,24 +182,17 @@ export function ShopScreen({
     );
 }
 
-/** The right rail while an item is selected — its stat swing, description, owned/price, and Buy.
- *  Equipping is drag-only, onto the agent inventory row below, so there is no Equip button here. */
+/** The right rail while an item is selected — its stat swing, description and preparation cost.
+ *  Equipping is drag-only, onto the agent inventory row below, so there is no button here — just
+ *  the cost, and why dragging it over would fail right now, if it would. */
 function ItemDetail({
     item,
-    owned,
     price,
-    failure,
-    canBuy,
-    buyDisabledReason,
-    onBuy,
+    equipDisabledReason,
 }: {
     item: ItemData;
-    owned: number;
     price: number;
-    failure: string;
-    canBuy: boolean;
-    buyDisabledReason: string;
-    onBuy: () => void;
+    equipDisabledReason: string;
 }): ReactNode {
     return (
         <div className="inv-detail">
@@ -214,20 +205,9 @@ function ItemDetail({
                 <hr className="summary__dashrule" />
                 <div className="inv-detail__row">
                     <span className="inv-detail__price">${price.toLocaleString('en-US')}</span>
-                    <span className="meta dim">owned {owned}</span>
+                    <span className="meta dim">cost of preparation</span>
                 </div>
-                {failure ? <div className="meta danger">{failure}</div> : null}
-                <div className="summary__actions summary__actions--right">
-                    <button
-                        type="button"
-                        className="btn btn--primary"
-                        disabled={!canBuy}
-                        title={canBuy ? undefined : buyDisabledReason}
-                        onClick={onBuy}
-                    >
-                        Buy
-                    </button>
-                </div>
+                {equipDisabledReason ? <div className="meta danger">{equipDisabledReason}</div> : null}
             </div>
         </div>
     );

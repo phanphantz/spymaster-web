@@ -218,7 +218,7 @@ export function WorldMapScreen(): ReactNode {
                 title="Discard all items?"
                 message={
                     discardTarget
-                        ? `Everything ${runtimeAgent.displayName(discardTarget)} is carrying returns to stock.`
+                        ? `Everything ${runtimeAgent.displayName(discardTarget)} is carrying is refunded.`
                         : undefined
                 }
                 confirmLabel="Discard"

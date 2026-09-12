@@ -531,20 +531,25 @@ describe('Shop', () => {
         expect(listed.some((item) => item.itemId === 'dollar')).toBe(false);
     });
 
-    it('buys all or nothing', () => {
-        expect(shop.purchase('toolPicklockSet', 1)).toBe('none');
-        expect(inventory.get('toolPicklockSet')).toBe(1);
+    it('charges all or nothing', () => {
+        expect(shop.charge('toolPicklockSet', 1)).toBe(true);
         expect(inventory.get('dollar')).toBe(600);
 
         // Two more would cost 800 and only 600 is left.
-        expect(shop.purchase('toolPicklockSet', 2)).toBe('cannotAfford');
-        expect(inventory.get('toolPicklockSet')).toBe(1);
+        expect(shop.charge('toolPicklockSet', 2)).toBe(false);
         expect(inventory.get('dollar')).toBe(600);
     });
 
+    it('refunds the price back', () => {
+        shop.charge('toolPicklockSet', 1);
+        shop.refund('toolPicklockSet', 1);
+
+        expect(inventory.get('dollar')).toBe(1000);
+    });
+
     it('reports failures in the documented order', () => {
-        expect(shop.checkPurchase('no_such_item')).toBe('unknownItem');
-        expect(shop.checkPurchase('dollar')).toBe('notInShop');
+        expect(shop.checkEquip('no_such_item')).toBe('unknownItem');
+        expect(shop.checkEquip('dollar')).toBe('notInShop');
 
         const highLevel = new Shop(
             makeTable('Item', [
@@ -553,26 +558,7 @@ describe('Shop', () => {
             inventory,
             1,
         );
-        expect(highLevel.checkPurchase('x')).toBe('playerLevelTooLow');
-    });
-
-    it('reads an unauthored maxOwnedCount of zero as unlimited, matching Unity', () => {
-        const items = makeTable('Item', [
-            { itemId: 'x', isInShop: true, priceItemId: 'dollar', priceItemQty: 1, maxOwnedCount: 0 },
-        ]);
-        const unlimited = new Shop(items, new Inventory([['dollar', 100]]), 1);
-
-        expect(unlimited.remainingAllowance('x')).toBe(Number.POSITIVE_INFINITY);
-    });
-
-    it('enforces a real ownership cap', () => {
-        const items = makeTable('Item', [
-            { itemId: 'x', isInShop: true, priceItemId: 'dollar', priceItemQty: 1, maxOwnedCount: 2 },
-        ]);
-        const capped = new Shop(items, new Inventory([['dollar', 100]]), 1);
-
-        expect(capped.purchase('x', 2)).toBe('none');
-        expect(capped.checkPurchase('x', 1)).toBe('ownedCountReached');
+        expect(highLevel.checkEquip('x')).toBe('playerLevelTooLow');
     });
 });
 
@@ -663,25 +649,24 @@ describe('Loadout', () => {
         expect(patch.reasons.some((reason) => reason.kind === 'stat')).toBe(true);
     });
 
-    it('moves items rather than marking them, and returns everything on cancel', async () => {
+    it('charges the price on assign and refunds it on cancel — there is no owned stock', async () => {
         const { tables, rng, inventory, roster } = await fixture();
         const mission = generateMission(
             tables.Mission.get('heist_vault')!, tables.Location, rng, 'heist_vault#1', 0,
         );
         const session = new LoadoutSession(mission, tables, roster, inventory, 1);
-
-        session.shop.purchase('toolPicklockSet', 1);
-        const afterPurchase = inventory.get('toolPicklockSet');
+        const before = inventory.get('dollar');
+        const price = session.shop.priceOf('toolPicklockSet')!.qty!;
 
         session.assignAgent('slot_stealth', 'agentNoire');
         session.assignItem('agentNoire', 'toolPicklockSet', 1);
 
-        // The stock actually left the pool.
-        expect(inventory.get('toolPicklockSet')).toBe(afterPurchase - 1);
+        // The price actually left the pool, and the item was conjured onto the agent.
+        expect(inventory.get('dollar')).toBe(before - price);
         expect(session.carriedBy('agentNoire').get('toolPicklockSet')).toBe(1);
 
         session.cancel();
-        expect(inventory.get('toolPicklockSet')).toBe(afterPurchase);
+        expect(inventory.get('dollar')).toBe(before);
     });
 
     it('returns a displaced agent’s items but keeps a moved agent’s', async () => {
@@ -690,7 +675,6 @@ describe('Loadout', () => {
             tables.Mission.get('deepwater_recovery')!, tables.Location, rng, 'deepwater#1', 0,
         );
         const session = new LoadoutSession(mission, tables, roster, inventory, 1);
-        session.shop.purchase('toolOxygenTank', 2);
 
         // Patch clears both of this mission's slots, so he can actually be moved between them.
         session.assignAgent('slot_any', 'agentPatch');
@@ -714,7 +698,6 @@ describe('Loadout', () => {
 
         session.assignAgent('slot_stealth', 'agentNoire');
         const capacity = runtimeAgent.inventorySize(roster[0]);
-        session.shop.purchase('toolFlashlight', capacity + 2);
 
         expect(session.assignItem('agentNoire', 'toolFlashlight', capacity)).toBe(true);
         expect(session.remainingCapacity('agentNoire')).toBe(0);
@@ -739,7 +722,6 @@ describe('deploying a mission', () => {
         // Gate's one item requirement.
         session.assignAgent('slot_stealth', 'agentNoire');
         session.assignAgent('slot_hacker', 'agentAngel');
-        session.shop.purchase('toolPicklockSet', 1);
         session.assignItem('agentNoire', 'toolPicklockSet', 1);
 
         const result = deploy({ session, tables, inventory, rng })!;
@@ -779,7 +761,6 @@ describe('deploying a mission', () => {
         const { tables, rng, inventory, session } = await heist(5);
         session.assignAgent('slot_stealth', 'agentNoire');
         session.assignAgent('slot_hacker', 'agentAngel');
-        session.shop.purchase('toolPicklockSet', 1);
         session.assignItem('agentNoire', 'toolPicklockSet', 1);
 
         const before = inventory.get('dollar');
@@ -794,7 +775,6 @@ describe('deploying a mission', () => {
         const { tables, rng, inventory, session } = await heist(5);
         session.assignAgent('slot_stealth', 'agentNoire');
         session.assignAgent('slot_hacker', 'agentAngel');
-        session.shop.purchase('toolPicklockSet', 1);
         session.assignItem('agentNoire', 'toolPicklockSet', 1);
 
         const result = deploy({ session, tables, inventory, rng })!;
@@ -821,7 +801,6 @@ describe('deploying a mission', () => {
             const { tables, rng, inventory, session } = await heist(99);
             session.assignAgent('slot_stealth', 'agentNoire');
             session.assignAgent('slot_hacker', 'agentAngel');
-            session.shop.purchase('toolPicklockSet', 1);
             session.assignItem('agentNoire', 'toolPicklockSet', 1);
             const result = deploy({ session, tables, inventory, rng })!;
             return { type: result.outcomeType, money: result.moneyEarned };

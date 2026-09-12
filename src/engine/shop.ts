@@ -2,21 +2,16 @@ import type { Inventory } from './container';
 import { DOLLAR, type ItemAmount, type ItemData, type Table } from './types';
 
 /**
- * The Shop, over the player's own inventory.
+ * The Shop, as a price list over the player's money.
  *
- * Port of `Assets/Scripts/Spymaster/Missions/Loadout/ShopModel.cs`.
- *
- * Money is an Item, so a purchase is a transfer inside one pool rather than a separate economy: an
- * item's price is itself an item id and a quantity, and in practice that id is always `dollar`.
+ * Port of `Assets/Scripts/Spymaster/Missions/Loadout/ShopModel.cs`, simplified: there is no owned
+ * stock any more. Every unlocked item (in the shop, at or under the player's level) can be equipped
+ * onto an agent straight from the catalog — the price is charged the moment it's assigned, as the
+ * cost of preparing for the job, and refunded if it's unassigned before deployment. Money is an
+ * Item, so that charge is a transfer inside the one inventory pool rather than a separate economy.
  */
 
-export type PurchaseFailure =
-    | 'none'
-    | 'unknownItem'
-    | 'notInShop'
-    | 'playerLevelTooLow'
-    | 'ownedCountReached'
-    | 'cannotAfford';
+export type EquipFailure = 'none' | 'unknownItem' | 'notInShop' | 'playerLevelTooLow' | 'cannotAfford';
 
 export class Shop {
     constructor(
@@ -38,33 +33,12 @@ export class Shop {
         return { itemId: item.priceItemId ?? DOLLAR, qty: (item.priceItemQty ?? 0) * qty };
     }
 
-    ownedCount(itemId: string): number {
-        return this.inventory.get(itemId);
-    }
-
-    /**
-     * How many more of this item the player may own.
-     *
-     * An unauthored `maxOwnedCount` of 0 reads as unlimited, exactly as -1 does. That is a quirk
-     * rather than a design choice, but changing it would make every unauthored item unbuyable, so
-     * the Unity behaviour is kept.
-     */
-    remainingAllowance(itemId: string): number {
-        const item = this.items.get(itemId);
-        if (!item) return 0;
-
-        const max = item.maxOwnedCount ?? 0;
-        if (max <= 0) return Number.POSITIVE_INFINITY;
-        return Math.max(0, max - this.ownedCount(itemId));
-    }
-
     /** Checks in the same order as Unity, so the reason shown to the player matches. */
-    checkPurchase(itemId: string, qty = 1): PurchaseFailure {
+    checkEquip(itemId: string, qty = 1): EquipFailure {
         const item = this.items.get(itemId);
         if (!item) return 'unknownItem';
         if (!item.isInShop) return 'notInShop';
         if ((item.minPlayerLevel ?? 0) > this.playerLevel) return 'playerLevelTooLow';
-        if (this.remainingAllowance(itemId) < qty) return 'ownedCountReached';
 
         const price = this.priceOf(itemId, qty);
         if (price && this.inventory.get(price.itemId ?? DOLLAR) < (price.qty ?? 0)) {
@@ -74,19 +48,23 @@ export class Shop {
         return 'none';
     }
 
-    /** All or nothing: the money leaves and the item arrives, or neither happens. */
-    purchase(itemId: string, qty = 1): PurchaseFailure {
-        const failure = this.checkPurchase(itemId, qty);
-        if (failure !== 'none') return failure;
+    /** Charges the price as preparation cost. The caller places the item; this only moves the money. */
+    charge(itemId: string, qty = 1): boolean {
+        if (this.checkEquip(itemId, qty) !== 'none') return false;
 
         const price = this.priceOf(itemId, qty)!;
         this.inventory.remove(price.itemId ?? DOLLAR, price.qty ?? 0);
-        this.inventory.add(itemId, qty);
-        return 'none';
+        return true;
+    }
+
+    /** Hands the price back — unassigning before deployment costs nothing. */
+    refund(itemId: string, qty = 1): void {
+        const price = this.priceOf(itemId, qty);
+        if (price) this.inventory.add(price.itemId ?? DOLLAR, price.qty ?? 0);
     }
 }
 
-export function describePurchaseFailure(failure: PurchaseFailure): string {
+export function describeEquipFailure(failure: EquipFailure): string {
     switch (failure) {
         case 'none':
             return '';
@@ -96,8 +74,6 @@ export function describePurchaseFailure(failure: PurchaseFailure): string {
             return 'Not for sale';
         case 'playerLevelTooLow':
             return 'Locked at your level';
-        case 'ownedCountReached':
-            return 'You already hold as many as you may';
         case 'cannotAfford':
             return 'Not enough money';
     }

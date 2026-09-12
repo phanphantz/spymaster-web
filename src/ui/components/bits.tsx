@@ -487,7 +487,12 @@ export function ConfirmDialog({
     if (!open) return null;
 
     return (
-        <div className="backdrop" onClick={onCancel} role="presentation">
+        // backdrop--top, not the plain z-index a Modal's own backdrop uses: a confirm dialog can be
+        // triggered from outside the Modal it's confirming something about (the Kit-mode agent
+        // strip's Discard, from WorldMapScreen, sits earlier in the DOM than the Kit modal it floats
+        // over) — same z-index there would have the still-open modal's later-painted backdrop bury
+        // this one rather than the reverse.
+        <div className="backdrop backdrop--top" onClick={onCancel} role="presentation">
             <div
                 className="confirm"
                 role="alertdialog"
