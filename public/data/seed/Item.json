@@ -1056,5 +1056,5070 @@
       "lethal",
       "loud"
     ]
+  },
+  {
+    "itemId": "toolVoiceRecorder",
+    "type": [
+      "tool"
+    ],
+    "isConcealed": "concealed",
+    "subType": "gadget",
+    "displayName": "Voice Recorder",
+    "_rarity": "common",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "toolUvFlashlight",
+    "type": [
+      "tool"
+    ],
+    "isConcealed": "concealed",
+    "subType": "gadget",
+    "displayName": "UV Flashlight",
+    "_rarity": "common",
+    "size": "small",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": true,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "toolFlare",
+    "type": [
+      "tool"
+    ],
+    "isConcealed": "concealed",
+    "subType": "gadget",
+    "displayName": "Flare",
+    "_rarity": "common",
+    "size": "small",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": true,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "toolGlowstick",
+    "type": [
+      "tool"
+    ],
+    "isConcealed": "concealed",
+    "subType": "gadget",
+    "displayName": "Glowstick",
+    "_rarity": "common",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": false,
+    "isWaterproof": false,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "toolScrewdriver",
+    "type": [
+      "tool"
+    ],
+    "isConcealed": "concealed",
+    "subType": "gadget",
+    "displayName": "Screwdriver",
+    "_rarity": "common",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": true,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "toolBuggingLighter",
+    "type": [
+      "tool"
+    ],
+    "isConcealed": "concealed",
+    "subType": "gadget",
+    "displayName": "Bugging Lighter",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "toolTrackingCoin",
+    "type": [
+      "tool"
+    ],
+    "isConcealed": "concealed",
+    "subType": "gadget",
+    "displayName": "Tracking Coin",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "toolDirectionalMicrophone",
+    "type": [
+      "tool"
+    ],
+    "isConcealed": "concealed",
+    "subType": "gadget",
+    "displayName": "Directional Microphone",
+    "_rarity": "medium",
+    "size": "small",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "toolCameraButton",
+    "type": [
+      "tool"
+    ],
+    "isConcealed": "concealed",
+    "subType": "gadget",
+    "displayName": "Camera Button",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "toolMovementDetector",
+    "type": [
+      "tool"
+    ],
+    "isConcealed": "concealed",
+    "subType": "gadget",
+    "displayName": "Movement Detector",
+    "_rarity": "medium",
+    "size": "small",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "toolToolkitSuitcase",
+    "type": [
+      "tool"
+    ],
+    "isConcealed": "concealed",
+    "subType": "gadget",
+    "displayName": "Toolkit Suitcase",
+    "_rarity": "medium",
+    "size": "bulky",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": true,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "toolSnakeCamera",
+    "type": [
+      "tool"
+    ],
+    "isConcealed": "concealed",
+    "subType": "gadget",
+    "displayName": "Snake Camera",
+    "_rarity": "rare",
+    "size": "small",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "toolArdenaline",
+    "type": [
+      "tool"
+    ],
+    "isConcealed": "canHide",
+    "subType": "substance",
+    "displayName": "Ardenaline",
+    "_rarity": "common",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "minPlayerLevel": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "toolPepperSpray",
+    "type": [
+      "tool"
+    ],
+    "isConcealed": "concealed",
+    "subType": "substance",
+    "displayName": "Pepper Spray",
+    "_rarity": "common",
+    "size": "tiny",
+    "_lethalLevel": "nonLethal",
+    "isDetectedByScanner": false,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "toolAntidote",
+    "type": [
+      "tool"
+    ],
+    "isConcealed": "canHide",
+    "subType": "substance",
+    "displayName": "Antidote",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "minPlayerLevel": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "toolPoisonSyringe",
+    "type": [
+      "tool"
+    ],
+    "isConcealed": "canHide",
+    "subType": "substance",
+    "displayName": "Poison Syringe",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "toolSeductiveSyringe",
+    "type": [
+      "tool"
+    ],
+    "isConcealed": "canHide",
+    "subType": "substance",
+    "displayName": "Seductive Syringe",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "nonLethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "toolVaccine",
+    "type": [
+      "tool"
+    ],
+    "isConcealed": "canHide",
+    "subType": "substance",
+    "displayName": "Vaccine",
+    "_rarity": "rare",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "minPlayerLevel": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "toolNanoTrackerPill",
+    "type": [
+      "tool"
+    ],
+    "isConcealed": "canHide",
+    "subType": "substance",
+    "displayName": "NanoTrackerPill",
+    "_rarity": "rare",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "minPlayerLevel": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "toolParagliderBackpack",
+    "type": [
+      "tool"
+    ],
+    "isConcealed": "canHide",
+    "subType": "gear",
+    "displayName": "Paraglider Backpack",
+    "_rarity": "rare",
+    "size": "bulky",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "toolDrivingLicense",
+    "type": [
+      "tool"
+    ],
+    "isConcealed": "concealed",
+    "subType": "document",
+    "displayName": "Driving License",
+    "_rarity": "common",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": false,
+    "isWaterproof": true,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "melMachete",
+    "type": [
+      "closeRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "sharpWeapon",
+    "displayName": "Machete",
+    "_rarity": "common",
+    "size": "medium",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": true,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "melKnife",
+    "type": [
+      "closeRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "sharpWeapon",
+    "displayName": "Knife",
+    "_rarity": "common",
+    "size": "small",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": true,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "melTacticalHatchet",
+    "type": [
+      "closeRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "sharpWeapon",
+    "displayName": "Tactical Hatchet",
+    "_rarity": "medium",
+    "size": "medium",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": true,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "melSpear",
+    "type": [
+      "closeRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "sharpWeapon",
+    "displayName": "Spear",
+    "_rarity": "medium",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": true,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "melKnifeOnChain",
+    "type": [
+      "closeRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "sharpWeapon",
+    "displayName": "Knife on Chain",
+    "_rarity": "medium",
+    "size": "small",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": true,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "melKnifeInShoes",
+    "type": [
+      "closeRangeWeapon"
+    ],
+    "isConcealed": "concealed",
+    "subType": "sharpWeapon",
+    "displayName": "Knife in Shoes",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "melSpringKnife",
+    "type": [
+      "closeRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "sharpWeapon",
+    "displayName": "Spring Knife",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": true,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "melShuriken",
+    "type": [
+      "closeRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "sharpWeapon",
+    "displayName": "Shuriken",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": true,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "melBallisticKnife",
+    "type": [
+      "closeRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "sharpWeapon",
+    "displayName": "Ballistic Knife",
+    "_rarity": "rare",
+    "size": "small",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": true,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "melCaneSword",
+    "type": [
+      "closeRangeWeapon"
+    ],
+    "isConcealed": "concealed",
+    "subType": "sharpWeapon",
+    "displayName": "Cane Sword",
+    "_rarity": "rare",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": true,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "melShortSword",
+    "type": [
+      "closeRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "sharpWeapon",
+    "displayName": "Short Sword",
+    "_rarity": "rare",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": true,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "melHiddenBlade",
+    "type": [
+      "closeRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "sharpWeapon",
+    "displayName": "Hidden Blade",
+    "_rarity": "superRare",
+    "size": "small",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": true,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "melTwoPartStick",
+    "type": [
+      "closeRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "bluntWeapon",
+    "displayName": "Two-Part Stick",
+    "_rarity": "common",
+    "size": "medium",
+    "_lethalLevel": "flexible",
+    "isDetectedByScanner": true,
+    "isWaterproof": true,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "melBaseballBat",
+    "type": [
+      "closeRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "bluntWeapon",
+    "displayName": "Baseball Bat",
+    "_rarity": "common",
+    "size": "large",
+    "_lethalLevel": "flexible",
+    "isDetectedByScanner": true,
+    "isWaterproof": true,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "melHammer",
+    "type": [
+      "closeRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "bluntWeapon",
+    "displayName": "Hammer",
+    "_rarity": "common",
+    "size": "medium",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": true,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "melWrench",
+    "type": [
+      "closeRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "bluntWeapon",
+    "displayName": "Wrench",
+    "_rarity": "common",
+    "size": "medium",
+    "_lethalLevel": "flexible",
+    "isDetectedByScanner": true,
+    "isWaterproof": true,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "melThrowingStick",
+    "type": [
+      "closeRangeWeapon"
+    ],
+    "isConcealed": "concealed",
+    "subType": "bluntWeapon",
+    "displayName": "Throwing Stick",
+    "_rarity": "common",
+    "size": "small",
+    "_lethalLevel": "nonLethal",
+    "isDetectedByScanner": false,
+    "isWaterproof": true,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "melShield",
+    "type": [
+      "closeRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "bluntWeapon",
+    "displayName": "Shield",
+    "_rarity": "medium",
+    "size": "large",
+    "_lethalLevel": "nonLethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": true,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "melBrassKnuckles",
+    "type": [
+      "closeRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "fist",
+    "displayName": "Brass Knuckles",
+    "_rarity": "common",
+    "size": "small",
+    "_lethalLevel": "nonLethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": true,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "melTonfa",
+    "type": [
+      "closeRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "fist",
+    "displayName": "Tonfa",
+    "_rarity": "common",
+    "size": "medium",
+    "_lethalLevel": "nonLethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": true,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "melPoisonRing",
+    "type": [
+      "closeRangeWeapon"
+    ],
+    "isConcealed": "concealed",
+    "subType": "fist",
+    "displayName": "Poison Ring",
+    "_rarity": "rare",
+    "size": "tiny",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": true,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "melWolverineClaws",
+    "type": [
+      "closeRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "fist",
+    "displayName": "Wolverine Claws",
+    "_rarity": "superRare",
+    "size": "small",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": true,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunBeretta92fs",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "handgun",
+    "displayName": "Beretta 92FS",
+    "_rarity": "common",
+    "size": "small",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag9x19mm",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunCz75",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "handgun",
+    "displayName": "CZ 75",
+    "_rarity": "common",
+    "size": "small",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag9x19mm",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunGlock26",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "handgun",
+    "displayName": "Glock 26",
+    "_rarity": "common",
+    "size": "small",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag9x19mm",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunSwMpShield",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "handgun",
+    "displayName": "S&W M&P Shield",
+    "_rarity": "common",
+    "size": "small",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag9x19mm",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunRugerLcp",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "handgun",
+    "displayName": "Ruger LCP",
+    "_rarity": "common",
+    "size": "small",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag380Acp",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunColtMustang",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "handgun",
+    "displayName": "Colt Mustang",
+    "_rarity": "common",
+    "size": "small",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag380Acp",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunKelTecP3at",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "handgun",
+    "displayName": "Kel-Tec P3AT",
+    "_rarity": "common",
+    "size": "small",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag380Acp",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunKimberMicro9",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "handgun",
+    "displayName": "Kimber Micro 9",
+    "_rarity": "common",
+    "size": "small",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag9x19mm",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunGlock18",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "handgun",
+    "displayName": "Glock 18",
+    "_rarity": "medium",
+    "size": "small",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag9x19mm",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunSigSauerP226",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "handgun",
+    "displayName": "SIG Sauer P226",
+    "_rarity": "medium",
+    "size": "small",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag9x19mm",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunHkUsp",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "handgun",
+    "displayName": "H&K USP",
+    "_rarity": "medium",
+    "size": "small",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag9x19mm",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunFnFiveSeven",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "handgun",
+    "displayName": "FN Five-seveN",
+    "_rarity": "medium",
+    "size": "small",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag57x28mm",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunGlock34",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "handgun",
+    "displayName": "Glock 34",
+    "_rarity": "medium",
+    "size": "small",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag9x19mm",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunHecklerKochP30",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "handgun",
+    "displayName": "Heckler & Koch P30",
+    "_rarity": "medium",
+    "size": "small",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag9x19mm",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunKimberWarrior",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "handgun",
+    "displayName": "Kimber Warrior",
+    "_rarity": "medium",
+    "size": "small",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag45Acp",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunHecklerKochUspCompact",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "handgun",
+    "displayName": "Heckler & Koch USP Compact",
+    "_rarity": "medium",
+    "size": "small",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag9x19mm",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunSti2011CombatMaster",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "handgun",
+    "displayName": "STI 2011 Combat Master",
+    "_rarity": "rare",
+    "size": "small",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag9x19mm",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunColtSingleActionArmy",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "revolver",
+    "displayName": "Colt Single Action Army",
+    "_rarity": "common",
+    "size": "small",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag45Colt",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunColtPython",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "revolver",
+    "displayName": "Colt Python",
+    "_rarity": "medium",
+    "size": "small",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag357Magnum",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunSwModel29",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "revolver",
+    "displayName": "S&W Model 29",
+    "_rarity": "medium",
+    "size": "small",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag44Magnum",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunSmithWessonModel27",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "revolver",
+    "displayName": "Smith & Wesson Model 27",
+    "_rarity": "medium",
+    "size": "small",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag357Magnum",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunSmithWessonModel686",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "revolver",
+    "displayName": "Smith & Wesson Model 686",
+    "_rarity": "medium",
+    "size": "small",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag357Magnum",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunChiappaRhino",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "revolver",
+    "displayName": "Chiappa Rhino",
+    "_rarity": "rare",
+    "size": "small",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag357Magnum",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunSwModel500",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "revolver",
+    "displayName": "S&W Model 500",
+    "_rarity": "rare",
+    "size": "medium",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag500SwMagnum",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunUzi",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "submachineGun",
+    "displayName": "Uzi",
+    "_rarity": "common",
+    "size": "medium",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag9x19mm",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunMac10",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "submachineGun",
+    "displayName": "MAC-10",
+    "_rarity": "common",
+    "size": "medium",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag45Acp",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunUmp45",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "submachineGun",
+    "displayName": "UMP45",
+    "_rarity": "common",
+    "size": "medium",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag45Acp",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunP90",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "submachineGun",
+    "displayName": "P90",
+    "_rarity": "medium",
+    "size": "medium",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag57x28mm",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunPp19Bizon",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "submachineGun",
+    "displayName": "PP-19 Bizon",
+    "_rarity": "medium",
+    "size": "medium",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag9x18mm",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunScorpionEvo3",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "submachineGun",
+    "displayName": "Scorpion EVO 3",
+    "_rarity": "medium",
+    "size": "medium",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag9x19mm",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunHecklerKochMpx",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "submachineGun",
+    "displayName": "Heckler & Koch MPX",
+    "_rarity": "medium",
+    "size": "medium",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag9x19mm",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunThompsonM1928",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "submachineGun",
+    "displayName": "Thompson M1928",
+    "_rarity": "rare",
+    "size": "medium",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag45Acp",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunSigSauerMpxCopperhead",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "submachineGun",
+    "displayName": "SIG Sauer MPX Copperhead",
+    "_rarity": "rare",
+    "size": "medium",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag9x19mm",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunRemington870",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "shotgun",
+    "displayName": "Remington 870",
+    "_rarity": "common",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag12Gauge",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunMossberg500",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "shotgun",
+    "displayName": "Mossberg 500",
+    "_rarity": "common",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag12Gauge",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunWinchester1887",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "shotgun",
+    "displayName": "Winchester 1887",
+    "_rarity": "common",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag12Gauge",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunIthaca37",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "shotgun",
+    "displayName": "Ithaca 37",
+    "_rarity": "common",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag12Gauge",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunSpas12",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "shotgun",
+    "displayName": "SPAS-12",
+    "_rarity": "medium",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag12Gauge",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunM1014",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "shotgun",
+    "displayName": "M1014",
+    "_rarity": "medium",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag12Gauge",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunSaiga12",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "shotgun",
+    "displayName": "Saiga-12",
+    "_rarity": "medium",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag12Gauge",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunBenelliM2",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "shotgun",
+    "displayName": "Benelli M2",
+    "_rarity": "medium",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag12Gauge",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunAa12",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "shotgun",
+    "displayName": "AA-12",
+    "_rarity": "rare",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag12Gauge",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunStrikerStreetsweeper",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "shotgun",
+    "displayName": "Striker / Streetsweeper",
+    "_rarity": "rare",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag12Gauge",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunKelTecKsg",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "shotgun",
+    "displayName": "Kel-Tec KSG",
+    "_rarity": "rare",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag12Gauge",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gun2011ShotgunSetup",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "shotgun",
+    "displayName": "2011 Shotgun-style setup",
+    "_rarity": "rare",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag12Gauge",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunAk47",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "assaultRifle",
+    "displayName": "AK-47",
+    "_rarity": "common",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag762x39mm",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunM4a1",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "assaultRifle",
+    "displayName": "M4A1",
+    "_rarity": "common",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag556x45Nato",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunM16",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "assaultRifle",
+    "displayName": "M16",
+    "_rarity": "common",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag556x45Nato",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunScarL",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "assaultRifle",
+    "displayName": "SCAR-L",
+    "_rarity": "medium",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag556x45Nato",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunScarH",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "assaultRifle",
+    "displayName": "SCAR-H",
+    "_rarity": "medium",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag762x51Nato",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunAug",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "assaultRifle",
+    "displayName": "AUG",
+    "_rarity": "medium",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag556x45Nato",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunFamas",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "assaultRifle",
+    "displayName": "FAMAS",
+    "_rarity": "medium",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag556x45Nato",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunG36c",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "assaultRifle",
+    "displayName": "G36C",
+    "_rarity": "medium",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag556x45Nato",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunFnFal",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "assaultRifle",
+    "displayName": "FN FAL",
+    "_rarity": "medium",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag762x51Nato",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunGalil",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "assaultRifle",
+    "displayName": "Galil",
+    "_rarity": "medium",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag556x45Nato",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunTar21",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "assaultRifle",
+    "displayName": "TAR-21",
+    "_rarity": "medium",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag556x45Nato",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunAk74",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "assaultRifle",
+    "displayName": "AK-74",
+    "_rarity": "medium",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag545x39mm",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunG3",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "assaultRifle",
+    "displayName": "G3",
+    "_rarity": "medium",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag762x51Nato",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunQbz95",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "assaultRifle",
+    "displayName": "QBZ-95",
+    "_rarity": "medium",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag58x42mm",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunM14",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "assaultRifle",
+    "displayName": "M14",
+    "_rarity": "medium",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag762x51Nato",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunHkG3",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "assaultRifle",
+    "displayName": "HK G3",
+    "_rarity": "medium",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag762x51Nato",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunCqbStyleAr",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "assaultRifle",
+    "displayName": "CQB-style AR",
+    "_rarity": "medium",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag556x45Nato",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunAr15",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "assaultRifle",
+    "displayName": "AR-15",
+    "_rarity": "medium",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag556x45Nato",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunSigMpx",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "assaultRifle",
+    "displayName": "SIG MPX",
+    "_rarity": "medium",
+    "size": "medium",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag9x19mm",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunM4StyleCarbine",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "assaultRifle",
+    "displayName": "M4-style Carbine",
+    "_rarity": "medium",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag556x45Nato",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunHk416",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "assaultRifle",
+    "displayName": "HK416",
+    "_rarity": "rare",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag556x45Nato",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunAn94",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "assaultRifle",
+    "displayName": "AN-94",
+    "_rarity": "rare",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag545x39mm",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunAsVal",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "assaultRifle",
+    "displayName": "AS VAL",
+    "_rarity": "rare",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag9x39mm",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunGroza",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "assaultRifle",
+    "displayName": "Groza",
+    "_rarity": "rare",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag762x39mm",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunSigSauerMcx",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "assaultRifle",
+    "displayName": "SIG Sauer MCX",
+    "_rarity": "rare",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag556x45Nato",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunTr1",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "assaultRifle",
+    "displayName": "TR-1",
+    "_rarity": "rare",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag556x45Nato",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunTr1Ultralight",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "assaultRifle",
+    "displayName": "TR-1 Ultralight",
+    "_rarity": "rare",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag556x45Nato",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunMosinNagant",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "sniperRifle",
+    "displayName": "Mosin-Nagant",
+    "_rarity": "common",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag762x54mmr",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunRemington700",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "sniperRifle",
+    "displayName": "Remington 700",
+    "_rarity": "medium",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag762x51mm",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunDragunovSvd",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "sniperRifle",
+    "displayName": "Dragunov SVD",
+    "_rarity": "medium",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag762x54mmr",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunL96a1",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "sniperRifle",
+    "displayName": "L96A1",
+    "_rarity": "medium",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag762x51Nato",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunM24",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "sniperRifle",
+    "displayName": "M24",
+    "_rarity": "medium",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag762x51Nato",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunKar98k",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "sniperRifle",
+    "displayName": "Kar98k",
+    "_rarity": "medium",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag792x57Mauser",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunAwp",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "sniperRifle",
+    "displayName": "AWP",
+    "_rarity": "rare",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag762x51Nato",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunIntervention",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "sniperRifle",
+    "displayName": "Intervention",
+    "_rarity": "rare",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag408CheyTac",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunDtaStealthReconScout",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "sniperRifle",
+    "displayName": "DTA Stealth Recon Scout",
+    "_rarity": "rare",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag308Win",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunTr1Dmr",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "sniperRifle",
+    "displayName": "TR-1",
+    "_rarity": "rare",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag556x45Nato",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunBarrettM82",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "sniperRifle",
+    "displayName": "Barrett M82",
+    "_rarity": "superRare",
+    "size": "bulky",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag50Bmg",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunDsr50",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "sniperRifle",
+    "displayName": "DSR-50",
+    "_rarity": "superRare",
+    "size": "bulky",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag50Bmg",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunPkm",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "heavyMachineGun",
+    "displayName": "PKM",
+    "_rarity": "medium",
+    "size": "bulky",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag762x54mmr",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunM60",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "heavyMachineGun",
+    "displayName": "M60",
+    "_rarity": "medium",
+    "size": "bulky",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag762x51Nato",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunDshk",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "heavyMachineGun",
+    "displayName": "DShK",
+    "_rarity": "rare",
+    "size": "bulky",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag127x108mm",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunM240",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "heavyMachineGun",
+    "displayName": "M240",
+    "_rarity": "rare",
+    "size": "bulky",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag762x51Nato",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunMg3",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "heavyMachineGun",
+    "displayName": "MG3",
+    "_rarity": "rare",
+    "size": "bulky",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag762x51Nato",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunNsv",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "heavyMachineGun",
+    "displayName": "NSV",
+    "_rarity": "rare",
+    "size": "bulky",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag127x108mm",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunM2Browning",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "heavyMachineGun",
+    "displayName": "M2 Browning",
+    "_rarity": "superRare",
+    "size": "bulky",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag50Bmg",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunKpv",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "heavyMachineGun",
+    "displayName": "KPV",
+    "_rarity": "superRare",
+    "size": "bulky",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag145x114mm",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunFlareGun",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "launcher",
+    "displayName": "Flare Gun",
+    "_rarity": "common",
+    "size": "small",
+    "_lethalLevel": "nonLethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "toolFlare",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunM72Law",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "launcher",
+    "displayName": "M72 LAW",
+    "_rarity": "medium",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag66mmRocket",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunAt4",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "launcher",
+    "displayName": "AT4",
+    "_rarity": "medium",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "magAt484mmRocket",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunM203GrenadeLauncher",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "launcher",
+    "displayName": "M203 Grenade Launcher",
+    "_rarity": "medium",
+    "size": "medium",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag40mmGrenade",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunTranquilizerPistol",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "launcher",
+    "displayName": "Tranquilizer Pistol",
+    "_rarity": "medium",
+    "size": "small",
+    "_lethalLevel": "nonLethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "magTranquilizerDart",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunHarpoonGun",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "launcher",
+    "displayName": "Harpoon Gun",
+    "_rarity": "medium",
+    "size": "medium",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": true,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "magHarpoonBolt",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunNetGun",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "launcher",
+    "displayName": "Net Gun",
+    "_rarity": "medium",
+    "size": "medium",
+    "_lethalLevel": "nonLethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "magNetCapsule",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunRpg7",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "launcher",
+    "displayName": "RPG-7",
+    "_rarity": "rare",
+    "size": "bulky",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "magPg7Rocket",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunCarlGustafM4",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "launcher",
+    "displayName": "Carl Gustaf M4",
+    "_rarity": "rare",
+    "size": "bulky",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag84mmRecoillessRound",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunPanzerfaust3",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "launcher",
+    "displayName": "Panzerfaust 3",
+    "_rarity": "rare",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag110mmWarhead",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunM32Mgl",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "launcher",
+    "displayName": "M32 MGL",
+    "_rarity": "rare",
+    "size": "bulky",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag40mmGrenade",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunFgm148Javelin",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "launcher",
+    "displayName": "FGM-148 Javelin",
+    "_rarity": "superRare",
+    "size": "bulky",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "magJavelinMissile",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunTaser",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "canHide",
+    "subType": "rangedOther",
+    "displayName": "Taser",
+    "_rarity": "common",
+    "size": "small",
+    "_lethalLevel": "nonLethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "magTaserCartridge",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunLongbow",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "rangedOther",
+    "displayName": "Longbow",
+    "_rarity": "medium",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "consumeItemId": "magArrow",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunCrossbow",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "rangedOther",
+    "displayName": "Crossbow",
+    "_rarity": "medium",
+    "size": "large",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "magArrow",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunBriefcaseSubmachineGun",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "concealed",
+    "subType": "rangedOther",
+    "displayName": "Briefcase Submachine Gun",
+    "_rarity": "rare",
+    "size": "bulky",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "consumeItemId": "mag9x19mm",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunPoisonDartWatch",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "concealed",
+    "subType": "rangedOther",
+    "displayName": "Poison Dart Watch",
+    "_rarity": "rare",
+    "size": "tiny",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "consumeItemId": "magPoisonDart",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunFlamethrower",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "visible",
+    "subType": "rangedOther",
+    "displayName": "Flamethrower",
+    "_rarity": "rare",
+    "size": "bulky",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "magFuelCanister",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunLipstickPistol",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "concealed",
+    "subType": "rangedOther",
+    "displayName": "Lipstick Pistol",
+    "_rarity": "superRare",
+    "size": "tiny",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "consumeItemId": "mag22Lr",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "gunCameraGun",
+    "type": [
+      "longRangeWeapon"
+    ],
+    "isConcealed": "concealed",
+    "subType": "rangedOther",
+    "displayName": "Camera Gun",
+    "_rarity": "superRare",
+    "size": "tiny",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "consumeItemId": "mag22Lr",
+    "consumeItemQty": 1,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "mag9x19mm",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": "9×19mm Mag",
+    "_rarity": "common",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 30,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "mag45Acp",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": ".45 ACP Mag",
+    "_rarity": "common",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 16,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "mag32Acp",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": ".32 ACP Mag",
+    "_rarity": "common",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 16,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "mag380Acp",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": ".380 ACP Mag",
+    "_rarity": "common",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 14,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "mag9x18mm",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": "9×18mm Mag",
+    "_rarity": "common",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 16,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "mag762x39mm",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": "7.62×39mm Mag",
+    "_rarity": "common",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 60,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "mag556x45Nato",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": "5.56×45mm NATO Mag",
+    "_rarity": "common",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 60,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "mag762x51Nato",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": "7.62×51mm NATO Mag",
+    "_rarity": "common",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 40,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "mag545x39mm",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": "5.45×39mm Mag",
+    "_rarity": "common",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 60,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "mag12Gauge",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": "12 gauge Mag",
+    "_rarity": "common",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 16,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "magArrow",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": "Arrow",
+    "_rarity": "common",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "mag22Lr",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": ".22 LR Mag",
+    "_rarity": "common",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 10,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "mag50Ae",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": ".50 AE Mag",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 14,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "mag57x28mm",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": "5.7×28mm Mag",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 40,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "mag357Magnum",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": ".357 Magnum Mag",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 12,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "mag44Magnum",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": ".44 Magnum Mag",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 12,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "mag45Colt",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": ".45 Colt Mag",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 12,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "mag46x30mm",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": "4.6×30mm Mag",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 40,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "mag9x39mm",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": "9×39mm Mag",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 20,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "mag58x42mm",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": "5.8×42mm Mag",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 60,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "mag762x51mm",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": "7.62×51mm Mag",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 40,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "mag762x54mmr",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": "7.62×54mmR Mag",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 20,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "mag792x57Mauser",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": "7.92×57mm Mauser Mag",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 10,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "mag308Win",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": ".308 Win Mag",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 20,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "magTranquilizerDart",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": "Tranquilizer Dart",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "magHarpoonBolt",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": "Harpoon Bolt",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "magNetCapsule",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": "Net Capsule",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "magTaserCartridge",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": "Taser Cartridge",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "magFuelCanister",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": "Fuel Canister",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 20,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "mag66mmRocket",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": "66mm Rocket",
+    "_rarity": "medium",
+    "size": "small",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "magAt484mmRocket",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": "AT4 84mm Rocket",
+    "_rarity": "medium",
+    "size": "small",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "mag40mmGrenade",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": "40mm Grenade",
+    "_rarity": "medium",
+    "size": "small",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "mag500SwMagnum",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": ".500 S&W Magnum Mag",
+    "_rarity": "rare",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 10,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "mag50Bmg",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": ".50 BMG Mag",
+    "_rarity": "rare",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 20,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "mag408CheyTac",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": ".408 CheyTac Mag",
+    "_rarity": "rare",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 10,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "mag127x108mm",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": "12.7×108mm Mag",
+    "_rarity": "rare",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 50,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "mag145x114mm",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": "14.5×114mm Mag",
+    "_rarity": "rare",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 40,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "magPoisonDart",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": "Poison Dart",
+    "_rarity": "rare",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "magPg7Rocket",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": "PG-7 Rocket",
+    "_rarity": "rare",
+    "size": "small",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "mag84mmRecoillessRound",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": "84mm Recoilless Round",
+    "_rarity": "rare",
+    "size": "small",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "mag110mmWarhead",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": "110mm Warhead",
+    "_rarity": "rare",
+    "size": "small",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "magJavelinMissile",
+    "type": [
+      "ammoMagazine"
+    ],
+    "isConcealed": "canHide",
+    "displayName": "Javelin Missile",
+    "_rarity": "superRare",
+    "size": "small",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attEoTechExps3",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "scope",
+    "displayName": "EOTech EXPS3",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attVortexViperPst",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "scope",
+    "displayName": "Vortex Viper PST",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attAimpointCompM5",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "scope",
+    "displayName": "Aimpoint CompM5",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attAcogTa31",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "scope",
+    "displayName": "ACOG TA31",
+    "_rarity": "rare",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attLeupoldMark5hd",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "scope",
+    "displayName": "Leupold Mark 5HD",
+    "_rarity": "rare",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attNightforceAtacr",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "scope",
+    "displayName": "Nightforce ATACR",
+    "_rarity": "rare",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attTrijiconVcog",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "scope",
+    "displayName": "Trijicon VCOG",
+    "_rarity": "rare",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attAacM42000",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "suppressor",
+    "displayName": "AAC M4-2000",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attGemtechHalo",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "suppressor",
+    "displayName": "Gemtech Halo",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attRuggedObsidian9",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "suppressor",
+    "displayName": "Rugged Obsidian9",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attSureFireSocom556",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "suppressor",
+    "displayName": "SureFire SOCOM556",
+    "_rarity": "rare",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attDeadAirSandmanS",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "suppressor",
+    "displayName": "Dead Air Sandman-S",
+    "_rarity": "rare",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attSilencerCoOmega300",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "suppressor",
+    "displayName": "SilencerCo Omega 300",
+    "_rarity": "rare",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attGriffinOptimus",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "suppressor",
+    "displayName": "Griffin Optimus",
+    "_rarity": "rare",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attSilencerCoOsprey45",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "silencer",
+    "displayName": "SilencerCo Osprey 45",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attAacEvolution9",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "silencer",
+    "displayName": "AAC Evolution 9",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attGemtechLunar9",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "silencer",
+    "displayName": "Gemtech Lunar 9",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attDeadAirGhostM",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "silencer",
+    "displayName": "Dead Air Ghost-M",
+    "_rarity": "rare",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attGriffinBushwhacker",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "silencer",
+    "displayName": "Griffin Bushwhacker",
+    "_rarity": "rare",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attBtRotexV",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "silencer",
+    "displayName": "B&T Rotex-V",
+    "_rarity": "rare",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attLaserMaxUniMax",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "laserSight",
+    "displayName": "LaserMax Uni-Max",
+    "_rarity": "common",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attCrimsonTraceLaserguard",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "laserSight",
+    "displayName": "Crimson Trace Laserguard",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attSigStl900l",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "laserSight",
+    "displayName": "SIG STL-900L",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attViridianC5l",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "laserSight",
+    "displayName": "Viridian C5L",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attHolosunLs117",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "laserSight",
+    "displayName": "Holosun LS117",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attSteinerTorMini",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "laserSight",
+    "displayName": "Steiner TOR Mini",
+    "_rarity": "rare",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attA2FlashHider",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "flashHider",
+    "displayName": "A2 Flash Hider",
+    "_rarity": "common",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attSf3pFlashHider",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "flashHider",
+    "displayName": "SF3P Flash Hider",
+    "_rarity": "common",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attBfhFlashHider",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "flashHider",
+    "displayName": "BFH Flash Hider",
+    "_rarity": "common",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attPhantomFlashHider",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "flashHider",
+    "displayName": "Phantom Flash Hider",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attVortexFlashHider",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "flashHider",
+    "displayName": "Vortex Flash Hider",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attTroyClaymoreFlashHider",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "flashHider",
+    "displayName": "Troy Claymore Flash Hider",
+    "_rarity": "rare",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attGriffinM4sdFlashHider",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "flashHider",
+    "displayName": "Griffin M4SD Flash Hider",
+    "_rarity": "rare",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attVg6Gamma556",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "muzzleBreak",
+    "displayName": "VG6 Gamma 556",
+    "_rarity": "common",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attJpRecoilEliminator",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "muzzleBreak",
+    "displayName": "JP Recoil Eliminator",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attPrecisionArmamentAr15Brake",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "muzzleBreak",
+    "displayName": "Precision Armament AR15 Brake",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attSureFireProComp",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "muzzleBreak",
+    "displayName": "SureFire ProComp",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attBattlecomp10",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "muzzleBreak",
+    "displayName": "Battlecomp 1.0",
+    "_rarity": "rare",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attApaFatBastard",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "muzzleBreak",
+    "displayName": "APA Fat Bastard",
+    "_rarity": "rare",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attMagpulCtr",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "stock",
+    "displayName": "Magpul CTR",
+    "_rarity": "common",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attFabDefenseGlCore",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "stock",
+    "displayName": "FAB Defense GL-Core",
+    "_rarity": "common",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attMagpulUbrGen2",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "stock",
+    "displayName": "Magpul UBR Gen2",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attB5SopmodBravo",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "stock",
+    "displayName": "B5 SOPMOD Bravo",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attVltorEmod",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "stock",
+    "displayName": "Vltor EMOD",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "attLmtSopmod",
+    "type": [
+      "attachment"
+    ],
+    "isConcealed": "attached",
+    "subType": "stock",
+    "displayName": "LMT SOPMOD",
+    "_rarity": "rare",
+    "size": "tiny",
+    "_lethalLevel": "none",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "expGrenade",
+    "type": [
+      "explosive"
+    ],
+    "isConcealed": "canHide",
+    "subType": "throwable",
+    "displayName": "Grenade",
+    "_rarity": "common",
+    "size": "tiny",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": true,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "expFlashbang",
+    "type": [
+      "explosive"
+    ],
+    "isConcealed": "canHide",
+    "subType": "throwable",
+    "displayName": "Flashbang",
+    "_rarity": "common",
+    "size": "tiny",
+    "_lethalLevel": "nonLethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "expMolotovCocktail",
+    "type": [
+      "explosive"
+    ],
+    "isConcealed": "canHide",
+    "subType": "throwable",
+    "displayName": "Molotov Cocktail",
+    "_rarity": "common",
+    "size": "small",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": false,
+    "isWaterproof": false,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "expSmokeGrenade",
+    "type": [
+      "explosive"
+    ],
+    "isConcealed": "canHide",
+    "subType": "throwable",
+    "displayName": "Smoke Grenade",
+    "_rarity": "common",
+    "size": "tiny",
+    "_lethalLevel": "nonLethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": true,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "expGlitterBomb",
+    "type": [
+      "explosive"
+    ],
+    "isConcealed": "canHide",
+    "subType": "throwable",
+    "displayName": "Glitter Bomb",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "nonLethal",
+    "isDetectedByScanner": false,
+    "isWaterproof": false,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "expGasGrenade",
+    "type": [
+      "explosive"
+    ],
+    "isConcealed": "canHide",
+    "subType": "throwable",
+    "displayName": "Gas Grenade",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "flexible",
+    "isDetectedByScanner": true,
+    "isWaterproof": true,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "expDecoyGrenade",
+    "type": [
+      "explosive"
+    ],
+    "isConcealed": "canHide",
+    "subType": "throwable",
+    "displayName": "Decoy Grenade",
+    "_rarity": "medium",
+    "size": "tiny",
+    "_lethalLevel": "nonLethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": true,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "expEmpGrenade",
+    "type": [
+      "explosive"
+    ],
+    "isConcealed": "canHide",
+    "subType": "throwable",
+    "displayName": "EMP Grenade",
+    "_rarity": "rare",
+    "size": "tiny",
+    "_lethalLevel": "nonLethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": true,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "expExplosivePen",
+    "type": [
+      "explosive"
+    ],
+    "isConcealed": "concealed",
+    "subType": "throwable",
+    "displayName": "Explosive Pen",
+    "_rarity": "rare",
+    "size": "tiny",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "expExplosiveCufflinks",
+    "type": [
+      "explosive"
+    ],
+    "isConcealed": "concealed",
+    "subType": "throwable",
+    "displayName": "Explosive Cufflinks",
+    "_rarity": "rare",
+    "size": "tiny",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "expTripwireMine",
+    "type": [
+      "explosive"
+    ],
+    "isConcealed": "canHide",
+    "subType": "mine",
+    "displayName": "Tripwire Mine",
+    "_rarity": "medium",
+    "size": "small",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "expClaymoreMine",
+    "type": [
+      "explosive"
+    ],
+    "isConcealed": "canHide",
+    "subType": "mine",
+    "displayName": "Claymore Mine",
+    "_rarity": "medium",
+    "size": "medium",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "expShockMine",
+    "type": [
+      "explosive"
+    ],
+    "isConcealed": "canHide",
+    "subType": "mine",
+    "displayName": "Shock Mine",
+    "_rarity": "medium",
+    "size": "small",
+    "_lethalLevel": "nonLethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "expC4Explosive",
+    "type": [
+      "explosive"
+    ],
+    "isConcealed": "canHide",
+    "subType": "mine",
+    "displayName": "C4 Explosive",
+    "_rarity": "rare",
+    "size": "small",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": -1,
+    "isGoneAfterUse": false,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
+  },
+  {
+    "itemId": "expProximityMine",
+    "type": [
+      "explosive"
+    ],
+    "isConcealed": "canHide",
+    "subType": "mine",
+    "displayName": "Proximity Mine",
+    "_rarity": "rare",
+    "size": "medium",
+    "_lethalLevel": "lethal",
+    "isDetectedByScanner": true,
+    "isWaterproof": false,
+    "usageCount": 1,
+    "isGoneAfterUse": true,
+    "priceItemId": "dollar",
+    "maxOwnedCount": -1,
+    "isInShop": false
   }
 ]

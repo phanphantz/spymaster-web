@@ -70,7 +70,9 @@ export function ShopScreen({
     const subtypes = Array.from(
         new Set(itemsOfType.map((item) => item.subType).filter((value): value is string => Boolean(value))),
     );
-    const filtered = subType ? itemsOfType.filter((item) => item.subType === subType) : itemsOfType;
+    // No "All" tab — the first subtype stands in for it, the same way the first type does above.
+    const activeSubType = subType && subtypes.includes(subType) ? subType : subtypes[0];
+    const filtered = activeSubType ? itemsOfType.filter((item) => item.subType === activeSubType) : itemsOfType;
 
     const selectedItem = selectedItemId ? tables.Item.get(selectedItemId) : undefined;
 
@@ -80,7 +82,7 @@ export function ShopScreen({
     }
 
     return (
-        <div className="summary">
+        <div className="summary summary--kit">
             <div className="summary__left">
                 <h2 className="summary__name inv__title">Kit</h2>
                 <div className="shop__types inv__types">
@@ -109,22 +111,13 @@ export function ShopScreen({
 
             <div className="summary__right">
                 <div className="tabs shop__subtypes" role="tablist">
-                    <button
-                        type="button"
-                        role="tab"
-                        className="tab"
-                        aria-selected={!subType}
-                        onClick={() => setSubType(undefined)}
-                    >
-                        All
-                    </button>
                     {subtypes.map((st) => (
                         <button
                             type="button"
                             role="tab"
                             key={st}
                             className="tab"
-                            aria-selected={subType === st}
+                            aria-selected={activeSubType === st}
                             onClick={() => setSubType(st)}
                         >
                             {humanize(st)}

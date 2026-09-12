@@ -90,6 +90,7 @@ export function MissionSummary(): ReactNode {
         <Modal
             onClose={() => (inventoryMode ? closeShop() : hasAssignments ? setConfirmingClose(true) : close())}
             wide
+            kit={inventoryMode}
             label={inventoryMode ? 'Kit' : (mission.data.displayName ?? 'Mission')}
             hideClose
         >

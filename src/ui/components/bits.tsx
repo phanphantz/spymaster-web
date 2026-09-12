@@ -518,15 +518,23 @@ export function Modal({
     children,
     onClose,
     wide,
+    kit,
     label,
     hideClose,
 }: {
     children: ReactNode;
     onClose: () => void;
     wide?: boolean;
+    /** Kit mode narrows `.summary`'s left rail — the modal's own background-painted divider lines
+     *  (see `.modal--wide`) have to shift to match, hence the separate modifier class. */
+    kit?: boolean;
     label: string;
     hideClose?: boolean;
 }): ReactNode {
+    const modalClassName = ['modal', wide ? 'modal--wide' : '', wide && kit ? 'modal--kit' : '']
+        .filter(Boolean)
+        .join(' ');
+
     return (
         <div
             className="backdrop"
@@ -535,7 +543,7 @@ export function Modal({
             role="presentation"
         >
             <div
-                className={wide ? 'modal modal--wide' : 'modal'}
+                className={modalClassName}
                 role="dialog"
                 aria-modal="true"
                 aria-label={label}

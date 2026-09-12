@@ -576,6 +576,16 @@
         var(--surface);
 }
 
+/* Kit mode's left rail is now the same 280px width as the Mission UI's, so its divider line lands
+   at the same offset as `.modal--wide`'s own — this rule is a deliberate no-op kept for the day
+   the two widths diverge again, rather than folding `.modal--kit` back into a single selector. */
+.modal--wide.modal--kit {
+    background:
+        linear-gradient(var(--steel), var(--steel)) no-repeat left 280px top 0 / 2px 100%,
+        linear-gradient(var(--steel), var(--steel)) no-repeat right 296px top 0 / 2px 100%,
+        var(--surface);
+}
+
 .modal__close {
     position: absolute;
     top: 12px;
@@ -665,6 +675,11 @@
        this now scrolls internally instead (`.summary__right{overflow-y:auto}`). */
     height: 620px;
 }
+
+/* Kit mode's own take on the grid — same 280px left rail as the Mission UI's now (both match the
+   stats/detail rail's own fixed width), kept as its own rule for the day the two need to diverge
+   again rather than folding `.summary--kit` back into the base `.summary` selector. */
+.summary--kit { grid-template-columns: 280px 2px 1fr 280px; }
 
 .summary__left {
     position: relative;
@@ -1212,7 +1227,17 @@ button.equip-icon:hover { border-color: var(--danger); color: var(--danger); }
 .shop__type[aria-selected='true'] { background: var(--cyan); color: var(--inverse); border-color: var(--cyan); }
 .shop__type:hover:not([aria-selected='true']) { border-color: var(--cyan); color: var(--cyan); }
 
-.shop__subtypes { flex-wrap: wrap; }
+/* One row, always — each tab grows to share the center column's full width evenly instead of
+   wrapping or sitting left-aligned with dead space to the right. */
+.shop__subtypes { flex-wrap: nowrap; }
+.shop__subtypes .tab {
+    flex: 1;
+    min-width: 0;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
 /* The browse column's item grid: landscape 4:3 tiles, four across, scrolling on its own within
    `.summary__right`'s existing flex:1/min-height:0 chain. `grid-auto-rows` is pinned to
