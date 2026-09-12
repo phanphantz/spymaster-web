@@ -119,9 +119,9 @@ export function WorldMapScreen(): ReactNode {
             {inventoryMode && session ? (
                 <div className="roster roster--inventory">
                     {orderedByFocus(session.assignedAgents(), shopCharacterId).map((agent) => {
-                        const carried = session.carriedBy(agent.characterId).entries;
+                        const carried = session.carriedSlots(agent.characterId);
                         const capacity = runtimeAgent.inventorySize(agent);
-                        const emptySlots = Math.max(0, capacity - session.usedItemSlots(agent.characterId));
+                        const emptySlots = Math.max(0, capacity - carried.length);
 
                         return (
                             <div
@@ -141,13 +141,13 @@ export function WorldMapScreen(): ReactNode {
                                             if (payload) assignItem(agent.characterId, payload.itemId, 1);
                                         }}
                                     >
-                                        {carried.map(([itemId, qty]) => {
+                                        {carried.map(({ itemId, qty }, index) => {
                                             const item = tables?.Item.get(itemId);
                                             const name = item?.displayName ?? itemId;
                                             const maxStack = item?.maxStackCount ?? 0;
 
                                             return (
-                                                <div className="equip-slot" key={itemId}>
+                                                <div className="equip-slot" key={`${itemId}-${index}`}>
                                                     <EquipIcon
                                                         name={name}
                                                         qty={qty}

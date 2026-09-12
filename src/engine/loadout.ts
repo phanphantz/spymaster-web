@@ -176,6 +176,26 @@ export class LoadoutSession {
     }
 
     /**
+     * One entry per slot a UI should actually draw a card for — matching what `usedItemSlots`
+     * counts, so the number of cards never drifts from the capacity math.
+     *
+     * A stackable item is a single entry carrying its whole stack. Anything else is one entry per
+     * unit: two carried Throwing Knives (not stackable) are two separate cards, each removable on
+     * its own, not one card wearing a "×2" badge that would misread as a single shared stack.
+     */
+    carriedSlots(characterId: string): { itemId: string; qty: number }[] {
+        const slots: { itemId: string; qty: number }[] = [];
+        for (const [itemId, qty] of this.carriedBy(characterId).entries) {
+            if ((this.tables.Item.get(itemId)?.maxStackCount ?? 0) > 1) {
+                slots.push({ itemId, qty });
+            } else {
+                for (let i = 0; i < qty; i++) slots.push({ itemId, qty: 1 });
+            }
+        }
+        return slots;
+    }
+
+    /**
      * Charges the item's price and conjures it onto the agent, stacking onto what's already there
      * rather than starting a second slot when the item is stackable. Refuses rather than over-filling
      * a slot, and refuses outright past a stackable item's `maxStackCount` — there is no second stack

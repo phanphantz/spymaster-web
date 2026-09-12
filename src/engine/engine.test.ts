@@ -719,6 +719,45 @@ describe('Loadout', () => {
         expect(session.carriedBy('agentNoire').get('toolPicklockSet')).toBe(2);
     });
 
+    it('draws one card per unit of a non-stackable item, not one card wearing a ×N badge', async () => {
+        const { tables, rng, roster } = await fixture();
+        const mission = generateMission(
+            tables.Mission.get('heist_vault')!, tables.Location, rng, 'heist_vault#1', 0,
+        );
+        const inventory = new Inventory([['dollar', 50000]]);
+        const session = new LoadoutSession(mission, tables, roster, inventory, 1);
+        session.assignAgent('slot_stealth', 'agentNoire');
+
+        // Throwing Knife has no maxStackCount authored — not stackable — so two of them cost two
+        // slots (usedItemSlots already knew this); carriedSlots has to draw two cards for it, not
+        // one card merged behind a "×2" badge that would misread as a shared stack.
+        session.assignItem('agentNoire', 'melThrowingKnife', 2);
+
+        expect(session.usedItemSlots('agentNoire')).toBe(2);
+        const slots = session.carriedSlots('agentNoire');
+        expect(slots).toEqual([
+            { itemId: 'melThrowingKnife', qty: 1 },
+            { itemId: 'melThrowingKnife', qty: 1 },
+        ]);
+    });
+
+    it('draws a stackable item as one card carrying its whole stack', async () => {
+        const { tables, rng, roster } = await fixture(5, {
+            Item: [{ itemId: 'toolPicklockSet', maxStackCount: 3 }],
+        });
+        const mission = generateMission(
+            tables.Mission.get('heist_vault')!, tables.Location, rng, 'heist_vault#1', 0,
+        );
+        const inventory = new Inventory([['dollar', 50000]]);
+        const session = new LoadoutSession(mission, tables, roster, inventory, 1);
+        session.assignAgent('slot_stealth', 'agentNoire');
+
+        session.assignItem('agentNoire', 'toolPicklockSet', 3);
+
+        expect(session.usedItemSlots('agentNoire')).toBe(1);
+        expect(session.carriedSlots('agentNoire')).toEqual([{ itemId: 'toolPicklockSet', qty: 3 }]);
+    });
+
     it('lets a duplicate of an already-carried stackable item stack for free even at full capacity', async () => {
         const { tables, rng, roster } = await fixture(5, {
             Item: [{ itemId: 'toolFlashlight', maxStackCount: 5 }],

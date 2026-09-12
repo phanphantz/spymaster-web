@@ -455,10 +455,9 @@ function MissionTeam({
                             .filter(Boolean)
                             .join(' ');
 
-                        const carried = occupant ? session.carriedBy(occupant.characterId).entries : [];
+                        const carried = occupant ? session.carriedSlots(occupant.characterId) : [];
                         const capacity = occupant ? runtimeAgent.inventorySize(occupant) : 0;
-                        const usedSlots = occupant ? session.usedItemSlots(occupant.characterId) : 0;
-                        const emptySlots = Math.max(0, capacity - usedSlots);
+                        const emptySlots = Math.max(0, capacity - carried.length);
 
                         return (
                             <div className="slot-wrap" key={slot.slotId}>
@@ -473,9 +472,9 @@ function MissionTeam({
                                         aria-label={`Edit ${runtimeAgent.displayName(occupant)}'s kit`}
                                         title="Edit kit"
                                     >
-                                        {carried.map(([itemId, qty]) => {
+                                        {carried.map(({ itemId, qty }, index) => {
                                             const name = tables.Item.get(itemId)?.displayName ?? itemId;
-                                            return <EquipIcon key={itemId} name={name} qty={qty} mini />;
+                                            return <EquipIcon key={`${itemId}-${index}`} name={name} qty={qty} mini />;
                                         })}
                                         {Array.from({ length: emptySlots }, (_, index) => (
                                             <span
