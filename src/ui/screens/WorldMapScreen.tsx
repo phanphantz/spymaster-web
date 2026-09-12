@@ -5,7 +5,6 @@ import * as runtimeAgent from '../../engine/runtimeAgent';
 import { previewReward, slotCountFor } from '../../engine/missionPreview';
 import type { LiveMission } from '../../engine/missionFeed';
 import {
-    AgentBackdrop,
     AgentCard,
     ConfirmDialog,
     DifficultyPips,
@@ -139,7 +138,6 @@ export function WorldMapScreen(): ReactNode {
                                 }
                                 key={agent.characterId}
                             >
-                                <AgentBackdrop agent={agent} />
                                 <div className="inv-agent__row">
                                     <AgentCard agent={agent} />
                                     <div

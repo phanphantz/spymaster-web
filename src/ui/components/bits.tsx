@@ -332,11 +332,13 @@ export function InventoryCapacity({ agent }: { agent: RuntimeAgent }): ReactNode
 }
 
 /**
- * A faded, oversized portrait standing behind an agent's card or roster row — fades in on mount,
- * sized and positioned to bleed past its own container's edges so neighbouring agents standing next
+ * A faded, oversized portrait standing behind an agent's slot on the Mission page — fades in on
+ * mount, bottom-aligned with the slot and rising above its top edge (the agent "standing behind the
+ * counter"), and bled past its own container's left/right edges so neighbouring agents standing next
  * to each other overlap by roughly 10-20%, rather than lining up edge to edge (which would need
  * every card spaced that much further apart to avoid, cramped for a full team). Purely decorative
  * (aria-hidden, pointer-events: none) — the real portrait is still the card's own background image.
+ * Mission page only — not used on the Kit page's own roster row.
  */
 export function AgentBackdrop({ agent }: { agent: RuntimeAgent }): ReactNode {
     return (

@@ -351,7 +351,6 @@
 .roster.roster--inventory { gap: 28px; align-items: flex-start; }
 
 .inv-agent {
-    position: relative;
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -361,10 +360,6 @@
 .inv-agent--focused .agent-card { border-color: var(--cyan); }
 
 .inv-agent__row {
-    /* A plain static box otherwise paints above any positioned sibling regardless of DOM order —
-       this needs to be positioned too (z-index left at auto) so it actually paints over the
-       backdrop behind it, rather than the reverse. */
-    position: relative;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -687,26 +682,27 @@
     color: var(--steel);
 }
 
-/* A faded, oversized portrait standing behind an agent's card or roster row (see AgentBackdrop's own
-   comment) — bleeds past its own container on the left and right so adjacent agents overlap, faded
-   most at the very top (like a figure's head fading up into nothing) and again toward the bottom
-   (where the card/slot itself already covers it) rather than showing a flat edge under a translucent
-   layer. Contained to its own container's height rather than rising above it — both places this is
-   used sit inside an ancestor whose horizontal scrollbar (`overflow-x: auto`) forces its vertical
-   overflow to clip too, so anything peeking above its own box would just be cut off. */
+/* A faded, oversized portrait standing behind an agent's slot (see AgentBackdrop's own comment) —
+   bottom-anchored to the slot's own bottom edge and rising above its top, so it reads as the agent
+   standing up behind the slot rather than a picture boxed inside it. Bleeds past the slot-wrap's
+   left and right edges too, so adjacent agents standing next to each other overlap. The part below
+   the slot's own top edge is covered by the slot's own opaque background regardless (this sits
+   behind it in paint order) — the mask just softens the fade for the part that actually shows,
+   above the slot. */
 .agent-backdrop {
     position: absolute;
-    inset: 0;
     left: -9%;
     right: -9%;
+    top: -70px;
+    bottom: 0;
     z-index: 0;
     background-size: cover;
     background-position: top center;
     pointer-events: none;
     opacity: 0;
     animation: agent-backdrop-in 500ms ease-out forwards;
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.85) 30%, black 65%, transparent 100%);
-    mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.85) 30%, black 65%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 65px);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 65px);
 }
 
 @keyframes agent-backdrop-in {
