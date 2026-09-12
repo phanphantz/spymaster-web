@@ -167,7 +167,6 @@ export function ShopScreen({
     return (
         <div className="summary summary--kit">
             <div className="summary__left">
-                <h2 className="summary__name inv__title">Kit</h2>
                 <div className="sort-bar">
                     <span className="sort-bar__label micro">Sort</span>
                     <div className="sort-bar__options">
@@ -261,19 +260,27 @@ export function ShopScreen({
             </div>
 
             <div className="summary__stats">
-                {selectedItem ? (
-                    <ItemDetail
-                        item={selectedItem}
-                        price={session.shop.priceOf(selectedItem.itemId!)?.qty ?? 0}
-                        equipDisabledReason={describeEquipFailure(session.shop.checkEquip(selectedItem.itemId!, 1))}
-                    />
-                ) : (
-                    <div className="inv-detail inv-detail--empty">
-                        <span className="meta dim">Select an item.</span>
-                    </div>
-                )}
+                {/* Mirrors the Mission page's own stats rail: the icon sits where the team's
+                    hexagon would, the name and detail sit in the lower group where the gauges
+                    would — same column, same two-zone shape, just an item instead of a team. */}
+                <div className="summary__photo summary__photo--stats">
+                    {selectedItem ? (
+                        <span className="inv-detail__icon" aria-hidden="true">
+                            {initials(selectedItem.displayName ?? selectedItem.itemId ?? '?')}
+                        </span>
+                    ) : (
+                        <p className="summary__stats-empty">Select an item to see its detail</p>
+                    )}
+                </div>
                 <div className="summary__lower-anchor">
                     <hr className="summary__dashrule" />
+                    {selectedItem ? (
+                        <ItemDetail
+                            item={selectedItem}
+                            price={session.shop.priceOf(selectedItem.itemId!)?.qty ?? 0}
+                            equipDisabledReason={describeEquipFailure(session.shop.checkEquip(selectedItem.itemId!, 1))}
+                        />
+                    ) : null}
                     <div className="summary__actions summary__actions--right">
                         <PageTabs active="inventory" onSelect={onSelectTab} />
                     </div>
@@ -283,7 +290,7 @@ export function ShopScreen({
     );
 }
 
-/** The right rail while an item is selected — its stat swing, description and preparation cost.
+/** The lower group of the item detail rail — name, stat swing, description and preparation cost.
  *  Equipping is drag-only, onto the agent inventory row below, so there is no button here — just
  *  the cost, and why dragging it over would fail right now, if it would. */
 function ItemDetail({
@@ -297,19 +304,14 @@ function ItemDetail({
 }): ReactNode {
     return (
         <div className="inv-detail">
-            <div className="inv-detail__scroll">
-                <h3 className="inv-detail__name">{item.displayName ?? item.itemId}</h3>
-                <div className="inv-detail__effects">{describeEffects(item)}</div>
-                {item.description ? <p className="inv-detail__desc">{item.description}</p> : null}
+            <h3 className="inv-detail__name">{item.displayName ?? item.itemId}</h3>
+            <div className="inv-detail__effects">{describeEffects(item)}</div>
+            {item.description ? <p className="inv-detail__desc">{item.description}</p> : null}
+            <div className="inv-detail__row">
+                <span className="inv-detail__price">${price.toLocaleString('en-US')}</span>
+                <span className="meta dim">cost of preparation</span>
             </div>
-            <div className="summary__lower-anchor">
-                <hr className="summary__dashrule" />
-                <div className="inv-detail__row">
-                    <span className="inv-detail__price">${price.toLocaleString('en-US')}</span>
-                    <span className="meta dim">cost of preparation</span>
-                </div>
-                {equipDisabledReason ? <div className="meta danger">{equipDisabledReason}</div> : null}
-            </div>
+            {equipDisabledReason ? <div className="meta danger">{equipDisabledReason}</div> : null}
         </div>
     );
 }

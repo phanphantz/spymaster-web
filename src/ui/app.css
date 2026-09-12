@@ -734,7 +734,7 @@
     flex-direction: column;
     align-items: center;
     gap: 2px;
-    padding: 4px 10px;
+    padding: 3px 10px;
     background: var(--surface-2);
 }
 
@@ -903,14 +903,16 @@
 /* The always-visible right rail: team stats, whether or not any slot is filled yet. A plain
    border rather than a second `.summary__divider` — the notification dot only ever marked the one
    rule, between the photo and the briefing. */
-/* padding-top clears the planning-status chip pinned at the modal's top-right (`.modal__corner`) —
-   this is the column it always floats over, in both the Mission and the Kit page, so the clearance
-   belongs here once rather than duplicated into whichever child happens to be on top. */
+/* padding-top clears `.mission-corner` (Cost/Success/Confirm) pinned at the modal's top-right
+   (`.modal__corner`) — this is the column it always floats over, in both the Mission and the Kit
+   page, so the clearance belongs here once rather than duplicated into whichever child happens to
+   be on top. Generous on purpose: the corner grew a hold-to-confirm button alongside the status
+   pill, and this has to clear it with room to spare rather than exactly matching its height. */
 .summary__stats {
     display: flex;
     flex-direction: column;
     min-height: 0;
-    padding-top: 52px;
+    padding-top: 68px;
     border-left: 1px solid var(--line);
 }
 
@@ -1289,11 +1291,13 @@
     letter-spacing: 0;
 }
 
+/* Fixed to the same small `.stat-hex--mini` size used everywhere else it appears, not stretched to
+   the slot's own height — sizing it off the slot pushed the agent card out of its own space on
+   anything narrower than a wide desktop viewport. */
 .slot__filled .stat-hex--mini {
     flex: 0 0 auto;
-    width: auto;
-    height: 100%;
-    max-width: none;
+    width: 52px;
+    height: auto;
     margin-left: 0;
 }
 
@@ -1387,10 +1391,10 @@ button.equip-icon:hover { border-color: var(--danger); color: var(--danger); }
     color: var(--cyan);
 }
 
-/* The left rail: a heading where the photo used to be, then the sort bar, then main-category tabs
-   filling the rest of the column's height, then Done pinned to the floor via the shared
-   `.summary__lower-anchor`. */
-.inv__title { padding: 20px 24px 4px; }
+/* The left rail: no heading (there's no per-page title here, just Sort then the type tabs) — the
+   top padding that used to belong to the heading moves to the column itself, so the sort bar still
+   clears the Close button pinned to the modal's own top-left corner. */
+.summary--kit .summary__left { padding-top: 44px; }
 
 /* Fixed height, not flex:1 — .inv__types right below it is what absorbs whatever room is left. */
 .sort-bar { padding: 8px 16px; display: flex; flex-direction: column; gap: 6px; }
@@ -1522,30 +1526,43 @@ button.equip-icon:hover { border-color: var(--danger); color: var(--danger); }
 .item-tile__meta { display: flex; font-size: var(--fs-micro); }
 .item-tile__price { color: var(--money); }
 
-/* The right rail while Kit mode has an item selected — same column `.summary__stats` uses for the
-   team's combined stats, just showing one item's stats, description and Buy instead. */
-.inv-detail {
-    flex: 1;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-    padding: 0 20px 0;
+/* The large icon standing in for the selected item's art, where the Mission page's stats rail
+   shows the team's combined hexagon — same `.summary__photo--stats` mount, same spot. */
+.inv-detail__icon {
+    display: grid;
+    place-items: center;
+    width: 88px;
+    height: 88px;
+    background: var(--surface-2);
+    border: 1px solid var(--cyan);
+    border-radius: var(--radius);
+    font-size: 26px;
+    letter-spacing: 0.02em;
+    color: var(--text);
 }
 
-.inv-detail--empty { align-items: center; justify-content: center; padding: 20px; }
-
-.inv-detail__scroll {
-    flex: 1;
-    min-height: 0;
-    overflow-y: auto;
+/* Name, stat swing, description and price — where the Mission page's stats rail shows the gauges,
+   below the dashrule rather than filling the whole column (the icon above already claims the
+   photo/hexagon mount's own space). */
+.inv-detail {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
+    padding: 6px 20px 10px;
 }
 
 .inv-detail__name { font-size: var(--fs-item); color: var(--text); margin: 0; }
 .inv-detail__effects { font-size: var(--fs-meta); color: var(--cyan-dim); letter-spacing: 0.04em; }
-.inv-detail__desc { font-size: var(--fs-chip); color: var(--muted); line-height: 1.6; margin: 0; }
+/* Bounded rather than left to grow the fixed-height rail off the bottom of the modal — an unusually
+   long description scrolls in its own small pane instead of pushing price/tabs out of view. */
+.inv-detail__desc {
+    font-size: var(--fs-chip);
+    color: var(--muted);
+    line-height: 1.6;
+    margin: 0;
+    max-height: 96px;
+    overflow-y: auto;
+}
 
 .inv-detail__row {
     display: flex;
