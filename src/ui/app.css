@@ -1215,13 +1215,18 @@ button.equip-icon:hover { border-color: var(--danger); color: var(--danger); }
 .shop__subtypes { flex-wrap: wrap; }
 
 /* The browse column's item grid: landscape 4:3 tiles, four across, scrolling on its own within
-   `.summary__right`'s existing flex:1/min-height:0 chain. */
+   `.summary__right`'s existing flex:1/min-height:0 chain. `grid-auto-rows` is pinned to
+   `max-content` rather than left at its `auto` default — inside this flex:1/min-height:0/
+   overflow-y:auto chain, `auto` rows sized themselves far shorter than the `aspect-ratio: 4/3`
+   tiles they hold once there were enough rows to need scrolling, so every row after the first
+   screenful overlapped the next instead of the grid scrolling past them. */
 .inv-grid {
     flex: 1;
     min-height: 0;
     overflow-y: auto;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: max-content;
     gap: 10px;
     align-content: start;
     padding-bottom: 4px;
