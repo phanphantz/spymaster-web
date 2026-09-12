@@ -460,6 +460,9 @@ export function AgentCard({
     );
 }
 
+/** Fixed 2-column x 3-row grid of skill slots — the tooltip always shows all six, empty ones left blank. */
+const SKILL_SLOTS = 6;
+
 /**
  * The "who is this" preview — stats, name, skills — for whichever card is being hovered. A portal
  * into document.body rather than a child of the card: several of the card's real containers (a
@@ -517,9 +520,13 @@ function AgentTooltip({
                     <ExpGauge agent={agent} compact />
                 </div>
                 <div className="skill-list agent-tooltip__skills">
-                    {skills.map((skillId) => (
-                        <SkillRow key={skillId} skillId={skillId} skill={tables?.Skill.get(skillId)} />
-                    ))}
+                    {Array.from({ length: SKILL_SLOTS }, (_, i) => skills[i]).map((skillId, i) =>
+                        skillId ? (
+                            <SkillRow key={skillId} skillId={skillId} skill={tables?.Skill.get(skillId)} />
+                        ) : (
+                            <div key={`empty-${i}`} className="skill-row skill-row--empty" />
+                        ),
+                    )}
                 </div>
             </div>
         </div>

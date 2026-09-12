@@ -575,6 +575,9 @@
     text-overflow: ellipsis;
 }
 
+/* An unfilled skill slot — kept in the grid so it always reads as 2x3, not 2x however-many. */
+.skill-row--empty { border-style: dashed; border-color: var(--line); opacity: 0.4; }
+
 /* Hints that a skill row itself has more behind it (the second-level detail tooltip). */
 .agent-tooltip__skills .skill-row:hover { border-color: var(--cyan); color: var(--cyan); }
 
