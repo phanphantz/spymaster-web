@@ -478,7 +478,7 @@
     transform: translate(-50%, -100%);
     z-index: 50;
     width: 300px;
-    height: 170px;
+    height: 200px;
     display: flex;
     align-items: center;
     gap: 12px;
@@ -500,7 +500,21 @@
 /* Not enough room above the card (the Employment grid's top row, mainly) — sit below it instead. */
 .agent-tooltip--below { transform: translate(-50%, 0); }
 
-.agent-tooltip__hex { flex: 0 0 auto; width: 140px; }
+.agent-tooltip__hex { position: relative; flex: 0 0 auto; width: 140px; }
+
+.agent-tooltip__badge {
+    position: absolute;
+    left: 2px;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: var(--fs-micro);
+    color: var(--text);
+    pointer-events: none;
+}
+
+.agent-tooltip__badge--hp { top: 2px; }
+.agent-tooltip__badge--inv { bottom: 2px; }
 
 .agent-tooltip__info {
     flex: 1;
@@ -543,7 +557,7 @@
     margin-top: 0;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-auto-rows: minmax(0, 1fr);
+    grid-auto-rows: minmax(22px, 1fr);
     align-content: start;
     overflow-y: auto;
 }
@@ -551,6 +565,9 @@
 .agent-tooltip__skills .skill-row {
     display: flex;
     align-items: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 /* Hints that a skill row itself has more behind it (the second-level detail tooltip). */

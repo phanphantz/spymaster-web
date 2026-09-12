@@ -251,25 +251,9 @@ export function StatHexagon({
 
 /** HP as a bar with its own n/m text — the same shape as `ExpGauge`, so the two read as one family
  *  of vitals wherever they're shown together. */
-export function HpGauge({
-    agent,
-    compact,
-    icon,
-}: {
-    agent: RuntimeAgent;
-    compact?: boolean;
-    icon?: boolean;
-}): ReactNode {
+export function HpGauge({ agent, compact }: { agent: RuntimeAgent; compact?: boolean }): ReactNode {
     const max = runtimeAgent.maxHealth(agent);
     const ratio = max > 0 ? agent.currentHealth / max : 0;
-
-    if (icon) {
-        return (
-            <span className="inv-capacity" title={`${agent.currentHealth} / ${max} HP`}>
-                <span aria-hidden="true">❤</span> {agent.currentHealth}/{max}
-            </span>
-        );
-    }
 
     return (
         <div
@@ -500,7 +484,7 @@ function AgentTooltip({
     // Matches the fixed size in CSS (.agent-tooltip) — flips below and clamps sideways for cards
     // near the top or the left/right edge (the Employment grid's top row, in particular).
     const width = 300;
-    const height = 170;
+    const height = 200;
     const margin = 8;
     const above = anchor.top >= height + margin + 12;
     const top = above ? anchor.top - margin : anchor.bottom + margin;
@@ -519,14 +503,18 @@ function AgentTooltip({
         >
             <div className="agent-tooltip__hex">
                 <StatHexagon agent={agent} />
+                <span className="agent-tooltip__badge agent-tooltip__badge--hp" title="Full HP">
+                    <span aria-hidden="true">❤</span> {runtimeAgent.maxHealth(agent)}
+                </span>
+                <span className="agent-tooltip__badge agent-tooltip__badge--inv" title="Inventory slots">
+                    <span aria-hidden="true">🎒</span> {runtimeAgent.inventorySize(agent)}
+                </span>
             </div>
             <div className="agent-tooltip__info">
                 <div className="agent-tooltip__name">{runtimeAgent.displayName(agent)}</div>
                 <div className="agent-tooltip__realname">{runtimeAgent.fullName(agent)}</div>
                 <div className="agent-tooltip__vitals">
                     <ExpGauge agent={agent} compact />
-                    <HpGauge agent={agent} compact icon />
-                    <InventoryCapacity agent={agent} />
                 </div>
                 <div className="skill-list agent-tooltip__skills">
                     {skills.map((skillId) => (
