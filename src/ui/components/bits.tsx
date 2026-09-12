@@ -251,7 +251,15 @@ export function StatHexagon({
 
 /** HP as a bar with its own n/m text — the same shape as `ExpGauge`, so the two read as one family
  *  of vitals wherever they're shown together. */
-export function HpGauge({ agent, compact }: { agent: RuntimeAgent; compact?: boolean }): ReactNode {
+export function HpGauge({
+    agent,
+    compact,
+    icon,
+}: {
+    agent: RuntimeAgent;
+    compact?: boolean;
+    icon?: boolean;
+}): ReactNode {
     const max = runtimeAgent.maxHealth(agent);
     const ratio = max > 0 ? agent.currentHealth / max : 0;
 
@@ -260,7 +268,9 @@ export function HpGauge({ agent, compact }: { agent: RuntimeAgent; compact?: boo
             className={compact ? 'vital-gauge vital-gauge--compact' : 'vital-gauge'}
             title={`${agent.currentHealth} / ${max} HP`}
         >
-            <span className="vital-gauge__label">HP</span>
+            <span className="vital-gauge__label" aria-hidden={icon || undefined}>
+                {icon ? '❤' : 'HP'}
+            </span>
             <span className="vital-gauge__track" role="img" aria-label={`Health ${agent.currentHealth} of ${max}`}>
                 <span
                     className={ratio < 0.5 ? 'vital-gauge__fill vital-gauge__fill--hurt' : 'vital-gauge__fill'}
@@ -505,10 +515,11 @@ function AgentTooltip({
                 <StatHexagon agent={agent} />
             </div>
             <div className="agent-tooltip__info">
-                <div className="agent-tooltip__name">{runtimeAgent.fullName(agent)}</div>
+                <div className="agent-tooltip__name">{runtimeAgent.displayName(agent)}</div>
+                <div className="agent-tooltip__realname">{runtimeAgent.fullName(agent)}</div>
                 <div className="agent-tooltip__vitals">
                     <ExpGauge agent={agent} compact />
-                    <HpGauge agent={agent} compact />
+                    <HpGauge agent={agent} compact icon />
                     <InventoryCapacity agent={agent} />
                 </div>
                 <div className="skill-list agent-tooltip__skills">
