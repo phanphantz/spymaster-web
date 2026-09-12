@@ -222,7 +222,7 @@
 .mission-list {
     padding: 20px;
     /* Clears the roster strip, which is pinned over this rather than laid out above it. */
-    padding-bottom: 148px;
+    padding-bottom: var(--roster-h);
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -329,14 +329,18 @@
    what they show (a stepper, a Discard row, an empty-team message), and none of that may ever grow
    or shrink this strip: `.mission-list`'s own `padding-bottom` above assumes this exact height to
    clear it, and swapping between this and the plain agent picker must not shift anything either.
-   Extra content inside a group scrolls within `.inv-agent` instead of pushing the strip taller. */
+   Sized to fit a group's tallest possible content (avatar + slots row, plus the Discard row below
+   it) with no overflow, so nothing here ever scrolls — the Discard button must always be visible,
+   not something you scroll down to. */
+:root { --roster-h: 180px; }
+
 .roster {
     position: fixed;
     left: 0;
     right: 0;
     bottom: 0;
     z-index: 11;
-    height: 148px;
+    height: var(--roster-h);
     display: flex;
     align-items: flex-start;
     justify-content: center;
@@ -359,13 +363,13 @@
    as the picker it replaces. */
 .roster.roster--inventory { gap: 28px; }
 
+/* No fixed height and no overflow of its own — `.roster` is already sized to fit this group's
+   tallest possible content (see `--roster-h`), so it never needs to scroll internally. */
 .inv-agent {
-    height: 100%;
     display: flex;
     flex-direction: column;
     gap: 6px;
     flex: 0 0 auto;
-    overflow-y: auto;
 }
 
 .inv-agent--focused .agent-card { border-color: var(--cyan); }
@@ -799,7 +803,7 @@
     place-items: center;
     padding: 20px;
     /* Clears the pinned roster strip, so the modal never sits under it. */
-    padding-bottom: 148px;
+    padding-bottom: var(--roster-h);
     z-index: 10;
     overflow-y: auto;
 }
