@@ -105,22 +105,13 @@ export function MissionSummary(): ReactNode {
                         <div className="summary__lower-anchor">
                             <hr className="summary__dashrule" />
                             <LocationBlock mission={mission} />
-                            <div className="summary__actions summary__actions--split">
+                            <div className="summary__actions">
                                 <button
                                     type="button"
                                     className="btn btn--quiet"
                                     onClick={() => (hasAssignments ? setConfirmingClose(true) : close())}
                                 >
                                     Back
-                                </button>
-                                <button
-                                    type="button"
-                                    className="btn btn--quiet"
-                                    onClick={() => setConfirmingDecline(true)}
-                                    disabled={!canDecline}
-                                    title={canDecline ? undefined : 'This client does not take no for an answer'}
-                                >
-                                    Decline
                                 </button>
                             </div>
                         </div>
@@ -131,6 +122,16 @@ export function MissionSummary(): ReactNode {
                     </div>
 
                     <div className="summary__right">
+                        <button
+                            type="button"
+                            className="icon-btn summary__decline"
+                            onClick={() => setConfirmingDecline(true)}
+                            disabled={!canDecline}
+                            aria-label="Decline mission"
+                            title={canDecline ? 'Decline mission' : 'This client does not take no for an answer'}
+                        >
+                            🗑
+                        </button>
                         <div className="summary__scroll">
                             <h2 className="summary__name">{mission.data.displayName}</h2>
 

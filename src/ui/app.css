@@ -825,6 +825,7 @@
 }
 
 .summary__right {
+    position: relative;
     padding: 20px 22px 16px;
     display: flex;
     flex-direction: column;
@@ -833,6 +834,17 @@
     /* .summary is a fixed height, not min-height — the scroll region below absorbs an unusually
        long hint/description instead of pushing the row itself taller. */
     min-height: 0;
+}
+
+/* Pinned to the column's own top-right corner rather than flowing with the scroll content, so it
+   stays put — and stays reachable — no matter how far the briefing above it scrolls. */
+.summary__decline {
+    position: absolute;
+    top: 20px;
+    right: 22px;
+    z-index: 1;
+    color: var(--danger);
+    border-color: var(--danger);
 }
 
 /* The name, chips, hint, description and Tasks — everything that can genuinely run long. Scrolls
