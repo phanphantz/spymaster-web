@@ -504,7 +504,7 @@
 
 .agent-tooltip__badge {
     position: absolute;
-    left: 2px;
+    left: 0;
     display: inline-flex;
     align-items: center;
     gap: 3px;
@@ -513,8 +513,8 @@
     pointer-events: none;
 }
 
-.agent-tooltip__badge--hp { top: 2px; }
-.agent-tooltip__badge--inv { bottom: 2px; }
+.agent-tooltip__badge--hp { top: 0; }
+.agent-tooltip__badge--inv { bottom: 0; }
 
 .agent-tooltip__info {
     flex: 1;
