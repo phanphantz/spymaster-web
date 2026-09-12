@@ -155,16 +155,45 @@ export class LoadoutSession {
     remainingCapacity(characterId: string): number {
         const agent = this.roster.find((candidate) => candidate.characterId === characterId);
         if (!agent) return 0;
-        return Math.max(0, runtimeAgent.inventorySize(agent) - this.carriedBy(characterId).total);
+        return Math.max(0, runtimeAgent.inventorySize(agent) - this.usedItemSlots(characterId));
     }
 
-    /** Charges the item's price and conjures it onto the agent. Refuses rather than over-filling a slot. */
+    /**
+     * How many item slots this agent's carried items actually take up.
+     *
+     * A stackable item (`maxStackCount` above 1) shares one slot across its whole stack; anything
+     * else costs one slot per unit, same as before stacking existed.
+     */
+    usedItemSlots(characterId: string): number {
+        let slots = 0;
+        for (const [itemId, qty] of this.carriedBy(characterId).entries) slots += this.slotsFor(itemId, qty);
+        return slots;
+    }
+
+    private slotsFor(itemId: string, qty: number): number {
+        const max = this.tables.Item.get(itemId)?.maxStackCount ?? 0;
+        return max > 1 ? Math.ceil(qty / max) : qty;
+    }
+
+    /**
+     * Charges the item's price and conjures it onto the agent, stacking onto what's already there
+     * rather than starting a second slot when the item is stackable. Refuses rather than over-filling
+     * a slot, and refuses outright past a stackable item's `maxStackCount` — there is no second stack
+     * of the same item to spill into.
+     */
     assignItem(characterId: string, itemId: string, qty = 1): boolean {
         if (!this.slotOf(characterId)) return false;
-        if (this.remainingCapacity(characterId) < qty) return false;
+
+        const carried = this.carriedBy(characterId);
+        const currentQty = carried.get(itemId);
+        const max = this.tables.Item.get(itemId)?.maxStackCount ?? 0;
+        if (max > 1 && currentQty + qty > max) return false;
+
+        const additionalSlots = this.slotsFor(itemId, currentQty + qty) - this.slotsFor(itemId, currentQty);
+        if (additionalSlots > this.remainingCapacity(characterId)) return false;
         if (!this.shop.charge(itemId, qty)) return false;
 
-        this.carriedBy(characterId).add(itemId, qty);
+        carried.add(itemId, qty);
         return true;
     }
 

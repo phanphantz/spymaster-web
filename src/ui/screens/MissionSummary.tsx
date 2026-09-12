@@ -457,8 +457,8 @@ function MissionTeam({
 
                         const carried = occupant ? session.carriedBy(occupant.characterId).entries : [];
                         const capacity = occupant ? runtimeAgent.inventorySize(occupant) : 0;
-                        const carriedTotal = carried.reduce((sum, [, qty]) => sum + qty, 0);
-                        const emptySlots = Math.max(0, capacity - carriedTotal);
+                        const usedSlots = occupant ? session.usedItemSlots(occupant.characterId) : 0;
+                        const emptySlots = Math.max(0, capacity - usedSlots);
 
                         return (
                             <div className="slot-wrap" key={slot.slotId}>

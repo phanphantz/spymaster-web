@@ -319,26 +319,96 @@
 
 /* Kit mode's take on the same strip: one group per assigned teammate — avatar, then their carried
    slots as a drop target for the item grid above — repeating rightward, the whole row centred same
-   as the picker it replaces. */
-.roster.roster--inventory { gap: 28px; }
+   as the picker it replaces. Top-aligned rather than the base `.roster`'s stretch: a stepper or the
+   Discard row makes one agent's group taller than its neighbours, and that extra height belongs
+   below the avatar row, not spread into it. */
+.roster.roster--inventory { gap: 28px; align-items: flex-start; }
 
 .inv-agent {
     display: flex;
-    align-items: center;
-    gap: 10px;
+    flex-direction: column;
+    gap: 6px;
     flex: 0 0 auto;
 }
 
 .inv-agent--focused .agent-card { border-color: var(--cyan); }
 
-.inv-agent__slots {
+.inv-agent__row {
     display: flex;
     align-items: center;
+    gap: 10px;
+}
+
+.inv-agent__slots {
+    display: flex;
+    align-items: flex-start;
     gap: 6px;
 }
 
-/* Bulk-return everything this agent carries — only rendered when there's something to discard. */
-.inv-agent__discard:hover { border-color: var(--danger); color: var(--danger); }
+/* Its own row under the slots, indented past the avatar (130px) plus the row's own gap (10px) so it
+   reads as belonging to the slots above it, not the portrait beside them. */
+.inv-agent__actions {
+    display: flex;
+    margin-left: 140px;
+}
+
+.inv-agent__actions .btn:hover { border-color: var(--danger); color: var(--danger); }
+
+/* One carried item: the icon plus, for a stackable one, the +/- stepper under it. A non-stackable
+   item is just the icon — no wrapper needed, but it's wrapped anyway so every slot in the row lines
+   up on the same grid regardless of which ones grow a stepper. */
+.equip-slot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+}
+
+.equip-slot__stepper {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.equip-slot__step {
+    width: 16px;
+    height: 16px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-size: 11px;
+    line-height: 1;
+}
+
+.equip-slot__step:hover:not(:disabled) { border-color: var(--cyan); color: var(--cyan); }
+.equip-slot__step:disabled { opacity: 0.35; cursor: default; }
+
+.equip-slot__count { font-size: var(--fs-micro); color: var(--steel); min-width: 26px; text-align: center; }
+
+/* Pinned to the icon's own corner rather than beside it, so removing one unit never reflows the
+   rest of the row — the same reason the qty badge sits in a corner instead of after the name. */
+.equip-icon__remove {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 15px;
+    height: 15px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    color: var(--steel);
+    font-size: 10px;
+    line-height: 1;
+}
+
+.equip-icon__remove:hover { border-color: var(--danger); color: var(--danger); background: var(--surface-2); }
 
 .agent-card {
     position: relative;

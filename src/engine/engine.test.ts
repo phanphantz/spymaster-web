@@ -690,6 +690,35 @@ describe('Loadout', () => {
         expect(session.totalPreparationCost()).toBe(flashlightPrice);
     });
 
+    it('stacks a stackable item into one slot up to its maxStackCount, then refuses to add more', async () => {
+        const { tables, rng, roster } = await fixture(5, {
+            Item: [{ itemId: 'toolPicklockSet', maxStackCount: 2 }],
+        });
+        const mission = generateMission(
+            tables.Mission.get('heist_vault')!, tables.Location, rng, 'heist_vault#1', 0,
+        );
+        const inventory = new Inventory([['dollar', 50000]]);
+        const session = new LoadoutSession(mission, tables, roster, inventory, 1);
+        session.assignAgent('slot_stealth', 'agentNoire');
+
+        expect(session.assignItem('agentNoire', 'toolPicklockSet', 1)).toBe(true);
+        expect(session.usedItemSlots('agentNoire')).toBe(1);
+
+        // A second one stacks into the same slot rather than costing a second one.
+        expect(session.assignItem('agentNoire', 'toolPicklockSet', 1)).toBe(true);
+        expect(session.carriedBy('agentNoire').get('toolPicklockSet')).toBe(2);
+        expect(session.usedItemSlots('agentNoire')).toBe(1);
+
+        // The stack is full: a third is refused outright, not spilled into a second slot.
+        expect(session.assignItem('agentNoire', 'toolPicklockSet', 1)).toBe(false);
+        expect(session.carriedBy('agentNoire').get('toolPicklockSet')).toBe(2);
+
+        // Taking one back off frees the room to add one again.
+        session.unassignItem('agentNoire', 'toolPicklockSet', 1);
+        expect(session.assignItem('agentNoire', 'toolPicklockSet', 1)).toBe(true);
+        expect(session.carriedBy('agentNoire').get('toolPicklockSet')).toBe(2);
+    });
+
     it('returns a displaced agent’s items but keeps a moved agent’s', async () => {
         const { tables, rng, inventory, roster } = await fixture();
         const mission = generateMission(

@@ -38,6 +38,7 @@ export function WorldMapScreen(): ReactNode {
     const pickAgent = useGame((state) => state.pickAgent);
     const unassignAgent = useGame((state) => state.unassignAgent);
     const assignItem = useGame((state) => state.assignItem);
+    const unassignItem = useGame((state) => state.unassignItem);
     const discardCarriedItems = useGame((state) => state.discardCarriedItems);
     const shopCharacterId = useGame((state) => state.shopCharacterId);
     const picking = overlay === 'missionSummary';
@@ -121,8 +122,7 @@ export function WorldMapScreen(): ReactNode {
                     {orderedByFocus(session.assignedAgents(), shopCharacterId).map((agent) => {
                         const carried = session.carriedBy(agent.characterId).entries;
                         const capacity = runtimeAgent.inventorySize(agent);
-                        const carriedTotal = carried.reduce((sum, [, qty]) => sum + qty, 0);
-                        const emptySlots = Math.max(0, capacity - carriedTotal);
+                        const emptySlots = Math.max(0, capacity - session.usedItemSlots(agent.characterId));
 
                         return (
                             <div
@@ -131,38 +131,76 @@ export function WorldMapScreen(): ReactNode {
                                 }
                                 key={agent.characterId}
                             >
-                                <AgentCard agent={agent} />
-                                <div
-                                    className="inv-agent__slots"
-                                    onDragOver={(event) => event.preventDefault()}
-                                    onDrop={(event) => {
-                                        event.preventDefault();
-                                        const payload = parseItemDragPayload(event.dataTransfer.getData('text/plain'));
-                                        if (payload) assignItem(agent.characterId, payload.itemId, 1);
-                                    }}
-                                >
-                                    {carried.map(([itemId, qty]) => {
-                                        const name = tables?.Item.get(itemId)?.displayName ?? itemId;
-                                        return <EquipIcon key={itemId} name={name} qty={qty} />;
-                                    })}
-                                    {Array.from({ length: emptySlots }, (_, index) => (
-                                        <span
-                                            key={`empty-${index}`}
-                                            className="equip-icon equip-icon--empty"
-                                            aria-hidden="true"
-                                        />
-                                    ))}
+                                <div className="inv-agent__row">
+                                    <AgentCard agent={agent} />
+                                    <div
+                                        className="inv-agent__slots"
+                                        onDragOver={(event) => event.preventDefault()}
+                                        onDrop={(event) => {
+                                            event.preventDefault();
+                                            const payload = parseItemDragPayload(event.dataTransfer.getData('text/plain'));
+                                            if (payload) assignItem(agent.characterId, payload.itemId, 1);
+                                        }}
+                                    >
+                                        {carried.map(([itemId, qty]) => {
+                                            const item = tables?.Item.get(itemId);
+                                            const name = item?.displayName ?? itemId;
+                                            const maxStack = item?.maxStackCount ?? 0;
+
+                                            return (
+                                                <div className="equip-slot" key={itemId}>
+                                                    <EquipIcon
+                                                        name={name}
+                                                        qty={qty}
+                                                        onRemove={() => unassignItem(agent.characterId, itemId, 1)}
+                                                    />
+                                                    {maxStack > 1 ? (
+                                                        <div className="equip-slot__stepper">
+                                                            <button
+                                                                type="button"
+                                                                className="equip-slot__step"
+                                                                onClick={() => unassignItem(agent.characterId, itemId, 1)}
+                                                                aria-label={`One fewer ${name}`}
+                                                            >
+                                                                −
+                                                            </button>
+                                                            <span className="equip-slot__count">
+                                                                {qty}/{maxStack}
+                                                            </span>
+                                                            <button
+                                                                type="button"
+                                                                className="equip-slot__step"
+                                                                disabled={qty >= maxStack}
+                                                                onClick={() => assignItem(agent.characterId, itemId, 1)}
+                                                                aria-label={`One more ${name}`}
+                                                            >
+                                                                +
+                                                            </button>
+                                                        </div>
+                                                    ) : null}
+                                                </div>
+                                            );
+                                        })}
+                                        {Array.from({ length: emptySlots }, (_, index) => (
+                                            <span
+                                                key={`empty-${index}`}
+                                                className="equip-icon equip-icon--empty"
+                                                aria-hidden="true"
+                                            />
+                                        ))}
+                                    </div>
                                 </div>
                                 {carried.length > 0 ? (
-                                    <button
-                                        type="button"
-                                        className="icon-btn inv-agent__discard"
-                                        onClick={() => setDiscardTarget(agent)}
-                                        aria-label={`Discard everything ${runtimeAgent.displayName(agent)} is carrying`}
-                                        title="Discard all items"
-                                    >
-                                        🗑
-                                    </button>
+                                    <div className="inv-agent__actions">
+                                        <button
+                                            type="button"
+                                            className="btn btn--small btn--quiet"
+                                            onClick={() => setDiscardTarget(agent)}
+                                            aria-label={`Discard everything ${runtimeAgent.displayName(agent)} is carrying`}
+                                        >
+                                            🗑 Discard all
+                                        </button>
+                                    </div>
                                 ) : null}
                             </div>
                         );

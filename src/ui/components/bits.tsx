@@ -54,20 +54,24 @@ export function initials(name: string): string {
 
 /**
  * An item, standing in as a small monogram tile since nothing in the data has real per-item icons.
- * Used both for the Shop page's "equipped" strip (clickable, to unequip) and a filled slot's compact
- * preview of what its agent carries (not clickable — the pencil is what opens the real page for that).
+ * Used both for the Kit page's own inventory row (`onRemove` set, a "−" pinned to its own corner
+ * pulls one unit back off the agent) and a filled slot's compact mini preview above the team grid
+ * (neither `onClick` nor `onRemove` set — the pencil is what opens the real page for that).
  */
 export function EquipIcon({
     name,
     qty,
     mini,
     onClick,
+    onRemove,
     title,
 }: {
     name: string;
     qty?: number;
     mini?: boolean;
     onClick?: () => void;
+    /** Renders a small "−" in the icon's own top-right corner that removes one unit on click. */
+    onRemove?: () => void;
     title?: string;
 }): ReactNode {
     const className = mini ? 'equip-icon equip-icon--mini' : 'equip-icon';
@@ -76,6 +80,20 @@ export function EquipIcon({
         <>
             <span className="equip-icon__glyph">{initials(name)}</span>
             {qty && qty > 1 ? <span className="equip-icon__qty">×{qty}</span> : null}
+            {onRemove ? (
+                <button
+                    type="button"
+                    className="equip-icon__remove"
+                    onClick={(event) => {
+                        event.stopPropagation();
+                        onRemove();
+                    }}
+                    aria-label={`Remove one ${name}`}
+                    title={`Remove one ${name}`}
+                >
+                    −
+                </button>
+            ) : null}
         </>
     );
 
