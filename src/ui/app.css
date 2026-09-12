@@ -697,7 +697,11 @@
     bottom: 0;
     z-index: 0;
     background-size: cover;
-    background-position: top center;
+    /* Anchors the source image's own bottom (feet/hem) to the box's bottom — same as the slot's own
+       floor, since this box is bottom: 0 against it — rather than "top center", which pinned the
+       image's top to the box's top and let `cover` crop the bottom off instead: on a box this much
+       taller than the card, that meant the visible art never got past head and shoulders. */
+    background-position: bottom center;
     pointer-events: none;
     opacity: 0;
     animation: agent-backdrop-in 500ms ease-out forwards;
