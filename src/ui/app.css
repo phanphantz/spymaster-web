@@ -506,7 +506,7 @@
    the tooltip's own corners regardless of the hex's padding. */
 .agent-tooltip__badge {
     position: absolute;
-    left: 0;
+    left: 4px;
     display: inline-flex;
     align-items: center;
     gap: 3px;
@@ -515,8 +515,8 @@
     pointer-events: none;
 }
 
-.agent-tooltip__badge--hp { top: 0; }
-.agent-tooltip__badge--inv { bottom: 0; }
+.agent-tooltip__badge--hp { top: 4px; }
+.agent-tooltip__badge--inv { bottom: 4px; }
 
 .agent-tooltip__info {
     flex: 1;
