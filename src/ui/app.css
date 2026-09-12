@@ -1157,31 +1157,36 @@
 .slot--replaceable { border-color: var(--money); border-style: dashed; }
 .slot--replaceable .slot__filled { cursor: pointer; }
 
+/* Only an empty slot renders this — see MissionTeam's own comment. */
 .slot__head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 10px; }
 
-/* The 'x' (clear) on an occupied slot, pinned to its top-right corner. */
+/* The "−" (clear) on an occupied slot, pinned to its top-right corner. */
 .slot__actions {
     position: absolute;
     top: 8px;
     right: 8px;
     display: flex;
     gap: 4px;
+    z-index: 1;
 }
 
+/* Same subtle corner-circle convention as a carried item's own remove (.equip-icon__remove) —
+ * present but out of the way until the pointer is actually on it. */
 .slot__remove {
-    width: 22px;
-    height: 22px;
+    width: 15px;
+    height: 15px;
     display: grid;
     place-items: center;
     padding: 0;
-    background: transparent;
+    background: var(--surface);
     border: 1px solid var(--line);
+    border-radius: 50%;
     color: var(--steel);
-    font-size: var(--fs-micro);
-    border-radius: var(--radius);
+    font-size: 10px;
+    line-height: 1;
 }
 
-.slot__remove:hover { border-color: var(--danger); color: var(--danger); }
+.slot__remove:hover { border-color: var(--danger); color: var(--danger); background: var(--surface-2); }
 
 /* An empty slot is itself the tap target — select an agent below, then tap here. Fills whatever
    height .slot__head leaves in the fixed-height .slot rather than sizing off its own padding. */

@@ -410,8 +410,10 @@ function LocationBlock({ mission }: { mission: LiveMission }): ReactNode {
  *
  * The real, interactive Loadout — pick an agent from the roster strip below the modal, then tap a
  * slot, or tap an empty slot first and pick the agent after; either order lands the same placement.
- * An occupied slot clears with its 'x'. What that agent carries lives on its own page, opened by
- * tapping the kit preview floating above the slot — the slot itself has no room for a kit list.
+ * An occupied slot clears with the subtle "−" pinned to its corner — same convention as a carried
+ * item's own corner remove — and its role/optional label disappears once filled, handing that room
+ * to the card itself. What that agent carries lives on its own page, opened by tapping the kit
+ * preview floating above the slot — the slot itself has no room for a kit list.
  */
 function MissionTeam({
     session,
@@ -497,12 +499,17 @@ function MissionTeam({
                                         if (payload) onDropAgent(slot.slotId, payload.characterId, payload.fromSlotId);
                                     }}
                                 >
-                                    <div className="slot__head">
-                                        <span className="micro">
-                                            {slot.slotId.replace(/^slot_/, '')}
-                                            {slot.isMandatory ? '' : ' · optional'}
-                                        </span>
-                                    </div>
+                                    {/* Only an empty slot needs to say what it wants — once it's filled, the
+                                        agent card itself is the answer, and hiding this row hands its
+                                        space to the card instead. */}
+                                    {occupant ? null : (
+                                        <div className="slot__head">
+                                            <span className="micro">
+                                                {slot.slotId.replace(/^slot_/, '')}
+                                                {slot.isMandatory ? '' : ' · optional'}
+                                            </span>
+                                        </div>
+                                    )}
 
                                     {occupant ? (
                                         <div
@@ -520,7 +527,7 @@ function MissionTeam({
                                                     }}
                                                     aria-label={`Remove ${runtimeAgent.displayName(occupant)}`}
                                                 >
-                                                    ✕
+                                                    −
                                                 </button>
                                             </div>
                                             <AgentCard agent={occupant} size="sm" draggable dragFromSlotId={slot.slotId} />
