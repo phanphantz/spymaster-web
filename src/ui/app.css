@@ -1207,9 +1207,10 @@
     overflow: hidden;
 }
 
-/* No padding once filled — the agent card and hexagon go flush to the slot's own edges instead of
-   sitting inset from them. Empty stays padded: .slot__empty draws its own dashed inset box. */
-.slot--filled { border-color: var(--cyan); padding: 0; }
+/* A tighter inset than the base .slot padding (14px) once filled — enough room that the card and
+   hexagon read as sitting inside the slot instead of bleeding to its own edges, without eating as
+   much of the fixed 126px height as the base padding would. */
+.slot--filled { border-color: var(--cyan); padding: 8px; }
 .slot--needed { border-color: var(--danger); }
 /* The slot picked as the assignment target — either flow order, empty or already occupied. */
 .slot--picking { border-color: var(--cyan); border-style: dashed; }
@@ -1218,7 +1219,7 @@
 .slot--replaceable .slot__filled { cursor: pointer; }
 
 /* Only an empty slot renders this — see MissionTeam's own comment. .slot keeps its base padding
-   for that case; .slot--filled (never applied here) is what zeroes it out. */
+   for that case; .slot--filled (never applied here) uses its own, tighter inset instead. */
 .slot__head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 10px; }
 
 /* Hangs off the slot-wrap's own corner (not .slot's — that clips at overflow: hidden), same
@@ -1264,13 +1265,16 @@
 
 .slot__empty:hover { border-color: var(--cyan); color: var(--cyan); }
 
-/* Occupied, edge to edge now .slot--filled has zeroed the padding: the portrait fills the slot's
-   full height on the left, sized only by its own 2:3 aspect ratio (not stretched wide) — the
-   hexagon takes whatever width that leaves on the right, also full height. */
+/* Occupied: the portrait sits inset from the slot's own edges (its own border/radius intact, not
+   flush-merged with the slot's) rather than bleeding edge to edge — full height of that inset
+   content box, sized only by its own 2:3 aspect ratio, not stretched wide. The hexagon gets the
+   exact same content-box height, so the two line up top and bottom instead of the hexagon reading
+   as low or off-centre against the card next to it. */
 .slot__filled {
     flex: 1;
     display: flex;
     align-items: stretch;
+    gap: 8px;
     min-width: 0;
 }
 
@@ -1278,15 +1282,11 @@
     width: auto;
     height: 100%;
     flex: 0 0 auto;
-    border-top: 0;
-    border-bottom: 0;
-    border-left: 0;
-    border-radius: 0;
 }
 
 .slot__filled .agent-card__name {
-    padding: 2px 4px;
-    font-size: 8px;
+    padding: 3px 5px;
+    font-size: 7px;
     letter-spacing: 0;
 }
 
