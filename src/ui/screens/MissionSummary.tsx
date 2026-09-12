@@ -17,7 +17,7 @@ import { STAT_IDS } from '../../engine/types';
 import type { GameTables, StatId } from '../../engine/types';
 import type { LoadoutSession } from '../../engine/loadout';
 import type { LiveMission } from '../../engine/missionFeed';
-import { previewReward } from '../../engine/missionPreview';
+import { previewReward, previewLikelihood } from '../../engine/missionPreview';
 import { ShopScreen } from './ShopScreen';
 
 /** Per-stat sum across a set of agents — the team's combined hexagon reads this, not any one agent's. */
@@ -27,6 +27,41 @@ function combinedStats(agents: readonly RuntimeAgent[]): Map<StatId, number> {
         totals.set(stat, agents.reduce((sum, agent) => sum + runtimeAgent.effectiveStats(agent).get(stat), 0));
     }
     return totals;
+}
+
+const LIKELIHOOD_LABEL: Record<string, string> = { high: 'High', medium: 'Medium', low: 'Low' };
+
+/**
+ * The planning-status chip pinned in the modal's own top-right corner (`Modal`'s `corner` prop) —
+ * one fixture shared by the Mission page and the Kit page, since both are just `children` swapped
+ * inside the same Modal instance. Reads live off the session on every render, so dragging an item
+ * in Kit mode updates it immediately, with no separate refresh path to keep in sync.
+ *
+ * Success is Low/Medium/High, not a percentage — `missionOutcomeResolver` computes none, by design
+ * (see its own docs) — this just relabels whichever Outcome tier the current Loadout would clear
+ * right now. Cost is the total already charged for what is presently assigned, i.e. what cancelling
+ * the whole Loadout would refund.
+ */
+function PlanningStatus({ session }: { session: LoadoutSession }): ReactNode {
+    const likelihood = previewLikelihood(session);
+    const cost = session.totalPreparationCost();
+
+    return (
+        <div className="planning-status">
+            <span className="planning-status__item">
+                <span className="planning-status__label">Success</span>
+                <span className={`planning-status__value planning-status__value--${likelihood ?? 'none'}`}>
+                    {likelihood ? LIKELIHOOD_LABEL[likelihood] : '—'}
+                </span>
+            </span>
+            <span className="planning-status__item">
+                <span className="planning-status__label">Cost</span>
+                <span className="planning-status__value planning-status__value--cost">
+                    ${cost.toLocaleString('en-US')}
+                </span>
+            </span>
+        </div>
+    );
 }
 
 /**
@@ -93,6 +128,7 @@ export function MissionSummary(): ReactNode {
             kit={inventoryMode}
             label={inventoryMode ? 'Kit' : (mission.data.displayName ?? 'Mission')}
             hideClose
+            corner={<PlanningStatus session={session} />}
         >
             <div className="modal__body">
                 {inventoryMode ? (

@@ -179,6 +179,17 @@ export class LoadoutSession {
         return true;
     }
 
+    /** What everyone assigned is carrying has cost so far — the sum unassigning it all would refund. */
+    totalPreparationCost(): number {
+        let total = 0;
+        for (const characterId of this.assigned.values()) {
+            for (const [itemId, qty] of this.carriedBy(characterId).entries) {
+                total += this.shop.priceOf(itemId, qty)?.qty ?? 0;
+            }
+        }
+        return total;
+    }
+
     /** Mandatory slots still empty. Confirming is blocked while this is non-empty and nothing else. */
     get missingMandatorySlots(): LoadoutSlot[] {
         return this.slots.filter((slot) => slot.isMandatory && !this.assigned.has(slot.slotId));

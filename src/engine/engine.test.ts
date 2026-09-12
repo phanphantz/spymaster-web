@@ -14,6 +14,7 @@ import { LoadoutSession } from './loadout';
 import { MissionFeedRuntime, MissionFeedState, generateMission } from './missionFeed';
 import { deploy } from './missionRun';
 import * as resolver from './missionOutcomeResolver';
+import { previewLikelihood } from './missionPreview';
 import { createRng, type Rng } from './rng';
 import * as runtimeAgent from './runtimeAgent';
 import { Shop } from './shop';
@@ -669,6 +670,26 @@ describe('Loadout', () => {
         expect(inventory.get('dollar')).toBe(before);
     });
 
+    it('totals the preparation cost across every assigned agent', async () => {
+        const { tables, rng, inventory, roster } = await fixture();
+        const mission = generateMission(
+            tables.Mission.get('heist_vault')!, tables.Location, rng, 'heist_vault#1', 0,
+        );
+        const session = new LoadoutSession(mission, tables, roster, inventory, 1);
+        const picklockPrice = session.shop.priceOf('toolPicklockSet')!.qty!;
+        const flashlightPrice = session.shop.priceOf('toolFlashlight')!.qty!;
+
+        session.assignAgent('slot_stealth', 'agentNoire');
+        session.assignAgent('slot_hacker', 'agentAngel');
+        session.assignItem('agentNoire', 'toolPicklockSet', 1);
+        session.assignItem('agentAngel', 'toolFlashlight', 1);
+
+        expect(session.totalPreparationCost()).toBe(picklockPrice + flashlightPrice);
+
+        session.unassignItem('agentNoire', 'toolPicklockSet', 1);
+        expect(session.totalPreparationCost()).toBe(flashlightPrice);
+    });
+
     it('returns a displaced agent’s items but keeps a moved agent’s', async () => {
         const { tables, rng, inventory, roster } = await fixture();
         const mission = generateMission(
@@ -724,6 +745,9 @@ describe('deploying a mission', () => {
         session.assignAgent('slot_hacker', 'agentAngel');
         session.assignItem('agentNoire', 'toolPicklockSet', 1);
 
+        // A live preview of the same tier the deploy below actually resolves to.
+        expect(previewLikelihood(session)).toBe('high');
+
         const result = deploy({ session, tables, inventory, rng })!;
 
         expect(result.isSuccess).toBe(true);
@@ -738,6 +762,8 @@ describe('deploying a mission', () => {
         session.assignAgent('slot_stealth', 'agentNoire');
         session.assignAgent('slot_hacker', 'agentAngel');
         // No picklock: everything else about this loadout is right.
+
+        expect(previewLikelihood(session)).toBe('low');
 
         const result = deploy({ session, tables, inventory, rng })!;
 

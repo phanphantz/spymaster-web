@@ -598,6 +598,48 @@
     z-index: 1;
 }
 
+/* Same corner the close button sits in — the two are never shown together (see the `corner` prop's
+   own comment) — so the planning status reads as one fixture of the modal frame itself, not
+   something either the Mission page or the Kit page owns, no matter which is filling `children`. */
+.modal__corner {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    z-index: 1;
+}
+
+.planning-status {
+    display: flex;
+    align-items: stretch;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.planning-status__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 4px 10px;
+    background: var(--surface-2);
+}
+
+.planning-status__label {
+    font-size: var(--fs-micro);
+    color: var(--steel);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.planning-status__value { font-size: var(--fs-meta); }
+.planning-status__value--high { color: var(--money); }
+.planning-status__value--medium { color: var(--cyan); }
+.planning-status__value--low { color: var(--danger); }
+.planning-status__value--cost { color: var(--money); }
+
 /* Reserves the scrollbar's width whether or not content actually overflows — otherwise Details
    (short, no scroll) and Assignment (up to 4 slots, usually does scroll) render at different usable
    widths on a classic (non-overlay) scrollbar, and the whole panel visibly shifts switching tabs. */
@@ -734,10 +776,14 @@
 /* The always-visible right rail: team stats, whether or not any slot is filled yet. A plain
    border rather than a second `.summary__divider` — the notification dot only ever marked the one
    rule, between the photo and the briefing. */
+/* padding-top clears the planning-status chip pinned at the modal's top-right (`.modal__corner`) —
+   this is the column it always floats over, in both the Mission and the Kit page, so the clearance
+   belongs here once rather than duplicated into whichever child happens to be on top. */
 .summary__stats {
     display: flex;
     flex-direction: column;
     min-height: 0;
+    padding-top: 52px;
     border-left: 1px solid var(--line);
 }
 
@@ -952,7 +998,7 @@
    like a legend tab — same square-item family as a UISharpInfoBox read-out, just boxed. */
 .reward-box {
     position: relative;
-    margin: 20px 16px 0;
+    margin: 0 16px 0;
     border: 1px solid var(--line);
     border-radius: var(--radius);
 }
@@ -1315,7 +1361,7 @@ button.equip-icon:hover { border-color: var(--danger); color: var(--danger); }
     min-height: 0;
     display: flex;
     flex-direction: column;
-    padding: 20px 20px 0;
+    padding: 0 20px 0;
 }
 
 .inv-detail--empty { align-items: center; justify-content: center; padding: 20px; }

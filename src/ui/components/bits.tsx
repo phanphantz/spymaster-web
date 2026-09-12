@@ -526,6 +526,7 @@ export function Modal({
     kit,
     label,
     hideClose,
+    corner,
 }: {
     children: ReactNode;
     onClose: () => void;
@@ -535,6 +536,10 @@ export function Modal({
     kit?: boolean;
     label: string;
     hideClose?: boolean;
+    /** Sits in the same top-right corner the close button would — only ever paired with
+     *  `hideClose`, so there is nothing to collide with. One spot, painted once, is what makes it
+     *  read as the same fixture whichever of this Modal's own screens is currently filling `children`. */
+    corner?: ReactNode;
 }): ReactNode {
     const modalClassName = ['modal', wide ? 'modal--wide' : '', wide && kit ? 'modal--kit' : '']
         .filter(Boolean)
@@ -559,6 +564,7 @@ export function Modal({
                         ✕
                     </button>
                 )}
+                {corner ? <div className="modal__corner">{corner}</div> : null}
                 {children}
             </div>
         </div>
