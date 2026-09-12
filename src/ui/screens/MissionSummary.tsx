@@ -18,13 +18,7 @@ import type { GameTables, StatId } from '../../engine/types';
 import type { LoadoutSession } from '../../engine/loadout';
 import type { LiveMission } from '../../engine/missionFeed';
 import { previewReward } from '../../engine/missionPreview';
-
-/** Every agent currently occupying a slot, in slot order. */
-function assignedAgentsOf(session: LoadoutSession): RuntimeAgent[] {
-    return session.slots
-        .map((slot) => session.agentIn(slot.slotId))
-        .filter((agent): agent is RuntimeAgent => agent !== undefined);
-}
+import { ShopScreen } from './ShopScreen';
 
 /** Per-stat sum across a set of agents — the team's combined hexagon reads this, not any one agent's. */
 function combinedStats(agents: readonly RuntimeAgent[]): Map<StatId, number> {
@@ -57,8 +51,8 @@ export function MissionSummary(): ReactNode {
     const tables = useGame((state) => state.tables);
     const session = useGame((state) => state.session);
     const close = useGame((state) => state.closeOverlay);
-    const decline = useGame((state) => state.declineMission);
     const deploy = useGame((state) => state.deployMission);
+    const decline = useGame((state) => state.declineMission);
     const unassignAgent = useGame((state) => state.unassignAgent);
     const discardCarriedItems = useGame((state) => state.discardCarriedItems);
     const pickingAgentId = useGame((state) => state.pickingAgentId);
@@ -70,6 +64,8 @@ export function MissionSummary(): ReactNode {
     const cancelSwap = useGame((state) => state.cancelSwap);
     const failure = useGame((state) => state.assignmentFailure);
     const openShop = useGame((state) => state.openShop);
+    const overlay = useGame((state) => state.overlay);
+    const closeShop = useGame((state) => state.closeShop);
 
     const [confirmingDecline, setConfirmingDecline] = useState(false);
     const [confirmingClose, setConfirmingClose] = useState(false);
@@ -77,10 +73,11 @@ export function MissionSummary(): ReactNode {
 
     if (!session || !tables) return null;
 
+    const inventoryMode = overlay === 'shop';
     const mission = session.mission;
     const canDecline = mission.data.isDeclinable !== false;
     const hasAssignments = session.assignments.size > 0;
-    const assigned = assignedAgentsOf(session);
+    const assigned = session.assignedAgents();
 
     const keywordTerms = [
         mission.location?.displayName,
@@ -93,17 +90,39 @@ export function MissionSummary(): ReactNode {
 
     return (
         <Modal
-            onClose={() => (hasAssignments ? setConfirmingClose(true) : close())}
+            onClose={() => (inventoryMode ? closeShop() : hasAssignments ? setConfirmingClose(true) : close())}
             wide
-            label={mission.data.displayName ?? 'Mission'}
+            label={inventoryMode ? 'Kit' : (mission.data.displayName ?? 'Mission')}
+            hideClose
         >
             <div className="modal__body">
+                {inventoryMode ? (
+                    <ShopScreen session={session} tables={tables} onDone={closeShop} />
+                ) : (
                 <div className="summary">
                     <div className="summary__left">
                         <div className="summary__photo">NO IMAGE</div>
                         <div className="summary__lower-anchor">
                             <hr className="summary__dashrule" />
                             <LocationBlock mission={mission} />
+                            <div className="summary__actions summary__actions--split">
+                                <button
+                                    type="button"
+                                    className="btn btn--quiet"
+                                    onClick={() => (hasAssignments ? setConfirmingClose(true) : close())}
+                                >
+                                    Back
+                                </button>
+                                <button
+                                    type="button"
+                                    className="btn btn--quiet"
+                                    onClick={() => setConfirmingDecline(true)}
+                                    disabled={!canDecline}
+                                    title={canDecline ? undefined : 'This client does not take no for an answer'}
+                                >
+                                    Decline
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -161,36 +180,20 @@ export function MissionSummary(): ReactNode {
                         <div className="summary__lower-anchor">
                             <hr className="summary__dashrule" />
                             <StatGaugeList agents={assigned} tables={tables} />
+                            <div className="summary__actions summary__actions--right">
+                                <button
+                                    type="button"
+                                    className="btn btn--primary"
+                                    onClick={deploy}
+                                    disabled={!session.canConfirm}
+                                >
+                                    Confirm
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            {/* Decline, status and Deploy grouped in one tight cluster at the right edge — not
-                pinned to opposite corners, which just left a wide empty strip between them. */}
-            <div className="modal__footer">
-                <button
-                    type="button"
-                    className="btn btn--quiet"
-                    onClick={() => setConfirmingDecline(true)}
-                    disabled={!canDecline}
-                    title={canDecline ? undefined : 'This client does not take no for an answer'}
-                >
-                    Decline
-                </button>
-                <span className="meta">
-                    {session.canConfirm
-                        ? 'Ready to deploy'
-                        : `Fill ${session.missingMandatorySlots.length} more slot(s)`}
-                </span>
-                <button
-                    type="button"
-                    className="btn btn--primary"
-                    onClick={deploy}
-                    disabled={!session.canConfirm}
-                >
-                    Deploy
-                </button>
+                )}
             </div>
 
             <ConfirmDialog
@@ -462,7 +465,6 @@ function MissionTeam({
 }): ReactNode {
     return (
         <div className="summary__team">
-            <div className="summary__label">Team</div>
             <div className="slot-grid">
                 {session.slots.map((slot) => {
                         const occupant = session.agentIn(slot.slotId);

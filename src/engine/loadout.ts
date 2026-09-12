@@ -74,6 +74,13 @@ export class LoadoutSession {
         return characterId ? this.roster.find((agent) => agent.characterId === characterId) : undefined;
     }
 
+    /** Everyone currently occupying a slot, in slot order. */
+    assignedAgents(): RuntimeAgent[] {
+        return this.slots
+            .map((slot) => this.agentIn(slot.slotId))
+            .filter((agent): agent is RuntimeAgent => agent !== undefined);
+    }
+
     slotOf(characterId: string): string | undefined {
         for (const [slotId, assigned] of this.assigned) {
             if (assigned === characterId) return slotId;

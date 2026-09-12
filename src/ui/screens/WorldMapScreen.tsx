@@ -4,7 +4,17 @@ import { useGame } from '../../store/gameStore';
 import * as runtimeAgent from '../../engine/runtimeAgent';
 import { previewReward, slotCountFor } from '../../engine/missionPreview';
 import type { LiveMission } from '../../engine/missionFeed';
-import { AgentCard, ConfirmDialog, DifficultyPips, Money, parseAgentDragPayload } from '../components/bits';
+import { AgentCard, ConfirmDialog, DifficultyPips, EquipIcon, Money, parseAgentDragPayload, parseItemDragPayload } from '../components/bits';
+import type { RuntimeAgent } from '../../engine/runtimeAgent';
+
+/** The focused agent (whichever slot pencil opened Kit mode) first, everyone else in slot order —
+ *  a hint at where a drop lands by default, not a restriction on who else can receive one. */
+function orderedByFocus(agents: readonly RuntimeAgent[], focusCharacterId: string | undefined): RuntimeAgent[] {
+    if (!focusCharacterId) return [...agents];
+    const focused = agents.filter((agent) => agent.characterId === focusCharacterId);
+    const rest = agents.filter((agent) => agent.characterId !== focusCharacterId);
+    return [...focused, ...rest];
+}
 
 /**
  * The World Map, as a list.
@@ -27,7 +37,10 @@ export function WorldMapScreen(): ReactNode {
     const pickingAgentId = useGame((state) => state.pickingAgentId);
     const pickAgent = useGame((state) => state.pickAgent);
     const unassignAgent = useGame((state) => state.unassignAgent);
+    const assignItem = useGame((state) => state.assignItem);
+    const shopCharacterId = useGame((state) => state.shopCharacterId);
     const picking = overlay === 'missionSummary';
+    const inventoryMode = overlay === 'shop';
 
     const [decliningMission, setDecliningMission] = useState<LiveMission>();
 
@@ -98,36 +111,81 @@ export function WorldMapScreen(): ReactNode {
             {/* Pinned to the bottom of the screen at all times — including while the mission modal
                 sits on top of it, so it doubles as that modal's agent picker rather than the modal
                 carrying its own copy of the same list. Dropping a slot's own agent card back here
-                (fromSlotId set) unassigns them — the QoL mirror of dragging one out to a slot. */}
-            <div
-                className="roster"
-                onDragOver={(event) => {
-                    if (picking) event.preventDefault();
-                }}
-                onDrop={(event) => {
-                    if (!picking) return;
-                    event.preventDefault();
-                    const payload = parseAgentDragPayload(event.dataTransfer.getData('text/plain'));
-                    if (payload?.fromSlotId) unassignAgent(payload.fromSlotId);
-                }}
-            >
-                {roster.length === 0 ? (
-                    <span className="meta">No agents employed.</span>
-                ) : availableRoster.length === 0 ? (
-                    <span className="meta dim">Everyone's already assigned.</span>
-                ) : (
-                    availableRoster.map((agent) => (
-                        <AgentCard
-                            key={agent.characterId}
-                            agent={agent}
-                            selected={picking && agent.characterId === pickingAgentId}
-                            disabled={picking && !runtimeAgent.isAvailable(agent)}
-                            onClick={picking ? () => pickAgent(agent.characterId) : undefined}
-                            draggable={picking && runtimeAgent.isAvailable(agent)}
-                        />
-                    ))
-                )}
-            </div>
+                (fromSlotId set) unassigns them — the QoL mirror of dragging one out to a slot.
+                Kit mode repurposes this same strip, same height, as the drop targets for the item
+                grid above: one row per assigned teammate, avatar then their carried slots. */}
+            {inventoryMode && session ? (
+                <div className="roster roster--inventory">
+                    {orderedByFocus(session.assignedAgents(), shopCharacterId).map((agent) => {
+                        const carried = session.carriedBy(agent.characterId).entries;
+                        const capacity = runtimeAgent.inventorySize(agent);
+                        const carriedTotal = carried.reduce((sum, [, qty]) => sum + qty, 0);
+                        const emptySlots = Math.max(0, capacity - carriedTotal);
+
+                        return (
+                            <div
+                                className={
+                                    agent.characterId === shopCharacterId ? 'inv-agent inv-agent--focused' : 'inv-agent'
+                                }
+                                key={agent.characterId}
+                            >
+                                <AgentCard agent={agent} />
+                                <div
+                                    className="inv-agent__slots"
+                                    onDragOver={(event) => event.preventDefault()}
+                                    onDrop={(event) => {
+                                        event.preventDefault();
+                                        const payload = parseItemDragPayload(event.dataTransfer.getData('text/plain'));
+                                        if (payload) assignItem(agent.characterId, payload.itemId, 1);
+                                    }}
+                                >
+                                    {carried.map(([itemId, qty]) => {
+                                        const name = tables?.Item.get(itemId)?.displayName ?? itemId;
+                                        return <EquipIcon key={itemId} name={name} qty={qty} />;
+                                    })}
+                                    {Array.from({ length: emptySlots }, (_, index) => (
+                                        <span
+                                            key={`empty-${index}`}
+                                            className="equip-icon equip-icon--empty"
+                                            aria-hidden="true"
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+            ) : (
+                <div
+                    className="roster"
+                    onDragOver={(event) => {
+                        if (picking) event.preventDefault();
+                    }}
+                    onDrop={(event) => {
+                        if (!picking) return;
+                        event.preventDefault();
+                        const payload = parseAgentDragPayload(event.dataTransfer.getData('text/plain'));
+                        if (payload?.fromSlotId) unassignAgent(payload.fromSlotId);
+                    }}
+                >
+                    {roster.length === 0 ? (
+                        <span className="meta">No agents employed.</span>
+                    ) : availableRoster.length === 0 ? (
+                        <span className="meta dim">Everyone's already assigned.</span>
+                    ) : (
+                        availableRoster.map((agent) => (
+                            <AgentCard
+                                key={agent.characterId}
+                                agent={agent}
+                                selected={picking && agent.characterId === pickingAgentId}
+                                disabled={picking && !runtimeAgent.isAvailable(agent)}
+                                onClick={picking ? () => pickAgent(agent.characterId) : undefined}
+                                draggable={picking && runtimeAgent.isAvailable(agent)}
+                            />
+                        ))
+                    )}
+                </div>
+            )}
 
             <ConfirmDialog
                 open={Boolean(decliningMission)}

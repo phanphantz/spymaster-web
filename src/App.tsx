@@ -5,7 +5,6 @@ import { DataPanel } from './ui/dev/DataPanel';
 import { EmploymentScreen } from './ui/screens/EmploymentScreen';
 import { MissionResult } from './ui/screens/MissionResult';
 import { MissionSummary } from './ui/screens/MissionSummary';
-import { ShopScreen } from './ui/screens/ShopScreen';
 import { TopBar, WorldMapScreen } from './ui/screens/WorldMapScreen';
 
 export function App(): ReactNode {
@@ -46,11 +45,11 @@ export function App(): ReactNode {
             ) : (
                 <>
                     <TopBar />
-                    {overlay === 'shop' ? <ShopScreen /> : <WorldMapScreen />}
+                    <WorldMapScreen />
                 </>
             )}
 
-            {overlay === 'missionSummary' ? <MissionSummary /> : null}
+            {overlay === 'missionSummary' || overlay === 'shop' ? <MissionSummary /> : null}
             {overlay === 'result' ? <MissionResult /> : null}
 
             {import.meta.env.DEV ? <DataPanel /> : null}

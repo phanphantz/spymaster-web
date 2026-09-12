@@ -1,10 +1,10 @@
 import { useState, type ReactNode } from 'react';
 import { useGame } from '../../store/gameStore';
-import * as runtimeAgent from '../../engine/runtimeAgent';
 import { describePurchaseFailure } from '../../engine/shop';
-import { EquipIcon, StatAbbr } from '../components/bits';
+import { StatAbbr, initials } from '../components/bits';
 import { STAT_IDS } from '../../engine/types';
-import type { ItemData } from '../../engine/types';
+import type { GameTables, ItemData } from '../../engine/types';
+import type { LoadoutSession } from '../../engine/loadout';
 
 /** camelCase id → Title Case label, for the subtype row — there's no vocabulary tab for these. */
 function humanize(id: string): string {
@@ -31,34 +31,34 @@ function describeEffects(item: ItemData): ReactNode {
 }
 
 /**
- * The Kit page: buy and equip in one catalog, focused on whichever agent's pencil opened it.
+ * The Kit page: browse and buy the whole catalog, then drag what you own onto whoever's carrying it
+ * — the agent inventory row below the modal (`WorldMapScreen`'s roster strip, switched into that
+ * mode for as long as this is open). There is no one focused agent here the way the old per-agent
+ * Shop had: any assigned teammate can receive a drop, so the catalog stays one shared browse instead
+ * of a tab per agent.
  *
- * Splitting Shop from Inventory never earned its keep — an item is either owned or not, and the
- * owned count on each row says which; there is nothing a second tab was showing that this doesn't.
- * Type sits on the left and subtype across the top, both authored on the Item sheet, which sorts a
- * few hundred rows into something browsable without a search box. Done returns to the mission modal
- * on whichever tab was open when the pencil was tapped — Assignment, always, since that's the only
- * place the pencil lives.
+ * Mirrors the Mission UI's own three-column grid (`.summary`) so switching into Kit mode reads as
+ * the same modal changing what fills its columns, not a different screen replacing it: type sits in
+ * the left rail exactly where the photo/location used to be, subtype and the grid take the middle
+ * where the briefing did, and the always-visible right rail becomes one item's detail instead of the
+ * team's combined stats.
  */
-export function ShopScreen(): ReactNode {
+export function ShopScreen({
+    session,
+    tables,
+    onDone,
+}: {
+    session: LoadoutSession;
+    tables: GameTables;
+    onDone: () => void;
+}): ReactNode {
     useGame((state) => state.version);
-
-    const session = useGame((state) => state.session);
-    const tables = useGame((state) => state.tables);
-    const roster = useGame((state) => state.roster);
-    const shopCharacterId = useGame((state) => state.shopCharacterId);
-    const closeShop = useGame((state) => state.closeShop);
     const purchase = useGame((state) => state.purchaseItem);
-    const assignItem = useGame((state) => state.assignItem);
-    const unassignItem = useGame((state) => state.unassignItem);
 
     const [failure, setFailure] = useState('');
     const [typeId, setTypeId] = useState<string>();
     const [subType, setSubType] = useState<string>();
-
-    if (!session || !tables || !shopCharacterId) return null;
-    const agent = roster.find((candidate) => candidate.characterId === shopCharacterId);
-    if (!agent) return null;
+    const [selectedItemId, setSelectedItemId] = useState<string>();
 
     const items = session.shop.availableItems();
 
@@ -72,8 +72,7 @@ export function ShopScreen(): ReactNode {
     );
     const filtered = subType ? itemsOfType.filter((item) => item.subType === subType) : itemsOfType;
 
-    const carried = session.carriedBy(shopCharacterId).entries;
-    const capacity = runtimeAgent.inventorySize(agent);
+    const selectedItem = selectedItemId ? tables.Item.get(selectedItemId) : undefined;
 
     function selectType(next: string): void {
         setTypeId(next);
@@ -81,41 +80,10 @@ export function ShopScreen(): ReactNode {
     }
 
     return (
-        <div className="shop">
-            <div className="shop__header">
-                <div>
-                    <h1 className="title">{runtimeAgent.displayName(agent)}’s Kit</h1>
-                    <span className="meta">
-                        Carrying {carried.reduce((sum, [, qty]) => sum + qty, 0)} / {capacity}
-                    </span>
-                </div>
-                <button type="button" className="btn btn--primary" onClick={closeShop}>
-                    Done
-                </button>
-            </div>
-
-            <div className="shop__equipped">
-                {carried.length === 0 ? (
-                    <span className="meta dim">Nothing equipped.</span>
-                ) : (
-                    carried.map(([itemId, qty]) => {
-                        const item = tables.Item.get(itemId);
-                        const name = item?.displayName ?? itemId;
-                        return (
-                            <EquipIcon
-                                key={itemId}
-                                name={name}
-                                qty={qty}
-                                onClick={() => unassignItem(shopCharacterId, itemId, 1)}
-                                title={`${name} ×${qty} — tap to unequip`}
-                            />
-                        );
-                    })
-                )}
-            </div>
-
-            <div className="shop__body">
-                <div className="shop__types">
+        <div className="summary">
+            <div className="summary__left">
+                <h2 className="summary__name inv__title">Kit</h2>
+                <div className="shop__types inv__types">
                     {types.map((row) => (
                         <button
                             type="button"
@@ -128,82 +96,144 @@ export function ShopScreen(): ReactNode {
                         </button>
                     ))}
                 </div>
+                <div className="summary__lower-anchor">
+                    <div className="summary__actions summary__actions--right">
+                        <button type="button" className="btn btn--quiet" onClick={onDone}>
+                            Done
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-                <div className="shop__main">
-                    <div className="tabs shop__subtypes" role="tablist">
+            <div className="summary__divider" />
+
+            <div className="summary__right">
+                <div className="tabs shop__subtypes" role="tablist">
+                    <button
+                        type="button"
+                        role="tab"
+                        className="tab"
+                        aria-selected={!subType}
+                        onClick={() => setSubType(undefined)}
+                    >
+                        All
+                    </button>
+                    {subtypes.map((st) => (
                         <button
                             type="button"
                             role="tab"
+                            key={st}
                             className="tab"
-                            aria-selected={!subType}
-                            onClick={() => setSubType(undefined)}
+                            aria-selected={subType === st}
+                            onClick={() => setSubType(st)}
                         >
-                            All
+                            {humanize(st)}
                         </button>
-                        {subtypes.map((st) => (
+                    ))}
+                </div>
+
+                <div className="inv-grid">
+                    {filtered.map((item) => {
+                        const owned = session.shop.ownedCount(item.itemId!);
+                        const price = session.shop.priceOf(item.itemId!)?.qty ?? 0;
+
+                        return (
                             <button
                                 type="button"
-                                role="tab"
-                                key={st}
-                                className="tab"
-                                aria-selected={subType === st}
-                                onClick={() => setSubType(st)}
+                                key={item.itemId}
+                                className="item-tile"
+                                aria-selected={selectedItemId === item.itemId}
+                                draggable={owned > 0}
+                                onDragStart={(event) => {
+                                    event.dataTransfer.setData('text/plain', JSON.stringify({ itemId: item.itemId }));
+                                    event.dataTransfer.effectAllowed = 'copy';
+                                }}
+                                onClick={() => setSelectedItemId(item.itemId)}
                             >
-                                {humanize(st)}
+                                <span className="item-tile__icon" aria-hidden="true">
+                                    {initials(item.displayName ?? item.itemId ?? '?')}
+                                </span>
+                                <span className="item-tile__name">{item.displayName ?? item.itemId}</span>
+                                <span className="item-tile__meta">
+                                    <span className="item-tile__price">${price.toLocaleString('en-US')}</span>
+                                    <span className="item-tile__owned">owned {owned}</span>
+                                </span>
                             </button>
-                        ))}
+                        );
+                    })}
+                    {filtered.length === 0 ? <p className="meta">Nothing here.</p> : null}
+                </div>
+            </div>
+
+            <div className="summary__stats">
+                {selectedItem ? (
+                    <ItemDetail
+                        item={selectedItem}
+                        owned={session.shop.ownedCount(selectedItem.itemId!)}
+                        price={session.shop.priceOf(selectedItem.itemId!)?.qty ?? 0}
+                        failure={failure}
+                        onBuy={() => {
+                            setFailure('');
+                            const result = session.shop.checkPurchase(selectedItem.itemId!, 1);
+                            if (result !== 'none') setFailure(describePurchaseFailure(result));
+                            else purchase(selectedItem.itemId!, 1);
+                        }}
+                        canBuy={session.shop.checkPurchase(selectedItem.itemId!, 1) === 'none'}
+                        buyDisabledReason={describePurchaseFailure(session.shop.checkPurchase(selectedItem.itemId!, 1))}
+                    />
+                ) : (
+                    <div className="inv-detail inv-detail--empty">
+                        <span className="meta dim">Select an item.</span>
                     </div>
+                )}
+            </div>
+        </div>
+    );
+}
 
-                    {failure ? <div className="meta danger">{failure}</div> : null}
-
-                    <div className="shop-items">
-                        {filtered.map((item) => {
-                            const owned = session.shop.ownedCount(item.itemId!);
-                            const price = session.shop.priceOf(item.itemId!)?.qty ?? 0;
-                            const buyFailure = session.shop.checkPurchase(item.itemId!, 1);
-                            const outOfCapacity = session.remainingCapacity(shopCharacterId) < 1;
-
-                            return (
-                                <div className="item-row" key={item.itemId}>
-                                    <span>
-                                        <span className="item-row__name">
-                                            {item.displayName ?? item.itemId}
-                                            <span className="shop-item__owned"> · owned {owned}</span>
-                                        </span>
-                                        <br />
-                                        <span className="item-row__effects">{describeEffects(item)}</span>
-                                    </span>
-                                    <span className="item-row__price">${price.toLocaleString('en-US')}</span>
-                                    <span className="shop-item__actions">
-                                        <button
-                                            type="button"
-                                            className="btn btn--small"
-                                            disabled={buyFailure !== 'none'}
-                                            title={describePurchaseFailure(buyFailure)}
-                                            onClick={() => {
-                                                setFailure('');
-                                                const result = session.shop.checkPurchase(item.itemId!, 1);
-                                                if (result !== 'none') setFailure(describePurchaseFailure(result));
-                                                else purchase(item.itemId!, 1);
-                                            }}
-                                        >
-                                            Buy
-                                        </button>
-                                        <button
-                                            type="button"
-                                            className="btn btn--small btn--primary"
-                                            disabled={owned < 1 || outOfCapacity}
-                                            title={owned < 1 ? 'None owned' : outOfCapacity ? 'Carrying at capacity' : undefined}
-                                            onClick={() => assignItem(shopCharacterId, item.itemId!, 1)}
-                                        >
-                                            Equip
-                                        </button>
-                                    </span>
-                                </div>
-                            );
-                        })}
-                        {filtered.length === 0 ? <p className="meta">Nothing here.</p> : null}
-                    </div>
+/** The right rail while an item is selected — its stat swing, description, owned/price, and Buy.
+ *  Equipping is drag-only, onto the agent inventory row below, so there is no Equip button here. */
+function ItemDetail({
+    item,
+    owned,
+    price,
+    failure,
+    canBuy,
+    buyDisabledReason,
+    onBuy,
+}: {
+    item: ItemData;
+    owned: number;
+    price: number;
+    failure: string;
+    canBuy: boolean;
+    buyDisabledReason: string;
+    onBuy: () => void;
+}): ReactNode {
+    return (
+        <div className="inv-detail">
+            <div className="inv-detail__scroll">
+                <h3 className="inv-detail__name">{item.displayName ?? item.itemId}</h3>
+                <div className="inv-detail__effects">{describeEffects(item)}</div>
+                {item.description ? <p className="inv-detail__desc">{item.description}</p> : null}
+            </div>
+            <div className="summary__lower-anchor">
+                <hr className="summary__dashrule" />
+                <div className="inv-detail__row">
+                    <span className="inv-detail__price">${price.toLocaleString('en-US')}</span>
+                    <span className="meta dim">owned {owned}</span>
+                </div>
+                {failure ? <div className="meta danger">{failure}</div> : null}
+                <div className="summary__actions summary__actions--right">
+                    <button
+                        type="button"
+                        className="btn btn--primary"
+                        disabled={!canBuy}
+                        title={canBuy ? undefined : buyDisabledReason}
+                        onClick={onBuy}
+                    >
+                        Buy
+                    </button>
                 </div>
             </div>
         </div>

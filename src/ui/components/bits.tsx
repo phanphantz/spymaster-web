@@ -19,6 +19,17 @@ export function parseAgentDragPayload(raw: string): { characterId: string; fromS
     }
 }
 
+/** What a Kit item tile's drag reads back — dropped on an agent inventory slot to equip it (which
+ *  refuses on its own if the item isn't owned or there's no room left). */
+export function parseItemDragPayload(raw: string): { itemId: string } | undefined {
+    try {
+        const parsed = JSON.parse(raw);
+        return typeof parsed?.itemId === 'string' ? parsed : undefined;
+    } catch {
+        return undefined;
+    }
+}
+
 export function Money({ amount }: { amount: number }): ReactNode {
     return <span className="money">${amount.toLocaleString('en-US')}</span>;
 }
@@ -34,7 +45,7 @@ export function StatAbbr({ stat }: { stat: StatId }): ReactNode {
 }
 
 /** Up to two letters standing in for an item's icon — nothing in the data has real art per item. */
-function initials(name: string): string {
+export function initials(name: string): string {
     const words = name.trim().split(/\s+/).filter(Boolean);
     if (words.length === 0) return '?';
     if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
@@ -508,11 +519,13 @@ export function Modal({
     onClose,
     wide,
     label,
+    hideClose,
 }: {
     children: ReactNode;
     onClose: () => void;
     wide?: boolean;
     label: string;
+    hideClose?: boolean;
 }): ReactNode {
     return (
         <div
@@ -528,9 +541,11 @@ export function Modal({
                 aria-label={label}
                 onClick={(event) => event.stopPropagation()}
             >
-                <button type="button" className="icon-btn modal__close" onClick={onClose} aria-label="Close">
-                    ✕
-                </button>
+                {hideClose ? null : (
+                    <button type="button" className="icon-btn modal__close" onClick={onClose} aria-label="Close">
+                        ✕
+                    </button>
+                )}
                 {children}
             </div>
         </div>
