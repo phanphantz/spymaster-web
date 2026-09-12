@@ -299,8 +299,8 @@
 .pips { display: inline-flex; gap: 3px; }
 
 .pip {
-    width: 12px;
-    height: 12px;
+    width: 14px;
+    height: 14px;
     background: var(--steel);
     opacity: 0.35;
     -webkit-mask-image: var(--skull-icon);
