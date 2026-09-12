@@ -837,6 +837,20 @@
 .summary__photo--stats { padding: 10px; }
 .summary__photo--stats::after { display: none; }
 
+/* Stands in for the hexagon (and the gauges below stay unmounted) until an agent is assigned —
+   still claims the flex: 1 space the hexagon would, so the dashrule/gauges group below doesn't
+   jump up. */
+.summary__stats-empty {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 24px;
+    text-align: center;
+    color: var(--muted);
+    font-size: var(--fs-chip);
+}
+
 /* The dashrule and whatever sits under it (the left column's location block, or the stats rail's
    gauges) pushed down as one group — leftover space the photo/hexagon above doesn't claim collects
    above this instead of below it, so the group stays compact and ends up flush with the column's
