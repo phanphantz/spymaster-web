@@ -1317,9 +1317,37 @@ button.equip-icon:hover { border-color: var(--danger); color: var(--danger); }
     color: var(--cyan);
 }
 
-/* The left rail: a heading where the photo used to be, then main-category tabs filling the rest of
-   the column's height, then Done pinned to the floor via the shared `.summary__lower-anchor`. */
+/* The left rail: a heading where the photo used to be, then the sort bar, then main-category tabs
+   filling the rest of the column's height, then Done pinned to the floor via the shared
+   `.summary__lower-anchor`. */
 .inv__title { padding: 20px 24px 4px; }
+
+/* Fixed height, not flex:1 — .inv__types right below it is what absorbs whatever room is left. */
+.sort-bar { padding: 8px 16px; display: flex; flex-direction: column; gap: 6px; }
+.sort-bar__label { display: block; }
+
+.sort-bar__options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.sort-chip {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    padding: 4px 8px;
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    color: var(--steel);
+    font-size: var(--fs-micro);
+    letter-spacing: 0.02em;
+}
+
+.sort-chip[aria-selected='true'] { border-color: var(--cyan); color: var(--cyan); }
+.sort-chip:hover:not([aria-selected='true']) { border-color: var(--cyan-dim); color: var(--text); }
+.sort-chip__dir { font-size: 8px; }
 
 .inv__types {
     flex: 1;

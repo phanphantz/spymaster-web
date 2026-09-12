@@ -2,7 +2,7 @@ import { useState, type ReactNode } from 'react';
 import { useGame } from '../../store/gameStore';
 import { describeEquipFailure } from '../../engine/shop';
 import { StatAbbr, initials, setSquareDragImage } from '../components/bits';
-import { STAT_IDS } from '../../engine/types';
+import { RARITY_TIERS, STAT_IDS } from '../../engine/types';
 import type { GameTables, ItemData } from '../../engine/types';
 import type { LoadoutSession } from '../../engine/loadout';
 
@@ -10,6 +10,49 @@ import type { LoadoutSession } from '../../engine/loadout';
  *  from the type rail entirely rather than left to dead-end as an empty tab; an item that carries
  *  one of these as a secondary type still shows under whichever other type it also has. */
 const HIDDEN_TYPES = new Set(['ammoMagazine', 'attachment']);
+
+type SortKey = 'name' | 'price' | 'rarity' | 'stats';
+type SortDir = 'asc' | 'desc';
+
+const SORT_OPTIONS: readonly { key: SortKey; label: string }[] = [
+    { key: 'name', label: 'A–Z' },
+    { key: 'price', label: 'Price' },
+    { key: 'rarity', label: 'Rarity' },
+    { key: 'stats', label: 'Total Stats' },
+];
+
+const RARITY_RANK: Record<string, number> = Object.fromEntries(RARITY_TIERS.map((tier, index) => [tier, index]));
+
+/** Sum of an item's six stat effects — the same total the right rail's stat-swing line reads off. */
+function totalStatsOf(item: ItemData): number {
+    return STAT_IDS.reduce((sum, stat) => sum + ((item[`${stat}Effect` as keyof ItemData] as number) || 0), 0);
+}
+
+/** Ties break on display name, so re-sorting by the same key never reshuffles items that are equal
+ *  under it — Price or Rarity groups plenty of items onto the same value. */
+function sortItems(items: readonly ItemData[], key: SortKey, dir: SortDir, session: LoadoutSession): ItemData[] {
+    const nameOf = (item: ItemData) => (item.displayName ?? item.itemId ?? '').toLowerCase();
+    const valueOf = (item: ItemData): number | string => {
+        switch (key) {
+            case 'name':
+                return nameOf(item);
+            case 'price':
+                return session.shop.priceOf(item.itemId!)?.qty ?? 0;
+            case 'rarity':
+                // Unauthored rarity sorts as the least rare, rather than being pushed to either end.
+                return RARITY_RANK[item._rarity ?? ''] ?? -1;
+            case 'stats':
+                return totalStatsOf(item);
+        }
+    };
+
+    const sign = dir === 'asc' ? 1 : -1;
+    return [...items].sort((a, b) => {
+        const [va, vb] = [valueOf(a), valueOf(b)];
+        const cmp = typeof va === 'string' && typeof vb === 'string' ? va.localeCompare(vb) : (va as number) - (vb as number);
+        return cmp !== 0 ? sign * cmp : nameOf(a).localeCompare(nameOf(b));
+    });
+}
 
 /** camelCase id → Title Case label, for the subtype row — there's no vocabulary tab for these. */
 function humanize(id: string): string {
@@ -64,6 +107,8 @@ export function ShopScreen({
     const [typeId, setTypeId] = useState<string>();
     const [subType, setSubType] = useState<string>();
     const [selectedItemId, setSelectedItemId] = useState<string>();
+    const [sortKey, setSortKey] = useState<SortKey>('name');
+    const [sortDir, setSortDir] = useState<SortDir>('asc');
 
     const items = session.shop.availableItems();
 
@@ -80,6 +125,7 @@ export function ShopScreen({
     // No "All" tab — the first subtype stands in for it, the same way the first type does above.
     const activeSubType = subType && subtypes.includes(subType) ? subType : subtypes[0];
     const filtered = activeSubType ? itemsOfType.filter((item) => item.subType === activeSubType) : itemsOfType;
+    const sorted = sortItems(filtered, sortKey, sortDir, session);
 
     const selectedItem = selectedItemId ? tables.Item.get(selectedItemId) : undefined;
 
@@ -88,10 +134,46 @@ export function ShopScreen({
         setSubType(undefined);
     }
 
+    /** Picking the already-active key flips its direction; picking a different one starts it
+     *  ascending — the same toggle-or-switch convention the type/subtype tabs don't need, but a
+     *  sort control does. */
+    function toggleSort(key: SortKey): void {
+        if (key === sortKey) setSortDir((dir) => (dir === 'asc' ? 'desc' : 'asc'));
+        else {
+            setSortKey(key);
+            setSortDir('asc');
+        }
+    }
+
     return (
         <div className="summary summary--kit">
             <div className="summary__left">
                 <h2 className="summary__name inv__title">Kit</h2>
+                <div className="sort-bar">
+                    <span className="sort-bar__label micro">Sort</span>
+                    <div className="sort-bar__options">
+                        {SORT_OPTIONS.map(({ key, label }) => {
+                            const active = sortKey === key;
+                            return (
+                                <button
+                                    type="button"
+                                    key={key}
+                                    className="sort-chip"
+                                    aria-selected={active}
+                                    onClick={() => toggleSort(key)}
+                                    title={`Sort by ${label}${active ? (sortDir === 'asc' ? ', ascending' : ', descending') : ''}`}
+                                >
+                                    {label}
+                                    {active ? (
+                                        <span className="sort-chip__dir" aria-hidden="true">
+                                            {sortDir === 'asc' ? '▲' : '▼'}
+                                        </span>
+                                    ) : null}
+                                </button>
+                            );
+                        })}
+                    </div>
+                </div>
                 <div className="shop__types inv__types">
                     {types.map((row) => (
                         <button
@@ -133,7 +215,7 @@ export function ShopScreen({
                 </div>
 
                 <div className="inv-grid">
-                    {filtered.map((item) => {
+                    {sorted.map((item) => {
                         const price = session.shop.priceOf(item.itemId!)?.qty ?? 0;
                         const canEquip = session.shop.checkEquip(item.itemId!, 1) === 'none';
 
@@ -162,7 +244,7 @@ export function ShopScreen({
                             </button>
                         );
                     })}
-                    {filtered.length === 0 ? <p className="meta">Nothing here.</p> : null}
+                    {sorted.length === 0 ? <p className="meta">Nothing here.</p> : null}
                 </div>
             </div>
 

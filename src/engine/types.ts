@@ -139,6 +139,11 @@ export interface SkillData {
     tags?: string[];
 }
 
+/** Ordinal, common first — nothing in gameplay balance reads this yet, but the Kit page's Rarity
+ *  sort does. */
+export const RARITY_TIERS = ['common', 'medium', 'rare', 'superRare'] as const;
+export type RarityTier = (typeof RARITY_TIERS)[number];
+
 export interface ItemData {
     itemId?: string;
     /** An Item may read as several types at once. */
@@ -149,6 +154,10 @@ export interface ItemData {
     description?: string;
     weight?: number;
     size?: string;
+    /** Authored as `_rarity` in the sheet — the leading underscore marks a field sketched ahead of
+     *  whatever system will eventually consume it. One of RARITY_TIERS, but not every item has one
+     *  authored yet. */
+    _rarity?: string;
 
     /** Consumption. usageCount of 0 or -1 means unlimited. */
     usageCount?: number;
