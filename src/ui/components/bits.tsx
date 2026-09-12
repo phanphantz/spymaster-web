@@ -263,14 +263,20 @@ export function HpGauge({
     const max = runtimeAgent.maxHealth(agent);
     const ratio = max > 0 ? agent.currentHealth / max : 0;
 
+    if (icon) {
+        return (
+            <span className="inv-capacity" title={`${agent.currentHealth} / ${max} HP`}>
+                <span aria-hidden="true">❤</span> {agent.currentHealth}/{max}
+            </span>
+        );
+    }
+
     return (
         <div
             className={compact ? 'vital-gauge vital-gauge--compact' : 'vital-gauge'}
             title={`${agent.currentHealth} / ${max} HP`}
         >
-            <span className="vital-gauge__label" aria-hidden={icon || undefined}>
-                {icon ? '❤' : 'HP'}
-            </span>
+            <span className="vital-gauge__label">HP</span>
             <span className="vital-gauge__track" role="img" aria-label={`Health ${agent.currentHealth} of ${max}`}>
                 <span
                     className={ratio < 0.5 ? 'vital-gauge__fill vital-gauge__fill--hurt' : 'vital-gauge__fill'}
