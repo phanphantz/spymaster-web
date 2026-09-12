@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react';
 import { useGame } from '../../store/gameStore';
 import { describeEquipFailure } from '../../engine/shop';
-import { StatAbbr, initials } from '../components/bits';
+import { StatAbbr, initials, setSquareDragImage } from '../components/bits';
 import { STAT_IDS } from '../../engine/types';
 import type { GameTables, ItemData } from '../../engine/types';
 import type { LoadoutSession } from '../../engine/loadout';
@@ -148,6 +148,7 @@ export function ShopScreen({
                                 onDragStart={(event) => {
                                     event.dataTransfer.setData('text/plain', JSON.stringify({ itemId: item.itemId }));
                                     event.dataTransfer.effectAllowed = 'copy';
+                                    setSquareDragImage(event, item.displayName ?? item.itemId ?? '?');
                                 }}
                                 onClick={() => setSelectedItemId(item.itemId)}
                             >

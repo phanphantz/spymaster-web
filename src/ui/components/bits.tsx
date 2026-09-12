@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type DragEvent, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { useGame } from '../../store/gameStore';
 import * as runtimeAgent from '../../engine/runtimeAgent';
@@ -53,10 +53,37 @@ export function initials(name: string): string {
 }
 
 /**
+ * Swaps the browser's default drag preview — a screenshot of whatever element `draggable` is on —
+ * for a small square styled exactly like `.equip-icon` (reusing that class, so it stays in step with
+ * the real thing if the icon's look ever changes). A catalog tile is wide; the slot it lands in is a
+ * 44px square, and dragging it around as its own wide self read as detached from where it was going.
+ *
+ * The ghost has to exist in the document for `setDragImage` to snapshot it, but only for that one
+ * synchronous instant — it's removed on the next tick rather than left behind.
+ */
+export function setSquareDragImage(event: DragEvent<HTMLElement>, name: string): void {
+    const ghost = document.createElement('span');
+    ghost.className = 'equip-icon';
+    ghost.style.position = 'fixed';
+    ghost.style.top = '-1000px';
+    ghost.style.left = '-1000px';
+
+    const glyph = document.createElement('span');
+    glyph.className = 'equip-icon__glyph';
+    glyph.textContent = initials(name);
+    ghost.appendChild(glyph);
+
+    document.body.appendChild(ghost);
+    event.dataTransfer.setDragImage(ghost, 22, 22);
+    setTimeout(() => ghost.remove(), 0);
+}
+
+/**
  * An item, standing in as a small monogram tile since nothing in the data has real per-item icons.
  * Used both for the Kit page's own inventory row (`onRemove` set, a "−" pinned to its own corner
- * pulls one unit back off the agent) and a filled slot's compact mini preview above the team grid
- * (neither `onClick` nor `onRemove` set — the pencil is what opens the real page for that).
+ * clears the whole slot — every unit of a stack at once, not just one) and a filled slot's compact
+ * mini preview above the team grid (neither `onClick` nor `onRemove` set — the pencil is what opens
+ * the real page for that).
  */
 export function EquipIcon({
     name,
@@ -70,12 +97,14 @@ export function EquipIcon({
     qty?: number;
     mini?: boolean;
     onClick?: () => void;
-    /** Renders a small "−" in the icon's own top-right corner that removes one unit on click. */
+    /** Renders a small "−" in the icon's own top-right corner that clears the whole slot on click —
+     *  a stack's stepper is the one-at-a-time control, this is the quick full removal. */
     onRemove?: () => void;
     title?: string;
 }): ReactNode {
     const className = mini ? 'equip-icon equip-icon--mini' : 'equip-icon';
     const label = title ?? (qty && qty > 1 ? `${name} ×${qty}` : name);
+    const removeLabel = qty && qty > 1 ? `Remove all ${name}` : `Remove ${name}`;
     const content = (
         <>
             <span className="equip-icon__glyph">{initials(name)}</span>
@@ -88,8 +117,8 @@ export function EquipIcon({
                         event.stopPropagation();
                         onRemove();
                     }}
-                    aria-label={`Remove one ${name}`}
-                    title={`Remove one ${name}`}
+                    aria-label={removeLabel}
+                    title={removeLabel}
                 >
                     −
                 </button>

@@ -45,7 +45,6 @@ export function WorldMapScreen(): ReactNode {
     const inventoryMode = overlay === 'shop';
 
     const [decliningMission, setDecliningMission] = useState<LiveMission>();
-    const [discardTarget, setDiscardTarget] = useState<RuntimeAgent>();
 
     // An agent already filling a slot on this mission isn't free to pick for another — the roster
     // card disappears the moment it's assigned, and comes back the moment it's unassigned.
@@ -152,7 +151,7 @@ export function WorldMapScreen(): ReactNode {
                                                     <EquipIcon
                                                         name={name}
                                                         qty={qty}
-                                                        onRemove={() => unassignItem(agent.characterId, itemId, 1)}
+                                                        onRemove={() => unassignItem(agent.characterId, itemId, qty)}
                                                     />
                                                     {maxStack > 1 ? (
                                                         <div className="equip-slot__stepper">
@@ -195,7 +194,7 @@ export function WorldMapScreen(): ReactNode {
                                         <button
                                             type="button"
                                             className="btn btn--small btn--quiet"
-                                            onClick={() => setDiscardTarget(agent)}
+                                            onClick={() => discardCarriedItems(agent.characterId)}
                                             aria-label={`Discard everything ${runtimeAgent.displayName(agent)} is carrying`}
                                         >
                                             🗑 Discard all
@@ -249,23 +248,6 @@ export function WorldMapScreen(): ReactNode {
                     setDecliningMission(undefined);
                 }}
                 onCancel={() => setDecliningMission(undefined)}
-            />
-
-            <ConfirmDialog
-                open={Boolean(discardTarget)}
-                title="Discard all items?"
-                message={
-                    discardTarget
-                        ? `Everything ${runtimeAgent.displayName(discardTarget)} is carrying is refunded.`
-                        : undefined
-                }
-                confirmLabel="Discard"
-                danger
-                onConfirm={() => {
-                    if (discardTarget) discardCarriedItems(discardTarget.characterId);
-                    setDiscardTarget(undefined);
-                }}
-                onCancel={() => setDiscardTarget(undefined)}
             />
         </div>
     );
