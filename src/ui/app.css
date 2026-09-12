@@ -337,6 +337,9 @@
     gap: 6px;
 }
 
+/* Bulk-return everything this agent carries — only rendered when there's something to discard. */
+.inv-agent__discard:hover { border-color: var(--danger); color: var(--danger); }
+
 .agent-card {
     position: relative;
     flex: 0 0 auto;
@@ -767,6 +770,7 @@
    column's bottom via `.summary__lower-anchor`, rather than the two reunited in a shared footer. */
 .summary__actions {
     display: flex;
+    gap: 8px;
     padding: 10px 24px 20px;
 }
 
@@ -985,12 +989,19 @@
     gap: 12px;
 }
 
-.slot {
+/* Wraps each slot so the floating kit preview (`.slot__items-float`) can sit above it without
+   being clipped by the slot's own `overflow: hidden`. Carries the sizing that used to live on
+   `.slot` itself — a quarter of the row (minus its share of the three gaps), fixed rather than
+   flexible, so a 2-slot mission's cards are exactly as wide as a 4-slot mission's, just fewer. */
+.slot-wrap {
     position: relative;
-    /* A quarter of the row (minus its share of the three gaps) — fixed, not flexible, so a 2-slot
-       mission's cards are exactly as wide as a 4-slot mission's, just fewer of them. */
     flex: 0 0 calc((100% - 36px) / 4);
     width: calc((100% - 36px) / 4);
+}
+
+.slot {
+    position: relative;
+    width: 100%;
     /* Fixed, not content-driven — an unusually long agent name or several carried items must clip
        (the internal overflow: hidden pieces already do that) rather than grow the box. */
     height: 126px;
@@ -1012,7 +1023,7 @@
 
 .slot__head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 10px; }
 
-/* The pencil (edit kit) and 'x' (clear) on an occupied slot, pinned to its top-right corner. */
+/* The 'x' (clear) on an occupied slot, pinned to its top-right corner. */
 .slot__actions {
     position: absolute;
     top: 8px;
@@ -1021,7 +1032,6 @@
     gap: 4px;
 }
 
-.slot__edit,
 .slot__remove {
     width: 22px;
     height: 22px;
@@ -1035,29 +1045,7 @@
     border-radius: var(--radius);
 }
 
-.slot__edit:hover { border-color: var(--cyan); color: var(--cyan); }
 .slot__remove:hover { border-color: var(--danger); color: var(--danger); }
-
-/* Bulk-return everything the occupant carries — bottom-right, away from edit/remove up top. Only
-   rendered when there's something to discard. */
-.slot__discard {
-    position: absolute;
-    bottom: 8px;
-    right: 8px;
-    width: 20px;
-    height: 20px;
-    display: grid;
-    place-items: center;
-    padding: 0;
-    background: transparent;
-    border: 1px solid var(--line);
-    color: var(--steel);
-    font-size: 11px;
-    line-height: 1;
-    border-radius: var(--radius);
-}
-
-.slot__discard:hover { border-color: var(--danger); color: var(--danger); }
 
 /* An empty slot is itself the tap target — select an agent below, then tap here. Fills whatever
    height .slot__head leaves in the fixed-height .slot rather than sizing off its own padding. */
@@ -1103,17 +1091,23 @@
 
 .slot__filled .stat-hex--mini { margin-left: auto; }
 
-/* What the agent carries, previewed in the space between the portrait and the hexagon — wraps and
-   caps at the slot's own height rather than growing it; the pencil is where the full list lives. */
-.slot__items {
-    flex: 0 1 auto;
-    max-width: 76px;
-    max-height: 100%;
+/* What the agent carries, previewed floating above its slot rather than squeezed inside it —
+   tapping it opens the full kit editor (`onEdit`), the job the removed pencil button used to do.
+   Bare, no card of its own — just the icon row itself, sitting free above the slot's top edge. */
+.slot__items-float {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    margin-bottom: 6px;
+    padding: 0;
     display: flex;
-    flex-wrap: wrap;
-    align-content: flex-start;
+    flex-wrap: nowrap;
+    justify-content: center;
     gap: 3px;
-    overflow: hidden;
+    background: transparent;
+    border: 0;
 }
 
 .tabs {
@@ -1433,7 +1427,7 @@ button.equip-icon:hover { border-color: var(--danger); color: var(--danger); }
     /* .slot-grid is a fixed-width flex row on desktop (each slot exactly a quarter of it) — that
        math doesn't hold in one narrow column, so slots stack full-width instead. */
     .slot-grid { flex-wrap: wrap; }
-    .slot { flex: 1 1 100%; width: auto; }
+    .slot-wrap { flex: 1 1 100%; width: auto; }
 
     /* Stacked single-column layout — the fixed desktop height (sized for four columns side by
        side) no longer applies; let it size to content again. */

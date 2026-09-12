@@ -54,7 +54,6 @@ export function MissionSummary(): ReactNode {
     const deploy = useGame((state) => state.deployMission);
     const decline = useGame((state) => state.declineMission);
     const unassignAgent = useGame((state) => state.unassignAgent);
-    const discardCarriedItems = useGame((state) => state.discardCarriedItems);
     const pickingAgentId = useGame((state) => state.pickingAgentId);
     const pickingSlotId = useGame((state) => state.pickingSlotId);
     const pickSlot = useGame((state) => state.pickSlot);
@@ -69,7 +68,6 @@ export function MissionSummary(): ReactNode {
 
     const [confirmingDecline, setConfirmingDecline] = useState(false);
     const [confirmingClose, setConfirmingClose] = useState(false);
-    const [discardTarget, setDiscardTarget] = useState<RuntimeAgent>();
 
     if (!session || !tables) return null;
 
@@ -168,7 +166,6 @@ export function MissionSummary(): ReactNode {
                             onDropAgent={placeAgent}
                             onUnassign={unassignAgent}
                             onEdit={openShop}
-                            onDiscardItems={setDiscardTarget}
                             failure={failure}
                         />
                     </div>
@@ -182,6 +179,9 @@ export function MissionSummary(): ReactNode {
                             <hr className="summary__dashrule" />
                             <StatGaugeList agents={assigned} tables={tables} />
                             <div className="summary__actions summary__actions--right">
+                                <button type="button" className="btn btn--quiet" onClick={() => openShop('')}>
+                                    Inventory
+                                </button>
                                 <button
                                     type="button"
                                     className="btn btn--primary"
@@ -221,23 +221,6 @@ export function MissionSummary(): ReactNode {
                     close();
                 }}
                 onCancel={() => setConfirmingClose(false)}
-            />
-
-            <ConfirmDialog
-                open={Boolean(discardTarget)}
-                title="Discard all items?"
-                message={
-                    discardTarget
-                        ? `Everything ${runtimeAgent.displayName(discardTarget)} is carrying returns to stock.`
-                        : undefined
-                }
-                confirmLabel="Discard"
-                danger
-                onConfirm={() => {
-                    if (discardTarget) discardCarriedItems(discardTarget.characterId);
-                    setDiscardTarget(undefined);
-                }}
-                onCancel={() => setDiscardTarget(undefined)}
             />
 
             <SwapDialog
@@ -441,8 +424,8 @@ function MissionTasks({ mission, tables }: { mission: LiveMission; tables: GameT
  *
  * The real, interactive Loadout — pick an agent from the roster strip below the modal, then tap a
  * slot, or tap an empty slot first and pick the agent after; either order lands the same placement.
- * An occupied slot clears with its 'x'. What that agent carries lives on its own page, opened with
- * the pencil — a slot has no room for a kit list.
+ * An occupied slot clears with its 'x'. What that agent carries lives on its own page, opened by
+ * tapping the kit preview floating above the slot — the slot itself has no room for a kit list.
  */
 function MissionTeam({
     session,
@@ -453,7 +436,6 @@ function MissionTeam({
     onDropAgent,
     onUnassign,
     onEdit,
-    onDiscardItems,
     failure,
 }: {
     session: LoadoutSession;
@@ -464,7 +446,6 @@ function MissionTeam({
     onDropAgent: (slotId: string, characterId: string, fromSlotId?: string) => void;
     onUnassign: (slotId: string) => void;
     onEdit: (characterId: string) => void;
-    onDiscardItems: (agent: RuntimeAgent) => void;
     failure: string;
 }): ReactNode {
     return (
@@ -488,113 +469,93 @@ function MissionTeam({
                             .filter(Boolean)
                             .join(' ');
 
+                        const carried = occupant ? session.carriedBy(occupant.characterId).entries : [];
+                        const capacity = occupant ? runtimeAgent.inventorySize(occupant) : 0;
+                        const carriedTotal = carried.reduce((sum, [, qty]) => sum + qty, 0);
+                        const emptySlots = Math.max(0, capacity - carriedTotal);
+
                         return (
-                            <div
-                                className={className}
-                                key={slot.slotId}
-                                onDragOver={(event) => event.preventDefault()}
-                                onDrop={(event) => {
-                                    event.preventDefault();
-                                    const raw = event.dataTransfer.getData('text/plain');
-                                    if (!raw) return;
-                                    const payload = parseAgentDragPayload(raw);
-                                    if (payload) onDropAgent(slot.slotId, payload.characterId, payload.fromSlotId);
-                                }}
-                            >
-                                <div className="slot__head">
-                                    <span className="micro">
-                                        {slot.slotId.replace(/^slot_/, '')}
-                                        {slot.isMandatory ? '' : ' · optional'}
-                                    </span>
-                                </div>
-
-                                {occupant ? (
-                                    <div
-                                        className="slot__filled"
-                                        onClick={() => onPickSlot(slot.slotId)}
-                                        role={pickingAgentId ? 'button' : undefined}
-                                    >
-                                        <div className="slot__actions">
-                                            <button
-                                                type="button"
-                                                className="slot__edit"
-                                                onClick={(event) => {
-                                                    event.stopPropagation();
-                                                    onEdit(occupant.characterId);
-                                                }}
-                                                aria-label={`Edit ${runtimeAgent.displayName(occupant)}'s kit`}
-                                                title="Edit kit"
-                                            >
-                                                ✎
-                                            </button>
-                                            <button
-                                                type="button"
-                                                className="slot__remove"
-                                                onClick={(event) => {
-                                                    event.stopPropagation();
-                                                    onUnassign(slot.slotId);
-                                                }}
-                                                aria-label={`Remove ${runtimeAgent.displayName(occupant)}`}
-                                            >
-                                                ✕
-                                            </button>
-                                        </div>
-                                        <AgentCard agent={occupant} size="sm" draggable dragFromSlotId={slot.slotId} />
-                                        {(() => {
-                                            const carried = session.carriedBy(occupant.characterId).entries;
-                                            const capacity = runtimeAgent.inventorySize(occupant);
-                                            const carriedTotal = carried.reduce((sum, [, qty]) => sum + qty, 0);
-                                            const emptySlots = Math.max(0, capacity - carriedTotal);
-                                            if (capacity <= 0) return null;
-
-                                            return (
-                                                <>
-                                                    <div className="slot__items">
-                                                        {carried.map(([itemId, qty]) => {
-                                                            const name = tables.Item.get(itemId)?.displayName ?? itemId;
-                                                            return <EquipIcon key={itemId} name={name} qty={qty} mini />;
-                                                        })}
-                                                        {Array.from({ length: emptySlots }, (_, index) => (
-                                                            <span
-                                                                key={`empty-${index}`}
-                                                                className="equip-icon equip-icon--mini equip-icon--empty"
-                                                                aria-hidden="true"
-                                                            />
-                                                        ))}
-                                                    </div>
-                                                    {carried.length > 0 ? (
-                                                        <button
-                                                            type="button"
-                                                            className="slot__discard"
-                                                            onClick={(event) => {
-                                                                event.stopPropagation();
-                                                                onDiscardItems(occupant);
-                                                            }}
-                                                            aria-label={`Discard everything ${runtimeAgent.displayName(occupant)} is carrying`}
-                                                            title="Discard all items"
-                                                        >
-                                                            🗑
-                                                        </button>
-                                                    ) : null}
-                                                </>
-                                            );
-                                        })()}
-                                        <StatHexagon agent={occupant} mini />
-                                    </div>
-                                ) : (
+                            <div className="slot-wrap" key={slot.slotId}>
+                                {occupant && capacity > 0 ? (
                                     <button
                                         type="button"
-                                        className="slot__empty"
-                                        aria-pressed={isTarget}
-                                        onClick={() => onPickSlot(slot.slotId)}
+                                        className="slot__items-float"
+                                        onClick={(event) => {
+                                            event.stopPropagation();
+                                            onEdit(occupant.characterId);
+                                        }}
+                                        aria-label={`Edit ${runtimeAgent.displayName(occupant)}'s kit`}
+                                        title="Edit kit"
                                     >
-                                        {pickingAgentId
-                                            ? 'Tap to assign'
-                                            : isTarget
-                                              ? 'Pick an agent below'
-                                              : 'Select an agent, drag one, or tap here first'}
+                                        {carried.map(([itemId, qty]) => {
+                                            const name = tables.Item.get(itemId)?.displayName ?? itemId;
+                                            return <EquipIcon key={itemId} name={name} qty={qty} mini />;
+                                        })}
+                                        {Array.from({ length: emptySlots }, (_, index) => (
+                                            <span
+                                                key={`empty-${index}`}
+                                                className="equip-icon equip-icon--mini equip-icon--empty"
+                                                aria-hidden="true"
+                                            />
+                                        ))}
                                     </button>
-                                )}
+                                ) : null}
+
+                                <div
+                                    className={className}
+                                    onDragOver={(event) => event.preventDefault()}
+                                    onDrop={(event) => {
+                                        event.preventDefault();
+                                        const raw = event.dataTransfer.getData('text/plain');
+                                        if (!raw) return;
+                                        const payload = parseAgentDragPayload(raw);
+                                        if (payload) onDropAgent(slot.slotId, payload.characterId, payload.fromSlotId);
+                                    }}
+                                >
+                                    <div className="slot__head">
+                                        <span className="micro">
+                                            {slot.slotId.replace(/^slot_/, '')}
+                                            {slot.isMandatory ? '' : ' · optional'}
+                                        </span>
+                                    </div>
+
+                                    {occupant ? (
+                                        <div
+                                            className="slot__filled"
+                                            onClick={() => onPickSlot(slot.slotId)}
+                                            role={pickingAgentId ? 'button' : undefined}
+                                        >
+                                            <div className="slot__actions">
+                                                <button
+                                                    type="button"
+                                                    className="slot__remove"
+                                                    onClick={(event) => {
+                                                        event.stopPropagation();
+                                                        onUnassign(slot.slotId);
+                                                    }}
+                                                    aria-label={`Remove ${runtimeAgent.displayName(occupant)}`}
+                                                >
+                                                    ✕
+                                                </button>
+                                            </div>
+                                            <AgentCard agent={occupant} size="sm" draggable dragFromSlotId={slot.slotId} />
+                                            <StatHexagon agent={occupant} mini />
+                                        </div>
+                                    ) : (
+                                        <button
+                                            type="button"
+                                            className="slot__empty"
+                                            aria-pressed={isTarget}
+                                            onClick={() => onPickSlot(slot.slotId)}
+                                        >
+                                            {pickingAgentId
+                                                ? 'Tap to assign'
+                                                : isTarget
+                                                  ? 'Pick an agent below'
+                                                  : 'Select an agent, drag one, or tap here first'}
+                                        </button>
+                                    )}
+                                </div>
                             </div>
                         );
                     })}
