@@ -137,7 +137,7 @@ export function EquipIcon({
     );
 }
 
-/** Difficulty as diamonds, the way the Unity Mission Summary shows it — no number, no percentage. */
+/** Difficulty as flat orange skull icons — no number, no percentage. */
 export function DifficultyPips({ level = 0, max = 4 }: { level?: number; max?: number }): ReactNode {
     return (
         <span className="pips" aria-label={`Difficulty ${level} of ${max}`}>
