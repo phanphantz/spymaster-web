@@ -20,8 +20,12 @@ export function parseAgentDragPayload(raw: string): { characterId: string; fromS
 }
 
 /** What a Kit item tile's drag reads back — dropped on an agent inventory slot to equip it (which
- *  refuses on its own if the item isn't owned or there's no room left). */
-export function parseItemDragPayload(raw: string): { itemId: string } | undefined {
+ *  refuses on its own if the item isn't owned or there's no room left). `fromCharacterId`/`qty` are
+ *  present only when the drag started on an already-carried item (rather than the catalog), so a
+ *  drop target can tell "equip fresh" apart from "move this carried item to someone else". */
+export function parseItemDragPayload(
+    raw: string,
+): { itemId: string; fromCharacterId?: string; qty?: number } | undefined {
     try {
         const parsed = JSON.parse(raw);
         return typeof parsed?.itemId === 'string' ? parsed : undefined;

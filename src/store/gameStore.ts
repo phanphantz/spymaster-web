@@ -118,6 +118,10 @@ interface GameState {
      *  assignmentFailure and leaves everything as it was. */
     assignItem: (characterId: string, itemId: string, qty?: number) => void;
     unassignItem: (characterId: string, itemId: string, qty?: number) => void;
+    /** Drag-and-drop entry point for moving an already-carried item to a different agent — refunds
+     *  it off the source and re-charges it onto the destination, capped to the destination's room
+     *  (same "cap to what fits, the rest just stays refunded" convention swapItemsOnly uses). */
+    moveItem: (fromCharacterId: string, toCharacterId: string, itemId: string, qty?: number) => void;
     deployMission: () => void;
 
     money: () => number;
@@ -589,6 +593,21 @@ export const useGame = create<GameState>((set, get) => {
 
     unassignItem(characterId, itemId, qty = 1) {
         get().session?.unassignItem(characterId, itemId, qty);
+        set({ version: get().version + 1 });
+    },
+
+    moveItem(fromCharacterId, toCharacterId, itemId, qty = 1) {
+        const { session } = get();
+        if (!session || fromCharacterId === toCharacterId) return;
+
+        const moved = Math.min(qty, session.carriedBy(fromCharacterId).get(itemId));
+        if (moved <= 0) return;
+
+        session.unassignItem(fromCharacterId, itemId, moved);
+        const room = session.remainingCapacity(toCharacterId);
+        if (room > 0) session.assignItem(toCharacterId, itemId, Math.min(moved, room));
+        else set({ assignmentFailure: 'No room left to carry that' });
+
         set({ version: get().version + 1 });
     },
 

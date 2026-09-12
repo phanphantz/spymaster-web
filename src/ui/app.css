@@ -325,13 +325,20 @@
 
 /* Pinned to the screen, not just the World Map — it sits above the mission modal's backdrop
    (z-index 10) so it stays the one place to pick an agent, modal open or not. */
+/* A fixed height (rather than shrink-to-fit content) — Kit mode's per-agent groups vary a lot in
+   what they show (a stepper, a Discard row, an empty-team message), and none of that may ever grow
+   or shrink this strip: `.mission-list`'s own `padding-bottom` above assumes this exact height to
+   clear it, and swapping between this and the plain agent picker must not shift anything either.
+   Extra content inside a group scrolls within `.inv-agent` instead of pushing the strip taller. */
 .roster {
     position: fixed;
     left: 0;
     right: 0;
     bottom: 0;
     z-index: 11;
+    height: 148px;
     display: flex;
+    align-items: flex-start;
     justify-content: center;
     gap: 8px;
     padding: 10px 20px;
@@ -343,18 +350,22 @@
 .roster .agent-card { width: 80px; }
 .roster .agent-card__name { padding: 6px 8px; font-size: var(--fs-micro); }
 
+/* An empty-roster message (in either mode) sits inside the same fixed-height flex-start row as the
+   cards — centering it here, rather than on `.roster` itself, keeps the cards themselves top-aligned. */
+.roster__empty { align-self: center; }
+
 /* Kit mode's take on the same strip: one group per assigned teammate — avatar, then their carried
    slots as a drop target for the item grid above — repeating rightward, the whole row centred same
-   as the picker it replaces. Top-aligned rather than the base `.roster`'s stretch: a stepper or the
-   Discard row makes one agent's group taller than its neighbours, and that extra height belongs
-   below the avatar row, not spread into it. */
-.roster.roster--inventory { gap: 28px; align-items: flex-start; }
+   as the picker it replaces. */
+.roster.roster--inventory { gap: 28px; }
 
 .inv-agent {
+    height: 100%;
     display: flex;
     flex-direction: column;
     gap: 6px;
     flex: 0 0 auto;
+    overflow-y: auto;
 }
 
 .inv-agent--focused .agent-card { border-color: var(--cyan); }
@@ -388,6 +399,7 @@
     flex-direction: column;
     align-items: center;
     gap: 3px;
+    cursor: grab;
 }
 
 .equip-slot__stepper {
