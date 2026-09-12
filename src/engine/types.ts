@@ -156,6 +156,9 @@ export interface ItemData {
     consumeItemId?: string;
     consumeItemQty?: number;
 
+    /** How many of this item a single inventory slot can hold. Unset (or 1) means it doesn't stack. */
+    maxStackCount?: number;
+
     /** Situational flags a Gate or an authored condition can read. */
     isConcealed?: string;
     isDetectedByScanner?: boolean;

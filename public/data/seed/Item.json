@@ -317,7 +317,8 @@
     "isInShop": true,
     "tags": [
       "technical"
-    ]
+    ],
+    "maxStackCount": 10
   },
   {
     "itemId": "toolHolographicDecoy",
@@ -339,7 +340,8 @@
     "isInShop": true,
     "tags": [
       "stealthy"
-    ]
+    ],
+    "maxStackCount": 10
   },
   {
     "itemId": "toolSmartEyeLens",
@@ -521,7 +523,8 @@
     "isInShop": true,
     "tags": [
       "medical"
-    ]
+    ],
+    "maxStackCount": 10
   },
   {
     "itemId": "toolHealPotion",
@@ -543,7 +546,8 @@
     "isInShop": true,
     "tags": [
       "medical"
-    ]
+    ],
+    "maxStackCount": 10
   },
   {
     "itemId": "toolSleepingPill",
@@ -565,7 +569,8 @@
     "isInShop": true,
     "tags": [
       "stealthy"
-    ]
+    ],
+    "maxStackCount": 10
   },
   {
     "itemId": "toolPoisonVial",
@@ -587,7 +592,8 @@
     "isInShop": true,
     "tags": [
       "lethal"
-    ]
+    ],
+    "maxStackCount": 10
   },
   {
     "itemId": "toolTruthSerum",
@@ -608,7 +614,8 @@
     "minPlayerLevel": 1,
     "maxOwnedCount": -1,
     "isInShop": true,
-    "tags": []
+    "tags": [],
+    "maxStackCount": 10
   },
   {
     "itemId": "toolSeductiveVial",
@@ -630,7 +637,8 @@
     "isInShop": true,
     "tags": [
       "social"
-    ]
+    ],
+    "maxStackCount": 10
   },
   {
     "itemId": "toolParachute",
@@ -938,7 +946,8 @@
     "tags": [
       "lethal",
       "stealthy"
-    ]
+    ],
+    "maxStackCount": 10
   },
   {
     "itemId": "gunDesertEagle",
@@ -1112,7 +1121,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 10
   },
   {
     "itemId": "toolGlowstick",
@@ -1131,7 +1141,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 10
   },
   {
     "itemId": "toolScrewdriver",
@@ -1207,7 +1218,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 10
   },
   {
     "itemId": "toolCameraButton",
@@ -1226,7 +1238,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 10
   },
   {
     "itemId": "toolMovementDetector",
@@ -1302,7 +1315,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "minPlayerLevel": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 10
   },
   {
     "itemId": "toolPepperSpray",
@@ -1340,7 +1354,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "minPlayerLevel": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 10
   },
   {
     "itemId": "toolPoisonSyringe",
@@ -1359,7 +1374,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 10
   },
   {
     "itemId": "toolSeductiveSyringe",
@@ -1378,7 +1394,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 10
   },
   {
     "itemId": "toolVaccine",
@@ -1397,7 +1414,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "minPlayerLevel": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 10
   },
   {
     "itemId": "toolNanoTrackerPill",
@@ -1416,7 +1434,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "minPlayerLevel": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 10
   },
   {
     "itemId": "toolParagliderBackpack",
@@ -1606,7 +1625,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 10
   },
   {
     "itemId": "melBallisticKnife",
@@ -1682,7 +1702,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 10
   },
   {
     "itemId": "melTwoPartStick",
@@ -1815,7 +1836,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 10
   },
   {
     "itemId": "melTonfa",
@@ -4161,7 +4183,8 @@
     "consumeItemQty": 1,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 10
   },
   {
     "itemId": "gunFlamethrower",
@@ -4224,7 +4247,8 @@
     "consumeItemQty": 1,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 10
   },
   {
     "itemId": "mag9x19mm",
@@ -4242,7 +4266,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "mag45Acp",
@@ -4260,7 +4285,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "mag32Acp",
@@ -4278,7 +4304,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "mag380Acp",
@@ -4296,7 +4323,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "mag9x18mm",
@@ -4314,7 +4342,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "mag762x39mm",
@@ -4332,7 +4361,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "mag556x45Nato",
@@ -4350,7 +4380,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "mag762x51Nato",
@@ -4368,7 +4399,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "mag545x39mm",
@@ -4386,7 +4418,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "mag12Gauge",
@@ -4404,7 +4437,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "magArrow",
@@ -4422,7 +4456,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "mag22Lr",
@@ -4440,7 +4475,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "mag50Ae",
@@ -4458,7 +4494,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "mag57x28mm",
@@ -4476,7 +4513,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "mag357Magnum",
@@ -4494,7 +4532,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "mag44Magnum",
@@ -4512,7 +4551,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "mag45Colt",
@@ -4530,7 +4570,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "mag46x30mm",
@@ -4548,7 +4589,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "mag9x39mm",
@@ -4566,7 +4608,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "mag58x42mm",
@@ -4584,7 +4627,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "mag762x51mm",
@@ -4602,7 +4646,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "mag762x54mmr",
@@ -4620,7 +4665,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "mag792x57Mauser",
@@ -4638,7 +4684,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "mag308Win",
@@ -4656,7 +4703,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "magTranquilizerDart",
@@ -4674,7 +4722,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "magHarpoonBolt",
@@ -4692,7 +4741,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "magNetCapsule",
@@ -4710,7 +4760,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "magTaserCartridge",
@@ -4728,7 +4779,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "magFuelCanister",
@@ -4746,7 +4798,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "mag66mmRocket",
@@ -4764,7 +4817,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "magAt484mmRocket",
@@ -4782,7 +4836,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "mag40mmGrenade",
@@ -4800,7 +4855,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "mag500SwMagnum",
@@ -4818,7 +4874,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "mag50Bmg",
@@ -4836,7 +4893,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "mag408CheyTac",
@@ -4854,7 +4912,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "mag127x108mm",
@@ -4872,7 +4931,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "mag145x114mm",
@@ -4890,7 +4950,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "magPoisonDart",
@@ -4908,7 +4969,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "magPg7Rocket",
@@ -4926,7 +4988,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "mag84mmRecoillessRound",
@@ -4944,7 +5007,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "mag110mmWarhead",
@@ -4962,7 +5026,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "magJavelinMissile",
@@ -4980,7 +5045,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 5
   },
   {
     "itemId": "attEoTechExps3",
@@ -5854,7 +5920,8 @@
     "isGoneAfterUse": false,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 10
   },
   {
     "itemId": "expFlashbang",
@@ -5873,7 +5940,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 10
   },
   {
     "itemId": "expMolotovCocktail",
@@ -5892,7 +5960,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 10
   },
   {
     "itemId": "expSmokeGrenade",
@@ -5911,7 +5980,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 10
   },
   {
     "itemId": "expGlitterBomb",
@@ -5930,7 +6000,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 10
   },
   {
     "itemId": "expGasGrenade",
@@ -5949,7 +6020,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 10
   },
   {
     "itemId": "expDecoyGrenade",
@@ -5968,7 +6040,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 10
   },
   {
     "itemId": "expEmpGrenade",
@@ -5987,7 +6060,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 10
   },
   {
     "itemId": "expExplosivePen",
@@ -6006,7 +6080,8 @@
     "isGoneAfterUse": false,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 10
   },
   {
     "itemId": "expExplosiveCufflinks",
@@ -6025,7 +6100,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 10
   },
   {
     "itemId": "expTripwireMine",
@@ -6044,7 +6120,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 10
   },
   {
     "itemId": "expClaymoreMine",
@@ -6082,7 +6159,8 @@
     "isGoneAfterUse": true,
     "priceItemId": "dollar",
     "maxOwnedCount": -1,
-    "isInShop": false
+    "isInShop": false,
+    "maxStackCount": 10
   },
   {
     "itemId": "expC4Explosive",
