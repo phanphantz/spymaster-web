@@ -11,7 +11,6 @@ import {
     EquipIcon,
     ExpGauge,
     HoldButton,
-    HpGauge,
     Modal,
     PageTabs,
     StatAbbr,
@@ -569,11 +568,22 @@ function MissionTeam({
                                         >
                                             <div className="slot__filled-main">
                                                 <AgentCard agent={occupant} size="sm" draggable dragFromSlotId={slot.slotId} />
-                                                <StatHexagon agent={occupant} mini />
+                                                <div className="slot__hex-col">
+                                                    <StatHexagon agent={occupant} mini />
+                                                    <div className="slot__hex-badges">
+                                                        <span className="vital-badge" title="Full HP">
+                                                            <span aria-hidden="true">❤</span>{' '}
+                                                            {runtimeAgent.maxHealth(occupant)}
+                                                        </span>
+                                                        <span className="vital-badge" title="Inventory slots">
+                                                            <span aria-hidden="true">🎒</span>{' '}
+                                                            {runtimeAgent.inventorySize(occupant)}
+                                                        </span>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div className="slot__vitals">
                                                 <ExpGauge agent={occupant} previewAmount={previewExpAmount} compact />
-                                                <HpGauge agent={occupant} compact />
                                             </div>
                                         </div>
                                     ) : (

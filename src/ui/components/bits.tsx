@@ -509,16 +509,19 @@ function AgentTooltip({
                     <StatHexagon agent={agent} />
                 </div>
                 <div className="agent-tooltip__hex-badges">
-                    <span className="agent-tooltip__badge" title="Full HP">
+                    <span className="vital-badge" title="Full HP">
                         <span aria-hidden="true">❤</span> {runtimeAgent.maxHealth(agent)}
                     </span>
-                    <span className="agent-tooltip__badge" title="Inventory slots">
+                    <span className="vital-badge" title="Inventory slots">
                         <span aria-hidden="true">🎒</span> {runtimeAgent.inventorySize(agent)}
                     </span>
                 </div>
             </div>
             <div className="agent-tooltip__info">
-                <div className="agent-tooltip__name">{runtimeAgent.displayName(agent)}</div>
+                <div className="agent-tooltip__name">
+                    {runtimeAgent.displayName(agent)}
+                    <span className="agent-tooltip__level">LV {agent.level}</span>
+                </div>
                 <div className="agent-tooltip__realname">{runtimeAgent.fullName(agent)}</div>
                 <div className="agent-tooltip__vitals">
                     <ExpGauge agent={agent} compact />

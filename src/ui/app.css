@@ -519,7 +519,8 @@
     gap: 12px;
 }
 
-.agent-tooltip__badge {
+/* Shared by the tooltip's hex-badges row and the mission slot's — icon + plain number, no box. */
+.vital-badge {
     display: inline-flex;
     align-items: center;
     gap: 3px;
@@ -538,10 +539,21 @@
 
 .agent-tooltip__name {
     flex: 0 0 auto;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
     font-size: var(--fs-item);
     color: var(--text);
     letter-spacing: 0.04em;
     line-height: 1.25;
+}
+
+.agent-tooltip__level {
+    flex: 0 0 auto;
+    font-size: var(--fs-micro);
+    color: var(--cyan-dim);
+    letter-spacing: 0.08em;
 }
 
 .agent-tooltip__realname {
@@ -1457,15 +1469,35 @@
 }
 
 /* Fills the rest of the row instead of the small fixed corner size .stat-hex--mini gets everywhere
- * else (there's nowhere else it's used mini and NOT here) — the SVG's own square viewBox keeps it
- * centred and unstretched no matter how wide that remaining space actually is. */
-.slot__filled-main .stat-hex--mini {
+ * else (there's nowhere else it's used mini and NOT here) — a column so the HP/inventory badge row
+ * can sit under the hex without stretching or moving the hex itself. */
+.slot__hex-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 0;
+    min-height: 0;
+    gap: 1px;
+}
+
+.slot__hex-col .stat-hex--mini {
     flex: 1;
     width: 100%;
     max-width: none;
     height: 100%;
+    min-height: 0;
     margin-left: 0;
 }
+
+.slot__hex-badges {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.slot__hex-badges .vital-badge { font-size: 7px; }
 
 /* EXP and HP, stacked under the card/hexagon row — the mission slot's own compact instance of
    `.vital-gauge`, shorter still than the already-compact tooltip version since it competes with the
