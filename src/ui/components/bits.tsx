@@ -249,21 +249,102 @@ export function StatHexagon({
     );
 }
 
-export function HealthBar({ agent }: { agent: RuntimeAgent }): ReactNode {
+/** HP as a bar with its own n/m text — the same shape as `ExpGauge`, so the two read as one family
+ *  of vitals wherever they're shown together. */
+export function HpGauge({ agent, compact }: { agent: RuntimeAgent; compact?: boolean }): ReactNode {
     const max = runtimeAgent.maxHealth(agent);
     const ratio = max > 0 ? agent.currentHealth / max : 0;
+
     return (
         <div
-            className="healthbar"
-            title={`${agent.currentHealth} / ${max} health`}
-            role="img"
-            aria-label={`Health ${agent.currentHealth} of ${max}`}
+            className={compact ? 'vital-gauge vital-gauge--compact' : 'vital-gauge'}
+            title={`${agent.currentHealth} / ${max} HP`}
         >
-            <div
-                className={ratio < 0.5 ? 'healthbar__fill healthbar__fill--hurt' : 'healthbar__fill'}
-                style={{ width: `${Math.round(ratio * 100)}%` }}
-            />
+            <span className="vital-gauge__label">HP</span>
+            <span className="vital-gauge__track" role="img" aria-label={`Health ${agent.currentHealth} of ${max}`}>
+                <span
+                    className={ratio < 0.5 ? 'vital-gauge__fill vital-gauge__fill--hurt' : 'vital-gauge__fill'}
+                    style={{ width: `${Math.round(ratio * 100)}%` }}
+                />
+            </span>
+            <span className="vital-gauge__value">
+                {agent.currentHealth}/{max}
+            </span>
         </div>
+    );
+}
+
+/**
+ * EXP progress toward the next level — n/m text over a filled bar. Pass `previewAmount` (not yet
+ * earned — e.g. a mission's reward) to extend the fill with a second, blinking layer showing where
+ * it would land, plus a "+N LVL" callout if the gain would cross into a new level. The real fill
+ * paints over the preview layer, so only the pending delta actually blinks.
+ */
+export function ExpGauge({
+    agent,
+    previewAmount,
+    compact,
+}: {
+    agent: RuntimeAgent;
+    previewAmount?: number;
+    compact?: boolean;
+}): ReactNode {
+    const max = runtimeAgent.expForNextLevel(agent);
+    const ratio = max > 0 ? Math.min(1, agent.exp / max) : 0;
+    const preview = previewAmount ? runtimeAgent.previewExpGain(agent, previewAmount) : undefined;
+    const previewRatio = preview && preview.max > 0 ? Math.min(1, preview.filledTo / preview.max) : ratio;
+
+    return (
+        <div
+            className={compact ? 'vital-gauge vital-gauge--compact' : 'vital-gauge'}
+            title={`${agent.exp} / ${max} EXP`}
+        >
+            <span className="vital-gauge__label">EXP</span>
+            <span className="vital-gauge__track">
+                {preview ? (
+                    <span
+                        className="vital-gauge__fill vital-gauge__fill--preview"
+                        style={{ width: `${Math.round(previewRatio * 100)}%` }}
+                    />
+                ) : null}
+                <span className="vital-gauge__fill vital-gauge__fill--exp" style={{ width: `${Math.round(ratio * 100)}%` }} />
+            </span>
+            <span className="vital-gauge__value">
+                {agent.exp}/{max}
+                {preview && preview.levelsGained > 0 ? (
+                    <span className="vital-gauge__levelup"> +{preview.levelsGained} LVL</span>
+                ) : null}
+            </span>
+        </div>
+    );
+}
+
+/** Carrying capacity, as a plain count — not used/total, since what's actually carried is Loadout
+ *  state (`session.carriedSlots`) that isn't always in scope wherever an agent card is hovered (the
+ *  Employment screen, in particular, is before any Loadout exists). Hidden on the Mission page's own
+ *  slot, which already visualizes used-vs-empty as the icon row floating above it. */
+export function InventoryCapacity({ agent }: { agent: RuntimeAgent }): ReactNode {
+    return (
+        <span className="inv-capacity" title={`Carries up to ${runtimeAgent.inventorySize(agent)} items`}>
+            <span aria-hidden="true">🎒</span> {runtimeAgent.inventorySize(agent)}
+        </span>
+    );
+}
+
+/**
+ * A faded, oversized portrait standing behind an agent's card or roster row — fades in on mount,
+ * sized and positioned to bleed past its own container's edges so neighbouring agents standing next
+ * to each other overlap by roughly 10-20%, rather than lining up edge to edge (which would need
+ * every card spaced that much further apart to avoid, cramped for a full team). Purely decorative
+ * (aria-hidden, pointer-events: none) — the real portrait is still the card's own background image.
+ */
+export function AgentBackdrop({ agent }: { agent: RuntimeAgent }): ReactNode {
+    return (
+        <div
+            className="agent-backdrop"
+            aria-hidden="true"
+            style={{ backgroundImage: `url(${import.meta.env.BASE_URL}avatars/${agent.characterId}.png)` }}
+        />
     );
 }
 
@@ -423,6 +504,11 @@ function AgentTooltip({
             </div>
             <div className="agent-tooltip__info">
                 <div className="agent-tooltip__name">{runtimeAgent.fullName(agent)}</div>
+                <div className="agent-tooltip__vitals">
+                    <ExpGauge agent={agent} compact />
+                    <HpGauge agent={agent} compact />
+                    <InventoryCapacity agent={agent} />
+                </div>
                 <div className="skill-list agent-tooltip__skills">
                     {skills.map((skillId) => (
                         <SkillRow key={skillId} skillId={skillId} skill={tables?.Skill.get(skillId)} />

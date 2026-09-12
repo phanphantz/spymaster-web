@@ -22,7 +22,8 @@ export interface RuntimeAgent {
     state: AgentState;
     currentHealth: number;
 
-    /** Earned, not authored. Zero throughout v1 — there is no level-up yet. */
+    /** Earned, not authored. `level` starts at 1; `exp` is progress toward the next level (it
+     *  resets on level-up, see `addExp`), not a lifetime total. */
     level: number;
     exp: number;
     addedStats: StatContainer;
@@ -66,6 +67,49 @@ export function maxHealth(agent: RuntimeAgent): number {
 /** Same rule as max health: authored base plus Agent Upgrades only. */
 export function inventorySize(agent: RuntimeAgent): number {
     return (agent.data.baseInventorySize ?? 0) + agent.addedInventorySize;
+}
+
+/** A flat placeholder curve — there is no authored progression table yet (see `RuntimeAgent.level`'s
+ *  own doc), so this is the one constant to tune until a real one lands. `exp` resets to 0 on every
+ *  level-up rather than accumulating for life, so it always reads as "progress toward the next
+ *  level," not a lifetime total. */
+const EXP_PER_LEVEL = 500;
+
+export function expForNextLevel(agent: RuntimeAgent): number {
+    return agent.level * EXP_PER_LEVEL;
+}
+
+/** Adds exp and resolves every level-up it crosses (more than one, if the amount is large).
+ *  Mutates in place, same as `applyHealthChange`. Returns how many levels were gained. */
+export function addExp(agent: RuntimeAgent, amount: number): number {
+    agent.exp += amount;
+    let gained = 0;
+    while (agent.exp >= expForNextLevel(agent)) {
+        agent.exp -= expForNextLevel(agent);
+        agent.level += 1;
+        gained += 1;
+    }
+    return gained;
+}
+
+/** Same resolution as `addExp`, without mutating — for previewing a not-yet-earned amount (e.g. a
+ *  mission's reward) against an agent's current progress. `filledTo` is the fill position to draw
+ *  against the CURRENT level's own bar: if the amount would level the agent up, that reads as the
+ *  bar filling all the way rather than wrapping into a next-level bar of a different length. */
+export function previewExpGain(
+    agent: RuntimeAgent,
+    amount: number,
+): { max: number; filledTo: number; levelsGained: number } {
+    const max = expForNextLevel(agent);
+    let level = agent.level;
+    let remaining = agent.exp + amount;
+    let levelsGained = 0;
+    while (remaining >= level * EXP_PER_LEVEL) {
+        remaining -= level * EXP_PER_LEVEL;
+        level += 1;
+        levelsGained += 1;
+    }
+    return { max, filledTo: levelsGained > 0 ? max : remaining, levelsGained };
 }
 
 export function skillIds(agent: RuntimeAgent): string[] {

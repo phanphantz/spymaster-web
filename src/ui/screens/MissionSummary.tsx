@@ -3,12 +3,15 @@ import { useGame } from '../../store/gameStore';
 import * as runtimeAgent from '../../engine/runtimeAgent';
 import type { RuntimeAgent } from '../../engine/runtimeAgent';
 import {
+    AgentBackdrop,
     AgentCard,
     ConfirmDialog,
     DifficultyPips,
     Emphasized,
     EquipIcon,
+    ExpGauge,
     HoldButton,
+    HpGauge,
     Modal,
     PageTabs,
     StatAbbr,
@@ -133,6 +136,9 @@ export function MissionSummary(): ReactNode {
     const canDecline = mission.data.isDeclinable !== false;
     const hasAssignments = session.assignments.size > 0;
     const assigned = session.assignedAgents();
+    // Every assigned agent earns the same flat amount (see incidents.ts) — one number previews for
+    // all of them, not a per-agent split.
+    const previewExpAmount = previewReward(tables, mission.data.outcomes?.[0]).exp;
 
     const keywordTerms = [
         mission.location?.displayName,
@@ -228,6 +234,7 @@ export function MissionSummary(): ReactNode {
                             onUnassign={unassignAgent}
                             onEdit={openShop}
                             failure={failure}
+                            previewExpAmount={previewExpAmount}
                         />
                     </div>
 
@@ -445,6 +452,7 @@ function MissionTeam({
     onUnassign,
     onEdit,
     failure,
+    previewExpAmount,
 }: {
     session: LoadoutSession;
     tables: GameTables;
@@ -455,6 +463,9 @@ function MissionTeam({
     onUnassign: (slotId: string) => void;
     onEdit: (characterId: string) => void;
     failure: string;
+    /** The mission's own exp reward, same for every assigned agent — previewed as a pending gain on
+     *  each one's EXP gauge (see ExpGauge's own doc). */
+    previewExpAmount: number;
 }): ReactNode {
     return (
         <div className="summary__team">
@@ -483,6 +494,8 @@ function MissionTeam({
 
                         return (
                             <div className="slot-wrap" key={slot.slotId}>
+                                {occupant ? <AgentBackdrop agent={occupant} /> : null}
+
                                 {occupant && capacity > 0 ? (
                                     <button
                                         type="button"
@@ -554,8 +567,14 @@ function MissionTeam({
                                             onClick={() => onPickSlot(slot.slotId)}
                                             role={pickingAgentId ? 'button' : undefined}
                                         >
-                                            <AgentCard agent={occupant} size="sm" draggable dragFromSlotId={slot.slotId} />
-                                            <StatHexagon agent={occupant} mini />
+                                            <div className="slot__filled-main">
+                                                <AgentCard agent={occupant} size="sm" draggable dragFromSlotId={slot.slotId} />
+                                                <StatHexagon agent={occupant} mini />
+                                            </div>
+                                            <div className="slot__vitals">
+                                                <ExpGauge agent={occupant} previewAmount={previewExpAmount} compact />
+                                                <HpGauge agent={occupant} compact />
+                                            </div>
                                         </div>
                                     ) : (
                                         <button

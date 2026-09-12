@@ -351,6 +351,7 @@
 .roster.roster--inventory { gap: 28px; align-items: flex-start; }
 
 .inv-agent {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -360,6 +361,10 @@
 .inv-agent--focused .agent-card { border-color: var(--cyan); }
 
 .inv-agent__row {
+    /* A plain static box otherwise paints above any positioned sibling regardless of DOM order —
+       this needs to be positioned too (z-index left at auto) so it actually paints over the
+       backdrop behind it, rather than the reverse. */
+    position: relative;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -519,6 +524,16 @@
     line-height: 1.25;
 }
 
+.agent-tooltip__vitals {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 6px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+}
+
 .agent-tooltip__skills {
     flex: 1;
     min-height: 0;
@@ -613,14 +628,90 @@
 
 .stat-hex__icon:hover { opacity: 1; }
 
-.healthbar {
-    height: 3px;
-    margin-top: 8px;
-    background: var(--line);
+/* EXP and HP, same shape: icon-less label, a filled bar, n/m text. Reused compact (smaller text,
+   tighter gap) wherever space is tight — the mission slot, mainly. */
+.vital-gauge { display: flex; align-items: center; gap: 5px; }
+
+.vital-gauge__label {
+    flex: 0 0 auto;
+    font-size: var(--fs-micro);
+    color: var(--steel);
+    letter-spacing: 0.06em;
 }
 
-.healthbar__fill { height: 100%; background: var(--money); }
-.healthbar__fill--hurt { background: var(--danger); }
+.vital-gauge__track {
+    position: relative;
+    flex: 1;
+    height: 5px;
+    background: var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.vital-gauge__fill { position: absolute; inset: 0; width: 0; height: 100%; background: var(--money); }
+.vital-gauge__fill--hurt { background: var(--danger); }
+.vital-gauge__fill--exp { background: var(--cyan); }
+
+/* The not-yet-earned portion of an EXP preview — painted under the real fill (see ExpGauge's own
+   comment), so only the delta past the real fill actually reads as blinking. */
+.vital-gauge__fill--preview {
+    background: var(--money);
+    animation: vital-gauge-blink 900ms ease-in-out infinite;
+}
+
+.vital-gauge__value {
+    flex: 0 0 auto;
+    font-size: var(--fs-micro);
+    color: var(--text);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+.vital-gauge__levelup { color: var(--money); animation: vital-gauge-blink 900ms ease-in-out infinite; }
+
+@keyframes vital-gauge-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+.vital-gauge--compact { gap: 3px; }
+.vital-gauge--compact .vital-gauge__label { font-size: 7px; }
+.vital-gauge--compact .vital-gauge__track { height: 4px; }
+.vital-gauge--compact .vital-gauge__value { font-size: 7px; }
+
+.inv-capacity {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: var(--fs-micro);
+    color: var(--steel);
+}
+
+/* A faded, oversized portrait standing behind an agent's card or roster row (see AgentBackdrop's own
+   comment) — bleeds past its own container on the left and right so adjacent agents overlap, faded
+   most at the very top (like a figure's head fading up into nothing) and again toward the bottom
+   (where the card/slot itself already covers it) rather than showing a flat edge under a translucent
+   layer. Contained to its own container's height rather than rising above it — both places this is
+   used sit inside an ancestor whose horizontal scrollbar (`overflow-x: auto`) forces its vertical
+   overflow to clip too, so anything peeking above its own box would just be cut off. */
+.agent-backdrop {
+    position: absolute;
+    inset: 0;
+    left: -9%;
+    right: -9%;
+    z-index: 0;
+    background-size: cover;
+    background-position: top center;
+    pointer-events: none;
+    opacity: 0;
+    animation: agent-backdrop-in 500ms ease-out forwards;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.85) 30%, black 65%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.85) 30%, black 65%, transparent 100%);
+}
+
+@keyframes agent-backdrop-in {
+    to { opacity: 0.35; }
+}
 
 /* --- Modals --------------------------------------------------------------- */
 
@@ -1203,8 +1294,9 @@
     position: relative;
     width: 100%;
     /* Fixed, not content-driven — an unusually long agent name or several carried items must clip
-       (the internal overflow: hidden pieces already do that) rather than grow the box. */
-    height: 126px;
+       (the internal overflow: hidden pieces already do that) rather than grow the box. Tall enough
+       for a filled slot's card/hexagon row plus its EXP/HP vitals row underneath. */
+    height: 156px;
     padding: 14px;
     display: flex;
     flex-direction: column;
@@ -1271,31 +1363,42 @@
 
 .slot__empty:hover { border-color: var(--cyan); color: var(--cyan); }
 
-/* Occupied: the portrait sits inset from the slot's own edges (its own border/radius intact, not
-   flush-merged with the slot's) rather than bleeding edge to edge — full height of that inset
-   content box, sized only by its own 2:3 aspect ratio, not stretched wide. The hexagon gets the
-   exact same content-box height, so the two line up top and bottom instead of the hexagon reading
-   as low or off-centre against the card next to it. */
+/* Occupied: the card/hexagon row on top, the EXP/HP vitals row underneath — a plain column, each
+   row sized to what it needs rather than either one stretching to fill the whole slot. */
 .slot__filled {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+    min-height: 0;
+}
+
+/* The portrait sits inset from the slot's own edges (its own border/radius intact, not flush-merged
+   with the slot's) rather than bleeding edge to edge — full height of this row, sized only by its
+   own 2:3 aspect ratio, not stretched wide. The hexagon gets the exact same row height, so the two
+   line up top and bottom instead of the hexagon reading as low or off-centre against the card next
+   to it. */
+.slot__filled-main {
     flex: 1;
     display: flex;
     align-items: stretch;
     gap: 8px;
     min-width: 0;
     /* Without this, the flex item's automatic minimum height is its content's intrinsic size (the
-       card and hexagon's own aspect-ratio-driven height), which can exceed the slot's fixed 126px
-       and silently overflow it — clipped by `.slot`'s own `overflow: hidden` into a cropped-looking
-       card and hexagon instead of an error. This is what actually lets it shrink to fit. */
+       card and hexagon's own aspect-ratio-driven height), which can exceed what's actually left in
+       the slot and silently overflow it — clipped by `.slot`'s own `overflow: hidden` into a
+       cropped-looking card and hexagon instead of an error. This is what lets it shrink to fit. */
     min-height: 0;
 }
 
-.slot__filled .agent-card {
+.slot__filled-main .agent-card {
     width: auto;
     height: 100%;
     flex: 0 0 auto;
 }
 
-.slot__filled .agent-card__name {
+.slot__filled-main .agent-card__name {
     padding: 3px 5px;
     font-size: 7px;
     letter-spacing: 0;
@@ -1304,13 +1407,25 @@
 /* Fills the rest of the row instead of the small fixed corner size .stat-hex--mini gets everywhere
  * else (there's nowhere else it's used mini and NOT here) — the SVG's own square viewBox keeps it
  * centred and unstretched no matter how wide that remaining space actually is. */
-.slot__filled .stat-hex--mini {
+.slot__filled-main .stat-hex--mini {
     flex: 1;
     width: 100%;
     max-width: none;
     height: 100%;
     margin-left: 0;
 }
+
+/* EXP and HP, stacked under the card/hexagon row — the mission slot's own compact instance of
+   `.vital-gauge`, shorter still than the already-compact tooltip version since it competes with the
+   card/hexagon row for the slot's fixed height. */
+.slot__vitals {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.slot__vitals .vital-gauge__label { width: 20px; }
 
 /* What the agent carries, previewed floating above its slot rather than squeezed inside it —
    tapping it opens the full kit editor (`onEdit`), the job the removed pencil button used to do.

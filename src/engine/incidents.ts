@@ -65,9 +65,9 @@ export function runIncident(
 
     if (incident.rewardExp) {
         entries.push({ kind: 'exp', amount: incident.rewardExp });
-        // Agents and the player earn the same EXP. v1 records it without acting on it — there is no
-        // level-up yet — so the number is visible from the first run rather than appearing later.
-        for (const agent of target.agents) agent.exp += incident.rewardExp;
+        // Agents and the player earn the same EXP. Runs through addExp so a big enough reward can
+        // carry an agent through more than one level-up in a single Incident.
+        for (const agent of target.agents) runtimeAgent.addExp(agent, incident.rewardExp);
     }
 
     if (incident.rewardUpgradePoint) {
