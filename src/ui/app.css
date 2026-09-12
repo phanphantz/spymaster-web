@@ -1149,7 +1149,9 @@
     overflow: hidden;
 }
 
-.slot--filled { border-color: var(--cyan); }
+/* No padding once filled — the agent card and hexagon go flush to the slot's own edges instead of
+   sitting inset from them. Empty stays padded: .slot__empty draws its own dashed inset box. */
+.slot--filled { border-color: var(--cyan); padding: 0; }
 .slot--needed { border-color: var(--danger); }
 /* The slot picked as the assignment target — either flow order, empty or already occupied. */
 .slot--picking { border-color: var(--cyan); border-style: dashed; }
@@ -1157,22 +1159,18 @@
 .slot--replaceable { border-color: var(--money); border-style: dashed; }
 .slot--replaceable .slot__filled { cursor: pointer; }
 
-/* Only an empty slot renders this — see MissionTeam's own comment. */
+/* Only an empty slot renders this — see MissionTeam's own comment. .slot keeps its base padding
+   for that case; .slot--filled (never applied here) is what zeroes it out. */
 .slot__head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 10px; }
 
-/* The "−" (clear) on an occupied slot, pinned to its top-right corner. */
-.slot__actions {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    display: flex;
-    gap: 4px;
-    z-index: 1;
-}
-
-/* Same subtle corner-circle convention as a carried item's own remove (.equip-icon__remove) —
- * present but out of the way until the pointer is actually on it. */
+/* Hangs off the slot-wrap's own corner (not .slot's — that clips at overflow: hidden), same
+   convention as a carried item's own corner remove (.equip-icon__remove): present but out of the
+   way until the pointer is actually on it. */
 .slot__remove {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    z-index: 2;
     width: 15px;
     height: 15px;
     display: grid;
@@ -1208,13 +1206,12 @@
 
 .slot__empty:hover { border-color: var(--cyan); color: var(--cyan); }
 
-/* Occupied: portrait fits the slot's height on the left, a mini hexagon on the right — the same
-   footprint as an empty slot, never taller (fills the same flex: 1 row .slot__empty does). */
+/* Occupied, edge to edge now .slot--filled has zeroed the padding: the portrait fills the slot's
+   full height on the left, the hexagon fills whatever width is left on the right. */
 .slot__filled {
     flex: 1;
     display: flex;
-    align-items: center;
-    gap: 10px;
+    align-items: stretch;
     min-width: 0;
 }
 
@@ -1222,6 +1219,10 @@
     width: auto;
     height: 100%;
     flex: 0 0 auto;
+    border-top: 0;
+    border-bottom: 0;
+    border-left: 0;
+    border-radius: 0;
 }
 
 .slot__filled .agent-card__name {
@@ -1230,7 +1231,16 @@
     letter-spacing: 0;
 }
 
-.slot__filled .stat-hex--mini { margin-left: auto; }
+/* Fills the rest of the row instead of the small fixed corner size .stat-hex--mini gets everywhere
+ * else (there's nowhere else it's used mini and NOT here) — the SVG's own square viewBox keeps it
+ * centred and unstretched no matter how wide that remaining space actually is. */
+.slot__filled .stat-hex--mini {
+    flex: 1;
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    margin-left: 0;
+}
 
 /* What the agent carries, previewed floating above its slot rather than squeezed inside it —
    tapping it opens the full kit editor (`onEdit`), the job the removed pencil button used to do.

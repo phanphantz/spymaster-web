@@ -207,12 +207,16 @@ export function MissionSummary(): ReactNode {
 
                     <div className="summary__stats">
                         <RewardSquares mission={mission} tables={tables} />
-                        <div className="summary__photo summary__photo--stats">
-                            <StatHexagon totals={combinedStats(assigned)} />
-                        </div>
+                        {assigned.length > 0 ? (
+                            <div className="summary__photo summary__photo--stats">
+                                <StatHexagon totals={combinedStats(assigned)} />
+                            </div>
+                        ) : (
+                            <p className="summary__stats-empty">Assign agents to see stat summary</p>
+                        )}
                         <div className="summary__lower-anchor">
                             <hr className="summary__dashrule" />
-                            <StatGaugeList agents={assigned} tables={tables} />
+                            {assigned.length > 0 ? <StatGaugeList agents={assigned} tables={tables} /> : null}
                             <div className="summary__actions summary__actions--right">
                                 <button type="button" className="btn btn--quiet" onClick={() => openShop('')}>
                                     Inventory
@@ -488,6 +492,23 @@ function MissionTeam({
                                     </button>
                                 ) : null}
 
+                                {/* Hangs off the slot's own corner, outside its overflow: hidden — same
+                                    convention as the float above, and as a carried item's own corner
+                                    remove — rather than sitting inset inside the card it's clearing. */}
+                                {occupant ? (
+                                    <button
+                                        type="button"
+                                        className="slot__remove"
+                                        onClick={(event) => {
+                                            event.stopPropagation();
+                                            onUnassign(slot.slotId);
+                                        }}
+                                        aria-label={`Remove ${runtimeAgent.displayName(occupant)}`}
+                                    >
+                                        −
+                                    </button>
+                                ) : null}
+
                                 <div
                                     className={className}
                                     onDragOver={(event) => event.preventDefault()}
@@ -517,19 +538,6 @@ function MissionTeam({
                                             onClick={() => onPickSlot(slot.slotId)}
                                             role={pickingAgentId ? 'button' : undefined}
                                         >
-                                            <div className="slot__actions">
-                                                <button
-                                                    type="button"
-                                                    className="slot__remove"
-                                                    onClick={(event) => {
-                                                        event.stopPropagation();
-                                                        onUnassign(slot.slotId);
-                                                    }}
-                                                    aria-label={`Remove ${runtimeAgent.displayName(occupant)}`}
-                                                >
-                                                    −
-                                                </button>
-                                            </div>
                                             <AgentCard agent={occupant} size="sm" draggable dragFromSlotId={slot.slotId} />
                                             <StatHexagon agent={occupant} mini />
                                         </div>
