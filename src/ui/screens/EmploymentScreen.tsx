@@ -9,10 +9,10 @@ import { AgentCard, StatHexagon } from '../components/bits';
  * A reward phase, not a purchase — there is no hiring cost anywhere in the design. Every agent is
  * in the pool for v1, so nothing is locked; the choice is which four you want to live with.
  *
- * The candidate strip at the bottom is the same fixed `.roster` picker every other screen uses —
- * click a card to toggle it into the roster, same as picking an agent for a mission slot. Clicking
- * also focuses that candidate in the stage above, which is the only place their sheet (portrait,
- * hexagon, skills, background) is shown — there's no separate detail modal to keep in sync.
+ * The candidate strip at the bottom is the same fixed `.roster` picker every other screen uses.
+ * Clicking a card only brings that candidate up on the stage above — the one place their sheet
+ * (portrait, hexagon, skills, background) is shown — so browsing never changes the roster by
+ * accident. Picking is the stage's own Select / Unselect button; picked cards carry a checkmark.
  */
 export function EmploymentScreen(): ReactNode {
     const offer = useGame((state) => state.offer);
@@ -27,6 +27,8 @@ export function EmploymentScreen(): ReactNode {
 
     const remaining = offer.pickQty - picked.length;
     const focused = offer.candidates.find((agent) => agent.characterId === focusedId) ?? offer.candidates[0];
+    const focusedPicked = focused ? picked.includes(focused.characterId) : false;
+    const rosterFull = remaining === 0;
 
     return (
         <div className="employment">
@@ -41,6 +43,19 @@ export function EmploymentScreen(): ReactNode {
                         <div className="employment__portrait-info">
                             <div className="employment__codename">{runtimeAgent.displayName(focused)}</div>
                             <div className="employment__fullname">{runtimeAgent.fullName(focused)}</div>
+                            <div className="employment__pick">
+                                <button
+                                    type="button"
+                                    className={focusedPicked ? 'btn' : 'btn btn--primary'}
+                                    disabled={!focusedPicked && rosterFull}
+                                    onClick={() => togglePicked(focused.characterId)}
+                                >
+                                    {focusedPicked ? 'Unselect' : 'Select'}
+                                </button>
+                                {!focusedPicked && rosterFull ? (
+                                    <span className="meta">Roster full — unselect someone first</span>
+                                ) : null}
+                            </div>
                         </div>
                     </div>
 
@@ -75,24 +90,16 @@ export function EmploymentScreen(): ReactNode {
             </div>
 
             <div className="roster">
-                {offer.candidates.map((agent) => {
-                    const isPicked = picked.includes(agent.characterId);
-                    const isBlocked = !isPicked && remaining === 0;
-
-                    return (
-                        <AgentCard
-                            key={agent.characterId}
-                            agent={agent}
-                            size="sm"
-                            selected={isPicked}
-                            disabled={isBlocked}
-                            onClick={() => {
-                                togglePicked(agent.characterId);
-                                setFocusedId(agent.characterId);
-                            }}
-                        />
-                    );
-                })}
+                {offer.candidates.map((agent) => (
+                    <AgentCard
+                        key={agent.characterId}
+                        agent={agent}
+                        size="sm"
+                        selected={agent.characterId === focused?.characterId}
+                        checked={picked.includes(agent.characterId)}
+                        onClick={() => setFocusedId(agent.characterId)}
+                    />
+                ))}
             </div>
         </div>
     );

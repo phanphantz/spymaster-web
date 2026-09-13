@@ -357,6 +357,7 @@ export function AgentBackdrop({ agent }: { agent: RuntimeAgent }): ReactNode {
 export function AgentCard({
     agent,
     selected,
+    checked,
     disabled,
     size = 'md',
     onClick,
@@ -365,6 +366,9 @@ export function AgentCard({
 }: {
     agent: RuntimeAgent;
     selected?: boolean;
+    /** A corner checkmark, independent of `selected` — e.g. Employment, where `selected` is "the one
+     *  being looked at" and `checked` is "picked for the roster". */
+    checked?: boolean;
     disabled?: boolean;
     size?: 'md' | 'sm';
     onClick?: () => void;
@@ -452,6 +456,11 @@ export function AgentCard({
                 onDragStartCapture={hideNow}
                 style={{ backgroundImage: `url(${import.meta.env.BASE_URL}avatars/${agent.characterId}.png)` }}
             >
+                {checked ? (
+                    <span className="agent-card__check" aria-label="Selected">
+                        ✓
+                    </span>
+                ) : null}
                 <span className="agent-card__name">{runtimeAgent.displayName(agent)}</span>
             </button>
             {anchor

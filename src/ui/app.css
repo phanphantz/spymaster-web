@@ -500,6 +500,22 @@
 .agent-card--selected { border-color: var(--cyan); }
 .agent-card--disabled { opacity: 0.4; }
 
+/* Picked, as opposed to `--selected` (focused/being looked at) — the two can be true separately. */
+.agent-card__check {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 20px;
+    height: 20px;
+    display: grid;
+    place-items: center;
+    background: var(--cyan);
+    color: var(--inverse);
+    border-radius: 50%;
+    font-size: 12px;
+    line-height: 1;
+}
+
 /* 0.75x — same proportions, smaller footprint for a horizontal picker row. */
 .agent-card--sm { width: 97px; }
 .agent-card--sm .agent-card__name { padding: 6px 8px; font-size: var(--fs-micro); }
@@ -2198,6 +2214,13 @@ button.equip-icon:hover { border-color: var(--danger); color: var(--danger); }
     color: var(--cyan-dim);
     letter-spacing: 0.06em;
     margin-top: 4px;
+}
+
+.employment__pick {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 16px;
 }
 
 .employment__aside {
