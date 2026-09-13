@@ -63,18 +63,29 @@ interface MissionIntroTimeline {
  * authors no hint or description: the briefing block still only holds on screen for one read-pause
  * after whichever line actually appeared last.
  */
+/** Slows the whole reveal to a quarter speed (0.25x) — every delay below, and every keyframe
+ *  duration in app.css's "Mission onboarding reveal" block, is this many times longer than the pace
+ *  that felt right to read at 1x. Keep the two in sync if this changes. */
+const INTRO_SPEED_SCALE = 4;
+
 function missionIntroTimeline(mission: LiveMission): MissionIntroTimeline {
-    const BRIEF_BASE = 820;
-    const BRIEF_STEP = 280;
-    const BRIEF_READ_PAUSE = 550;
-    const BRIEF_COLLAPSE_MS = 600;
-    const RIGHT_SLIDE_GAP = 200;
-    const RIGHT_SLIDE_MS = 550;
-    const REWARD_GAP = 150;
-    const REWARD_MS = 400;
-    const TEAM_GAP = 150;
-    const TEAM_MS = 500;
-    const SETTLE_BUFFER = 250;
+    // Matches `.summary--intro .summary__left`'s own animation-duration in app.css — the briefing
+    // is derived from it (below) so the left column is always fully landed before any mission info
+    // starts fading in, not just "usually" landed by coincidence of two hand-picked numbers.
+    const LEFT_SLIDE_MS = 550 * INTRO_SPEED_SCALE;
+    const BRIEF_START_GAP = 200 * INTRO_SPEED_SCALE;
+    const BRIEF_BASE = LEFT_SLIDE_MS + BRIEF_START_GAP;
+    const BRIEF_STEP = 280 * INTRO_SPEED_SCALE;
+    const BRIEF_READ_PAUSE = 550 * INTRO_SPEED_SCALE;
+    const BRIEF_COLLAPSE_MS = 600 * INTRO_SPEED_SCALE;
+    const RIGHT_SLIDE_GAP = 200 * INTRO_SPEED_SCALE;
+    const RIGHT_SLIDE_MS = 550 * INTRO_SPEED_SCALE;
+    const REWARD_GAP = 150 * INTRO_SPEED_SCALE;
+    const REWARD_MS = 400 * INTRO_SPEED_SCALE;
+    const TEAM_GAP = 150 * INTRO_SPEED_SCALE;
+    const TEAM_MS = 500 * INTRO_SPEED_SCALE;
+    const SETTLE_BUFFER = 250 * INTRO_SPEED_SCALE;
+    const LOCATION = 480 * INTRO_SPEED_SCALE;
 
     let line = 0;
     const briefName = BRIEF_BASE + BRIEF_STEP * line++;
@@ -88,7 +99,7 @@ function missionIntroTimeline(mission: LiveMission): MissionIntroTimeline {
     const team = reward + REWARD_MS + TEAM_GAP;
     const totalMs = team + TEAM_MS + SETTLE_BUFFER;
 
-    return { location: 480, briefName, briefRow, briefHint, briefDescription, briefCollapse, rightSlide, reward, team, totalMs };
+    return { location: LOCATION, briefName, briefRow, briefHint, briefDescription, briefCollapse, rightSlide, reward, team, totalMs };
 }
 
 /**
@@ -295,7 +306,7 @@ export function MissionSummary(): ReactNode {
                         </div>
                     </div>
 
-                    <div className="summary__divider" style={delayMs(timeline?.location)}>
+                    <div className="summary__divider">
                         <span className="summary__dot" aria-hidden="true" />
                     </div>
 

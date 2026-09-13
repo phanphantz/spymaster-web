@@ -856,7 +856,13 @@
    Cost/Success/Confirm corner fixture holds hidden until the reveal reaches it — see
    `.summary--intro` below for the rest of the sequence. */
 .modal--intro { overflow: hidden; }
-.modal--intro .mission-corner { opacity: 0; animation: mission-fade-in 400ms ease-out forwards; }
+.modal--intro .mission-corner { opacity: 0; animation: mission-fade-in 1600ms ease-out forwards; }
+/* The two column dividers below are painted once as static background, at the columns' settled
+   (post-slide) offsets — while a column is still off-canvas or mid-slide, that paint reads as an
+   extra, un-animated divider sitting apart from the one that's actually sliding in. Hidden for the
+   run of the reveal; `.summary__divider` (an animated element, not paint) carries the left one on
+   its own, and the right one has nothing to clash with once it reappears at `.summary--intro`'s end. */
+.modal--intro.modal--wide { background: var(--surface); }
 
 /* Mission UI only: the two column dividers, painted as part of the modal's own background instead
    of stopping at the bottom of `.summary` — a background layer sits behind every button and piece
@@ -1260,6 +1266,7 @@
    on its own so it's this, and never the Team slot grid below it, that gives when content is
    longer than the fixed-height modal has room for. */
 .summary__scroll {
+    position: relative;
     flex: 1;
     min-height: 0;
     display: flex;
@@ -1353,19 +1360,24 @@
     50% { transform: translateX(6px); opacity: 1; }
 }
 
-.summary--intro .summary__left {
-    transform: translateX(-100%);
-    animation: mission-slide-left-in 550ms ease-out forwards;
+/* The divider slides as one piece with the left column rather than fading in place afterward — it
+   reads as the same panel's trailing edge, so it travels the same 280px (`.summary__left`'s own
+   width; `.summary__divider`'s own width is only 2px, too little to read as a slide by itself). */
+.summary--intro .summary__left,
+.summary--intro .summary__divider {
+    animation: mission-slide-left-in 2200ms ease-out forwards;
 }
+
+.summary--intro .summary__left { transform: translateX(-100%); }
+.summary--intro .summary__divider { transform: translateX(-280px); }
 
 @keyframes mission-slide-left-in {
     to { transform: translateX(0); }
 }
 
-.summary--intro .summary__divider,
 .summary--intro .summary__location {
     opacity: 0;
-    animation: mission-fade-in 400ms ease-out forwards;
+    animation: mission-fade-in 1600ms ease-out forwards;
 }
 
 /* Wraps the name/type-and-difficulty/hint/description rows only while the reveal plays — the base
@@ -1378,17 +1390,19 @@
     min-height: 0;
 }
 
-/* Floats over the middle of `.summary__right` (its nearest positioned ancestor) while the reveal
-   plays — "the center of the center column" the design calls for — then this one animation carries
-   it down to (0,0): exactly its normal top-left flow position, since `to` with no explicit `from`
-   animates from whatever this rule's own base values are. */
+/* Floats over the middle of `.summary__scroll` (its nearest positioned ancestor, with no padding of
+   its own — top:0/left:0/width:100% below lands exactly on the same content edges the rows sit on
+   in normal flow, not the padding edge of some outer, padded ancestor) while the reveal plays —
+   "the center of the center column" the design calls for — then this one animation carries it down
+   to (0,0): exactly its normal top-left flow position, since `to` with no explicit `from` animates
+   from whatever this rule's own base values are. */
 .summary--intro .mission-brief {
     position: absolute;
     top: 50%;
     left: 50%;
     width: 78%;
     transform: translate(-50%, -50%) scale(1.08);
-    animation: mission-brief-collapse 600ms ease-in-out forwards;
+    animation: mission-brief-collapse 2400ms ease-in-out forwards;
 }
 
 @keyframes mission-brief-collapse {
@@ -1405,12 +1419,12 @@
    MissionSummary.tsx), this just says "start invisible, fade to solid". */
 .summary--intro .mission-brief > * {
     opacity: 0;
-    animation: mission-fade-in 350ms ease-out forwards;
+    animation: mission-fade-in 1400ms ease-out forwards;
 }
 
 .summary--intro .summary__stats {
     transform: translateX(100%);
-    animation: mission-slide-right-in 550ms ease-out forwards;
+    animation: mission-slide-right-in 2200ms ease-out forwards;
 }
 
 @keyframes mission-slide-right-in {
@@ -1421,13 +1435,13 @@
 .summary--intro .summary__stats-empty,
 .summary--intro .summary__decline {
     opacity: 0;
-    animation: mission-fade-in 400ms ease-out forwards;
+    animation: mission-fade-in 1600ms ease-out forwards;
 }
 
 .summary--intro .summary__team {
     opacity: 0;
     transform: translateY(36px);
-    animation: mission-team-in 500ms ease-out forwards;
+    animation: mission-team-in 2000ms ease-out forwards;
 }
 
 @keyframes mission-team-in {
