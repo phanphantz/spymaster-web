@@ -622,6 +622,41 @@ export function Emphasized({ text, terms = [] }: { text: string; terms?: string[
     );
 }
 
+/** Open dialogs, innermost last. A confirm opened over the mission modal must take Escape alone —
+ *  one press backs out one layer, never the confirm and the modal under it together. */
+const escapeStack: { current: () => void }[] = [];
+
+function onEscapeKey(event: KeyboardEvent): void {
+    if (event.key !== 'Escape' || event.defaultPrevented) return;
+    const top = escapeStack[escapeStack.length - 1];
+    if (!top) return;
+    event.preventDefault();
+    top.current();
+}
+
+/**
+ * Escape closes this dialog while it's `active` and nothing opened after it is still up. Stacks by
+ * when each dialog opened, not where it sits in the tree — a confirm is rendered inside the modal
+ * it belongs to, but it's the one on top.
+ */
+export function useEscapeToClose(onClose: () => void, active = true): void {
+    const handler = useRef(onClose);
+    useEffect(() => {
+        handler.current = onClose;
+    });
+
+    useEffect(() => {
+        if (!active) return;
+        const entry = handler;
+        escapeStack.push(entry);
+        if (escapeStack.length === 1) window.addEventListener('keydown', onEscapeKey);
+        return () => {
+            escapeStack.splice(escapeStack.lastIndexOf(entry), 1);
+            if (escapeStack.length === 0) window.removeEventListener('keydown', onEscapeKey);
+        };
+    }, [active]);
+}
+
 /** A reusable yes/no dialog for actions that need one more tap to confirm. */
 export function ConfirmDialog({
     open,
@@ -642,6 +677,8 @@ export function ConfirmDialog({
     onConfirm: () => void;
     onCancel: () => void;
 }): ReactNode {
+    useEscapeToClose(onCancel, open);
+
     if (!open) return null;
 
     return (
@@ -799,6 +836,9 @@ export function Modal({
     introActive?: boolean;
     style?: CSSProperties;
 }): ReactNode {
+    // Same path as a backdrop click, so a caller's own guard (e.g. "close this loadout?") still runs.
+    useEscapeToClose(onClose);
+
     const modalClassName = [
         'modal',
         wide ? 'modal--wide' : '',

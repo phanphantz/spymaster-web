@@ -16,6 +16,7 @@ import {
     StatAbbr,
     StatHexagon,
     parseAgentDragPayload,
+    useEscapeToClose,
 } from '../components/bits';
 import { STAT_IDS } from '../../engine/types';
 import type { GameTables, StatId } from '../../engine/types';
@@ -566,6 +567,8 @@ function SwapDialog({
     onSwapBoth: () => void;
     onCancel: () => void;
 }): ReactNode {
+    useEscapeToClose(onCancel, Boolean(pendingSwap));
+
     if (!pendingSwap) return null;
 
     const agentA = session.agentIn(pendingSwap.slotA);
