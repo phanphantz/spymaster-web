@@ -864,12 +864,11 @@
 .modal--intro .modal__body { overflow: hidden; }
 .modal--intro .mission-corner { opacity: 0; }
 .modal--intro .mission-corner.mission-corner--go { animation: mission-fade-in var(--intro-fade-ms, 200ms) ease-out forwards; }
-/* The two column dividers below are painted once as static background, at the columns' settled
-   (post-slide) offsets — while a column is still off-canvas or mid-slide, that paint reads as an
-   extra, un-animated divider sitting apart from the one that's actually sliding in. Hidden for the
-   run of the reveal; `.summary__divider` (an animated element, not paint) carries the left one on
-   its own, and the right one has nothing to clash with once it reappears at `.summary--intro`'s end. */
-.modal--intro.modal--wide { background: var(--surface); }
+/* The two column dividers below sit at the columns' settled (post-slide) offsets — while a column is
+   still off-canvas or mid-slide they'd read as an extra, un-animated divider apart from the one
+   that's actually sliding in. Hidden for the run of the reveal, then faded back (the `transition` on
+   `.modal--wide::before`) once the intro class comes off. */
+.modal--intro.modal--wide::before { opacity: 0; }
 
 /* Mission UI only: the two column dividers, painted as part of the modal's own background instead
    of stopping at the bottom of `.summary` — a background layer sits behind every button and piece
@@ -886,23 +885,34 @@
    hairline UI. The second line's right-offset is 280px plus a fixed ~16px — `.modal__body`'s own
    `scrollbar-gutter: stable` permanently reserves a scrollbar's width inside it (so the grid
    never shifts between a scrolling and non-scrolling mission), which this background layer,
-   painted on `.modal` itself, sits outside of and so has to compensate for by hand. */
+   painted on `.modal` itself, sits outside of and so has to compensate for by hand.
+   Painted on a `::before` layer rather than `.modal`'s own background so it can fade (background
+   paint can't) — `isolation` makes `.modal` a stacking context so `z-index: -1` lands above its
+   surface but still behind every child, exactly where the background layer used to sit. */
 .modal--wide {
     width: min(1620px, 100%);
+    isolation: isolate;
+}
+
+.modal--wide::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
     background:
         linear-gradient(var(--steel), var(--steel)) no-repeat left 280px top 0 / 2px 100%,
-        linear-gradient(var(--steel), var(--steel)) no-repeat right 296px top 0 / 2px 100%,
-        var(--surface);
+        linear-gradient(var(--steel), var(--steel)) no-repeat right 296px top 0 / 2px 100%;
+    transition: opacity var(--intro-fade-ms, 200ms) ease-out;
 }
 
 /* Kit mode's left rail is now the same 280px width as the Mission UI's, so its divider line lands
    at the same offset as `.modal--wide`'s own — this rule is a deliberate no-op kept for the day
    the two widths diverge again, rather than folding `.modal--kit` back into a single selector. */
-.modal--wide.modal--kit {
+.modal--wide.modal--kit::before {
     background:
         linear-gradient(var(--steel), var(--steel)) no-repeat left 280px top 0 / 2px 100%,
-        linear-gradient(var(--steel), var(--steel)) no-repeat right 296px top 0 / 2px 100%,
-        var(--surface);
+        linear-gradient(var(--steel), var(--steel)) no-repeat right 296px top 0 / 2px 100%;
 }
 
 .modal__close {
@@ -1337,8 +1347,8 @@
  * `animation`. That's what makes the second half wait on a click instead of a clock.
  *
  * Every rule here is scoped under `.summary--intro`, so once that class comes off (the reveal
- * finishes, or the player skips it outright) every element instantly reverts to its plain,
- * un-animated layout — no explicit "settled" state to maintain in parallel.
+ * finishes) every element instantly reverts to its plain, un-animated layout — no explicit
+ * "settled" state to maintain in parallel.
  */
 
 @keyframes mission-fade-in {
@@ -1353,15 +1363,31 @@
    animation. */
 .summary--intro .summary__scroll { overflow: hidden; }
 
-/* The click-anywhere-to-skip surface — sits above every column while the reveal plays, both
-   catching the click and stopping the player from, say, tapping a slot that hasn't faded in yet.
-   Sits below the "Got it" button (see `.mission-intro__acknowledge`) so that one click still lands
-   on the button, not this. */
+/* Sits above every column for the whole reveal, stopping the player from, say, tapping a slot that
+   hasn't faded in yet. Only `--skip` (while the briefing text is still appearing) actually does
+   anything on click — fast-forward to the "Got it" moment. Sits below the "Got it" button (see
+   `.mission-intro__acknowledge`) so that one click still lands on the button, not this. */
 .mission-intro__catcher {
     position: absolute;
     inset: 0;
     z-index: 5;
-    cursor: pointer;
+}
+
+.mission-intro__catcher--skip { cursor: pointer; }
+
+/* A tap during the text reveal: snap everything the first half was still animating straight to its
+   end state, instead of leaving the lines to finish on their own timers. "Got it" itself is left to
+   fade in normally — it's the thing the tap is skipping to. */
+.summary--intro.summary--lines-shown .summary__left,
+.summary--intro.summary--lines-shown .summary__divider {
+    animation: none;
+    transform: none;
+}
+
+.summary--intro.summary--lines-shown .summary__location,
+.summary--intro.summary--lines-shown .mission-brief > :not(.mission-intro__acknowledge) {
+    animation: none;
+    opacity: 1;
 }
 
 /* The JRPG "there's more, but you can skip it" cue — a small arrow nudging toward the modal's own
@@ -1428,11 +1454,14 @@
 .summary--intro .mission-brief {
     position: absolute;
     top: 50%;
-    left: 50%;
-    width: 78%;
+    left: 0;
+    /* Held at its settled width the whole time — the text wraps once, as it appears, and never
+       reflows while it moves. Centering is transform-only: the rows are padded to ~70-80% of this
+       width, so nudging right 12% puts the visible text roughly over the column's middle. */
+    width: 100%;
     z-index: 6;
     pointer-events: none;
-    transform: translate(-50%, -50%) scale(1.08);
+    transform: translate(12%, -50%) scale(1.08);
 }
 
 .summary--intro .mission-brief.mission-brief--go {
@@ -1442,8 +1471,6 @@
 @keyframes mission-brief-collapse {
     to {
         top: 0;
-        left: 0;
-        width: 100%;
         transform: translate(0, 0) scale(1);
     }
 }
@@ -1458,10 +1485,14 @@
 }
 
 /* The one control in the whole reveal that's actually meant to be pressed — needs its own
-   `pointer-events` back since its ancestor (`.mission-brief`) is click-through. */
-.mission-intro__acknowledge {
-    align-self: flex-start;
-    margin-top: 4px;
+   `pointer-events` back since its ancestor (`.mission-brief`) is click-through. Absolute, hung just
+   below the block, so appearing takes no layout space: the block's height — and so its centering —
+   is the same before and after it shows up. Out-specifies the `.mission-brief > *` line fade. */
+.summary--intro .mission-brief > .mission-intro__acknowledge {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 14px;
     pointer-events: auto;
     opacity: 0;
     animation: mission-fade-in var(--intro-fade-ms) ease-out forwards;
@@ -2221,7 +2252,7 @@ button.equip-icon:hover { border-color: var(--danger); color: var(--danger); }
     .summary__divider { display: none; }
     /* Same reasoning — the background dividers line up with the desktop grid, which no longer
        applies once the columns stack. */
-    .modal--wide { background: var(--surface); }
+    .modal--wide::before { display: none; }
     .summary__photo { min-height: 140px; }
 
     .result__verdict { font-size: var(--fs-money); }

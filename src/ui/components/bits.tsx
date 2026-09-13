@@ -776,6 +776,7 @@ export function Modal({
     corner,
     topLeft,
     introActive,
+    style,
 }: {
     children: ReactNode;
     onClose: () => void;
@@ -796,6 +797,7 @@ export function Modal({
      *  off-frame reads as entering the modal rather than bleeding past its rounded corners, and holds
      *  `corner` (the Cost/Success/Confirm fixture) hidden until its own turn in that reveal. */
     introActive?: boolean;
+    style?: CSSProperties;
 }): ReactNode {
     const modalClassName = [
         'modal',
@@ -815,6 +817,7 @@ export function Modal({
         >
             <div
                 className={modalClassName}
+                style={style}
                 role="dialog"
                 aria-modal="true"
                 aria-label={label}

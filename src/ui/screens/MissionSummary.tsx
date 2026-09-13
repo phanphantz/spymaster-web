@@ -37,8 +37,8 @@ const LIKELIHOOD_LABEL: Record<string, string> = { high: 'High', medium: 'Medium
 
 /**
  * Every duration in the reveal, in ms — the single source for both the stagger math below and the
- * keyframes in app.css, which read these back as the `--intro-*-ms` custom properties set on
- * `.summary` (see `introVars`), so the two can't drift apart.
+ * keyframes in app.css, which read these back as the `--intro-*-ms` custom properties set on the
+ * modal (see `introVars`), so the two can't drift apart.
  */
 const INTRO_MS = {
     /** Left column in, stats rail in, team grid up — deliberately quick. */
@@ -132,9 +132,10 @@ const POST_ACK = missionIntroPostAck();
 
 /**
  * Drives the mission-open reveal: whether to play it at all (a mission only ever gets one, the
- * first time its modal opens — see `seenMissionIntros`), and its two checkpoints — the "Got it"
- * acknowledgement the player paces themselves, and the eventual settle, whether that's because the
- * post-ack timeline ran out on its own or the player clicked to skip everything outright.
+ * first time its modal opens — see `seenMissionIntros`), and its checkpoints — the briefing lines
+ * finishing (on their own, or fast-forwarded by a tap), the "Got it" acknowledgement the player
+ * paces themselves, and the settle once the post-ack timeline runs out. There is no skipping the
+ * whole thing: a tap only ever fast-forwards the text reveal.
  *
  * `animate` is decided once, from a lazy initializer, so a later store update (the very
  * `markMissionIntroSeen` call this same hook makes) can't flip it mid-playthrough — only a fresh
@@ -142,13 +143,15 @@ const POST_ACK = missionIntroPostAck();
  */
 function useMissionIntro(mission: LiveMission | undefined): {
     introActive: boolean;
+    /** Every briefing line is fully shown and "Got it" is up (or already pressed). */
+    linesReady: boolean;
+    /** The lines got there via a tap rather than their own timers — their animations have to be
+     *  snapped to the end, not left to finish. */
+    linesSkipped: boolean;
     acknowledged: boolean;
-    /** The "Got it" button is on screen and waiting — the briefing lines have all finished fading
-     *  in, and the player hasn't pressed it (or skipped past it) yet. */
-    showAcknowledge: boolean;
     preAck: MissionIntroPreAck | undefined;
     acknowledge: () => void;
-    skipIntro: () => void;
+    skipLines: () => void;
 } {
     const seenMissionIntros = useGame((state) => state.seenMissionIntros);
     const markMissionIntroSeen = useGame((state) => state.markMissionIntroSeen);
@@ -156,6 +159,7 @@ function useMissionIntro(mission: LiveMission | undefined): {
 
     const [animate] = useState(() => Boolean(instanceId && !seenMissionIntros.has(instanceId)));
     const [linesReady, setLinesReady] = useState(false);
+    const [linesSkipped, setLinesSkipped] = useState(false);
     const [acknowledged, setAcknowledged] = useState(false);
     const [finished, setFinished] = useState(false);
     const preAck = mission ? missionIntroPreAck(mission) : undefined;
@@ -181,15 +185,14 @@ function useMissionIntro(mission: LiveMission | undefined): {
 
     return {
         introActive: animate && !finished,
+        linesReady,
+        linesSkipped,
         acknowledged,
-        showAcknowledge: animate && linesReady && !acknowledged && !finished,
         preAck,
         acknowledge: () => setAcknowledged(true),
-        // Skipping jumps both checkpoints at once — the caller only needs the settled layout right
-        // away, not a fast-forward through what's left of either half.
-        skipIntro: () => {
-            setAcknowledged(true);
-            setFinished(true);
+        skipLines: () => {
+            setLinesSkipped(true);
+            setLinesReady(true);
         },
     };
 }
@@ -252,8 +255,7 @@ function MissionCorner({
     return (
         <div
             className={introClassName ?? 'mission-corner'}
-            // Sits outside `.summary`, so it can't inherit the `--intro-*-ms` vars set there.
-            style={introDelayMs !== undefined ? { ...introVars, animationDelay: `${introDelayMs}ms` } : undefined}
+            style={introDelayMs !== undefined ? { animationDelay: `${introDelayMs}ms` } : undefined}
         >
             <PlanningStatus session={session} />
             <HoldButton
@@ -305,7 +307,7 @@ export function MissionSummary(): ReactNode {
 
     const [confirmingDecline, setConfirmingDecline] = useState(false);
     const [confirmingClose, setConfirmingClose] = useState(false);
-    const { introActive, acknowledged, showAcknowledge, preAck, acknowledge, skipIntro } = useMissionIntro(
+    const { introActive, linesReady, linesSkipped, acknowledged, preAck, acknowledge, skipLines } = useMissionIntro(
         session?.mission,
     );
 
@@ -316,9 +318,6 @@ export function MissionSummary(): ReactNode {
     const canDecline = mission.data.isDeclinable !== false;
     const hasAssignments = session.assignments.size > 0;
     const assigned = session.assignedAgents();
-    // Every assigned agent earns the same flat amount (see incidents.ts) — one number previews for
-    // all of them, not a per-agent split.
-    const previewExpAmount = previewReward(tables, mission.data.outcomes?.[0]).exp;
 
     const keywordTerms = [
         mission.location?.displayName,
@@ -347,6 +346,9 @@ export function MissionSummary(): ReactNode {
             label={inventoryMode ? 'Kit' : (mission.data.displayName ?? 'Mission')}
             hideClose
             introActive={revealing}
+            // Always set, not just while revealing: the divider lines' fade-in (see `.modal--wide::before`)
+            // reads its duration the moment the reveal ends and the intro class comes off.
+            style={introVars}
             corner={
                 <MissionCorner
                     session={session}
@@ -373,7 +375,11 @@ export function MissionSummary(): ReactNode {
                         onSelectTab={(tab) => (tab === 'agent' ? closeShop() : undefined)}
                     />
                 ) : (
-                <div className={revealing ? 'summary summary--intro' : 'summary'} style={revealing ? introVars : undefined}>
+                <div
+                    className={
+                        revealing ? `summary summary--intro${linesSkipped ? ' summary--lines-shown' : ''}` : 'summary'
+                    }
+                >
                     <div className="summary__left">
                         <div className="summary__photo">NO IMAGE</div>
                         <div className="summary__lower-anchor">
@@ -427,7 +433,7 @@ export function MissionSummary(): ReactNode {
                                     </p>
                                 ) : null}
 
-                                {showAcknowledge ? (
+                                {revealing && linesReady && !acknowledged ? (
                                     <button
                                         type="button"
                                         className="btn btn--primary btn--small mission-intro__acknowledge"
@@ -453,7 +459,6 @@ export function MissionSummary(): ReactNode {
                             onUnassign={unassignAgent}
                             onEdit={openShop}
                             failure={failure}
-                            previewExpAmount={previewExpAmount}
                             introClassName={revealing ? introCls('summary__team') : undefined}
                             introDelayMs={revealing ? POST_ACK.team : undefined}
                         />
@@ -486,12 +491,17 @@ export function MissionSummary(): ReactNode {
 
                     {revealing ? (
                         <>
-                            <div className="mission-intro__catcher" onClick={skipIntro} role="presentation" />
-                            {/* Only while there's a timer running unattended — once "Got it" is up, the
-                                player's next move is that button, not a race against the clock. */}
-                            {!showAcknowledge && !acknowledged ? (
-                                <span className="mission-intro__skip-hint" aria-hidden="true">❯</span>
-                            ) : null}
+                            {/* Blocks clicks on not-yet-revealed controls for the whole reveal, but only
+                                skips anything while the briefing text is still appearing — and then only
+                                to the "Got it" moment, never past it. */}
+                            <div
+                                className={
+                                    linesReady ? 'mission-intro__catcher' : 'mission-intro__catcher mission-intro__catcher--skip'
+                                }
+                                onClick={linesReady ? undefined : skipLines}
+                                role="presentation"
+                            />
+                            {linesReady ? null : <span className="mission-intro__skip-hint" aria-hidden="true">❯</span>}
                         </>
                     ) : null}
                 </div>
@@ -719,7 +729,6 @@ function MissionTeam({
     onUnassign,
     onEdit,
     failure,
-    previewExpAmount,
     introClassName,
     introDelayMs,
 }: {
@@ -732,9 +741,6 @@ function MissionTeam({
     onUnassign: (slotId: string) => void;
     onEdit: (characterId: string) => void;
     failure: string;
-    /** The mission's own exp reward, same for every assigned agent — previewed as a pending gain on
-     *  each one's EXP gauge (see ExpGauge's own doc). */
-    previewExpAmount: number;
     /** Set only while the mission-open reveal is playing — see `.summary--intro .summary__team` in
      *  app.css, which is what actually slides this up (once the player has pressed "Got it"); this
      *  just times it. */
@@ -861,7 +867,7 @@ function MissionTeam({
                                                 </div>
                                             </div>
                                             <div className="slot__vitals">
-                                                <ExpGauge agent={occupant} previewAmount={previewExpAmount} compact />
+                                                <ExpGauge agent={occupant} compact />
                                             </div>
                                         </div>
                                     ) : (
