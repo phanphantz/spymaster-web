@@ -856,7 +856,8 @@
    Cost/Success/Confirm corner fixture holds hidden until the reveal reaches it — see
    `.summary--intro` below for the rest of the sequence. */
 .modal--intro { overflow: hidden; }
-.modal--intro .mission-corner { opacity: 0; animation: mission-fade-in 1600ms ease-out forwards; }
+.modal--intro .mission-corner { opacity: 0; }
+.modal--intro .mission-corner.mission-corner--go { animation: mission-fade-in 1600ms ease-out forwards; }
 /* The two column dividers below are painted once as static background, at the columns' settled
    (post-slide) offsets — while a column is still off-canvas or mid-slide, that paint reads as an
    extra, un-animated divider sitting apart from the one that's actually sliding in. Hidden for the
@@ -1316,15 +1317,21 @@
 /* --- Mission onboarding reveal ---------------------------------------------- */
 /*
  * Plays once per mission — the first time its modal opens (`useMissionIntro` in
- * MissionSummary.tsx marks it seen and never replays it). A staged reveal built the same way
- * `.agent-backdrop-in` is: plain `opacity:0`/`transform` base styles plus a `forwards` keyframe
- * animation, mounted once and left to run — not JS-driven class toggling per step. The stagger
- * itself (which element starts when) lives in one place, MissionSummary's `INTRO_DELAY`/timeline
- * math, passed down as inline `animationDelay` styles; CSS only owns the keyframes and durations.
+ * MissionSummary.tsx marks it seen and never replays it). Built the same way `.agent-backdrop-in`
+ * is: plain `opacity:0`/`transform` base styles plus a `forwards` keyframe animation, not JS-driven
+ * class toggling per step. The stagger itself lives in MissionSummary's `missionIntroPreAck`/
+ * `POST_ACK` timelines, passed down as inline `animationDelay`; CSS only owns keyframes/durations.
+ *
+ * Splits in two at "Got it": the left column and the briefing lines play on a timer the moment the
+ * modal mounts (base rules below, no extra class needed); everything past that — the briefing's
+ * move to its final spot, the location reveal, the stats rail, the team grid — sits at its opening
+ * (hidden/off-canvas) position indefinitely, a plain unanimated style, until the player's click adds
+ * that element's own `--go` modifier class, which is the only thing that actually carries an
+ * `animation`. That's what makes the second half wait on a click instead of a clock.
  *
  * Every rule here is scoped under `.summary--intro`, so once that class comes off (the reveal
- * finishes, or the player skips it) every element instantly reverts to its plain, un-animated
- * layout — no explicit "settled" state to maintain in parallel.
+ * finishes, or the player skips it outright) every element instantly reverts to its plain,
+ * un-animated layout — no explicit "settled" state to maintain in parallel.
  */
 
 @keyframes mission-fade-in {
@@ -1334,7 +1341,9 @@
 .summary--intro { position: relative; }
 
 /* The click-anywhere-to-skip surface — sits above every column while the reveal plays, both
-   catching the click and stopping the player from, say, tapping a slot that hasn't faded in yet. */
+   catching the click and stopping the player from, say, tapping a slot that hasn't faded in yet.
+   Sits below the "Got it" button (see `.mission-intro__acknowledge`) so that one click still lands
+   on the button, not this. */
 .mission-intro__catcher {
     position: absolute;
     inset: 0;
@@ -1343,7 +1352,9 @@
 }
 
 /* The JRPG "there's more, but you can skip it" cue — a small arrow nudging toward the modal's own
-   bottom-right, forever, until the reveal ends. */
+   bottom-right. Only shown for the unattended, timer-driven first half: once "Got it" is on screen
+   the player has a real button to press instead of a countdown to wait out, and once they've
+   pressed it the second half is running toward its own settle regardless. */
 .mission-intro__skip-hint {
     position: absolute;
     right: 16px;
@@ -1362,7 +1373,8 @@
 
 /* The divider slides as one piece with the left column rather than fading in place afterward — it
    reads as the same panel's trailing edge, so it travels the same 280px (`.summary__left`'s own
-   width; `.summary__divider`'s own width is only 2px, too little to read as a slide by itself). */
+   width; `.summary__divider`'s own width is only 2px, too little to read as a slide by itself).
+   Plays on mount, same as the column itself — no "Got it" gate on this half. */
 .summary--intro .summary__left,
 .summary--intro .summary__divider {
     animation: mission-slide-left-in 2200ms ease-out forwards;
@@ -1375,8 +1387,11 @@
     to { transform: translateX(0); }
 }
 
-.summary--intro .summary__location {
-    opacity: 0;
+/* Holds hidden through the whole first half — the location only reveals once "Got it" is pressed,
+   at the same instant (delay 0) the briefing collapses; see `.summary__location--go`. */
+.summary--intro .summary__location { opacity: 0; }
+
+.summary--intro .summary__location.summary__location--go {
     animation: mission-fade-in 1600ms ease-out forwards;
 }
 
@@ -1392,16 +1407,23 @@
 
 /* Floats over the middle of `.summary__scroll` (its nearest positioned ancestor, with no padding of
    its own — top:0/left:0/width:100% below lands exactly on the same content edges the rows sit on
-   in normal flow, not the padding edge of some outer, padded ancestor) while the reveal plays —
-   "the center of the center column" the design calls for — then this one animation carries it down
-   to (0,0): exactly its normal top-left flow position, since `to` with no explicit `from` animates
-   from whatever this rule's own base values are. */
+   in normal flow, not the padding edge of some outer, padded ancestor) — "the center of the center
+   column" the design calls for — and stays there, unanimated, for as long as the player is reading:
+   only `.mission-brief--go` (added on "Got it") carries the animation that walks it down to (0,0),
+   exactly its normal top-left flow position. `z-index`/`pointer-events` let the "Got it" button
+   inside it (the one element here that still needs a click) reach above the skip catcher while the
+   rest of this block stays click-through to it. */
 .summary--intro .mission-brief {
     position: absolute;
     top: 50%;
     left: 50%;
     width: 78%;
+    z-index: 6;
+    pointer-events: none;
     transform: translate(-50%, -50%) scale(1.08);
+}
+
+.summary--intro .mission-brief.mission-brief--go {
     animation: mission-brief-collapse 2400ms ease-in-out forwards;
 }
 
@@ -1415,16 +1437,30 @@
 }
 
 /* The name/row/hint/description lines themselves, fading in one at a time while the block above is
-   still centered — each gets its own `animationDelay` inline (see `INTRO_DELAY` in
-   MissionSummary.tsx), this just says "start invisible, fade to solid". */
+   still centered — each gets its own `animationDelay` inline (see `missionIntroPreAck` in
+   MissionSummary.tsx), this just says "start invisible, fade to solid". Plays on mount, same as the
+   left column — reading the briefing is the first half, not gated on anything itself. */
 .summary--intro .mission-brief > * {
     opacity: 0;
     animation: mission-fade-in 1400ms ease-out forwards;
 }
 
-.summary--intro .summary__stats {
-    transform: translateX(100%);
-    animation: mission-slide-right-in 2200ms ease-out forwards;
+/* The one control in the whole reveal that's actually meant to be pressed — needs its own
+   `pointer-events` back since its ancestor (`.mission-brief`) is click-through. */
+.mission-intro__acknowledge {
+    align-self: flex-start;
+    margin-top: 4px;
+    pointer-events: auto;
+    opacity: 0;
+    animation: mission-fade-in 400ms ease-out forwards;
+}
+
+.summary--intro .summary__stats { transform: translateX(100%); }
+
+.summary--intro .summary__stats.summary__stats--go {
+    /* Noticeably quicker than the rest of the reveal's slides — the stats rail sliding in reads as
+       a beat that lands fast, not one more thing to sit and wait through. */
+    animation: mission-slide-right-in 1200ms ease-out forwards;
 }
 
 @keyframes mission-slide-right-in {
@@ -1435,12 +1471,20 @@
 .summary--intro .summary__stats-empty,
 .summary--intro .summary__decline {
     opacity: 0;
+}
+
+.summary--intro .reward-box.reward-box--go,
+.summary--intro .summary__stats-empty.summary__stats-empty--go,
+.summary--intro .summary__decline.summary__decline--go {
     animation: mission-fade-in 1600ms ease-out forwards;
 }
 
 .summary--intro .summary__team {
     opacity: 0;
     transform: translateY(36px);
+}
+
+.summary--intro .summary__team.summary__team--go {
     animation: mission-team-in 2000ms ease-out forwards;
 }
 

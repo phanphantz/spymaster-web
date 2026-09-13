@@ -35,77 +35,96 @@ function combinedStats(agents: readonly RuntimeAgent[]): Map<StatId, number> {
 
 const LIKELIHOOD_LABEL: Record<string, string> = { high: 'High', medium: 'Medium', low: 'Low' };
 
-interface MissionIntroTimeline {
-    /** The left column's location-info fade — the left column itself always slides in at 0. */
-    location: number;
+/** Slows the whole reveal to a quarter speed (0.25x) — every delay below, and every keyframe
+ *  duration in app.css's "Mission onboarding reveal" block, is this many times longer than the pace
+ *  that felt right to read at 1x. Keep the two in sync if this changes. */
+const INTRO_SPEED_SCALE = 4;
+
+/**
+ * The reveal has no fixed length overall — it splits at "Got it", the one beat the player actually
+ * paces themselves: everything up to there runs on a timer (below), then it waits, however long
+ * that takes, for the click before continuing.
+ */
+interface MissionIntroPreAck {
     briefName: number;
     briefRow: number;
     /** Unset when the mission has no hint to show — nothing to delay. */
     briefHint?: number;
     /** Unset when the mission has no description to show. */
     briefDescription?: number;
-    /** When the centered briefing block starts moving to its final top-left spot. */
-    briefCollapse: number;
-    /** The stats rail's slide-in. */
-    rightSlide: number;
-    reward: number;
-    /** The team slot grid's slide-up, alongside the stats rail's "assign agents" placeholder and
-     *  the modal corner's Cost/Success/Confirm fixture. */
-    team: number;
-    /** How long to hold the reveal on screen before it settles on its own, unskipped. */
-    totalMs: number;
+    /** When the last briefing line's own fade-in finishes — the "Got it" button appears then, not
+     *  before, so it never sits next to text still stuck at opacity 0. */
+    linesDoneMs: number;
 }
 
 /**
- * When each stage of the mission-open reveal starts, in ms from the modal mounting — the one place
- * that owns *when*; app.css's "Mission onboarding reveal" rules own the *how* (the keyframes and
- * durations), applied via the `animationDelay` this computes. Compresses on its own when a mission
- * authors no hint or description: the briefing block still only holds on screen for one read-pause
- * after whichever line actually appeared last.
+ * When each stage before "Got it" starts, in ms from the modal mounting — the one place that owns
+ * *when*; app.css's "Mission onboarding reveal" rules own the *how* (the keyframes and durations),
+ * applied via the `animationDelay` this computes. Compresses on its own when a mission authors no
+ * hint or description.
  */
-/** Slows the whole reveal to a quarter speed (0.25x) — every delay below, and every keyframe
- *  duration in app.css's "Mission onboarding reveal" block, is this many times longer than the pace
- *  that felt right to read at 1x. Keep the two in sync if this changes. */
-const INTRO_SPEED_SCALE = 4;
-
-function missionIntroTimeline(mission: LiveMission): MissionIntroTimeline {
+function missionIntroPreAck(mission: LiveMission): MissionIntroPreAck {
     // Matches `.summary--intro .summary__left`'s own animation-duration in app.css — the briefing
-    // is derived from it (below) so the left column is always fully landed before any mission info
-    // starts fading in, not just "usually" landed by coincidence of two hand-picked numbers.
+    // is derived from it so the left column is always fully landed before any mission info starts
+    // fading in, not just "usually" landed by coincidence of two hand-picked numbers.
     const LEFT_SLIDE_MS = 550 * INTRO_SPEED_SCALE;
     const BRIEF_START_GAP = 200 * INTRO_SPEED_SCALE;
     const BRIEF_BASE = LEFT_SLIDE_MS + BRIEF_START_GAP;
     const BRIEF_STEP = 280 * INTRO_SPEED_SCALE;
-    const BRIEF_READ_PAUSE = 550 * INTRO_SPEED_SCALE;
-    const BRIEF_COLLAPSE_MS = 600 * INTRO_SPEED_SCALE;
-    const RIGHT_SLIDE_GAP = 200 * INTRO_SPEED_SCALE;
-    const RIGHT_SLIDE_MS = 550 * INTRO_SPEED_SCALE;
-    const REWARD_GAP = 150 * INTRO_SPEED_SCALE;
-    const REWARD_MS = 400 * INTRO_SPEED_SCALE;
-    const TEAM_GAP = 150 * INTRO_SPEED_SCALE;
-    const TEAM_MS = 500 * INTRO_SPEED_SCALE;
-    const SETTLE_BUFFER = 250 * INTRO_SPEED_SCALE;
-    const LOCATION = 480 * INTRO_SPEED_SCALE;
+    const BRIEF_FADE_MS = 350 * INTRO_SPEED_SCALE;
 
     let line = 0;
     const briefName = BRIEF_BASE + BRIEF_STEP * line++;
     const briefRow = BRIEF_BASE + BRIEF_STEP * line++;
     const briefHint = mission.data.hint ? BRIEF_BASE + BRIEF_STEP * line++ : undefined;
     const briefDescription = mission.data.description ? BRIEF_BASE + BRIEF_STEP * line++ : undefined;
-    const briefCollapse = BRIEF_BASE + BRIEF_STEP * line + BRIEF_READ_PAUSE;
+    const linesDoneMs = (briefDescription ?? briefHint ?? briefRow) + BRIEF_FADE_MS;
 
-    const rightSlide = briefCollapse + BRIEF_COLLAPSE_MS + RIGHT_SLIDE_GAP;
-    const reward = rightSlide + RIGHT_SLIDE_MS + REWARD_GAP;
-    const team = reward + REWARD_MS + TEAM_GAP;
-    const totalMs = team + TEAM_MS + SETTLE_BUFFER;
+    return { briefName, briefRow, briefHint, briefDescription, linesDoneMs };
+}
 
-    return { location: LOCATION, briefName, briefRow, briefHint, briefDescription, briefCollapse, rightSlide, reward, team, totalMs };
+interface MissionIntroPostAck {
+    /** The stats rail's slide-in — shorter than the rest of the reveal on purpose. */
+    rightSlideDelay: number;
+    reward: number;
+    /** The team slot grid's slide-up, alongside the stats rail's "assign agents" placeholder and
+     *  the modal corner's Cost/Success/Confirm fixture. */
+    team: number;
+    /** How long to hold the reveal on screen, after "Got it", before it settles on its own. */
+    totalMs: number;
 }
 
 /**
+ * Everything from "Got it" onward, all relative to that click rather than to mount — there's no
+ * fixed moment for it to count from until the player supplies one. The briefing's own move to its
+ * final spot is CSS-only (`.mission-brief--go`, delay 0): it starts the instant the click adds that
+ * class, same as every other delay 0 here.
+ */
+function missionIntroPostAck(): MissionIntroPostAck {
+    const COLLAPSE_MS = 600 * INTRO_SPEED_SCALE;
+    const RIGHT_SLIDE_GAP = 200 * INTRO_SPEED_SCALE;
+    const RIGHT_SLIDE_MS = 300 * INTRO_SPEED_SCALE;
+    const REWARD_GAP = 150 * INTRO_SPEED_SCALE;
+    const REWARD_MS = 400 * INTRO_SPEED_SCALE;
+    const TEAM_GAP = 150 * INTRO_SPEED_SCALE;
+    const TEAM_MS = 500 * INTRO_SPEED_SCALE;
+    const SETTLE_BUFFER = 250 * INTRO_SPEED_SCALE;
+
+    const rightSlideDelay = COLLAPSE_MS + RIGHT_SLIDE_GAP;
+    const reward = rightSlideDelay + RIGHT_SLIDE_MS + REWARD_GAP;
+    const team = reward + REWARD_MS + TEAM_GAP;
+    const totalMs = team + TEAM_MS + SETTLE_BUFFER;
+
+    return { rightSlideDelay, reward, team, totalMs };
+}
+
+const POST_ACK = missionIntroPostAck();
+
+/**
  * Drives the mission-open reveal: whether to play it at all (a mission only ever gets one, the
- * first time its modal opens — see `seenMissionIntros`), and when it's done, whether that's because
- * the timeline ran out on its own or the player clicked to skip it.
+ * first time its modal opens — see `seenMissionIntros`), and its two checkpoints — the "Got it"
+ * acknowledgement the player paces themselves, and the eventual settle, whether that's because the
+ * post-ack timeline ran out on its own or the player clicked to skip everything outright.
  *
  * `animate` is decided once, from a lazy initializer, so a later store update (the very
  * `markMissionIntroSeen` call this same hook makes) can't flip it mid-playthrough — only a fresh
@@ -113,7 +132,12 @@ function missionIntroTimeline(mission: LiveMission): MissionIntroTimeline {
  */
 function useMissionIntro(mission: LiveMission | undefined): {
     introActive: boolean;
-    timeline: MissionIntroTimeline | undefined;
+    acknowledged: boolean;
+    /** The "Got it" button is on screen and waiting — the briefing lines have all finished fading
+     *  in, and the player hasn't pressed it (or skipped past it) yet. */
+    showAcknowledge: boolean;
+    preAck: MissionIntroPreAck | undefined;
+    acknowledge: () => void;
     skipIntro: () => void;
 } {
     const seenMissionIntros = useGame((state) => state.seenMissionIntros);
@@ -121,13 +145,15 @@ function useMissionIntro(mission: LiveMission | undefined): {
     const instanceId = mission?.instanceId;
 
     const [animate] = useState(() => Boolean(instanceId && !seenMissionIntros.has(instanceId)));
+    const [linesReady, setLinesReady] = useState(false);
+    const [acknowledged, setAcknowledged] = useState(false);
     const [finished, setFinished] = useState(false);
-    const timeline = mission ? missionIntroTimeline(mission) : undefined;
+    const preAck = mission ? missionIntroPreAck(mission) : undefined;
 
     useEffect(() => {
-        if (!instanceId || !animate || !timeline) return;
+        if (!instanceId || !animate || !preAck) return;
         markMissionIntroSeen(instanceId);
-        const timer = window.setTimeout(() => setFinished(true), timeline.totalMs);
+        const timer = window.setTimeout(() => setLinesReady(true), preAck.linesDoneMs);
         return () => window.clearTimeout(timer);
         // Deliberately keyed on the mission alone: the delays a re-render might recompute from
         // haven't changed for a mission already mid-reveal, and re-arming this timer would just
@@ -135,7 +161,27 @@ function useMissionIntro(mission: LiveMission | undefined): {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [instanceId]);
 
-    return { introActive: animate && !finished && Boolean(timeline), timeline, skipIntro: () => setFinished(true) };
+    // The post-ack timeline only starts counting once the player has actually pressed "Got it" —
+    // there is no mount-relative fallback, the pre-ack half waits for that click indefinitely.
+    useEffect(() => {
+        if (!acknowledged) return;
+        const timer = window.setTimeout(() => setFinished(true), POST_ACK.totalMs);
+        return () => window.clearTimeout(timer);
+    }, [acknowledged]);
+
+    return {
+        introActive: animate && !finished,
+        acknowledged,
+        showAcknowledge: animate && linesReady && !acknowledged && !finished,
+        preAck,
+        acknowledge: () => setAcknowledged(true),
+        // Skipping jumps both checkpoints at once — the caller only needs the settled layout right
+        // away, not a fast-forward through what's left of either half.
+        skipIntro: () => {
+            setAcknowledged(true);
+            setFinished(true);
+        },
+    };
 }
 
 /**
@@ -180,18 +226,24 @@ function PlanningStatus({ session }: { session: LoadoutSession }): ReactNode {
 function MissionCorner({
     session,
     onDeploy,
+    introClassName,
     introDelayMs,
 }: {
     session: LoadoutSession;
     onDeploy: () => void;
-    /** Set only while the mission-open reveal is playing — fades this in on its own turn instead of
-     *  showing Cost/Success/Confirm before there's even a team to evaluate. See `.modal--intro` in
-     *  app.css, which is what actually scopes the fade (this corner sits outside `.summary`, in the
-     *  Modal's own chrome, so `.summary--intro`'s descendant rules can't reach it). */
+    /** Set only while the mission-open reveal is playing — fades this in on its own turn (once the
+     *  player has pressed "Got it") instead of showing Cost/Success/Confirm before there's even a
+     *  team to evaluate. See `.modal--intro` in app.css, which is what actually scopes the fade
+     *  (this corner sits outside `.summary`, in the Modal's own chrome, so `.summary--intro`'s
+     *  descendant rules can't reach it). */
+    introClassName?: string;
     introDelayMs?: number;
 }): ReactNode {
     return (
-        <div className="mission-corner" style={introDelayMs !== undefined ? { animationDelay: `${introDelayMs}ms` } : undefined}>
+        <div
+            className={introClassName ?? 'mission-corner'}
+            style={introDelayMs !== undefined ? { animationDelay: `${introDelayMs}ms` } : undefined}
+        >
             <PlanningStatus session={session} />
             <HoldButton
                 className="btn--primary mission-corner__confirm"
@@ -242,7 +294,9 @@ export function MissionSummary(): ReactNode {
 
     const [confirmingDecline, setConfirmingDecline] = useState(false);
     const [confirmingClose, setConfirmingClose] = useState(false);
-    const { introActive, timeline, skipIntro } = useMissionIntro(session?.mission);
+    const { introActive, acknowledged, showAcknowledge, preAck, acknowledge, skipIntro } = useMissionIntro(
+        session?.mission,
+    );
 
     if (!session || !tables) return null;
 
@@ -269,6 +323,10 @@ export function MissionSummary(): ReactNode {
     const revealing = introActive && !inventoryMode;
     const delayMs = (ms: number | undefined): { animationDelay: string } | undefined =>
         revealing ? { animationDelay: `${ms ?? 0}ms` } : undefined;
+    // Everything gated on "Got it": present (and, while reading, hidden) throughout the reveal, but
+    // only animates in once the player has actually pressed the button — see the matching `--go`
+    // rule for each of these classes in app.css.
+    const introCls = (base: string): string => (revealing ? `${base}${acknowledged ? ` ${base}--go` : ''}` : base);
 
     return (
         <Modal
@@ -278,7 +336,14 @@ export function MissionSummary(): ReactNode {
             label={inventoryMode ? 'Kit' : (mission.data.displayName ?? 'Mission')}
             hideClose
             introActive={revealing}
-            corner={<MissionCorner session={session} onDeploy={deploy} introDelayMs={revealing ? timeline?.team : undefined} />}
+            corner={
+                <MissionCorner
+                    session={session}
+                    onDeploy={deploy}
+                    introClassName={revealing ? introCls('mission-corner') : undefined}
+                    introDelayMs={revealing ? POST_ACK.team : undefined}
+                />
+            }
             topLeft={
                 <button
                     type="button"
@@ -302,7 +367,10 @@ export function MissionSummary(): ReactNode {
                         <div className="summary__photo">NO IMAGE</div>
                         <div className="summary__lower-anchor">
                             <hr className="summary__dashrule" />
-                            <LocationBlock mission={mission} introDelayMs={revealing ? timeline?.location : undefined} />
+                            <LocationBlock
+                                mission={mission}
+                                introClassName={revealing ? introCls('summary__location') : undefined}
+                            />
                         </div>
                     </div>
 
@@ -318,36 +386,47 @@ export function MissionSummary(): ReactNode {
                             disabled={!canDecline}
                             aria-label="Decline mission"
                             title={canDecline ? 'Decline mission' : 'This client does not take no for an answer'}
-                            style={delayMs(timeline?.team)}
+                            style={delayMs(POST_ACK.team)}
                         >
                             🗑
                         </button>
                         <div className="summary__scroll">
                             {/* Centered over the column while the name/row/hint/description fade in one at a
-                                time, then this one group moves and scales down into its normal top-left flow
-                                spot — see `.mission-brief` in app.css for how the same base rule serves as
-                                both the animation's `from` and (once `.summary--intro` comes off) its plain,
-                                un-animated layout. */}
-                            <div className="mission-brief" style={delayMs(timeline?.briefCollapse)}>
-                                <h2 className="summary__name" style={delayMs(timeline?.briefName)}>
+                                time; "Got it" appears once the last of those lines has, and only that click —
+                                not a timer — starts this group moving and scaling down into its normal
+                                top-left flow spot. See `.mission-brief` in app.css for how the same base rule
+                                serves as both the pre-click resting state and (once `.summary--intro` comes
+                                off entirely) the plain, un-animated layout. */}
+                            <div className={introCls('mission-brief')}>
+                                <h2 className="summary__name" style={delayMs(preAck?.briefName)}>
                                     {mission.data.displayName}
                                 </h2>
 
-                                <div className="summary__row" style={delayMs(timeline?.briefRow)}>
+                                <div className="summary__row" style={delayMs(preAck?.briefRow)}>
                                     <span className="chip">{mission.data.type ?? 'contract'}</span>
                                     <DifficultyPips level={mission.data.difficultyLevel} />
                                 </div>
 
                                 {mission.data.hint ? (
-                                    <p className="hint" style={delayMs(timeline?.briefHint)}>
+                                    <p className="hint" style={delayMs(preAck?.briefHint)}>
                                         <Emphasized text={mission.data.hint} terms={keywordTerms} />
                                     </p>
                                 ) : null}
 
                                 {mission.data.description ? (
-                                    <p className="summary__body" style={delayMs(timeline?.briefDescription)}>
+                                    <p className="summary__body" style={delayMs(preAck?.briefDescription)}>
                                         <Emphasized text={mission.data.description} terms={keywordTerms} />
                                     </p>
+                                ) : null}
+
+                                {showAcknowledge ? (
+                                    <button
+                                        type="button"
+                                        className="btn btn--primary btn--small mission-intro__acknowledge"
+                                        onClick={acknowledge}
+                                    >
+                                        Got it
+                                    </button>
                                 ) : null}
                             </div>
                         </div>
@@ -367,18 +446,24 @@ export function MissionSummary(): ReactNode {
                             onEdit={openShop}
                             failure={failure}
                             previewExpAmount={previewExpAmount}
-                            introDelayMs={revealing ? timeline?.team : undefined}
+                            introClassName={revealing ? introCls('summary__team') : undefined}
+                            introDelayMs={revealing ? POST_ACK.team : undefined}
                         />
                     </div>
 
-                    <div className="summary__stats" style={delayMs(timeline?.rightSlide)}>
-                        <RewardSquares mission={mission} tables={tables} introDelayMs={revealing ? timeline?.reward : undefined} />
+                    <div className={introCls('summary__stats')} style={delayMs(POST_ACK.rightSlideDelay)}>
+                        <RewardSquares
+                            mission={mission}
+                            tables={tables}
+                            introClassName={revealing ? introCls('reward-box') : undefined}
+                            introDelayMs={revealing ? POST_ACK.reward : undefined}
+                        />
                         {assigned.length > 0 ? (
                             <div className="summary__photo summary__photo--stats">
                                 <StatHexagon totals={combinedStats(assigned)} />
                             </div>
                         ) : (
-                            <p className="summary__stats-empty" style={delayMs(timeline?.team)}>
+                            <p className={introCls('summary__stats-empty')} style={delayMs(POST_ACK.team)}>
                                 Assign agents to see stat summary
                             </p>
                         )}
@@ -393,13 +478,12 @@ export function MissionSummary(): ReactNode {
 
                     {revealing ? (
                         <>
-                            <div
-                                className="mission-intro__catcher"
-                                onClick={skipIntro}
-                                role="presentation"
-                                title="Tap to skip"
-                            />
-                            <span className="mission-intro__skip-hint" aria-hidden="true">❯</span>
+                            <div className="mission-intro__catcher" onClick={skipIntro} role="presentation" />
+                            {/* Only while there's a timer running unattended — once "Got it" is up, the
+                                player's next move is that button, not a race against the clock. */}
+                            {!showAcknowledge && !acknowledged ? (
+                                <span className="mission-intro__skip-hint" aria-hidden="true">❯</span>
+                            ) : null}
                         </>
                     ) : null}
                 </div>
@@ -538,18 +622,24 @@ function StatGaugeList({ agents, tables }: { agents: readonly RuntimeAgent[]; ta
 function RewardSquares({
     mission,
     tables,
+    introClassName,
     introDelayMs,
 }: {
     mission: LiveMission;
     tables: GameTables;
     /** Set only while the mission-open reveal is playing — see `.summary--intro .reward-box` in
-     *  app.css, which is what actually fades this in; this just times it. */
+     *  app.css, which is what actually fades this in (once the player has pressed "Got it"); this
+     *  just times it. */
+    introClassName?: string;
     introDelayMs?: number;
 }): ReactNode {
     const reward = previewReward(tables, mission.data.outcomes?.[0]);
 
     return (
-        <div className="reward-box" style={introDelayMs !== undefined ? { animationDelay: `${introDelayMs}ms` } : undefined}>
+        <div
+            className={introClassName ?? 'reward-box'}
+            style={introDelayMs !== undefined ? { animationDelay: `${introDelayMs}ms` } : undefined}
+        >
             <span className="reward-box__label">Rewards</span>
             <div className="reward-squares">
                 <div className="reward-square">
@@ -572,17 +662,18 @@ function RewardSquares({
  *  fields it read are still authored and this is the one place they'd surface. */
 function LocationBlock({
     mission,
-    introDelayMs,
+    introClassName,
 }: {
     mission: LiveMission;
-    /** Set only while the mission-open reveal is playing — see `.summary--intro .summary__location`
-     *  in app.css, which is what actually fades this in; this just times it. */
-    introDelayMs?: number;
+    /** Set only while the mission-open reveal is playing — reveals at the same moment (delay 0) the
+     *  briefing collapses, both on the player's own "Got it" click, so there's no separate delay to
+     *  pass through here. See `.summary--intro .summary__location` in app.css. */
+    introClassName?: string;
 }): ReactNode {
     const location = mission.location;
 
     return (
-        <div className="summary__location" style={introDelayMs !== undefined ? { animationDelay: `${introDelayMs}ms` } : undefined}>
+        <div className={introClassName ?? 'summary__location'}>
             <span className="summary__location-name">{location?.displayName ?? 'Unknown'}</span>
             <span className="summary__location-detail">
                 {location?.address ?? titleCase(location?.country) ?? 'Location withheld'}
@@ -618,6 +709,7 @@ function MissionTeam({
     onEdit,
     failure,
     previewExpAmount,
+    introClassName,
     introDelayMs,
 }: {
     session: LoadoutSession;
@@ -633,11 +725,16 @@ function MissionTeam({
      *  each one's EXP gauge (see ExpGauge's own doc). */
     previewExpAmount: number;
     /** Set only while the mission-open reveal is playing — see `.summary--intro .summary__team` in
-     *  app.css, which is what actually slides this up; this just times it. */
+     *  app.css, which is what actually slides this up (once the player has pressed "Got it"); this
+     *  just times it. */
+    introClassName?: string;
     introDelayMs?: number;
 }): ReactNode {
     return (
-        <div className="summary__team" style={introDelayMs !== undefined ? { animationDelay: `${introDelayMs}ms` } : undefined}>
+        <div
+            className={introClassName ?? 'summary__team'}
+            style={introDelayMs !== undefined ? { animationDelay: `${introDelayMs}ms` } : undefined}
+        >
             <div className="slot-grid">
                 {session.slots.map((slot) => {
                         const occupant = session.agentIn(slot.slotId);
