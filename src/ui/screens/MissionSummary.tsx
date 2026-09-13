@@ -67,7 +67,7 @@ function missionIntroPreAck(mission: LiveMission): MissionIntroPreAck {
     // Matches `.summary--intro .summary__left`'s own animation-duration in app.css — the briefing
     // is derived from it so the left column is always fully landed before any mission info starts
     // fading in, not just "usually" landed by coincidence of two hand-picked numbers.
-    const LEFT_SLIDE_MS = 550 * INTRO_SPEED_SCALE;
+    const LEFT_SLIDE_MS = 300 * INTRO_SPEED_SCALE;
     const BRIEF_START_GAP = 200 * INTRO_SPEED_SCALE;
     const BRIEF_BASE = LEFT_SLIDE_MS + BRIEF_START_GAP;
     const BRIEF_STEP = 280 * INTRO_SPEED_SCALE;
@@ -103,7 +103,7 @@ interface MissionIntroPostAck {
 function missionIntroPostAck(): MissionIntroPostAck {
     const COLLAPSE_MS = 600 * INTRO_SPEED_SCALE;
     const RIGHT_SLIDE_GAP = 200 * INTRO_SPEED_SCALE;
-    const RIGHT_SLIDE_MS = 300 * INTRO_SPEED_SCALE;
+    const RIGHT_SLIDE_MS = 250 * INTRO_SPEED_SCALE;
     const REWARD_GAP = 150 * INTRO_SPEED_SCALE;
     const REWARD_MS = 400 * INTRO_SPEED_SCALE;
     const TEAM_GAP = 150 * INTRO_SPEED_SCALE;

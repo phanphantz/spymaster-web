@@ -1340,6 +1340,12 @@
 
 .summary--intro { position: relative; }
 
+/* The centered, scaled-up `.mission-brief` overlay can briefly run taller than this box while the
+   reveal plays — without this it flashes a real scrollbar (`.summary__scroll`'s own overflow-y:auto,
+   there for a long briefing in the settled layout) rather than reading as a deliberate part of the
+   animation. */
+.summary--intro .summary__scroll { overflow: hidden; }
+
 /* The click-anywhere-to-skip surface — sits above every column while the reveal plays, both
    catching the click and stopping the player from, say, tapping a slot that hasn't faded in yet.
    Sits below the "Got it" button (see `.mission-intro__acknowledge`) so that one click still lands
@@ -1377,7 +1383,7 @@
    Plays on mount, same as the column itself — no "Got it" gate on this half. */
 .summary--intro .summary__left,
 .summary--intro .summary__divider {
-    animation: mission-slide-left-in 2200ms ease-out forwards;
+    animation: mission-slide-left-in 1200ms ease-out forwards;
 }
 
 .summary--intro .summary__left { transform: translateX(-100%); }
@@ -1460,7 +1466,7 @@
 .summary--intro .summary__stats.summary__stats--go {
     /* Noticeably quicker than the rest of the reveal's slides — the stats rail sliding in reads as
        a beat that lands fast, not one more thing to sit and wait through. */
-    animation: mission-slide-right-in 1200ms ease-out forwards;
+    animation: mission-slide-right-in 1000ms ease-out forwards;
 }
 
 @keyframes mission-slide-right-in {
