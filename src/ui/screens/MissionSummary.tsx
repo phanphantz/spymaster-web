@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useState, type CSSProperties, type ReactNode } from 'react';
 import { useGame } from '../../store/gameStore';
 import * as runtimeAgent from '../../engine/runtimeAgent';
 import type { RuntimeAgent } from '../../engine/runtimeAgent';
@@ -35,10 +35,30 @@ function combinedStats(agents: readonly RuntimeAgent[]): Map<StatId, number> {
 
 const LIKELIHOOD_LABEL: Record<string, string> = { high: 'High', medium: 'Medium', low: 'Low' };
 
-/** Slows the whole reveal to a quarter speed (0.25x) — every delay below, and every keyframe
- *  duration in app.css's "Mission onboarding reveal" block, is this many times longer than the pace
- *  that felt right to read at 1x. Keep the two in sync if this changes. */
-const INTRO_SPEED_SCALE = 4;
+/**
+ * Every duration in the reveal, in ms — the single source for both the stagger math below and the
+ * keyframes in app.css, which read these back as the `--intro-*-ms` custom properties set on
+ * `.summary` (see `introVars`), so the two can't drift apart.
+ */
+const INTRO_MS = {
+    /** Left column in, stats rail in, team grid up — deliberately quick. */
+    slide: 260,
+    /** Location, rewards, placeholders, the modal corner, the "Got it" button. */
+    fade: 200,
+    /** One briefing line fading in — the one beat paced for reading rather than for speed. */
+    line: 1400,
+    /** From one briefing line starting to the next starting. */
+    lineStep: 1120,
+    /** The briefing's move from centered to its top-left spot. */
+    collapse: 550,
+} as const;
+
+const introVars = {
+    '--intro-slide-ms': `${INTRO_MS.slide}ms`,
+    '--intro-fade-ms': `${INTRO_MS.fade}ms`,
+    '--intro-line-ms': `${INTRO_MS.line}ms`,
+    '--intro-collapse-ms': `${INTRO_MS.collapse}ms`,
+} as CSSProperties;
 
 /**
  * The reveal has no fixed length overall — it splits at "Got it", the one beat the player actually
@@ -46,6 +66,8 @@ const INTRO_SPEED_SCALE = 4;
  * that takes, for the click before continuing.
  */
 interface MissionIntroPreAck {
+    /** The location block's fade — starts the instant the left column lands. */
+    location: number;
     briefName: number;
     briefRow: number;
     /** Unset when the mission has no hint to show — nothing to delay. */
@@ -64,27 +86,23 @@ interface MissionIntroPreAck {
  * hint or description.
  */
 function missionIntroPreAck(mission: LiveMission): MissionIntroPreAck {
-    // Matches `.summary--intro .summary__left`'s own animation-duration in app.css — the briefing
-    // is derived from it so the left column is always fully landed before any mission info starts
-    // fading in, not just "usually" landed by coincidence of two hand-picked numbers.
-    const LEFT_SLIDE_MS = 300 * INTRO_SPEED_SCALE;
-    const BRIEF_START_GAP = 200 * INTRO_SPEED_SCALE;
-    const BRIEF_BASE = LEFT_SLIDE_MS + BRIEF_START_GAP;
-    const BRIEF_STEP = 280 * INTRO_SPEED_SCALE;
-    const BRIEF_FADE_MS = 350 * INTRO_SPEED_SCALE;
+    // Chained off the left column's own slide duration, then the location's fade, so each beat is
+    // fully landed before the next starts rather than landing in order by coincidence.
+    const location = INTRO_MS.slide;
+    const BRIEF_BASE = location + INTRO_MS.fade + 150;
 
     let line = 0;
-    const briefName = BRIEF_BASE + BRIEF_STEP * line++;
-    const briefRow = BRIEF_BASE + BRIEF_STEP * line++;
-    const briefHint = mission.data.hint ? BRIEF_BASE + BRIEF_STEP * line++ : undefined;
-    const briefDescription = mission.data.description ? BRIEF_BASE + BRIEF_STEP * line++ : undefined;
-    const linesDoneMs = (briefDescription ?? briefHint ?? briefRow) + BRIEF_FADE_MS;
+    const briefName = BRIEF_BASE + INTRO_MS.lineStep * line++;
+    const briefRow = BRIEF_BASE + INTRO_MS.lineStep * line++;
+    const briefHint = mission.data.hint ? BRIEF_BASE + INTRO_MS.lineStep * line++ : undefined;
+    const briefDescription = mission.data.description ? BRIEF_BASE + INTRO_MS.lineStep * line++ : undefined;
+    const linesDoneMs = (briefDescription ?? briefHint ?? briefRow) + INTRO_MS.line;
 
-    return { briefName, briefRow, briefHint, briefDescription, linesDoneMs };
+    return { location, briefName, briefRow, briefHint, briefDescription, linesDoneMs };
 }
 
 interface MissionIntroPostAck {
-    /** The stats rail's slide-in — shorter than the rest of the reveal on purpose. */
+    /** The stats rail's slide-in — starts the instant the briefing lands top-left. */
     rightSlideDelay: number;
     reward: number;
     /** The team slot grid's slide-up, alongside the stats rail's "assign agents" placeholder and
@@ -101,19 +119,11 @@ interface MissionIntroPostAck {
  * class, same as every other delay 0 here.
  */
 function missionIntroPostAck(): MissionIntroPostAck {
-    const COLLAPSE_MS = 600 * INTRO_SPEED_SCALE;
-    const RIGHT_SLIDE_GAP = 200 * INTRO_SPEED_SCALE;
-    const RIGHT_SLIDE_MS = 250 * INTRO_SPEED_SCALE;
-    const REWARD_GAP = 150 * INTRO_SPEED_SCALE;
-    const REWARD_MS = 400 * INTRO_SPEED_SCALE;
-    const TEAM_GAP = 150 * INTRO_SPEED_SCALE;
-    const TEAM_MS = 500 * INTRO_SPEED_SCALE;
-    const SETTLE_BUFFER = 250 * INTRO_SPEED_SCALE;
-
-    const rightSlideDelay = COLLAPSE_MS + RIGHT_SLIDE_GAP;
-    const reward = rightSlideDelay + RIGHT_SLIDE_MS + REWARD_GAP;
-    const team = reward + REWARD_MS + TEAM_GAP;
-    const totalMs = team + TEAM_MS + SETTLE_BUFFER;
+    // Back-to-back, no idle gaps: each beat starts as the previous one lands.
+    const rightSlideDelay = INTRO_MS.collapse;
+    const reward = rightSlideDelay + INTRO_MS.slide;
+    const team = reward + INTRO_MS.fade;
+    const totalMs = team + INTRO_MS.slide + 100;
 
     return { rightSlideDelay, reward, team, totalMs };
 }
@@ -242,7 +252,8 @@ function MissionCorner({
     return (
         <div
             className={introClassName ?? 'mission-corner'}
-            style={introDelayMs !== undefined ? { animationDelay: `${introDelayMs}ms` } : undefined}
+            // Sits outside `.summary`, so it can't inherit the `--intro-*-ms` vars set there.
+            style={introDelayMs !== undefined ? { ...introVars, animationDelay: `${introDelayMs}ms` } : undefined}
         >
             <PlanningStatus session={session} />
             <HoldButton
@@ -362,15 +373,12 @@ export function MissionSummary(): ReactNode {
                         onSelectTab={(tab) => (tab === 'agent' ? closeShop() : undefined)}
                     />
                 ) : (
-                <div className={revealing ? 'summary summary--intro' : 'summary'}>
+                <div className={revealing ? 'summary summary--intro' : 'summary'} style={revealing ? introVars : undefined}>
                     <div className="summary__left">
                         <div className="summary__photo">NO IMAGE</div>
                         <div className="summary__lower-anchor">
                             <hr className="summary__dashrule" />
-                            <LocationBlock
-                                mission={mission}
-                                introClassName={revealing ? introCls('summary__location') : undefined}
-                            />
+                            <LocationBlock mission={mission} introDelayMs={revealing ? preAck?.location : undefined} />
                         </div>
                     </div>
 
@@ -662,18 +670,21 @@ function RewardSquares({
  *  fields it read are still authored and this is the one place they'd surface. */
 function LocationBlock({
     mission,
-    introClassName,
+    introDelayMs,
 }: {
     mission: LiveMission;
-    /** Set only while the mission-open reveal is playing — reveals at the same moment (delay 0) the
-     *  briefing collapses, both on the player's own "Got it" click, so there's no separate delay to
-     *  pass through here. See `.summary--intro .summary__location` in app.css. */
-    introClassName?: string;
+    /** Set only while the mission-open reveal is playing — see `.summary--intro .summary__location`
+     *  in app.css, which is what actually fades this in (right after the left column lands); this
+     *  just times it. */
+    introDelayMs?: number;
 }): ReactNode {
     const location = mission.location;
 
     return (
-        <div className={introClassName ?? 'summary__location'}>
+        <div
+            className="summary__location"
+            style={introDelayMs !== undefined ? { animationDelay: `${introDelayMs}ms` } : undefined}
+        >
             <span className="summary__location-name">{location?.displayName ?? 'Unknown'}</span>
             <span className="summary__location-detail">
                 {location?.address ?? titleCase(location?.country) ?? 'Location withheld'}

@@ -856,8 +856,14 @@
    Cost/Success/Confirm corner fixture holds hidden until the reveal reaches it — see
    `.summary--intro` below for the rest of the sequence. */
 .modal--intro { overflow: hidden; }
+/* `.modal__body` is the real scroll container: the off-canvas stats rail (translateX(100%)) and the
+   pushed-down team grid overflow it, which pops real scrollbars — and the horizontal one grows the
+   modal ~15px, re-centering it in the backdrop, so everything lands a few px off from where it sits
+   once the reveal ends. `scrollbar-gutter: stable` still reserves the vertical gutter under hidden,
+   so the width doesn't shift either. */
+.modal--intro .modal__body { overflow: hidden; }
 .modal--intro .mission-corner { opacity: 0; }
-.modal--intro .mission-corner.mission-corner--go { animation: mission-fade-in 1600ms ease-out forwards; }
+.modal--intro .mission-corner.mission-corner--go { animation: mission-fade-in var(--intro-fade-ms, 200ms) ease-out forwards; }
 /* The two column dividers below are painted once as static background, at the columns' settled
    (post-slide) offsets — while a column is still off-canvas or mid-slide, that paint reads as an
    extra, un-animated divider sitting apart from the one that's actually sliding in. Hidden for the
@@ -1320,11 +1326,12 @@
  * MissionSummary.tsx marks it seen and never replays it). Built the same way `.agent-backdrop-in`
  * is: plain `opacity:0`/`transform` base styles plus a `forwards` keyframe animation, not JS-driven
  * class toggling per step. The stagger itself lives in MissionSummary's `missionIntroPreAck`/
- * `POST_ACK` timelines, passed down as inline `animationDelay`; CSS only owns keyframes/durations.
+ * `POST_ACK` timelines, passed down as inline `animationDelay`; durations arrive the same way, as
+ * the `--intro-*-ms` custom properties MissionSummary sets on `.summary`, so CSS owns only keyframes.
  *
- * Splits in two at "Got it": the left column and the briefing lines play on a timer the moment the
- * modal mounts (base rules below, no extra class needed); everything past that — the briefing's
- * move to its final spot, the location reveal, the stats rail, the team grid — sits at its opening
+ * Splits in two at "Got it": the left column, its location, and the briefing lines play on a timer
+ * the moment the modal mounts (base rules below, no extra class needed); everything past that — the
+ * briefing's move to its final spot, the stats rail, the team grid — sits at its opening
  * (hidden/off-canvas) position indefinitely, a plain unanimated style, until the player's click adds
  * that element's own `--go` modifier class, which is the only thing that actually carries an
  * `animation`. That's what makes the second half wait on a click instead of a clock.
@@ -1383,7 +1390,7 @@
    Plays on mount, same as the column itself — no "Got it" gate on this half. */
 .summary--intro .summary__left,
 .summary--intro .summary__divider {
-    animation: mission-slide-left-in 1200ms ease-out forwards;
+    animation: mission-slide-left-in var(--intro-slide-ms) ease-out forwards;
 }
 
 .summary--intro .summary__left { transform: translateX(-100%); }
@@ -1393,12 +1400,11 @@
     to { transform: translateX(0); }
 }
 
-/* Holds hidden through the whole first half — the location only reveals once "Got it" is pressed,
-   at the same instant (delay 0) the briefing collapses; see `.summary__location--go`. */
-.summary--intro .summary__location { opacity: 0; }
-
-.summary--intro .summary__location.summary__location--go {
-    animation: mission-fade-in 1600ms ease-out forwards;
+/* Fades in the moment the left column lands (its delay, inline, is the slide's own duration) —
+   part of the timed first half, not gated on "Got it". */
+.summary--intro .summary__location {
+    opacity: 0;
+    animation: mission-fade-in var(--intro-fade-ms) ease-out forwards;
 }
 
 /* Wraps the name/type-and-difficulty/hint/description rows only while the reveal plays — the base
@@ -1430,7 +1436,7 @@
 }
 
 .summary--intro .mission-brief.mission-brief--go {
-    animation: mission-brief-collapse 2400ms ease-in-out forwards;
+    animation: mission-brief-collapse var(--intro-collapse-ms) ease-in-out forwards;
 }
 
 @keyframes mission-brief-collapse {
@@ -1448,7 +1454,7 @@
    left column — reading the briefing is the first half, not gated on anything itself. */
 .summary--intro .mission-brief > * {
     opacity: 0;
-    animation: mission-fade-in 1400ms ease-out forwards;
+    animation: mission-fade-in var(--intro-line-ms) ease-out forwards;
 }
 
 /* The one control in the whole reveal that's actually meant to be pressed — needs its own
@@ -1458,15 +1464,13 @@
     margin-top: 4px;
     pointer-events: auto;
     opacity: 0;
-    animation: mission-fade-in 400ms ease-out forwards;
+    animation: mission-fade-in var(--intro-fade-ms) ease-out forwards;
 }
 
 .summary--intro .summary__stats { transform: translateX(100%); }
 
 .summary--intro .summary__stats.summary__stats--go {
-    /* Noticeably quicker than the rest of the reveal's slides — the stats rail sliding in reads as
-       a beat that lands fast, not one more thing to sit and wait through. */
-    animation: mission-slide-right-in 1000ms ease-out forwards;
+    animation: mission-slide-right-in var(--intro-slide-ms) ease-out forwards;
 }
 
 @keyframes mission-slide-right-in {
@@ -1482,7 +1486,7 @@
 .summary--intro .reward-box.reward-box--go,
 .summary--intro .summary__stats-empty.summary__stats-empty--go,
 .summary--intro .summary__decline.summary__decline--go {
-    animation: mission-fade-in 1600ms ease-out forwards;
+    animation: mission-fade-in var(--intro-fade-ms) ease-out forwards;
 }
 
 .summary--intro .summary__team {
@@ -1491,7 +1495,7 @@
 }
 
 .summary--intro .summary__team.summary__team--go {
-    animation: mission-team-in 2000ms ease-out forwards;
+    animation: mission-team-in var(--intro-slide-ms) ease-out forwards;
 }
 
 @keyframes mission-team-in {
