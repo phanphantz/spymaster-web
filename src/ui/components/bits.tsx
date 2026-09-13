@@ -775,6 +775,7 @@ export function Modal({
     hideClose,
     corner,
     topLeft,
+    introActive,
 }: {
     children: ReactNode;
     onClose: () => void;
@@ -791,8 +792,17 @@ export function Modal({
     /** Mirrors `corner`, pinned top-left instead — a fixture of the modal frame itself, so it stays
      *  put (and stays reachable) no matter which of this Modal's own screens is currently showing. */
     topLeft?: ReactNode;
+    /** The Mission onboarding reveal is mid-playthrough: clips the panel so a column sliding in from
+     *  off-frame reads as entering the modal rather than bleeding past its rounded corners, and holds
+     *  `corner` (the Cost/Success/Confirm fixture) hidden until its own turn in that reveal. */
+    introActive?: boolean;
 }): ReactNode {
-    const modalClassName = ['modal', wide ? 'modal--wide' : '', wide && kit ? 'modal--kit' : '']
+    const modalClassName = [
+        'modal',
+        wide ? 'modal--wide' : '',
+        wide && kit ? 'modal--kit' : '',
+        introActive ? 'modal--intro' : '',
+    ]
         .filter(Boolean)
         .join(' ');
 

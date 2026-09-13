@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { useGame } from '../../store/gameStore';
 import * as runtimeAgent from '../../engine/runtimeAgent';
 import type { RuntimeAgent } from '../../engine/runtimeAgent';
@@ -34,6 +34,98 @@ function combinedStats(agents: readonly RuntimeAgent[]): Map<StatId, number> {
 }
 
 const LIKELIHOOD_LABEL: Record<string, string> = { high: 'High', medium: 'Medium', low: 'Low' };
+
+interface MissionIntroTimeline {
+    /** The left column's location-info fade — the left column itself always slides in at 0. */
+    location: number;
+    briefName: number;
+    briefRow: number;
+    /** Unset when the mission has no hint to show — nothing to delay. */
+    briefHint?: number;
+    /** Unset when the mission has no description to show. */
+    briefDescription?: number;
+    /** When the centered briefing block starts moving to its final top-left spot. */
+    briefCollapse: number;
+    /** The stats rail's slide-in. */
+    rightSlide: number;
+    reward: number;
+    /** The team slot grid's slide-up, alongside the stats rail's "assign agents" placeholder and
+     *  the modal corner's Cost/Success/Confirm fixture. */
+    team: number;
+    /** How long to hold the reveal on screen before it settles on its own, unskipped. */
+    totalMs: number;
+}
+
+/**
+ * When each stage of the mission-open reveal starts, in ms from the modal mounting — the one place
+ * that owns *when*; app.css's "Mission onboarding reveal" rules own the *how* (the keyframes and
+ * durations), applied via the `animationDelay` this computes. Compresses on its own when a mission
+ * authors no hint or description: the briefing block still only holds on screen for one read-pause
+ * after whichever line actually appeared last.
+ */
+function missionIntroTimeline(mission: LiveMission): MissionIntroTimeline {
+    const BRIEF_BASE = 820;
+    const BRIEF_STEP = 280;
+    const BRIEF_READ_PAUSE = 550;
+    const BRIEF_COLLAPSE_MS = 600;
+    const RIGHT_SLIDE_GAP = 200;
+    const RIGHT_SLIDE_MS = 550;
+    const REWARD_GAP = 150;
+    const REWARD_MS = 400;
+    const TEAM_GAP = 150;
+    const TEAM_MS = 500;
+    const SETTLE_BUFFER = 250;
+
+    let line = 0;
+    const briefName = BRIEF_BASE + BRIEF_STEP * line++;
+    const briefRow = BRIEF_BASE + BRIEF_STEP * line++;
+    const briefHint = mission.data.hint ? BRIEF_BASE + BRIEF_STEP * line++ : undefined;
+    const briefDescription = mission.data.description ? BRIEF_BASE + BRIEF_STEP * line++ : undefined;
+    const briefCollapse = BRIEF_BASE + BRIEF_STEP * line + BRIEF_READ_PAUSE;
+
+    const rightSlide = briefCollapse + BRIEF_COLLAPSE_MS + RIGHT_SLIDE_GAP;
+    const reward = rightSlide + RIGHT_SLIDE_MS + REWARD_GAP;
+    const team = reward + REWARD_MS + TEAM_GAP;
+    const totalMs = team + TEAM_MS + SETTLE_BUFFER;
+
+    return { location: 480, briefName, briefRow, briefHint, briefDescription, briefCollapse, rightSlide, reward, team, totalMs };
+}
+
+/**
+ * Drives the mission-open reveal: whether to play it at all (a mission only ever gets one, the
+ * first time its modal opens — see `seenMissionIntros`), and when it's done, whether that's because
+ * the timeline ran out on its own or the player clicked to skip it.
+ *
+ * `animate` is decided once, from a lazy initializer, so a later store update (the very
+ * `markMissionIntroSeen` call this same hook makes) can't flip it mid-playthrough — only a fresh
+ * mount (a genuinely different mission) re-evaluates it.
+ */
+function useMissionIntro(mission: LiveMission | undefined): {
+    introActive: boolean;
+    timeline: MissionIntroTimeline | undefined;
+    skipIntro: () => void;
+} {
+    const seenMissionIntros = useGame((state) => state.seenMissionIntros);
+    const markMissionIntroSeen = useGame((state) => state.markMissionIntroSeen);
+    const instanceId = mission?.instanceId;
+
+    const [animate] = useState(() => Boolean(instanceId && !seenMissionIntros.has(instanceId)));
+    const [finished, setFinished] = useState(false);
+    const timeline = mission ? missionIntroTimeline(mission) : undefined;
+
+    useEffect(() => {
+        if (!instanceId || !animate || !timeline) return;
+        markMissionIntroSeen(instanceId);
+        const timer = window.setTimeout(() => setFinished(true), timeline.totalMs);
+        return () => window.clearTimeout(timer);
+        // Deliberately keyed on the mission alone: the delays a re-render might recompute from
+        // haven't changed for a mission already mid-reveal, and re-arming this timer would just
+        // push its natural completion further out for no reason.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [instanceId]);
+
+    return { introActive: animate && !finished && Boolean(timeline), timeline, skipIntro: () => setFinished(true) };
+}
 
 /**
  * The planning-status chip pinned in the modal's own top-right corner (`Modal`'s `corner` prop) —
@@ -74,9 +166,21 @@ function PlanningStatus({ session }: { session: LoadoutSession }): ReactNode {
  * modal frame itself (not `.summary__stats`), it stays reachable from the Kit page too — there's no
  * longer a separate Confirm button that only existed on the Mission page.
  */
-function MissionCorner({ session, onDeploy }: { session: LoadoutSession; onDeploy: () => void }): ReactNode {
+function MissionCorner({
+    session,
+    onDeploy,
+    introDelayMs,
+}: {
+    session: LoadoutSession;
+    onDeploy: () => void;
+    /** Set only while the mission-open reveal is playing — fades this in on its own turn instead of
+     *  showing Cost/Success/Confirm before there's even a team to evaluate. See `.modal--intro` in
+     *  app.css, which is what actually scopes the fade (this corner sits outside `.summary`, in the
+     *  Modal's own chrome, so `.summary--intro`'s descendant rules can't reach it). */
+    introDelayMs?: number;
+}): ReactNode {
     return (
-        <div className="mission-corner">
+        <div className="mission-corner" style={introDelayMs !== undefined ? { animationDelay: `${introDelayMs}ms` } : undefined}>
             <PlanningStatus session={session} />
             <HoldButton
                 className="btn--primary mission-corner__confirm"
@@ -127,6 +231,7 @@ export function MissionSummary(): ReactNode {
 
     const [confirmingDecline, setConfirmingDecline] = useState(false);
     const [confirmingClose, setConfirmingClose] = useState(false);
+    const { introActive, timeline, skipIntro } = useMissionIntro(session?.mission);
 
     if (!session || !tables) return null;
 
@@ -148,6 +253,12 @@ export function MissionSummary(): ReactNode {
         ]),
     ].filter((term): term is string => Boolean(term));
 
+    // Playing while the mission page itself is showing — Kit mode has nothing to reveal, but the
+    // reveal keeps running underneath so switching back to Agent doesn't restart it.
+    const revealing = introActive && !inventoryMode;
+    const delayMs = (ms: number | undefined): { animationDelay: string } | undefined =>
+        revealing ? { animationDelay: `${ms ?? 0}ms` } : undefined;
+
     return (
         <Modal
             onClose={() => (inventoryMode ? closeShop() : hasAssignments ? setConfirmingClose(true) : close())}
@@ -155,7 +266,8 @@ export function MissionSummary(): ReactNode {
             kit={inventoryMode}
             label={inventoryMode ? 'Kit' : (mission.data.displayName ?? 'Mission')}
             hideClose
-            corner={<MissionCorner session={session} onDeploy={deploy} />}
+            introActive={revealing}
+            corner={<MissionCorner session={session} onDeploy={deploy} introDelayMs={revealing ? timeline?.team : undefined} />}
             topLeft={
                 <button
                     type="button"
@@ -174,16 +286,16 @@ export function MissionSummary(): ReactNode {
                         onSelectTab={(tab) => (tab === 'agent' ? closeShop() : undefined)}
                     />
                 ) : (
-                <div className="summary">
+                <div className={revealing ? 'summary summary--intro' : 'summary'}>
                     <div className="summary__left">
                         <div className="summary__photo">NO IMAGE</div>
                         <div className="summary__lower-anchor">
                             <hr className="summary__dashrule" />
-                            <LocationBlock mission={mission} />
+                            <LocationBlock mission={mission} introDelayMs={revealing ? timeline?.location : undefined} />
                         </div>
                     </div>
 
-                    <div className="summary__divider">
+                    <div className="summary__divider" style={delayMs(timeline?.location)}>
                         <span className="summary__dot" aria-hidden="true" />
                     </div>
 
@@ -195,28 +307,38 @@ export function MissionSummary(): ReactNode {
                             disabled={!canDecline}
                             aria-label="Decline mission"
                             title={canDecline ? 'Decline mission' : 'This client does not take no for an answer'}
+                            style={delayMs(timeline?.team)}
                         >
                             🗑
                         </button>
                         <div className="summary__scroll">
-                            <h2 className="summary__name">{mission.data.displayName}</h2>
+                            {/* Centered over the column while the name/row/hint/description fade in one at a
+                                time, then this one group moves and scales down into its normal top-left flow
+                                spot — see `.mission-brief` in app.css for how the same base rule serves as
+                                both the animation's `from` and (once `.summary--intro` comes off) its plain,
+                                un-animated layout. */}
+                            <div className="mission-brief" style={delayMs(timeline?.briefCollapse)}>
+                                <h2 className="summary__name" style={delayMs(timeline?.briefName)}>
+                                    {mission.data.displayName}
+                                </h2>
 
-                            <div className="summary__row">
-                                <span className="chip">{mission.data.type ?? 'contract'}</span>
-                                <DifficultyPips level={mission.data.difficultyLevel} />
+                                <div className="summary__row" style={delayMs(timeline?.briefRow)}>
+                                    <span className="chip">{mission.data.type ?? 'contract'}</span>
+                                    <DifficultyPips level={mission.data.difficultyLevel} />
+                                </div>
+
+                                {mission.data.hint ? (
+                                    <p className="hint" style={delayMs(timeline?.briefHint)}>
+                                        <Emphasized text={mission.data.hint} terms={keywordTerms} />
+                                    </p>
+                                ) : null}
+
+                                {mission.data.description ? (
+                                    <p className="summary__body" style={delayMs(timeline?.briefDescription)}>
+                                        <Emphasized text={mission.data.description} terms={keywordTerms} />
+                                    </p>
+                                ) : null}
                             </div>
-
-                            {mission.data.hint ? (
-                                <p className="hint">
-                                    <Emphasized text={mission.data.hint} terms={keywordTerms} />
-                                </p>
-                            ) : null}
-
-                            {mission.data.description ? (
-                                <p className="summary__body">
-                                    <Emphasized text={mission.data.description} terms={keywordTerms} />
-                                </p>
-                            ) : null}
                         </div>
 
                         {/* Pinned outside the scroll region, not squeezed by it — a long hint or
@@ -234,17 +356,20 @@ export function MissionSummary(): ReactNode {
                             onEdit={openShop}
                             failure={failure}
                             previewExpAmount={previewExpAmount}
+                            introDelayMs={revealing ? timeline?.team : undefined}
                         />
                     </div>
 
-                    <div className="summary__stats">
-                        <RewardSquares mission={mission} tables={tables} />
+                    <div className="summary__stats" style={delayMs(timeline?.rightSlide)}>
+                        <RewardSquares mission={mission} tables={tables} introDelayMs={revealing ? timeline?.reward : undefined} />
                         {assigned.length > 0 ? (
                             <div className="summary__photo summary__photo--stats">
                                 <StatHexagon totals={combinedStats(assigned)} />
                             </div>
                         ) : (
-                            <p className="summary__stats-empty">Assign agents to see stat summary</p>
+                            <p className="summary__stats-empty" style={delayMs(timeline?.team)}>
+                                Assign agents to see stat summary
+                            </p>
                         )}
                         <div className="summary__lower-anchor">
                             <hr className="summary__dashrule" />
@@ -254,6 +379,18 @@ export function MissionSummary(): ReactNode {
                             </div>
                         </div>
                     </div>
+
+                    {revealing ? (
+                        <>
+                            <div
+                                className="mission-intro__catcher"
+                                onClick={skipIntro}
+                                role="presentation"
+                                title="Tap to skip"
+                            />
+                            <span className="mission-intro__skip-hint" aria-hidden="true">❯</span>
+                        </>
+                    ) : null}
                 </div>
                 )}
             </div>
@@ -387,11 +524,21 @@ function StatGaugeList({ agents, tables }: { agents: readonly RuntimeAgent[]; ta
 
 /** Payment and exp, as a small square item list at the head of the stats rail — above the hexagon,
  *  which centers in whatever room that leaves above the gauges. */
-function RewardSquares({ mission, tables }: { mission: LiveMission; tables: GameTables }): ReactNode {
+function RewardSquares({
+    mission,
+    tables,
+    introDelayMs,
+}: {
+    mission: LiveMission;
+    tables: GameTables;
+    /** Set only while the mission-open reveal is playing — see `.summary--intro .reward-box` in
+     *  app.css, which is what actually fades this in; this just times it. */
+    introDelayMs?: number;
+}): ReactNode {
     const reward = previewReward(tables, mission.data.outcomes?.[0]);
 
     return (
-        <div className="reward-box">
+        <div className="reward-box" style={introDelayMs !== undefined ? { animationDelay: `${introDelayMs}ms` } : undefined}>
             <span className="reward-box__label">Rewards</span>
             <div className="reward-squares">
                 <div className="reward-square">
@@ -412,11 +559,19 @@ function RewardSquares({ mission, tables }: { mission: LiveMission; tables: Game
 /** Location name, address and coordinates, sitting under the photo's fade.
  *  The More/Less disclosure (type, size, state) is hidden for now — hidden, not removed, since the
  *  fields it read are still authored and this is the one place they'd surface. */
-function LocationBlock({ mission }: { mission: LiveMission }): ReactNode {
+function LocationBlock({
+    mission,
+    introDelayMs,
+}: {
+    mission: LiveMission;
+    /** Set only while the mission-open reveal is playing — see `.summary--intro .summary__location`
+     *  in app.css, which is what actually fades this in; this just times it. */
+    introDelayMs?: number;
+}): ReactNode {
     const location = mission.location;
 
     return (
-        <div className="summary__location">
+        <div className="summary__location" style={introDelayMs !== undefined ? { animationDelay: `${introDelayMs}ms` } : undefined}>
             <span className="summary__location-name">{location?.displayName ?? 'Unknown'}</span>
             <span className="summary__location-detail">
                 {location?.address ?? titleCase(location?.country) ?? 'Location withheld'}
@@ -452,6 +607,7 @@ function MissionTeam({
     onEdit,
     failure,
     previewExpAmount,
+    introDelayMs,
 }: {
     session: LoadoutSession;
     tables: GameTables;
@@ -465,9 +621,12 @@ function MissionTeam({
     /** The mission's own exp reward, same for every assigned agent — previewed as a pending gain on
      *  each one's EXP gauge (see ExpGauge's own doc). */
     previewExpAmount: number;
+    /** Set only while the mission-open reveal is playing — see `.summary--intro .summary__team` in
+     *  app.css, which is what actually slides this up; this just times it. */
+    introDelayMs?: number;
 }): ReactNode {
     return (
-        <div className="summary__team">
+        <div className="summary__team" style={introDelayMs !== undefined ? { animationDelay: `${introDelayMs}ms` } : undefined}>
             <div className="slot-grid">
                 {session.slots.map((slot) => {
                         const occupant = session.agentIn(slot.slotId);

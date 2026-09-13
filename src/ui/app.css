@@ -851,6 +851,13 @@
     border-radius: var(--radius);
 }
 
+/* Mission onboarding reveal, in progress: a column sliding in from off-frame must clip at the
+   panel's own edge (else it bleeds past the rounded corners while still off-canvas) and the
+   Cost/Success/Confirm corner fixture holds hidden until the reveal reaches it — see
+   `.summary--intro` below for the rest of the sequence. */
+.modal--intro { overflow: hidden; }
+.modal--intro .mission-corner { opacity: 0; animation: mission-fade-in 400ms ease-out forwards; }
+
 /* Mission UI only: the two column dividers, painted as part of the modal's own background instead
    of stopping at the bottom of `.summary` — a background layer sits behind every button and piece
    of text, so it reads as running continuously through the footer to the modal's true bottom edge
@@ -1297,6 +1304,137 @@
     margin: 0;
     font-style: normal;
     padding-right: 32%;
+}
+
+/* --- Mission onboarding reveal ---------------------------------------------- */
+/*
+ * Plays once per mission — the first time its modal opens (`useMissionIntro` in
+ * MissionSummary.tsx marks it seen and never replays it). A staged reveal built the same way
+ * `.agent-backdrop-in` is: plain `opacity:0`/`transform` base styles plus a `forwards` keyframe
+ * animation, mounted once and left to run — not JS-driven class toggling per step. The stagger
+ * itself (which element starts when) lives in one place, MissionSummary's `INTRO_DELAY`/timeline
+ * math, passed down as inline `animationDelay` styles; CSS only owns the keyframes and durations.
+ *
+ * Every rule here is scoped under `.summary--intro`, so once that class comes off (the reveal
+ * finishes, or the player skips it) every element instantly reverts to its plain, un-animated
+ * layout — no explicit "settled" state to maintain in parallel.
+ */
+
+@keyframes mission-fade-in {
+    to { opacity: 1; }
+}
+
+.summary--intro { position: relative; }
+
+/* The click-anywhere-to-skip surface — sits above every column while the reveal plays, both
+   catching the click and stopping the player from, say, tapping a slot that hasn't faded in yet. */
+.mission-intro__catcher {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    cursor: pointer;
+}
+
+/* The JRPG "there's more, but you can skip it" cue — a small arrow nudging toward the modal's own
+   bottom-right, forever, until the reveal ends. */
+.mission-intro__skip-hint {
+    position: absolute;
+    right: 16px;
+    bottom: 10px;
+    z-index: 6;
+    color: var(--cyan-dim);
+    font-size: 15px;
+    pointer-events: none;
+    animation: mission-intro-nudge 900ms ease-in-out infinite;
+}
+
+@keyframes mission-intro-nudge {
+    0%, 100% { transform: translateX(0); opacity: 0.55; }
+    50% { transform: translateX(6px); opacity: 1; }
+}
+
+.summary--intro .summary__left {
+    transform: translateX(-100%);
+    animation: mission-slide-left-in 550ms ease-out forwards;
+}
+
+@keyframes mission-slide-left-in {
+    to { transform: translateX(0); }
+}
+
+.summary--intro .summary__divider,
+.summary--intro .summary__location {
+    opacity: 0;
+    animation: mission-fade-in 400ms ease-out forwards;
+}
+
+/* Wraps the name/type-and-difficulty/hint/description rows only while the reveal plays — the base
+   rule (no `.summary--intro` ancestor) is just enough flex layout to keep those rows stacked with
+   the same spacing `.summary__scroll`'s own `gap` gave them before this wrapper existed. */
+.mission-brief {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 0;
+}
+
+/* Floats over the middle of `.summary__right` (its nearest positioned ancestor) while the reveal
+   plays — "the center of the center column" the design calls for — then this one animation carries
+   it down to (0,0): exactly its normal top-left flow position, since `to` with no explicit `from`
+   animates from whatever this rule's own base values are. */
+.summary--intro .mission-brief {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 78%;
+    transform: translate(-50%, -50%) scale(1.08);
+    animation: mission-brief-collapse 600ms ease-in-out forwards;
+}
+
+@keyframes mission-brief-collapse {
+    to {
+        top: 0;
+        left: 0;
+        width: 100%;
+        transform: translate(0, 0) scale(1);
+    }
+}
+
+/* The name/row/hint/description lines themselves, fading in one at a time while the block above is
+   still centered — each gets its own `animationDelay` inline (see `INTRO_DELAY` in
+   MissionSummary.tsx), this just says "start invisible, fade to solid". */
+.summary--intro .mission-brief > * {
+    opacity: 0;
+    animation: mission-fade-in 350ms ease-out forwards;
+}
+
+.summary--intro .summary__stats {
+    transform: translateX(100%);
+    animation: mission-slide-right-in 550ms ease-out forwards;
+}
+
+@keyframes mission-slide-right-in {
+    to { transform: translateX(0); }
+}
+
+.summary--intro .reward-box,
+.summary--intro .summary__stats-empty,
+.summary--intro .summary__decline {
+    opacity: 0;
+    animation: mission-fade-in 400ms ease-out forwards;
+}
+
+.summary--intro .summary__team {
+    opacity: 0;
+    transform: translateY(36px);
+    animation: mission-team-in 500ms ease-out forwards;
+}
+
+@keyframes mission-team-in {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* An objective-relevant fact — a place, a sum, a duration — inside a run of prose. */

@@ -73,6 +73,11 @@ interface GameState {
     /** Dev panel visibility, off by default. */
     showDataPanel: boolean;
 
+    /** Mission instanceIds whose onboarding reveal has already played. The animation is a one-shot
+     *  per mission — reopening one already in here (including reopening it after just closing it
+     *  partway through) renders the settled layout straight away, no replay. */
+    seenMissionIntros: Set<string>;
+
     init: () => Promise<void>;
     restart: (seed?: number) => Promise<void>;
 
@@ -88,6 +93,8 @@ interface GameState {
      *  happens right there, there is no separate page to hand off to. */
     openMission: (instanceId: string) => void;
     closeOverlay: () => void;
+    /** Marks a mission's onboarding reveal as played — called once, the first time its modal opens. */
+    markMissionIntroSeen: (instanceId: string) => void;
     declineMission: (instanceId: string) => void;
 
     /** Opens the full-page Shop focused on one agent — from the pencil on their filled slot. */
@@ -309,6 +316,7 @@ export const useGame = create<GameState>((set, get) => {
     pending: [],
     assignmentFailure: '',
     showDataPanel: false,
+    seenMissionIntros: new Set(),
 
     async init() {
         await get().restart();
@@ -451,6 +459,11 @@ export const useGame = create<GameState>((set, get) => {
             pendingSwap: undefined,
             version: get().version + 1,
         });
+    },
+
+    markMissionIntroSeen(instanceId) {
+        get().seenMissionIntros.add(instanceId);
+        set({ version: get().version + 1 });
     },
 
     closeOverlay() {
