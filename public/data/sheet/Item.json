@@ -87,7 +87,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "toolGlowstick",
@@ -105,7 +106,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "toolScrewdriver",
@@ -213,7 +215,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "toolKeyloggerUsb",
@@ -249,7 +252,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "toolMovementDetector",
@@ -465,7 +469,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "toolGrapplingHookWatch",
@@ -501,7 +506,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "toolSmartEyeLens",
@@ -537,7 +543,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "minPlayerLevel": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "toolAntibiotic",
@@ -555,7 +562,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "minPlayerLevel": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "toolPepperSpray",
@@ -591,7 +599,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "toolSeductiveVial",
@@ -609,7 +618,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "toolSleepingPill",
@@ -627,7 +637,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "toolAntidote",
@@ -645,7 +656,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "minPlayerLevel": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "toolHealPotion",
@@ -663,7 +675,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "minPlayerLevel": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "toolPoisonSyringe",
@@ -681,7 +694,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "toolSeductiveSyringe",
@@ -699,7 +713,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "toolVaccine",
@@ -717,7 +732,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "minPlayerLevel": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "toolNanoTrackerPill",
@@ -735,7 +751,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "minPlayerLevel": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "toolTruthSerum",
@@ -753,7 +770,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "toolOxygenTank",
@@ -1095,7 +1113,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "melBallisticKnife",
@@ -1185,7 +1204,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "melKatana",
@@ -1365,7 +1385,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "melTonfa",
@@ -1444,6 +1465,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "canHide",
     "subType": "handgun",
+    "icon": "gunGlock17.png",
     "displayName": "Glock 17",
     "_rarity": "common",
     "weight": "light",
@@ -1464,6 +1486,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "canHide",
     "subType": "handgun",
+    "icon": "gunBeretta92fs.png",
     "displayName": "Beretta 92FS",
     "_rarity": "common",
     "weight": "light",
@@ -1484,6 +1507,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "canHide",
     "subType": "handgun",
+    "icon": "gunColtM1911.png",
     "displayName": "Colt M1911",
     "_rarity": "common",
     "weight": "light",
@@ -1504,6 +1528,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "canHide",
     "subType": "handgun",
+    "icon": "gunCz75.png",
     "displayName": "CZ 75",
     "_rarity": "common",
     "weight": "light",
@@ -1524,6 +1549,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "canHide",
     "subType": "handgun",
+    "icon": "gunGlock26.png",
     "displayName": "Glock 26",
     "_rarity": "common",
     "weight": "light",
@@ -1544,6 +1570,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "canHide",
     "subType": "handgun",
+    "icon": "gunSwMpShield.png",
     "displayName": "S&W M&P Shield",
     "_rarity": "common",
     "weight": "light",
@@ -1564,6 +1591,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "canHide",
     "subType": "handgun",
+    "icon": "gunRugerLcp.png",
     "displayName": "Ruger LCP",
     "_rarity": "common",
     "weight": "light",
@@ -1644,6 +1672,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "canHide",
     "subType": "handgun",
+    "icon": "gunGlock18.png",
     "displayName": "Glock 18",
     "_rarity": "medium",
     "weight": "light",
@@ -1664,6 +1693,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "canHide",
     "subType": "handgun",
+    "icon": "gunSigSauerP226.png",
     "displayName": "SIG Sauer P226",
     "_rarity": "medium",
     "weight": "light",
@@ -1684,6 +1714,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "canHide",
     "subType": "handgun",
+    "icon": "gunHkUsp.png",
     "displayName": "H&K USP",
     "_rarity": "medium",
     "weight": "light",
@@ -1704,6 +1735,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "canHide",
     "subType": "handgun",
+    "icon": "gunFnFiveSeven.png",
     "displayName": "FN Five-seveN",
     "_rarity": "medium",
     "weight": "light",
@@ -1724,6 +1756,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "canHide",
     "subType": "handgun",
+    "icon": "gunWaltherPpk.png",
     "displayName": "Walther PPK",
     "_rarity": "medium",
     "weight": "light",
@@ -1744,6 +1777,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "canHide",
     "subType": "handgun",
+    "icon": "gunGlock34.png",
     "displayName": "Glock 34",
     "_rarity": "medium",
     "weight": "light",
@@ -1764,6 +1798,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "canHide",
     "subType": "handgun",
+    "icon": "gunHecklerKochP30.png",
     "displayName": "Heckler & Koch P30",
     "_rarity": "medium",
     "weight": "light",
@@ -1784,6 +1819,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "canHide",
     "subType": "handgun",
+    "icon": "gunKimberWarrior.png",
     "displayName": "Kimber Warrior",
     "_rarity": "medium",
     "weight": "light",
@@ -1804,6 +1840,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "canHide",
     "subType": "handgun",
+    "icon": "gunHecklerKochUspCompact.png",
     "displayName": "Heckler & Koch USP Compact",
     "_rarity": "medium",
     "weight": "light",
@@ -1824,6 +1861,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "canHide",
     "subType": "handgun",
+    "icon": "gunMiniSpyPistol.png",
     "displayName": "Mini Spy Pistol",
     "_rarity": "rare",
     "weight": "light",
@@ -1837,13 +1875,15 @@
     "consumeItemQty": "1",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "gunDesertEagle",
     "type": "longRangeWeapon",
     "isConcealed": "canHide",
     "subType": "handgun",
+    "icon": "gunDesertEagle.png",
     "displayName": "Desert Eagle",
     "_rarity": "rare",
     "weight": "medium",
@@ -1864,6 +1904,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "canHide",
     "subType": "handgun",
+    "icon": "gunSti2011CombatMaster.png",
     "displayName": "STI 2011 Combat Master",
     "_rarity": "rare",
     "weight": "light",
@@ -1884,6 +1925,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "canHide",
     "subType": "revolver",
+    "icon": "gunColtSingleActionArmy.png",
     "displayName": "Colt Single Action Army",
     "_rarity": "common",
     "weight": "light",
@@ -1904,6 +1946,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "canHide",
     "subType": "revolver",
+    "icon": "gunColtPython.png",
     "displayName": "Colt Python",
     "_rarity": "medium",
     "weight": "light",
@@ -1924,6 +1967,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "canHide",
     "subType": "revolver",
+    "icon": "gunSwModel29.png",
     "displayName": "S&W Model 29",
     "_rarity": "medium",
     "weight": "light",
@@ -1944,6 +1988,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "canHide",
     "subType": "revolver",
+    "icon": "gunSmithWessonModel27.png",
     "displayName": "Smith & Wesson Model 27",
     "_rarity": "medium",
     "weight": "light",
@@ -1964,6 +2009,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "canHide",
     "subType": "revolver",
+    "icon": "gunSmithWessonModel686.png",
     "displayName": "Smith & Wesson Model 686",
     "_rarity": "medium",
     "weight": "light",
@@ -1984,6 +2030,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "canHide",
     "subType": "revolver",
+    "icon": "gunChiappaRhino.png",
     "displayName": "Chiappa Rhino",
     "_rarity": "rare",
     "weight": "light",
@@ -2004,6 +2051,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "canHide",
     "subType": "revolver",
+    "icon": "gunSwModel500.png",
     "displayName": "S&W Model 500",
     "_rarity": "rare",
     "weight": "medium",
@@ -2024,6 +2072,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "canHide",
     "subType": "submachineGun",
+    "icon": "gunMp5.png",
     "displayName": "MP5",
     "_rarity": "common",
     "weight": "medium",
@@ -2044,6 +2093,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "canHide",
     "subType": "submachineGun",
+    "icon": "gunUzi.png",
     "displayName": "Uzi",
     "_rarity": "common",
     "weight": "medium",
@@ -2064,6 +2114,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "canHide",
     "subType": "submachineGun",
+    "icon": "gunMac10.png",
     "displayName": "MAC-10",
     "_rarity": "common",
     "weight": "medium",
@@ -2084,6 +2135,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "submachineGun",
+    "icon": "gunUmp45.png",
     "displayName": "UMP45",
     "_rarity": "common",
     "weight": "medium",
@@ -2104,6 +2156,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "submachineGun",
+    "icon": "gunP90.png",
     "displayName": "P90",
     "_rarity": "medium",
     "weight": "medium",
@@ -2124,6 +2177,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "canHide",
     "subType": "submachineGun",
+    "icon": "gunMp7.png",
     "displayName": "MP7",
     "_rarity": "medium",
     "weight": "medium",
@@ -2144,6 +2198,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "submachineGun",
+    "icon": "gunPp19Bizon.png",
     "displayName": "PP-19 Bizon",
     "_rarity": "medium",
     "weight": "medium",
@@ -2164,6 +2219,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "submachineGun",
+    "icon": "gunScorpionEvo3.png",
     "displayName": "Scorpion EVO 3",
     "_rarity": "medium",
     "weight": "medium",
@@ -2184,6 +2240,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "submachineGun",
+    "icon": "gunHecklerKochMpx.png",
     "displayName": "Heckler & Koch MPX",
     "_rarity": "medium",
     "weight": "medium",
@@ -2204,6 +2261,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "submachineGun",
+    "icon": "gunKrissVector.png",
     "displayName": "KRISS Vector",
     "_rarity": "rare",
     "weight": "medium",
@@ -2224,6 +2282,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "submachineGun",
+    "icon": "gunThompsonM1928.png",
     "displayName": "Thompson M1928",
     "_rarity": "rare",
     "weight": "medium",
@@ -2244,6 +2303,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "submachineGun",
+    "icon": "gunSigSauerMpxCopperhead.png",
     "displayName": "SIG Sauer MPX Copperhead",
     "_rarity": "rare",
     "weight": "medium",
@@ -2264,6 +2324,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "shotgun",
+    "icon": "gunRemington870.png",
     "displayName": "Remington 870",
     "_rarity": "common",
     "weight": "heavy",
@@ -2284,6 +2345,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "shotgun",
+    "icon": "gunMossberg500.png",
     "displayName": "Mossberg 500",
     "_rarity": "common",
     "weight": "heavy",
@@ -2304,6 +2366,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "shotgun",
+    "icon": "gunWinchester1887.png",
     "displayName": "Winchester 1887",
     "_rarity": "common",
     "weight": "heavy",
@@ -2324,6 +2387,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "shotgun",
+    "icon": "gunIthaca37.png",
     "displayName": "Ithaca 37",
     "_rarity": "common",
     "weight": "heavy",
@@ -2344,6 +2408,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "shotgun",
+    "icon": "gunSpas12.png",
     "displayName": "SPAS-12",
     "_rarity": "medium",
     "weight": "heavy",
@@ -2364,6 +2429,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "shotgun",
+    "icon": "gunBenelliM4.png",
     "displayName": "Benelli M4",
     "_rarity": "medium",
     "weight": "heavy",
@@ -2384,6 +2450,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "shotgun",
+    "icon": "gunM1014.png",
     "displayName": "M1014",
     "_rarity": "medium",
     "weight": "heavy",
@@ -2404,6 +2471,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "shotgun",
+    "icon": "gunSaiga12.png",
     "displayName": "Saiga-12",
     "_rarity": "medium",
     "weight": "heavy",
@@ -2424,6 +2492,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "shotgun",
+    "icon": "gunBenelliM2.png",
     "displayName": "Benelli M2",
     "_rarity": "medium",
     "weight": "heavy",
@@ -2444,6 +2513,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "shotgun",
+    "icon": "gunAa12.png",
     "displayName": "AA-12",
     "_rarity": "rare",
     "weight": "heavy",
@@ -2464,6 +2534,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "shotgun",
+    "icon": "gunStrikerStreetsweeper.png",
     "displayName": "Striker / Streetsweeper",
     "_rarity": "rare",
     "weight": "heavy",
@@ -2484,6 +2555,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "shotgun",
+    "icon": "gunKelTecKsg.png",
     "displayName": "Kel-Tec KSG",
     "_rarity": "rare",
     "weight": "heavy",
@@ -2504,6 +2576,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "shotgun",
+    "icon": "gun2011ShotgunSetup.png",
     "displayName": "2011 Shotgun-style setup",
     "_rarity": "rare",
     "weight": "heavy",
@@ -2524,6 +2597,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "assaultRifle",
+    "icon": "gunAk47.png",
     "displayName": "AK-47",
     "_rarity": "common",
     "weight": "heavy",
@@ -2544,6 +2618,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "assaultRifle",
+    "icon": "gunM4a1.png",
     "displayName": "M4A1",
     "_rarity": "common",
     "weight": "heavy",
@@ -2564,6 +2639,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "assaultRifle",
+    "icon": "gunM16.png",
     "displayName": "M16",
     "_rarity": "common",
     "weight": "heavy",
@@ -2584,6 +2660,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "assaultRifle",
+    "icon": "gunScarL.png",
     "displayName": "SCAR-L",
     "_rarity": "medium",
     "weight": "heavy",
@@ -2604,6 +2681,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "assaultRifle",
+    "icon": "gunScarH.png",
     "displayName": "SCAR-H",
     "_rarity": "medium",
     "weight": "heavy",
@@ -2624,6 +2702,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "assaultRifle",
+    "icon": "gunAug.png",
     "displayName": "AUG",
     "_rarity": "medium",
     "weight": "heavy",
@@ -2644,6 +2723,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "assaultRifle",
+    "icon": "gunFamas.png",
     "displayName": "FAMAS",
     "_rarity": "medium",
     "weight": "heavy",
@@ -2664,6 +2744,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "assaultRifle",
+    "icon": "gunG36c.png",
     "displayName": "G36C",
     "_rarity": "medium",
     "weight": "heavy",
@@ -2684,6 +2765,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "assaultRifle",
+    "icon": "gunFnFal.png",
     "displayName": "FN FAL",
     "_rarity": "medium",
     "weight": "heavy",
@@ -2704,6 +2786,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "assaultRifle",
+    "icon": "gunGalil.png",
     "displayName": "Galil",
     "_rarity": "medium",
     "weight": "heavy",
@@ -2724,6 +2807,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "assaultRifle",
+    "icon": "gunTar21.png",
     "displayName": "TAR-21",
     "_rarity": "medium",
     "weight": "heavy",
@@ -2744,6 +2828,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "assaultRifle",
+    "icon": "gunAk74.png",
     "displayName": "AK-74",
     "_rarity": "medium",
     "weight": "heavy",
@@ -2764,6 +2849,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "assaultRifle",
+    "icon": "gunG3.png",
     "displayName": "G3",
     "_rarity": "medium",
     "weight": "heavy",
@@ -2784,6 +2870,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "assaultRifle",
+    "icon": "gunQbz95.png",
     "displayName": "QBZ-95",
     "_rarity": "medium",
     "weight": "heavy",
@@ -2804,6 +2891,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "assaultRifle",
+    "icon": "gunM14.png",
     "displayName": "M14",
     "_rarity": "medium",
     "weight": "heavy",
@@ -2824,6 +2912,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "assaultRifle",
+    "icon": "gunHkG3.png",
     "displayName": "HK G3",
     "_rarity": "medium",
     "weight": "heavy",
@@ -2844,6 +2933,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "assaultRifle",
+    "icon": "gunCqbStyleAr.png",
     "displayName": "CQB-style AR",
     "_rarity": "medium",
     "weight": "heavy",
@@ -2864,6 +2954,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "assaultRifle",
+    "icon": "gunAr15.png",
     "displayName": "AR-15",
     "_rarity": "medium",
     "weight": "heavy",
@@ -2884,6 +2975,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "assaultRifle",
+    "icon": "gunSigMpx.png",
     "displayName": "SIG MPX",
     "_rarity": "medium",
     "weight": "medium",
@@ -2904,6 +2996,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "assaultRifle",
+    "icon": "gunM4StyleCarbine.png",
     "displayName": "M4-style Carbine",
     "_rarity": "medium",
     "weight": "heavy",
@@ -2924,6 +3017,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "assaultRifle",
+    "icon": "gunHk416.png",
     "displayName": "HK416",
     "_rarity": "rare",
     "weight": "heavy",
@@ -2944,6 +3038,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "assaultRifle",
+    "icon": "gunAn94.png",
     "displayName": "AN-94",
     "_rarity": "rare",
     "weight": "heavy",
@@ -2964,6 +3059,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "assaultRifle",
+    "icon": "gunAsVal.png",
     "displayName": "AS VAL",
     "_rarity": "rare",
     "weight": "heavy",
@@ -2984,6 +3080,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "assaultRifle",
+    "icon": "gunGroza.png",
     "displayName": "Groza",
     "_rarity": "rare",
     "weight": "heavy",
@@ -3004,6 +3101,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "assaultRifle",
+    "icon": "gunSigSauerMcx.png",
     "displayName": "SIG Sauer MCX",
     "_rarity": "rare",
     "weight": "heavy",
@@ -3024,6 +3122,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "assaultRifle",
+    "icon": "gunTr1.png",
     "displayName": "TR-1",
     "_rarity": "rare",
     "weight": "heavy",
@@ -3044,6 +3143,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "assaultRifle",
+    "icon": "gunTr1Ultralight.png",
     "displayName": "TR-1 Ultralight",
     "_rarity": "rare",
     "weight": "medium",
@@ -3064,6 +3164,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "sniperRifle",
+    "icon": "gunMosinNagant.png",
     "displayName": "Mosin-Nagant",
     "_rarity": "common",
     "weight": "heavy",
@@ -3084,6 +3185,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "sniperRifle",
+    "icon": "gunRemington700.png",
     "displayName": "Remington 700",
     "_rarity": "medium",
     "weight": "heavy",
@@ -3104,6 +3206,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "sniperRifle",
+    "icon": "gunDragunovSvd.png",
     "displayName": "Dragunov SVD",
     "_rarity": "medium",
     "weight": "heavy",
@@ -3124,6 +3227,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "sniperRifle",
+    "icon": "gunL96a1.png",
     "displayName": "L96A1",
     "_rarity": "medium",
     "weight": "heavy",
@@ -3144,6 +3248,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "sniperRifle",
+    "icon": "gunM24.png",
     "displayName": "M24",
     "_rarity": "medium",
     "weight": "heavy",
@@ -3164,6 +3269,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "sniperRifle",
+    "icon": "gunKar98k.png",
     "displayName": "Kar98k",
     "_rarity": "medium",
     "weight": "heavy",
@@ -3184,6 +3290,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "sniperRifle",
+    "icon": "gunAwp.png",
     "displayName": "AWP",
     "_rarity": "rare",
     "weight": "heavy",
@@ -3204,6 +3311,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "sniperRifle",
+    "icon": "gunIntervention.png",
     "displayName": "Intervention",
     "_rarity": "rare",
     "weight": "heavy",
@@ -3224,6 +3332,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "sniperRifle",
+    "icon": "gunDtaStealthReconScout.png",
     "displayName": "DTA Stealth Recon Scout",
     "_rarity": "rare",
     "weight": "heavy",
@@ -3244,6 +3353,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "sniperRifle",
+    "icon": "gunTr1Dmr.png",
     "displayName": "TR-1",
     "_rarity": "rare",
     "weight": "heavy",
@@ -3264,6 +3374,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "sniperRifle",
+    "icon": "gunBarrettM82.png",
     "displayName": "Barrett M82",
     "_rarity": "superRare",
     "weight": "veryHeavy",
@@ -3284,6 +3395,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "sniperRifle",
+    "icon": "gunDsr50.png",
     "displayName": "DSR-50",
     "_rarity": "superRare",
     "weight": "veryHeavy",
@@ -3304,6 +3416,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "heavyMachineGun",
+    "icon": "gunPkm.png",
     "displayName": "PKM",
     "_rarity": "medium",
     "weight": "veryHeavy",
@@ -3324,6 +3437,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "heavyMachineGun",
+    "icon": "gunM60.png",
     "displayName": "M60",
     "_rarity": "medium",
     "weight": "veryHeavy",
@@ -3344,6 +3458,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "heavyMachineGun",
+    "icon": "gunDshk.png",
     "displayName": "DShK",
     "_rarity": "rare",
     "weight": "veryHeavy",
@@ -3364,6 +3479,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "heavyMachineGun",
+    "icon": "gunM240.png",
     "displayName": "M240",
     "_rarity": "rare",
     "weight": "veryHeavy",
@@ -3384,6 +3500,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "heavyMachineGun",
+    "icon": "gunMg3.png",
     "displayName": "MG3",
     "_rarity": "rare",
     "weight": "veryHeavy",
@@ -3404,6 +3521,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "heavyMachineGun",
+    "icon": "gunNsv.png",
     "displayName": "NSV",
     "_rarity": "rare",
     "weight": "veryHeavy",
@@ -3424,6 +3542,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "heavyMachineGun",
+    "icon": "gunM2Browning.png",
     "displayName": "M2 Browning",
     "_rarity": "superRare",
     "weight": "veryHeavy",
@@ -3444,6 +3563,7 @@
     "type": "longRangeWeapon",
     "isConcealed": "visible",
     "subType": "heavyMachineGun",
+    "icon": "gunKpv.png",
     "displayName": "KPV",
     "_rarity": "superRare",
     "weight": "veryHeavy",
@@ -3797,7 +3917,8 @@
     "consumeItemQty": "1",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "gunFlamethrower",
@@ -3857,7 +3978,8 @@
     "consumeItemQty": "1",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "mag9x19mm",
@@ -3874,7 +3996,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "mag45Acp",
@@ -3891,7 +4014,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "mag32Acp",
@@ -3908,7 +4032,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "mag380Acp",
@@ -3925,7 +4050,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "mag9x18mm",
@@ -3942,7 +4068,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "mag762x39mm",
@@ -3959,7 +4086,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "mag556x45Nato",
@@ -3976,7 +4104,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "mag762x51Nato",
@@ -3993,7 +4122,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "mag545x39mm",
@@ -4010,7 +4140,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "mag12Gauge",
@@ -4027,7 +4158,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "magArrow",
@@ -4044,7 +4176,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "mag22Lr",
@@ -4061,7 +4194,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "mag50Ae",
@@ -4078,7 +4212,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "mag57x28mm",
@@ -4095,7 +4230,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "mag357Magnum",
@@ -4112,7 +4248,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "mag44Magnum",
@@ -4129,7 +4266,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "mag45Colt",
@@ -4146,7 +4284,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "mag46x30mm",
@@ -4163,7 +4302,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "mag9x39mm",
@@ -4180,7 +4320,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "mag58x42mm",
@@ -4197,7 +4338,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "mag762x51mm",
@@ -4214,7 +4356,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "mag762x54mmr",
@@ -4231,7 +4374,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "mag792x57Mauser",
@@ -4248,7 +4392,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "mag308Win",
@@ -4265,7 +4410,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "magTranquilizerDart",
@@ -4282,7 +4428,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "magHarpoonBolt",
@@ -4299,7 +4446,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "magNetCapsule",
@@ -4316,7 +4464,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "magTaserCartridge",
@@ -4333,7 +4482,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "magFuelCanister",
@@ -4350,7 +4500,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "mag66mmRocket",
@@ -4367,7 +4518,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "magAt484mmRocket",
@@ -4384,7 +4536,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "mag40mmGrenade",
@@ -4401,7 +4554,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "mag500SwMagnum",
@@ -4418,7 +4572,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "mag50Bmg",
@@ -4435,7 +4590,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "mag408CheyTac",
@@ -4452,7 +4608,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "mag127x108mm",
@@ -4469,7 +4626,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "mag145x114mm",
@@ -4486,7 +4644,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "magPoisonDart",
@@ -4503,7 +4662,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "magPg7Rocket",
@@ -4520,7 +4680,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "mag84mmRecoillessRound",
@@ -4537,7 +4698,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "mag110mmWarhead",
@@ -4554,7 +4716,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "magJavelinMissile",
@@ -4571,7 +4734,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "5"
   },
   {
     "itemId": "attEoTechExps3",
@@ -5399,7 +5563,8 @@
     "isGoneAfterUse": "FALSE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "expFlashbang",
@@ -5417,7 +5582,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "expMolotovCocktail",
@@ -5435,7 +5601,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "expSmokeGrenade",
@@ -5453,7 +5620,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "expGlitterBomb",
@@ -5471,7 +5639,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "expGasGrenade",
@@ -5489,7 +5658,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "expDecoyGrenade",
@@ -5507,7 +5677,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "expEmpGrenade",
@@ -5525,7 +5696,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "expExplosivePen",
@@ -5543,7 +5715,8 @@
     "isGoneAfterUse": "FALSE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "expExplosiveCufflinks",
@@ -5561,7 +5734,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "expTripwireMine",
@@ -5579,7 +5753,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "expClaymoreMine",
@@ -5615,7 +5790,8 @@
     "isGoneAfterUse": "TRUE",
     "priceItemId": "dollar",
     "maxOwnedCount": "-1",
-    "isInShop": "TRUE"
+    "isInShop": "TRUE",
+    "maxStackCount": "10"
   },
   {
     "itemId": "expC4Explosive",
