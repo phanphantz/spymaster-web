@@ -520,7 +520,10 @@
     position: fixed;
     transform: translate(-50%, -100%);
     z-index: 50;
-    width: 300px;
+    /* Wide enough that the skills grid's two columns fit the longest skill name ("Photographic
+       Memory") without truncating — the hex column keeps its fixed 140px, so all extra width goes
+       to the info/skills side. */
+    width: 460px;
     height: 200px;
     display: flex;
     align-items: center;

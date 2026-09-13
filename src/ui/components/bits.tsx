@@ -490,7 +490,7 @@ function AgentTooltip({
 
     // Matches the fixed size in CSS (.agent-tooltip) — flips below and clamps sideways for cards
     // near the top or the left/right edge (the Employment grid's top row, in particular).
-    const width = 300;
+    const width = 460;
     const height = 200;
     const margin = 8;
     const above = anchor.top >= height + margin + 12;
