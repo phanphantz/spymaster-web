@@ -1,9 +1,11 @@
-import { useState, type ReactNode } from 'react';
+import { Fragment, useState, type ReactNode } from 'react';
 import { SPEED_STEPS } from '../../engine/clock';
 import { useGame } from '../../store/gameStore';
 import * as runtimeAgent from '../../engine/runtimeAgent';
+import { effectiveMaxStack } from '../../engine/loadout';
 import { previewReward, slotCountFor } from '../../engine/missionPreview';
 import type { LiveMission } from '../../engine/missionFeed';
+import type { GameTables } from '../../engine/types';
 import {
     AgentCard,
     ConfirmDialog,
@@ -15,6 +17,52 @@ import {
     setSquareDragImage,
 } from '../components/bits';
 import type { RuntimeAgent } from '../../engine/runtimeAgent';
+
+type CarriedSlot = { itemId: string; qty: number };
+
+/** Which ammo a carried entry links to — a firearm's own `consumeItemId`, or an ammo card standing
+ *  in for itself — so a run of matching keys is exactly what `LoadoutSession.carriedSlots` already
+ *  clustered together. */
+function ammoLinkKey(itemId: string, tables: GameTables): string | undefined {
+    const item = tables.Item.get(itemId);
+    if (!item) return undefined;
+    return item.type?.includes('ammoMagazine') ? itemId : item.consumeItemId;
+}
+
+/** Cycles through the app's existing hues rather than adding a link-specific accent — see
+ *  `.ammo-link--0..3` in app.css. */
+const AMMO_LINK_COLORS = 4;
+
+/** Carried slots, chunked into the runs the engine already grouped by shared ammo. A chunk of more
+ *  than one card gets a shared background and connector line; a lone card (nothing to link) renders
+ *  plain. */
+function groupForDisplay(
+    carried: readonly CarriedSlot[],
+    tables: GameTables,
+): { items: CarriedSlot[]; colorIndex?: number }[] {
+    const groups: { items: CarriedSlot[]; colorIndex?: number }[] = [];
+    const colorOf = new Map<string, number>();
+    let nextColor = 0;
+
+    let i = 0;
+    while (i < carried.length) {
+        const key = ammoLinkKey(carried[i].itemId, tables);
+        let j = i + 1;
+        if (key) while (j < carried.length && ammoLinkKey(carried[j].itemId, tables) === key) j++;
+
+        const items = carried.slice(i, j);
+        let colorIndex: number | undefined;
+        if (key && items.length > 1) {
+            if (!colorOf.has(key)) colorOf.set(key, nextColor++);
+            colorIndex = colorOf.get(key)! % AMMO_LINK_COLORS;
+        }
+
+        groups.push({ items, colorIndex });
+        i = j;
+    }
+
+    return groups;
+}
 
 /** The focused agent (whichever slot pencil opened Kit mode) first, everyone else in slot order —
  *  a hint at where a drop lands by default, not a restriction on who else can receive one. */
@@ -127,7 +175,7 @@ export function WorldMapScreen(): ReactNode {
                 (fromSlotId set) unassigns them — the QoL mirror of dragging one out to a slot.
                 Kit mode repurposes this same strip, same height, as the drop targets for the item
                 grid above: one row per assigned teammate, avatar then their carried slots. */}
-            {inventoryMode && session ? (
+            {inventoryMode && session && tables ? (
                 <div className="roster roster--inventory">
                     {session.assignedAgents().length === 0 ? (
                         <span className="meta dim roster__empty">No agent assigned.</span>
@@ -175,61 +223,105 @@ export function WorldMapScreen(): ReactNode {
                                                 }
                                             }}
                                         >
-                                            {carried.map(({ itemId, qty }, index) => {
-                                                const item = tables?.Item.get(itemId);
-                                                const name = item?.displayName ?? itemId;
-                                                const maxStack = item?.maxStackCount ?? 0;
+                                            {groupForDisplay(carried, tables).map((group, groupIndex) => {
+                                                const cards = group.items.map(({ itemId, qty }, itemIndex) => {
+                                                    const item = tables.Item.get(itemId);
+                                                    const name = item?.displayName ?? itemId;
+                                                    const maxStack = effectiveMaxStack(item);
+                                                    // A firearm's own consumed ammo, not an ammo card's (an ammo
+                                                    // magazine authors no consumeItemId of its own).
+                                                    const ammoItemId = item?.type?.includes('ammoMagazine')
+                                                        ? undefined
+                                                        : item?.consumeItemId;
+                                                    const ammoItem = ammoItemId ? tables.Item.get(ammoItemId) : undefined;
+                                                    const ammoName = ammoItem?.displayName ?? ammoItemId ?? '';
+                                                    const hasSpareMagazine = ammoItemId
+                                                        ? session.carriedBy(agent.characterId).get(ammoItemId) > 0
+                                                        : false;
+
+                                                    return (
+                                                        <div
+                                                            className="equip-slot"
+                                                            key={`${itemId}-${groupIndex}-${itemIndex}`}
+                                                            draggable
+                                                            onDragStart={(event) => {
+                                                                event.dataTransfer.setData(
+                                                                    'text/plain',
+                                                                    JSON.stringify({ itemId, fromCharacterId: agent.characterId, qty }),
+                                                                );
+                                                                event.dataTransfer.effectAllowed = 'move';
+                                                                setSquareDragImage(event, name);
+                                                            }}
+                                                            onDragEnd={(event) => {
+                                                                // Not dropped on any recognized target (dropped mid-air) — remove it.
+                                                                if (event.dataTransfer.dropEffect === 'none') {
+                                                                    unassignItem(agent.characterId, itemId, qty);
+                                                                }
+                                                            }}
+                                                        >
+                                                            <EquipIcon
+                                                                name={name}
+                                                                qty={qty}
+                                                                onRemove={() => unassignItem(agent.characterId, itemId, qty)}
+                                                            />
+                                                            {maxStack > 1 ? (
+                                                                <div className="equip-slot__stepper">
+                                                                    <button
+                                                                        type="button"
+                                                                        className="equip-slot__step"
+                                                                        onClick={() => unassignItem(agent.characterId, itemId, 1)}
+                                                                        aria-label={`One fewer ${name}`}
+                                                                    >
+                                                                        −
+                                                                    </button>
+                                                                    <span className="equip-slot__count">
+                                                                        {qty}/{maxStack}
+                                                                    </span>
+                                                                    <button
+                                                                        type="button"
+                                                                        className="equip-slot__step"
+                                                                        disabled={qty >= maxStack}
+                                                                        onClick={() => assignItem(agent.characterId, itemId, 1)}
+                                                                        aria-label={`One more ${name}`}
+                                                                    >
+                                                                        +
+                                                                    </button>
+                                                                </div>
+                                                            ) : null}
+                                                            {/* The one magazine that comes bundled with the firearm — free,
+                                                                not a carried slot of its own. The + adds a real, priced
+                                                                spare in the next slot; it disappears once this agent is
+                                                                carrying any spare of this ammo, from any of their firearms. */}
+                                                            {ammoItemId ? (
+                                                                <div className="equip-slot__ammo">
+                                                                    <EquipIcon name={ammoName} mini />
+                                                                    {!hasSpareMagazine ? (
+                                                                        <button
+                                                                            type="button"
+                                                                            className="equip-slot__step"
+                                                                            onClick={() => assignItem(agent.characterId, ammoItemId, 1)}
+                                                                            aria-label={`Add a spare ${ammoName} magazine`}
+                                                                            title={`Add a spare ${ammoName} magazine`}
+                                                                        >
+                                                                            +
+                                                                        </button>
+                                                                    ) : null}
+                                                                </div>
+                                                            ) : null}
+                                                        </div>
+                                                    );
+                                                });
 
                                                 return (
-                                                    <div
-                                                        className="equip-slot"
-                                                        key={`${itemId}-${index}`}
-                                                        draggable
-                                                        onDragStart={(event) => {
-                                                            event.dataTransfer.setData(
-                                                                'text/plain',
-                                                                JSON.stringify({ itemId, fromCharacterId: agent.characterId, qty }),
-                                                            );
-                                                            event.dataTransfer.effectAllowed = 'move';
-                                                            setSquareDragImage(event, name);
-                                                        }}
-                                                        onDragEnd={(event) => {
-                                                            // Not dropped on any recognized target (dropped mid-air) — remove it.
-                                                            if (event.dataTransfer.dropEffect === 'none') {
-                                                                unassignItem(agent.characterId, itemId, qty);
-                                                            }
-                                                        }}
-                                                    >
-                                                        <EquipIcon
-                                                            name={name}
-                                                            qty={qty}
-                                                            onRemove={() => unassignItem(agent.characterId, itemId, qty)}
-                                                        />
-                                                        {maxStack > 1 ? (
-                                                            <div className="equip-slot__stepper">
-                                                                <button
-                                                                    type="button"
-                                                                    className="equip-slot__step"
-                                                                    onClick={() => unassignItem(agent.characterId, itemId, 1)}
-                                                                    aria-label={`One fewer ${name}`}
-                                                                >
-                                                                    −
-                                                                </button>
-                                                                <span className="equip-slot__count">
-                                                                    {qty}/{maxStack}
-                                                                </span>
-                                                                <button
-                                                                    type="button"
-                                                                    className="equip-slot__step"
-                                                                    disabled={qty >= maxStack}
-                                                                    onClick={() => assignItem(agent.characterId, itemId, 1)}
-                                                                    aria-label={`One more ${name}`}
-                                                                >
-                                                                    +
-                                                                </button>
+                                                    <Fragment key={groupIndex}>
+                                                        {group.colorIndex !== undefined ? (
+                                                            <div className={`ammo-link ammo-link--${group.colorIndex}`}>
+                                                                {cards}
                                                             </div>
-                                                        ) : null}
-                                                    </div>
+                                                        ) : (
+                                                            cards
+                                                        )}
+                                                    </Fragment>
                                                 );
                                             })}
                                             {Array.from({ length: emptySlots }, (_, index) => (

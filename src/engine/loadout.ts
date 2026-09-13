@@ -7,7 +7,7 @@ import type { RuntimeAgent } from './runtimeAgent';
 import { Shop } from './shop';
 import * as slotRequirement from './slotRequirementEvaluator';
 import type { IneligibilityReason } from './slotRequirementEvaluator';
-import type { GameTables, SlotRequirementData } from './types';
+import type { GameTables, ItemData, SlotRequirementData } from './types';
 
 /**
  * The Loadout page: who goes, and what they carry.
@@ -22,6 +22,21 @@ import type { GameTables, SlotRequirementData } from './types';
  *   money as the cost of preparing for the job, and conjures it onto the agent; unassigning,
  *   swapping or cancelling refunds that charge — so an abandoned Loadout costs nothing.
  */
+
+/** Spare magazines have no `maxStackCount` authored yet — they stack in a fixed small pool
+ *  regardless, so this fills in for that until the sheet carries its own number per round type. */
+const AMMO_STACK_FALLBACK = 4;
+
+function isAmmoMagazine(item: ItemData | undefined): boolean {
+    return Boolean(item?.type?.includes('ammoMagazine'));
+}
+
+/** How many of an item one inventory slot actually holds — `maxStackCount` when authored, else a
+ *  flat fallback for ammo, else 0 (doesn't stack). */
+export function effectiveMaxStack(item: ItemData | undefined): number {
+    if (item?.maxStackCount && item.maxStackCount > 1) return item.maxStackCount;
+    return isAmmoMagazine(item) ? AMMO_STACK_FALLBACK : (item?.maxStackCount ?? 0);
+}
 
 export interface LoadoutSlot {
     slotId: string;
@@ -171,7 +186,7 @@ export class LoadoutSession {
     }
 
     private slotsFor(itemId: string, qty: number): number {
-        const max = this.tables.Item.get(itemId)?.maxStackCount ?? 0;
+        const max = effectiveMaxStack(this.tables.Item.get(itemId));
         return max > 1 ? Math.ceil(qty / max) : qty;
     }
 
@@ -186,13 +201,52 @@ export class LoadoutSession {
     carriedSlots(characterId: string): { itemId: string; qty: number }[] {
         const slots: { itemId: string; qty: number }[] = [];
         for (const [itemId, qty] of this.carriedBy(characterId).entries) {
-            if ((this.tables.Item.get(itemId)?.maxStackCount ?? 0) > 1) {
+            if (effectiveMaxStack(this.tables.Item.get(itemId)) > 1) {
                 slots.push({ itemId, qty });
             } else {
                 for (let i = 0; i < qty; i++) slots.push({ itemId, qty: 1 });
             }
         }
-        return slots;
+        return this.groupByAmmo(slots);
+    }
+
+    /**
+     * Reorders carried slots so a firearm sits beside the ammo it takes (`consumeItemId`), and every
+     * other carried firearm sharing that same ammo clusters in beside it, ahead of the one ammo card
+     * that follows the group — the run the Kit strip draws its linked background and connector over.
+     * Anything without an ammo link — including an ammo card nobody has a matching firearm for yet —
+     * keeps its original position.
+     */
+    private groupByAmmo(raw: { itemId: string; qty: number }[]): { itemId: string; qty: number }[] {
+        const ammoLinkOf = (itemId: string): string | undefined => this.tables.Item.get(itemId)?.consumeItemId;
+
+        const placed = new Set<number>();
+        const out: { itemId: string; qty: number }[] = [];
+
+        raw.forEach((slot, index) => {
+            if (placed.has(index)) return;
+
+            const ammoId = ammoLinkOf(slot.itemId);
+            if (!ammoId) {
+                out.push(slot);
+                placed.add(index);
+                return;
+            }
+
+            raw.forEach((other, otherIndex) => {
+                if (placed.has(otherIndex) || ammoLinkOf(other.itemId) !== ammoId) return;
+                out.push(other);
+                placed.add(otherIndex);
+            });
+
+            const ammoIndex = raw.findIndex((candidate, i) => !placed.has(i) && candidate.itemId === ammoId);
+            if (ammoIndex !== -1) {
+                out.push(raw[ammoIndex]);
+                placed.add(ammoIndex);
+            }
+        });
+
+        return out;
     }
 
     /**
@@ -206,7 +260,7 @@ export class LoadoutSession {
 
         const carried = this.carriedBy(characterId);
         const currentQty = carried.get(itemId);
-        const max = this.tables.Item.get(itemId)?.maxStackCount ?? 0;
+        const max = effectiveMaxStack(this.tables.Item.get(itemId));
         if (max > 1 && currentQty + qty > max) return false;
 
         const additionalSlots = this.slotsFor(itemId, currentQty + qty) - this.slotsFor(itemId, currentQty);

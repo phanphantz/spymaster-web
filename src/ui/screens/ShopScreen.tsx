@@ -21,10 +21,10 @@ function sortTypes(rows: readonly VocabularyEntry[]): VocabularyEntry[] {
     return [...rows].sort((a, b) => rankOf(a) - rankOf(b));
 }
 
-/** Not modelled in this prototype yet — no ammo economy, no attachment slots on a weapon. Hidden
- *  from the type rail entirely rather than left to dead-end as an empty tab; an item that carries
- *  one of these as a secondary type still shows under whichever other type it also has. */
-const HIDDEN_TYPES = new Set(['ammoMagazine', 'attachment']);
+/** Not modelled in this prototype yet — no attachment slots on a weapon. Hidden from the type rail
+ *  entirely rather than left to dead-end as an empty tab; an item that carries this as a secondary
+ *  type still shows under whichever other type it also has. */
+const HIDDEN_TYPES = new Set(['attachment']);
 
 type SortKey = 'name' | 'price' | 'rarity' | 'stats';
 type SortDir = 'asc' | 'desc';

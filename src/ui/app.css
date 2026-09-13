@@ -431,6 +431,33 @@
 
 .equip-slot__count { font-size: var(--fs-micro); color: var(--steel); min-width: 26px; text-align: center; }
 
+/* The firearm's bundled magazine — a mini icon plus, until a spare of that ammo exists anywhere on
+   this agent, the button that adds one as a real (priced, stackable) slot of its own. */
+.equip-slot__ammo {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.equip-slot__ammo .equip-slot__step { width: 14px; height: 14px; font-size: 10px; }
+
+/* A run of carried slots sharing one ammo — every firearm that takes it, then the ammo card itself.
+   The top border reads as a bracket drawn over the group; color cycles the app's existing hues
+   (never a link-specific accent) so distinct ammo groups on the same agent stay tellable apart. */
+.ammo-link {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 5px 4px 0;
+    border-top: 2px solid;
+    border-radius: var(--radius);
+}
+
+.ammo-link--0 { border-color: var(--cyan); background: color-mix(in srgb, var(--cyan) 10%, transparent); }
+.ammo-link--1 { border-color: var(--orange); background: color-mix(in srgb, var(--orange) 10%, transparent); }
+.ammo-link--2 { border-color: var(--money); background: color-mix(in srgb, var(--money) 10%, transparent); }
+.ammo-link--3 { border-color: var(--steel); background: color-mix(in srgb, var(--steel) 10%, transparent); }
+
 /* Pinned to the icon's own corner rather than beside it, so removing one unit never reflows the
    rest of the row — the same reason the qty badge sits in a corner instead of after the name. */
 .equip-icon__remove {
