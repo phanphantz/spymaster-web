@@ -99,7 +99,19 @@ export function coarsen(layer: GeoLayer, factor: number): GeoLayer {
     };
 }
 
-export function encodeLayer(layer: GeoLayer): Uint8Array {
+/**
+ * Undoes the bake's gzip. The files ship pre-gzipped because static hosts (GitHub Pages included)
+ * won't compress an arbitrary binary type on the fly. A host that *does* label them
+ * `Content-Encoding: gzip` gets them inflated by the browser before this runs, so the gzip magic is
+ * checked rather than assumed.
+ */
+export async function inflate(bytes: Uint8Array<ArrayBuffer>): Promise<Uint8Array<ArrayBuffer>> {
+    if (bytes[0] !== 0x1f || bytes[1] !== 0x8b) return bytes;
+    const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
+    return new Uint8Array(await new Response(stream).arrayBuffer());
+}
+
+export function encodeLayer(layer: GeoLayer): Uint8Array<ArrayBuffer> {
     const writer = new VarintWriter();
     for (const byte of MAGIC) writer.byte(byte);
     writer.uint(VERSION);
@@ -171,7 +183,7 @@ export function decodeLayer(bytes: Uint8Array): GeoLayer {
 }
 
 class VarintWriter {
-    private buffer = new Uint8Array(1 << 16);
+    private buffer = new Uint8Array(new ArrayBuffer(1 << 16));
     private length = 0;
 
     byte(value: number): void {
@@ -196,7 +208,7 @@ class VarintWriter {
         this.uint(value >= 0 ? value * 2 : -value * 2 - 1);
     }
 
-    finish(): Uint8Array {
+    finish(): Uint8Array<ArrayBuffer> {
         return this.buffer.slice(0, this.length);
     }
 }

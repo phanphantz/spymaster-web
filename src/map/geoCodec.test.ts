@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { coarsen, decodeLayer, encodeLayer, snapPart, snapRing, type GeoLayer } from './geoCodec';
+import { coarsen, decodeLayer, encodeLayer, inflate, snapPart, snapRing, type GeoLayer } from './geoCodec';
 
 const ring = (...points: number[]) => Int32Array.from(points);
 
@@ -65,6 +65,21 @@ describe('encode / decode', () => {
 
     it('rejects bytes that are not a map layer', () => {
         expect(() => decodeLayer(new Uint8Array([1, 2, 3, 4, 5]))).toThrow(/magic/);
+    });
+});
+
+describe('inflate', () => {
+    const layer: GeoLayer = { unitDeg: 0.4, shapes: [[[ring(0, 0, 3, 0, 3, 3)]]] };
+
+    it('gunzips a pre-gzipped file', async () => {
+        const encoded = encodeLayer(layer);
+        const gzipped = new Uint8Array(await new Response(new Blob([encoded]).stream().pipeThrough(new CompressionStream('gzip'))).arrayBuffer());
+        expect(Array.from(await inflate(gzipped))).toEqual(Array.from(encoded));
+    });
+
+    it('passes through bytes the host already inflated', async () => {
+        const encoded = encodeLayer(layer);
+        expect(await inflate(encoded)).toBe(encoded);
     });
 });
 
