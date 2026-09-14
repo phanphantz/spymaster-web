@@ -21,10 +21,31 @@ npm run build
 
 ## Scope of v1
 
-Missions are fed onto a list over time, you employ a starting roster, accept a mission, assign agents
-and buy items in the Loadout, and deployment resolves immediately to a pass or fail.
+Missions are fed onto a contract board over time, you employ a starting roster, accept a mission,
+assign agents and buy items in the Loadout, and deployment resolves immediately to a pass or fail.
 
-Out of scope for now: Tasks, Events, progression, saves, world map, agent rest.
+The game plays over a pannable, zoomable vector world map (countries only, no labels yet), with a
+pin on every pending contract and the board floating over its top-right corner.
+
+Out of scope for now: Tasks, Events, progression, saves, states/cities and map labels, agent rest.
+
+## The world map
+
+`src/map/` draws the same Natural Earth country outlines as the Unity map, with WebGL2 and no map
+library. A frame only runs while the camera moves, so an idle map costs nothing.
+
+- **Baked, not parsed at runtime.** `npm run bake-map` reads the Unity project's
+  `countries.geojson` (from the sibling `aoc-prototype` checkout by default; `--src` for another
+  path) and writes `public/map/`: a 20 KB coarse tier and a 431 KB fine tier. Commit the output;
+  the 23 MB source stays out of this repo.
+- **Grid snapping, not RDP**, same as Unity's `GeoMeshBaker`, so borders shared by two countries
+  stay welded at every tier. A mid tier is derived from the fine one at load.
+- **A Web Worker** triangulates the tiers and answers click hit-tests, so the main thread never
+  stalls. Tiers go to the GPU once; pan and zoom only change uniforms, and the renderer swaps tier
+  by zoom and skips countries off screen.
+- The map lives outside React: the game store re-renders on every clock tick, and none of that
+  reaches the canvas. UI that covers the map carries `data-map-occluder`, so zoom-to-fit lands its
+  target in the uncovered part of the screen.
 
 ## Where the data comes from
 

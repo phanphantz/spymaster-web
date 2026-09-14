@@ -1,15 +1,15 @@
-import { Fragment, useState, type ReactNode } from 'react';
+import { Fragment, useMemo, useState, type ReactNode } from 'react';
 import { SPEED_STEPS } from '../../engine/clock';
 import { useGame } from '../../store/gameStore';
 import * as runtimeAgent from '../../engine/runtimeAgent';
 import { effectiveMaxStack } from '../../engine/loadout';
-import { previewReward, slotCountFor } from '../../engine/missionPreview';
 import type { LiveMission } from '../../engine/missionFeed';
 import type { GameTables } from '../../engine/types';
+import { WorldMapView, activeWorldMap, type MapPin } from '../components/WorldMapView';
+import { ContractsPanel } from './ContractsPanel';
 import {
     AgentCard,
     ConfirmDialog,
-    DifficultyPips,
     EquipIcon,
     Money,
     parseAgentDragPayload,
@@ -73,12 +73,19 @@ function orderedByFocus(agents: readonly RuntimeAgent[], focusCharacterId: strin
     return [...focused, ...rest];
 }
 
+/** A pin for every pending mission whose location has coordinates. */
+function missionPins(pending: readonly LiveMission[]): MapPin[] {
+    return pending.flatMap((mission) => {
+        const { latitude, longitude } = mission.location ?? {};
+        if (latitude === undefined || longitude === undefined) return [];
+        return [{ id: mission.instanceId, lon: longitude, lat: latitude, title: mission.data.displayName ?? 'Contract' }];
+    });
+}
+
 /**
- * The World Map, as a list.
- *
- * v1 has no map — the design's map is a camera over a globe, and none of what it adds is what this
- * prototype is trying to answer. Missions still arrive on the clock through the real Feed, so the
- * pacing question the map exists to serve is still being asked.
+ * The World Map: a pannable, zoomable vector map of the world as the backdrop, with a pin on every
+ * pending contract, the contract board floating over its top-right corner, and the roster strip
+ * pinned along the bottom.
  */
 export function WorldMapScreen(): ReactNode {
     // Subscribing to version is what makes the engine's mutable objects reactive.
@@ -104,70 +111,41 @@ export function WorldMapScreen(): ReactNode {
     const inventoryMode = overlay === 'shop';
 
     const [decliningMission, setDecliningMission] = useState<LiveMission>();
+    // The mission whose row or pin is under the pointer — each lights up the other.
+    const [hotMissionId, setHotMissionId] = useState<string>();
 
     // An agent already filling a slot on this mission isn't free to pick for another — the roster
     // card disappears the moment it's assigned, and comes back the moment it's unassigned.
     const availableRoster = session ? roster.filter((agent) => !session.slotOf(agent.characterId)) : roster;
 
+    // `pending` is a fresh array on every clock minute; the map must only hear about it when the
+    // set of contracts actually changes.
+    const pinKey = pending.map((mission) => mission.instanceId).join('|');
+    const pins = useMemo(() => missionPins(pending), [pinKey]);
+
+    // Opening a contract also flies the map to it, so it's the place in view once the modal closes.
+    const openContract = (mission: LiveMission) => {
+        const { latitude, longitude } = mission.location ?? {};
+        if (latitude !== undefined && longitude !== undefined) activeWorldMap()?.focusPoint(longitude, latitude);
+        openMission(mission.instanceId);
+    };
+
     return (
-        <div className="worldmap">
-            {pending.length === 0 ? (
-                <div className="empty-state">
-                    <p>No contracts on the board.</p>
-                    <p className="meta">
-                        Work arrives on the clock. Raise the speed, or skip ahead, and wait for the
-                        phone to ring.
-                    </p>
+        <>
+            <WorldMapView pins={pins} highlightedPinId={hotMissionId} onPinClick={openMission} onPinHover={setHotMissionId} />
+
+            <div className="hud">
+                <div className="hud__corner">
+                    <ContractsPanel
+                        pending={pending}
+                        tables={tables}
+                        hotId={hotMissionId}
+                        onHover={setHotMissionId}
+                        onOpen={openContract}
+                        onDecline={setDecliningMission}
+                    />
                 </div>
-            ) : (
-                <div className="mission-list">
-                    {pending.map((mission) => {
-                        const reward = tables ? previewReward(tables, mission.data.outcomes?.[0]) : { money: 0, exp: 0 };
-                        const slots = tables ? slotCountFor(mission, tables) : { mandatory: 0, total: 0 };
-                        const canDecline = mission.data.isDeclinable !== false;
-
-                        return (
-                            <div className="mission-row" key={mission.instanceId}>
-                                <button
-                                    type="button"
-                                    className="mission-row__open"
-                                    onClick={() => openMission(mission.instanceId)}
-                                >
-                                    <DifficultyPips level={mission.data.difficultyLevel} />
-                                    <span className="mission-row__info">
-                                        <span className="mission-row__name">{mission.data.displayName}</span>
-                                        <br />
-                                        <span className="mission-row__where">
-                                            {mission.location?.displayName ?? 'Unknown'} ·{' '}
-                                            {mission.data.type ?? 'contract'} · {slots.mandatory}{' '}
-                                            agent{slots.mandatory === 1 ? '' : 's'}
-                                        </span>
-                                    </span>
-                                </button>
-
-                                <span className="mission-row__rewards">
-                                    <span className="mission-row__reward" title="Payment">
-                                        <span aria-hidden="true">💰</span> x{reward.money.toLocaleString('en-US')}
-                                    </span>
-                                    <span className="mission-row__reward" title="Experience">
-                                        <span aria-hidden="true">⭐</span> x{reward.exp}
-                                    </span>
-                                </span>
-
-                                {canDecline ? (
-                                    <button
-                                        type="button"
-                                        className="btn btn--small btn--quiet mission-row__decline"
-                                        onClick={() => setDecliningMission(mission)}
-                                    >
-                                        Decline
-                                    </button>
-                                ) : null}
-                            </div>
-                        );
-                    })}
-                </div>
-            )}
+            </div>
 
             {/* Pinned to the bottom of the screen at all times — including while the mission modal
                 sits on top of it, so it doubles as that modal's agent picker rather than the modal
@@ -176,7 +154,7 @@ export function WorldMapScreen(): ReactNode {
                 Kit mode repurposes this same strip, same height, as the drop targets for the item
                 grid above: one row per assigned teammate, avatar then their carried slots. */}
             {inventoryMode && session && tables ? (
-                <div className="roster roster--inventory">
+                <div className="roster roster--inventory" data-map-occluder>
                     {session.assignedAgents().length === 0 ? (
                         <span className="meta dim roster__empty">No agent assigned.</span>
                     ) : (
@@ -353,6 +331,7 @@ export function WorldMapScreen(): ReactNode {
             ) : (
                 <div
                     className="roster"
+                    data-map-occluder
                     onDragOver={(event) => {
                         if (picking) event.preventDefault();
                     }}
@@ -394,7 +373,7 @@ export function WorldMapScreen(): ReactNode {
                 }}
                 onCancel={() => setDecliningMission(undefined)}
             />
-        </div>
+        </>
     );
 }
 
@@ -408,7 +387,7 @@ export function TopBar(): ReactNode {
     const skipAhead = useGame((state) => state.skipAhead);
 
     return (
-        <header className="topbar">
+        <header className="topbar" data-map-occluder>
             <span className="brand">SPYMASTER</span>
 
             <div className="clock-readout">

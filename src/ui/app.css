@@ -145,11 +145,16 @@
 
 /* --- Top bar -------------------------------------------------------------- */
 
+/* Floats over the world map (fixed behind everything at z-index 0), so it carries its own ground —
+   mostly opaque, letting a little of the map through at its edge. */
 .topbar {
+    position: relative;
+    z-index: 5;
     display: flex;
     align-items: center;
     gap: 20px;
     padding: 12px 20px;
+    background: rgba(7, 11, 13, 0.88);
     border-bottom: 1px solid var(--line);
     flex-wrap: wrap;
 }
@@ -210,33 +215,286 @@
     font-variant-numeric: tabular-nums;
 }
 
-/* --- World Map (a list, not a map) ---------------------------------------- */
+/* --- World Map ------------------------------------------------------------ */
 
-.worldmap {
+/* The map is the ground of the whole game screen: fixed full-bleed behind the top bar, the HUD and
+   the roster strip, all of which float over it. */
+.world-map {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    background: var(--bg);
+}
+
+.world-map__canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    /* Every touch gesture is the map's own — the page must not scroll or pinch-zoom under it. */
+    touch-action: none;
+    cursor: grab;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.world-map__canvas:active { cursor: grabbing; }
+
+.world-map__pins {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+/* A zero-size anchor, moved by a transform written from the map's frame callback; the mark and
+   label draw around that point. */
+.map-pin {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    pointer-events: none;
+    will-change: transform;
+}
+
+.map-pin__mark {
+    position: absolute;
+    left: -7px;
+    top: -7px;
+    width: 14px;
+    height: 14px;
+    transform: rotate(45deg);
+    background: var(--bg);
+    border: 2px solid var(--cyan);
+    box-shadow: 0 0 0 3px rgba(7, 11, 13, 0.6), 0 0 12px var(--cyan-dim);
+    pointer-events: auto;
+    cursor: pointer;
+    transition: background 120ms;
+}
+
+/* A finger-sized hit area around a mark that's drawn small. */
+.map-pin__mark::before {
+    content: "";
+    position: absolute;
+    inset: -10px;
+}
+
+/* A slow ping, so a contract reads as live rather than as a map feature. */
+.map-pin__mark::after {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border: 1px solid var(--cyan);
+    animation: map-pin-ping 2.4s ease-out infinite;
+    pointer-events: none;
+}
+
+@keyframes map-pin-ping {
+    from { transform: scale(1); opacity: 0.7; }
+    60%, to { transform: scale(2.6); opacity: 0; }
+}
+
+.map-pin:focus-visible { outline: none; }
+.map-pin:focus-visible .map-pin__mark { outline: 2px solid var(--text); outline-offset: 3px; }
+
+.map-pin--active .map-pin__mark,
+.map-pin:hover .map-pin__mark { background: var(--cyan); }
+
+.map-pin__label {
+    position: absolute;
+    left: 14px;
+    top: -11px;
+    padding: 2px 8px;
+    white-space: nowrap;
+    font-size: var(--fs-meta);
+    color: var(--text);
+    background: rgba(7, 11, 13, 0.9);
+    border: 1px solid var(--cyan-dim);
+    border-radius: var(--radius);
+    opacity: 0;
+    transition: opacity 120ms;
+    pointer-events: none;
+}
+
+.map-pin--active .map-pin__label,
+.map-pin:hover .map-pin__label,
+.map-pin:focus-visible .map-pin__label { opacity: 1; }
+
+/* The country under the mouse. Positioned by transform from the map's hover callback. */
+.map-tooltip {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    padding: 3px 8px;
+    white-space: nowrap;
+    font-size: var(--fs-meta);
+    color: var(--steel);
+    background: rgba(7, 11, 13, 0.85);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    pointer-events: none;
+}
+
+/* The country last clicked — the map has no labels yet, so this names it. */
+.map-selection {
+    position: absolute;
+    left: 16px;
+    bottom: calc(var(--roster-h) + 12px);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 8px 6px 12px;
+    background: rgba(14, 21, 24, 0.92);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--cyan);
+    border-radius: var(--radius);
+}
+
+.map-selection .micro { color: var(--steel); }
+.map-selection__name { color: var(--cyan); }
+
+.map-selection__clear {
+    padding: 0 6px;
+    background: transparent;
+    border: 0;
+    color: var(--steel);
+    font-size: var(--fs-detail);
+}
+
+/* The rest of the screen under the top bar. It covers the map, so it lets pointer events through
+   and only its panels take them back. */
+.hud {
+    position: relative;
+    z-index: 5;
     flex: 1;
-    display: grid;
-    grid-template-rows: 1fr;
     min-height: 0;
+    pointer-events: none;
+}
+
+/* The contract board's corner — its bottom edge stops above the roster strip, so the board can
+   grow to that and then scroll. */
+.hud__corner {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    bottom: calc(var(--roster-h) + 12px);
+    width: min(400px, calc(100% - 24px));
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.contracts {
+    pointer-events: auto;
+    max-height: 100%;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    background: rgba(14, 21, 24, 0.94);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+
+.contracts__header {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: transparent;
+    border: 0;
+    text-align: left;
+}
+
+.contracts__title {
+    font-size: var(--fs-chip);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cyan);
+}
+
+.contracts__count {
+    min-width: 24px;
+    padding: 1px 6px;
+    text-align: center;
+    font-size: var(--fs-meta);
+    font-variant-numeric: tabular-nums;
+    color: var(--steel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+}
+
+.contracts__count--live {
+    color: var(--inverse);
+    background: var(--cyan);
+    border-color: var(--cyan);
+    animation: contracts-arrival 800ms ease-out;
+}
+
+@keyframes contracts-arrival {
+    from { box-shadow: 0 0 0 0 var(--cyan); }
+    to { box-shadow: 0 0 0 12px rgba(175, 255, 248, 0); }
+}
+
+.contracts__chevron {
+    margin-left: auto;
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid var(--steel);
+    border-bottom: 2px solid var(--steel);
+    /* Points up while open (tap to fold away), down while folded. */
+    transform: translateY(2px) rotate(-135deg);
+    transition: transform 180ms ease;
+}
+
+.contracts--collapsed .contracts__chevron { transform: translateY(-2px) rotate(45deg); }
+
+.contracts__header:hover .contracts__chevron { border-color: var(--cyan); }
+
+.contracts__body {
+    flex: 0 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-top: 1px solid var(--line);
+    animation: contracts-open 160ms ease-out;
+}
+
+@keyframes contracts-open {
+    from { opacity: 0; transform: translateY(-6px); }
+}
+
+.contracts__empty {
+    margin: 0;
+    padding: 16px;
+    color: var(--steel);
+    line-height: 1.6;
 }
 
 .mission-list {
-    padding: 20px;
-    /* Clears the roster strip, which is pinned over this rather than laid out above it. */
-    padding-bottom: var(--roster-h);
+    padding: 8px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    overflow-y: auto;
+    gap: 6px;
 }
 
 /* A row is no longer one big button — Decline sits beside it now, and a button can't nest inside a
    button. .mission-row__open carries the click-to-open behaviour; the row itself just lays out the
-   three pieces (open / rewards / decline) and gives them one shared hover and border. */
+   three pieces (open / rewards / decline) and gives them one shared hover and border. In the
+   contract board's narrow column it wraps: title on the first line, rewards and Decline below. */
 .mission-row {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 14px;
-    padding: 14px 16px;
+    gap: 6px 12px;
+    padding: 10px 12px;
     width: 100%;
     background: var(--surface);
     border: 1px solid var(--line);
@@ -246,11 +504,18 @@
 
 .mission-row:hover { background: var(--surface-2); }
 
+/* Its pin is under the pointer, or it is — the row and pin light each other up. */
+.mission-row--hot {
+    background: var(--surface-2);
+    border-color: var(--cyan-dim);
+    border-left-color: var(--cyan);
+}
+
 .mission-row__open {
-    flex: 1;
+    flex: 1 1 100%;
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 12px;
     min-width: 0;
     padding: 0;
     background: transparent;
@@ -263,7 +528,7 @@
 .mission-row__info { min-width: 0; }
 
 .mission-row__name {
-    font-size: var(--fs-item);
+    font-size: var(--fs-detail);
     color: var(--text);
 }
 
@@ -279,7 +544,7 @@
 
 /* Payment and exp, read at a glance without opening the mission. */
 .mission-row__rewards {
-    flex: 0 0 auto;
+    flex: 1 1 auto;
     display: flex;
     gap: 12px;
 }
@@ -313,22 +578,14 @@
 
 .pip--on { background: var(--orange); opacity: 1; }
 
-.empty-state {
-    margin: auto;
-    text-align: center;
-    color: var(--steel);
-    max-width: 42ch;
-    line-height: 1.7;
-}
-
 /* --- Roster strip --------------------------------------------------------- */
 
 /* Pinned to the screen, not just the World Map — it sits above the mission modal's backdrop
    (z-index 10) so it stays the one place to pick an agent, modal open or not. */
 /* A fixed height (rather than shrink-to-fit content) — Kit mode's per-agent groups vary a lot in
    what they show (a stepper, a Discard row, an empty-team message), and none of that may ever grow
-   or shrink this strip: `.mission-list`'s own `padding-bottom` above assumes this exact height to
-   clear it, and swapping between this and the plain agent picker must not shift anything either.
+   or shrink this strip: the contract board and the selected-country tag both stop exactly this
+   high above the bottom to clear it, and swapping between this and the plain agent picker must not shift anything either.
    Sized to fit a group's tallest possible content (avatar + slots row, plus the Discard row below
    it) with no overflow, so nothing here ever scrolls — the Discard button must always be visible,
    not something you scroll down to. */
@@ -2146,7 +2403,7 @@ button.equip-icon:hover { border-color: var(--danger); color: var(--danger); }
 
 /* Full-screen stage, not a modal — the only screen shown while `phase === 'employment'`, so it
    owns the whole `.app` column (`flex: 1`) rather than sizing to its own content. Bottom padding
-   clears the fixed `.roster` picker strip the same way `.mission-list` does. */
+   clears the fixed `.roster` picker strip. */
 .employment {
     flex: 1;
     min-height: 0;
@@ -2285,11 +2542,17 @@ button.equip-icon:hover { border-color: var(--danger); color: var(--danger); }
 
     .topbar { gap: 12px; padding: 10px 14px; }
     .brand { letter-spacing: 0.18em; }
-    .mission-list { padding: 14px; }
 
     .employment__stage { grid-template-columns: 1fr; }
     .employment__portrait { min-height: 180px; }
 
     /* The action bar has to stay reachable with one thumb. */
     .modal__footer { position: sticky; bottom: 0; background: var(--surface); }
+}
+
+/* Phone width — the same breakpoint ContractsPanel uses to start folded. */
+@media (max-width: 600px) {
+    /* The board spans the width and stops about halfway down, so some map stays in view. */
+    .hud__corner { top: 8px; left: 8px; right: 8px; width: auto; bottom: 45%; }
+    .map-selection { left: 8px; }
 }
